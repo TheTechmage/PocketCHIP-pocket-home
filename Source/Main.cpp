@@ -47,8 +47,9 @@ public:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainWindow)
 
   public:
-    MainWindow(String name) : DocumentWindow(name, Colours::lightgrey, DocumentWindow::allButtons) {
-      setUsingNativeTitleBar(true);
+    MainWindow(String name) : DocumentWindow(name, Colours::darkgrey, DocumentWindow::allButtons) {
+      setUsingNativeTitleBar(false);
+      setResizable(true, false);
       setContentOwned(new MainContentComponent(), true);
 
       centreWithSize(getWidth(), getHeight());

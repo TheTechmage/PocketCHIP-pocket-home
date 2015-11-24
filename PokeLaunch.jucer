@@ -20,12 +20,12 @@
                        isDebug="0" optimisation="3" targetName="PokeLaunch"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="juce_core" path="../../misc/JUCE/modules"/>
-        <MODULEPATH id="juce_events" path="../../misc/JUCE/modules"/>
-        <MODULEPATH id="juce_graphics" path="../../misc/JUCE/modules"/>
-        <MODULEPATH id="juce_data_structures" path="../../misc/JUCE/modules"/>
-        <MODULEPATH id="juce_gui_basics" path="../../misc/JUCE/modules"/>
-        <MODULEPATH id="juce_gui_extra" path="../../misc/JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="deps/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="deps/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="deps/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="deps/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="deps/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="deps/JUCE/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
     <LINUX_MAKE targetFolder="Builds/LinuxMakefile" cppLanguageStandard="-std=c++11">
@@ -36,12 +36,12 @@
                        targetName="PokeLaunch"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="juce_core" path="../../misc/JUCE/modules"/>
-        <MODULEPATH id="juce_events" path="../../misc/JUCE/modules"/>
-        <MODULEPATH id="juce_graphics" path="../../misc/JUCE/modules"/>
-        <MODULEPATH id="juce_data_structures" path="../../misc/JUCE/modules"/>
-        <MODULEPATH id="juce_gui_basics" path="../../misc/JUCE/modules"/>
-        <MODULEPATH id="juce_gui_extra" path="../../misc/JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="deps/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="deps/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="deps/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="deps/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="deps/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="deps/JUCE/modules"/>
       </MODULEPATHS>
     </LINUX_MAKE>
   </EXPORTFORMATS>

@@ -1,4 +1,4 @@
 // This is an auto-generated file to redirect any included
 // module headers to the correct external folder.
 
-#include "../../../../../misc/JUCE/modules/juce_data_structures/juce_data_structures.h"
+#include "../../../deps/JUCE/modules/juce_data_structures/juce_data_structures.h"
