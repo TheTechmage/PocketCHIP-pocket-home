@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="EFuQKG" name="PokeLaunch" projectType="guiapp" version="0.0.1"
+              bundleIdentifier="com.yourcompany.PokeLaunch" includeBinaryInAppConfig="1"
+              jucerVersion="4.0.2" companyName="Next Thing Co." companyWebsite="http://nextthing.co">
+  <MAINGROUP id="NYF1Vz" name="PokeLaunch">
+    <GROUP id="{4593A345-C350-960A-058D-B48F8240AA1D}" name="Source">
+      <FILE id="mapBpD" name="MainComponent.cpp" compile="1" resource="0"
+            file="Source/MainComponent.cpp"/>
+      <FILE id="i4exVn" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
+      <FILE id="GJ9TER" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+    </GROUP>
+  </MAINGROUP>
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" osxSDK="default" osxCompatibility="default" osxArchitecture="default"
+                       isDebug="1" optimisation="1" targetName="PokeLaunch"/>
+        <CONFIGURATION name="Release" osxSDK="default" osxCompatibility="default" osxArchitecture="default"
+                       isDebug="0" optimisation="3" targetName="PokeLaunch"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="../../misc/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../misc/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../misc/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../misc/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../misc/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../misc/JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+    <LINUX_MAKE targetFolder="Builds/LinuxMakefile" cppLanguageStandard="-std=c++11">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"
+                       targetName="PokeLaunch"/>
+        <CONFIGURATION name="Release" libraryPath="/usr/X11R6/lib/" isDebug="0" optimisation="3"
+                       targetName="PokeLaunch"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="../../misc/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../misc/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../misc/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../misc/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../misc/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../misc/JUCE/modules"/>
+      </MODULEPATHS>
+    </LINUX_MAKE>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0"/>
+  </MODULES>
+  <JUCEOPTIONS/>
+</JUCERPROJECT>
