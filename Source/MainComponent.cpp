@@ -1,11 +1,10 @@
 #include "MainComponent.h"
 
 MainContentComponent::MainContentComponent() {
-  setSize(480, 245);
-
   settingsPage = std::unique_ptr<SettingsPageComponent>(new SettingsPageComponent());
-  settingsPage->setBounds(getLocalBounds());
   addAndMakeVisible(settingsPage.get());
+
+  setSize(480, 245);
 }
 
 MainContentComponent::~MainContentComponent() {}
@@ -19,4 +18,5 @@ void MainContentComponent::paint(Graphics &g) {
 }
 
 void MainContentComponent::resized() {
+  settingsPage->setBounds(getLocalBounds());
 }

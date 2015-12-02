@@ -1,9 +1,9 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "SettingsPageComponent.h"
 
-SettingsPageComponent::SettingsPageComponent() {
-  int sliderHeight = 60;
+static const int sliderHeight = 60;
 
+SettingsPageComponent::SettingsPageComponent() {
   auto createSlider = [&] {
     auto s = new Slider();
     s->setSliderStyle(Slider::LinearHorizontal);
@@ -30,6 +30,6 @@ void SettingsPageComponent::resized() {
   auto bounds = getLocalBounds().reduced(10);
 
   Component *sliders[] = { screenBrightnessSlider.get(), volumeSlider.get() };
-  sliderLayout.layOutComponents(sliders, 2, bounds.getX(), bounds.getBottom() - 60,
-                                bounds.getWidth(), bounds.getHeight(), false, false);
+  sliderLayout.layOutComponents(sliders, 2, bounds.getX(), bounds.getBottom() - sliderHeight,
+                                bounds.getWidth(), sliderHeight, false, false);
 }
