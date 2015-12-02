@@ -4,6 +4,12 @@
               bundleIdentifier="com.yourcompany.PokeLaunch" includeBinaryInAppConfig="1"
               jucerVersion="4.0.2" companyName="Next Thing Co." companyWebsite="http://nextthing.co">
   <MAINGROUP id="NYF1Vz" name="PokeLaunch">
+    <GROUP id="{A1DF3F2A-774E-D561-3D99-5D88F7D2D731}" name="assets">
+      <FILE id="sGVOKO" name="appsIcon.svg" compile="0" resource="1" file="assets/appsIcon.svg"/>
+      <FILE id="BH5dZh" name="gamesIcon.svg" compile="0" resource="1" file="assets/gamesIcon.svg"/>
+      <FILE id="ufm1Fg" name="settingsIcon.svg" compile="0" resource="1"
+            file="assets/settingsIcon.svg"/>
+    </GROUP>
     <GROUP id="{4593A345-C350-960A-058D-B48F8240AA1D}" name="Source">
       <FILE id="g04lyK" name="SettingsPageComponent.cpp" compile="1" resource="0"
             file="Source/SettingsPageComponent.cpp"/>
