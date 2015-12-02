@@ -2,6 +2,8 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
+#include <memory>
+
 class SettingsPageComponent : public Component {
 public:
   std::unique_ptr<Slider> screenBrightnessSlider, volumeSlider;
