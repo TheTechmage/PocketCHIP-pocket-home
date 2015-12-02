@@ -5,6 +5,10 @@
               jucerVersion="4.0.2" companyName="Next Thing Co." companyWebsite="http://nextthing.co">
   <MAINGROUP id="NYF1Vz" name="PokeLaunch">
     <GROUP id="{4593A345-C350-960A-058D-B48F8240AA1D}" name="Source">
+      <FILE id="g04lyK" name="SettingsPageComponent.cpp" compile="1" resource="0"
+            file="Source/SettingsPageComponent.cpp"/>
+      <FILE id="NRuhIp" name="SettingsPageComponent.h" compile="0" resource="0"
+            file="Source/SettingsPageComponent.h"/>
       <FILE id="mapBpD" name="MainComponent.cpp" compile="1" resource="0"
             file="Source/MainComponent.cpp"/>
       <FILE id="i4exVn" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
@@ -14,10 +18,11 @@
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX">
       <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" osxSDK="default" osxCompatibility="default" osxArchitecture="default"
-                       isDebug="1" optimisation="1" targetName="PokeLaunch"/>
-        <CONFIGURATION name="Release" osxSDK="default" osxCompatibility="default" osxArchitecture="default"
-                       isDebug="0" optimisation="3" targetName="PokeLaunch"/>
+        <CONFIGURATION name="Debug" osxSDK="default" osxCompatibility="10.10 SDK" osxArchitecture="default"
+                       isDebug="1" optimisation="1" targetName="PokeLaunch" cppLanguageStandard="c++11"/>
+        <CONFIGURATION name="Release" osxSDK="default" osxCompatibility="10.10 SDK"
+                       osxArchitecture="default" isDebug="0" optimisation="3" targetName="PokeLaunch"
+                       cppLanguageStandard="c++11"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="deps/JUCE/modules"/>
