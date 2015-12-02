@@ -1,7 +1,8 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "SettingsPageComponent.h"
 
-static const int sliderHeight = 60;
+static const int sliderHeight = 50;
+static const int sliderPadding = 10;
 
 SettingsPageComponent::SettingsPageComponent() {
   auto createSlider = [&] {
@@ -18,8 +19,9 @@ SettingsPageComponent::SettingsPageComponent() {
   addAndMakeVisible(screenBrightnessSlider.get());
   addAndMakeVisible(volumeSlider.get());
 
-  sliderLayout.setItemLayout(0, -0.5, -0.5, -0.5);
-  sliderLayout.setItemLayout(1, -0.5, -0.5, -0.5);
+  sliderLayout.setItemLayout(0, 0.0, -1.0, -1.0);
+  sliderLayout.setItemLayout(1, sliderPadding, sliderPadding, sliderPadding);
+  sliderLayout.setItemLayout(2, 0.0, -1.0, -1.0);
 }
 
 SettingsPageComponent::~SettingsPageComponent() {}
@@ -27,9 +29,9 @@ SettingsPageComponent::~SettingsPageComponent() {}
 void SettingsPageComponent::paint(Graphics &g) {}
 
 void SettingsPageComponent::resized() {
-  auto bounds = getLocalBounds().reduced(10);
+  auto bounds = getLocalBounds().reduced(sliderPadding);
 
-  Component *sliders[] = { screenBrightnessSlider.get(), volumeSlider.get() };
-  sliderLayout.layOutComponents(sliders, 2, bounds.getX(), bounds.getBottom() - sliderHeight,
-                                bounds.getWidth(), sliderHeight, false, false);
+  Component *sliders[] = { screenBrightnessSlider.get(), nullptr, volumeSlider.get() };
+  sliderLayout.layOutComponents(sliders, 3, bounds.getX(), bounds.getBottom() - sliderHeight,
+                                bounds.getWidth(), sliderHeight, false, true);
 }
