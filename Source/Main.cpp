@@ -47,13 +47,15 @@ public:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainWindow)
 
   public:
-    MainWindow(String name) : DocumentWindow(name, Colours::darkgrey, DocumentWindow::allButtons) {
+    MainWindow(String name) : DocumentWindow(name, Colours::darkgrey, DocumentWindow::closeButton) {
       setUsingNativeTitleBar(false);
       setResizable(true, false);
       setContentOwned(new MainContentComponent(), true);
-
       centreWithSize(getWidth(), getHeight());
       setVisible(true);
+#if JUCE_LINUX
+      setFullScreen(true);
+#endif
     }
 
     void closeButtonPressed() override {
