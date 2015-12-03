@@ -50,6 +50,7 @@ public:
     MainWindow(String name) : DocumentWindow(name, Colours::darkgrey, DocumentWindow::closeButton) {
       setUsingNativeTitleBar(false);
       setResizable(true, false);
+      setTitleBarHeight(0);
       setContentOwned(new MainContentComponent(), true);
       centreWithSize(getWidth(), getHeight());
       setVisible(true);

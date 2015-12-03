@@ -17,6 +17,8 @@ public:
 
   ScopedPointer<LookAndFeel> lookAndFeel;
 
+  ScopedPointer<TextButton> closeButton;
+
   MainContentComponent();
   ~MainContentComponent();
 

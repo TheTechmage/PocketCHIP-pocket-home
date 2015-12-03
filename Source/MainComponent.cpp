@@ -57,6 +57,11 @@ MainContentComponent::MainContentComponent() {
     categoryButtonLayout.setItemLayout(4, 0, -1.0, -1.0);
   }
 
+  closeButton = new TextButton("Close");
+  closeButton->setBounds(0, 0, 40, 20);
+  addAndMakeVisible(closeButton);
+  closeButton->addListener(this);
+
   setSize(480, 245);
 }
 
@@ -88,5 +93,7 @@ void MainContentComponent::buttonClicked(Button *button) {
   } else if (button == gamesButton) {
   } else if (button == settingsButton) {
     settingsPage->setVisible(true);
+  } else if (button == closeButton) {
+    JUCEApplication::quit();
   }
 }
