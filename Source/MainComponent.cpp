@@ -32,11 +32,11 @@ MainContentComponent::MainContentComponent() {
   settingsPage = ScopedPointer<SettingsPageComponent>(new SettingsPageComponent());
   addChildComponent(settingsPage);
 
+
   appButton = createCategoryButton("Apps", BinaryData::appsIcon_svg,
                                    BinaryData::appsIcon_sel_svg);
   appButton->addListener(this);
   addAndMakeVisible(appButton);
-
 
   gamesButton = createCategoryButton("Games", BinaryData::gamesIcon_svg,
                                      BinaryData::gamesIcon_sel_svg);
