@@ -5,29 +5,40 @@
               jucerVersion="4.0.2" companyName="Next Thing Co." companyWebsite="http://nextthing.co">
   <MAINGROUP id="NYF1Vz" name="PokeLaunch">
     <GROUP id="{A1DF3F2A-774E-D561-3D99-5D88F7D2D731}" name="assets">
-      <FILE id="LTkxEI" name="appsIcon.svg" compile="0" resource="1" file="assets/appsIcon.svg"/>
-      <FILE id="oUNBqM" name="appsIcon_sel.svg" compile="0" resource="1"
-            file="assets/appsIcon_sel.svg"/>
-      <FILE id="nxRueS" name="gamesIcon.svg" compile="0" resource="1" file="assets/gamesIcon.svg"/>
-      <FILE id="rTs4If" name="gamesIcon_sel.svg" compile="0" resource="1"
-            file="assets/gamesIcon_sel.svg"/>
-      <FILE id="ArCfTV" name="settingsIcon.svg" compile="0" resource="1"
+      <FILE id="GJ5Ohw" name="appsIcon.svg" compile="0" resource="1" file="assets/appsIcon.svg"/>
+      <FILE id="qRgVuJ" name="appsIconSel.svg" compile="0" resource="1" file="assets/appsIconSel.svg"/>
+      <FILE id="hHqhiE" name="brightnessIconHi.svg" compile="0" resource="1"
+            file="assets/brightnessIconHi.svg"/>
+      <FILE id="x9yQ09" name="brightnessIconLo.svg" compile="0" resource="1"
+            file="assets/brightnessIconLo.svg"/>
+      <FILE id="vPqxZe" name="gamesIcon.svg" compile="0" resource="1" file="assets/gamesIcon.svg"/>
+      <FILE id="escajm" name="gamesIconSel.svg" compile="0" resource="1"
+            file="assets/gamesIconSel.svg"/>
+      <FILE id="zfWrKL" name="settingsIcon.svg" compile="0" resource="1"
             file="assets/settingsIcon.svg"/>
-      <FILE id="ipGU7E" name="settingsIcon_sel.svg" compile="0" resource="1"
-            file="assets/settingsIcon_sel.svg"/>
+      <FILE id="fyKa3u" name="settingsIconSel.svg" compile="0" resource="1"
+            file="assets/settingsIconSel.svg"/>
+      <FILE id="Ub98WG" name="volumeIconHi.svg" compile="0" resource="1"
+            file="assets/volumeIconHi.svg"/>
+      <FILE id="haj4xI" name="volumeIconLo.svg" compile="0" resource="1"
+            file="assets/volumeIconLo.svg"/>
     </GROUP>
     <GROUP id="{4593A345-C350-960A-058D-B48F8240AA1D}" name="Source">
       <FILE id="xoVLAp" name="PokeLookAndFeel.cpp" compile="1" resource="0"
             file="Source/PokeLookAndFeel.cpp"/>
       <FILE id="g1eykD" name="PokeLookAndFeel.h" compile="0" resource="0"
             file="Source/PokeLookAndFeel.h"/>
+      <FILE id="mapBpD" name="MainComponent.cpp" compile="1" resource="0"
+            file="Source/MainComponent.cpp"/>
+      <FILE id="i4exVn" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
       <FILE id="g04lyK" name="SettingsPageComponent.cpp" compile="1" resource="0"
             file="Source/SettingsPageComponent.cpp"/>
       <FILE id="NRuhIp" name="SettingsPageComponent.h" compile="0" resource="0"
             file="Source/SettingsPageComponent.h"/>
-      <FILE id="mapBpD" name="MainComponent.cpp" compile="1" resource="0"
-            file="Source/MainComponent.cpp"/>
-      <FILE id="i4exVn" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
+      <FILE id="Uuf9X1" name="IconSliderComponent.cpp" compile="1" resource="0"
+            file="Source/IconSliderComponent.cpp"/>
+      <FILE id="ICQxAN" name="IconSliderComponent.h" compile="0" resource="0"
+            file="Source/IconSliderComponent.h"/>
       <FILE id="GJ9TER" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
     </GROUP>
   </MAINGROUP>

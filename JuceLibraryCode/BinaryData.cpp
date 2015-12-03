@@ -26,7 +26,7 @@ static const unsigned char temp_binary_data_0[] =
 
 const char* appsIcon_svg = (const char*) temp_binary_data_0;
 
-//================== appsIcon_sel.svg ==================
+//================== appsIconSel.svg ==================
 static const unsigned char temp_binary_data_1[] =
 "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
 "<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r\n"
@@ -43,9 +43,9 @@ static const unsigned char temp_binary_data_1[] =
 "\tl-0.074,0.047l9.483,17.792c0.225-0.621,0.494-1.227,0.837-1.791c1.534-2.522,3.976-3.964,6.908-4.132L28.032,22.288z\"/>\r\n"
 "</svg>\r\n";
 
-const char* appsIcon_sel_svg = (const char*) temp_binary_data_1;
+const char* appsIconSel_svg = (const char*) temp_binary_data_1;
 
-//================== gamesIcon.svg ==================
+//================== brightnessIconHi.svg ==================
 static const unsigned char temp_binary_data_2[] =
 "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
 "<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r\n"
@@ -53,6 +53,48 @@ static const unsigned char temp_binary_data_2[] =
 "<svg version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\"\r\n"
 "\t width=\"75px\" height=\"75px\" viewBox=\"0 0 75 75\" enable-background=\"new 0 0 75 75\" xml:space=\"preserve\">\r\n"
 "<circle fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"5\" stroke-miterlimit=\"10\" cx=\"37.501\" cy=\"37.5\" r=\"32.491\"/>\r\n"
+"<circle cx=\"37.5\" cy=\"37.836\" r=\"5.785\"/>\r\n"
+"<line fill=\"none\" stroke=\"#000000\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-miterlimit=\"10\" x1=\"37.5\" y1=\"27.296\" x2=\"37.5\" y2=\"20.616\"/>\r\n"
+"<line fill=\"none\" stroke=\"#000000\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-miterlimit=\"10\" x1=\"44.955\" y1=\"30.384\" x2=\"49.676\" y2=\"25.66\"/>\r\n"
+"<line fill=\"none\" stroke=\"#000000\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-miterlimit=\"10\" x1=\"48.041\" y1=\"37.837\" x2=\"54.719\" y2=\"37.836\"/>\r\n"
+"<line fill=\"none\" stroke=\"#000000\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-miterlimit=\"10\" x1=\"44.953\" y1=\"45.291\" x2=\"49.676\" y2=\"50.011\"/>\r\n"
+"<line fill=\"none\" stroke=\"#000000\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-miterlimit=\"10\" x1=\"37.5\" y1=\"48.377\" x2=\"37.5\" y2=\"55.057\"/>\r\n"
+"<line fill=\"none\" stroke=\"#000000\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-miterlimit=\"10\" x1=\"30.047\" y1=\"45.29\" x2=\"25.324\" y2=\"50.011\"/>\r\n"
+"<line fill=\"none\" stroke=\"#000000\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-miterlimit=\"10\" x1=\"26.959\" y1=\"37.836\" x2=\"20.281\" y2=\"37.836\"/>\r\n"
+"<line fill=\"none\" stroke=\"#000000\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-miterlimit=\"10\" x1=\"30.047\" y1=\"30.382\" x2=\"25.324\" y2=\"25.66\"/>\r\n"
+"</svg>\r\n";
+
+const char* brightnessIconHi_svg = (const char*) temp_binary_data_2;
+
+//================== brightnessIconLo.svg ==================
+static const unsigned char temp_binary_data_3[] =
+"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
+"<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r\n"
+"<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\r\n"
+"<svg version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\"\r\n"
+"\t width=\"75px\" height=\"75px\" viewBox=\"0 0 75 75\" enable-background=\"new 0 0 75 75\" xml:space=\"preserve\">\r\n"
+"<circle fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"5\" stroke-miterlimit=\"10\" cx=\"37.501\" cy=\"37.5\" r=\"32.491\"/>\r\n"
+"<circle fill=\"#231F20\" cx=\"37.676\" cy=\"37.961\" r=\"5.785\"/>\r\n"
+"<line fill=\"none\" stroke=\"#000000\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-miterlimit=\"10\" x1=\"48.217\" y1=\"37.962\" x2=\"49.285\" y2=\"37.961\"/>\r\n"
+"<line fill=\"none\" stroke=\"#000000\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-miterlimit=\"10\" x1=\"45.131\" y1=\"30.508\" x2=\"45.885\" y2=\"29.753\"/>\r\n"
+"<line fill=\"none\" stroke=\"#000000\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-miterlimit=\"10\" x1=\"37.678\" y1=\"27.418\" x2=\"37.676\" y2=\"26.352\"/>\r\n"
+"<line fill=\"none\" stroke=\"#000000\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-miterlimit=\"10\" x1=\"30.223\" y1=\"30.505\" x2=\"29.467\" y2=\"29.752\"/>\r\n"
+"<line fill=\"none\" stroke=\"#000000\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-miterlimit=\"10\" x1=\"27.134\" y1=\"37.96\" x2=\"26.065\" y2=\"37.961\"/>\r\n"
+"<line fill=\"none\" stroke=\"#000000\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-miterlimit=\"10\" x1=\"30.221\" y1=\"45.414\" x2=\"29.467\" y2=\"46.17\"/>\r\n"
+"<line fill=\"none\" stroke=\"#000000\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-miterlimit=\"10\" x1=\"37.675\" y1=\"48.503\" x2=\"37.676\" y2=\"49.57\"/>\r\n"
+"<line fill=\"none\" stroke=\"#000000\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-miterlimit=\"10\" x1=\"45.129\" y1=\"45.416\" x2=\"45.887\" y2=\"46.17\"/>\r\n"
+"</svg>\r\n";
+
+const char* brightnessIconLo_svg = (const char*) temp_binary_data_3;
+
+//================== gamesIcon.svg ==================
+static const unsigned char temp_binary_data_4[] =
+"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
+"<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r\n"
+"<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\r\n"
+"<svg version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\"\r\n"
+"\t width=\"75px\" height=\"75px\" viewBox=\"0 0 75 75\" enable-background=\"new 0 0 75 75\" xml:space=\"preserve\">\r\n"
+"<circle fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"5\" stroke-miterlimit=\"10\" cx=\"37.501\" cy=\"37.5\" r=\"32.491\"/>\r\n"
 "<circle fill=\"none\" stroke=\"#000000\" stroke-width=\"5\" stroke-miterlimit=\"10\" cx=\"37.501\" cy=\"37.5\" r=\"28.017\"/>\r\n"
 "<path d=\"M55.934,42.794l0.021-0.01l-4.086-14.729c-0.337-1.97-2.042-3.473-4.107-3.473c-1.33,0-2.5,0.633-3.267,1.602l-0.033-0.007\r\n"
 "\tc-1.649,2.42-2.858,2.146-2.858,2.146h-2.916h-2.639h-2.915c0,0-1.21,0.275-2.859-2.146l-0.033,0.007\r\n"
@@ -62,10 +104,10 @@ static const unsigned char temp_binary_data_2[] =
 "\tC56.121,43.624,56.044,43.203,55.934,42.794z\"/>\r\n"
 "</svg>\r\n";
 
-const char* gamesIcon_svg = (const char*) temp_binary_data_2;
+const char* gamesIcon_svg = (const char*) temp_binary_data_4;
 
-//================== gamesIcon_sel.svg ==================
-static const unsigned char temp_binary_data_3[] =
+//================== gamesIconSel.svg ==================
+static const unsigned char temp_binary_data_5[] =
 "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
 "<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\r\n"
@@ -81,10 +123,10 @@ static const unsigned char temp_binary_data_3[] =
 "\tC56.121,43.624,56.044,43.203,55.934,42.794z\"/>\r\n"
 "</svg>\r\n";
 
-const char* gamesIcon_sel_svg = (const char*) temp_binary_data_3;
+const char* gamesIconSel_svg = (const char*) temp_binary_data_5;
 
 //================== settingsIcon.svg ==================
-static const unsigned char temp_binary_data_4[] =
+static const unsigned char temp_binary_data_6[] =
 "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
 "<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\r\n"
@@ -106,10 +148,10 @@ static const unsigned char temp_binary_data_4[] =
 "</g>\r\n"
 "</svg>\r\n";
 
-const char* settingsIcon_svg = (const char*) temp_binary_data_4;
+const char* settingsIcon_svg = (const char*) temp_binary_data_6;
 
-//================== settingsIcon_sel.svg ==================
-static const unsigned char temp_binary_data_5[] =
+//================== settingsIconSel.svg ==================
+static const unsigned char temp_binary_data_7[] =
 "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
 "<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\r\n"
@@ -131,7 +173,49 @@ static const unsigned char temp_binary_data_5[] =
 "</g>\r\n"
 "</svg>\r\n";
 
-const char* settingsIcon_sel_svg = (const char*) temp_binary_data_5;
+const char* settingsIconSel_svg = (const char*) temp_binary_data_7;
+
+//================== volumeIconHi.svg ==================
+static const unsigned char temp_binary_data_8[] =
+"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
+"<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r\n"
+"<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\r\n"
+"<svg version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\"\r\n"
+"\t width=\"75px\" height=\"75px\" viewBox=\"0 0 75 75\" enable-background=\"new 0 0 75 75\" xml:space=\"preserve\">\r\n"
+"<circle fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"5\" stroke-miterlimit=\"10\" cx=\"37.501\" cy=\"37.5\" r=\"32.491\"/>\r\n"
+"<g>\r\n"
+"\t<g>\r\n"
+"\t\t<rect x=\"20.604\" y=\"33.892\" width=\"7.217\" height=\"7.216\"/>\r\n"
+"\t</g>\r\n"
+"\t<polygon points=\"32.61,45.939 24.171,37.501 32.61,29.061 32.61,37.501 \t\"/>\r\n"
+"</g>\r\n"
+"<path fill=\"none\" stroke=\"#000000\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-miterlimit=\"10\" d=\"M37.913,41.704\r\n"
+"\tc2.26-2.262,2.26-5.926,0-8.187\"/>\r\n"
+"<path fill=\"none\" stroke=\"#000000\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-miterlimit=\"10\" d=\"M43.305,44.898\r\n"
+"\tc4.025-4.025,4.025-10.551,0-14.577\"/>\r\n"
+"<path fill=\"none\" stroke=\"#000000\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-miterlimit=\"10\" d=\"M47.419,25.026\r\n"
+"\tc6.951,6.95,6.951,18.221,0,25.171\"/>\r\n"
+"</svg>\r\n";
+
+const char* volumeIconHi_svg = (const char*) temp_binary_data_8;
+
+//================== volumeIconLo.svg ==================
+static const unsigned char temp_binary_data_9[] =
+"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
+"<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r\n"
+"<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\r\n"
+"<svg version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\"\r\n"
+"\t width=\"75px\" height=\"75px\" viewBox=\"0 0 75 75\" enable-background=\"new 0 0 75 75\" xml:space=\"preserve\">\r\n"
+"<circle fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"5\" stroke-miterlimit=\"10\" cx=\"37.501\" cy=\"37.5\" r=\"32.491\"/>\r\n"
+"<g>\r\n"
+"\t<g>\r\n"
+"\t\t<rect x=\"31.371\" y=\"33.892\" width=\"7.216\" height=\"7.215\"/>\r\n"
+"\t</g>\r\n"
+"\t<polygon points=\"43.378,45.939 34.938,37.501 43.378,29.061 43.378,37.501 \t\"/>\r\n"
+"</g>\r\n"
+"</svg>\r\n";
+
+const char* volumeIconLo_svg = (const char*) temp_binary_data_9;
 
 
 const char* getNamedResource (const char*, int&) throw();
@@ -145,11 +229,15 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes) throw
     switch (hash)
     {
         case 0x6120e230:  numBytes = 1318; return appsIcon_svg;
-        case 0x27f54acb:  numBytes = 1318; return appsIcon_sel_svg;
+        case 0x5e744074:  numBytes = 1318; return appsIconSel_svg;
+        case 0x75015330:  numBytes = 1814; return brightnessIconHi_svg;
+        case 0x7c2942b2:  numBytes = 1838; return brightnessIconLo_svg;
         case 0x1a028b7f:  numBytes = 1316; return gamesIcon_svg;
-        case 0xda33b49a:  numBytes = 1316; return gamesIcon_sel_svg;
+        case 0x3ae9e0c5:  numBytes = 1316; return gamesIconSel_svg;
         case 0x124592e1:  numBytes = 1593; return settingsIcon_svg;
-        case 0x61003afc:  numBytes = 1593; return settingsIcon_sel_svg;
+        case 0xbb220623:  numBytes = 1593; return settingsIconSel_svg;
+        case 0x8579e6b9:  numBytes = 1219; return volumeIconHi_svg;
+        case 0x8ca1d63b:  numBytes = 756; return volumeIconLo_svg;
         default: break;
     }
 
@@ -160,11 +248,15 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes) throw
 const char* namedResourceList[] =
 {
     "appsIcon_svg",
-    "appsIcon_sel_svg",
+    "appsIconSel_svg",
+    "brightnessIconHi_svg",
+    "brightnessIconLo_svg",
     "gamesIcon_svg",
-    "gamesIcon_sel_svg",
+    "gamesIconSel_svg",
     "settingsIcon_svg",
-    "settingsIcon_sel_svg"
+    "settingsIconSel_svg",
+    "volumeIconHi_svg",
+    "volumeIconLo_svg"
 };
 
 }

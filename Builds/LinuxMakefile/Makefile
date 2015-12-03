@@ -50,8 +50,9 @@ endif
 
 OBJECTS := \
   $(OBJDIR)/PokeLookAndFeel_55885106.o \
-  $(OBJDIR)/SettingsPageComponent_10c3e5ac.o \
   $(OBJDIR)/MainComponent_a6ffb4a5.o \
+  $(OBJDIR)/SettingsPageComponent_10c3e5ac.o \
+  $(OBJDIR)/IconSliderComponent_f4b4d044.o \
   $(OBJDIR)/Main_90ebc5c2.o \
   $(OBJDIR)/BinaryData_ce4232d4.o \
   $(OBJDIR)/juce_core_e13be5a9.o \
@@ -83,14 +84,19 @@ $(OBJDIR)/PokeLookAndFeel_55885106.o: ../../Source/PokeLookAndFeel.cpp
 	@echo "Compiling PokeLookAndFeel.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
+$(OBJDIR)/MainComponent_a6ffb4a5.o: ../../Source/MainComponent.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling MainComponent.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
 $(OBJDIR)/SettingsPageComponent_10c3e5ac.o: ../../Source/SettingsPageComponent.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling SettingsPageComponent.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/MainComponent_a6ffb4a5.o: ../../Source/MainComponent.cpp
+$(OBJDIR)/IconSliderComponent_f4b4d044.o: ../../Source/IconSliderComponent.cpp
 	-@mkdir -p $(OBJDIR)
-	@echo "Compiling MainComponent.cpp"
+	@echo "Compiling IconSliderComponent.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/Main_90ebc5c2.o: ../../Source/Main.cpp

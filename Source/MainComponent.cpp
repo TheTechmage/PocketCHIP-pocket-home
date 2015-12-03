@@ -32,29 +32,30 @@ MainContentComponent::MainContentComponent() {
   settingsPage = ScopedPointer<SettingsPageComponent>(new SettingsPageComponent());
   addChildComponent(settingsPage);
 
-
-  appButton = createCategoryButton("Apps", BinaryData::appsIcon_svg, BinaryData::appsIcon_sel_svg);
+  appButton = createCategoryButton("Apps", BinaryData::appsIcon_svg,
+                                   BinaryData::appsIconSel_svg);
   appButton->addListener(this);
   addAndMakeVisible(appButton);
 
-  gamesButton =
-      createCategoryButton("Games", BinaryData::gamesIcon_svg, BinaryData::gamesIcon_sel_svg);
+  gamesButton = createCategoryButton("Games", BinaryData::gamesIcon_svg,
+                                     BinaryData::gamesIconSel_svg);
   gamesButton->addListener(this);
   addAndMakeVisible(gamesButton);
 
   settingsButton = createCategoryButton("Settings", BinaryData::settingsIcon_svg,
-                                        BinaryData::settingsIcon_sel_svg);
+                                        BinaryData::settingsIconSel_svg);
   settingsButton->addListener(this);
   addAndMakeVisible(settingsButton);
 
-  categoryButtonLayout.setItemLayout(0, 0, -1.0, -1.0);
-  categoryButtonLayout.setItemLayout(1, categoryButtonHeight + categoryPadding,
-                                     categoryButtonHeight + categoryPadding, categoryButtonHeight);
-  categoryButtonLayout.setItemLayout(2, categoryButtonHeight + categoryPadding,
-                                     categoryButtonHeight + categoryPadding, categoryButtonHeight);
-  categoryButtonLayout.setItemLayout(3, categoryButtonHeight + categoryPadding,
-                                     categoryButtonHeight + categoryPadding, categoryButtonHeight);
-  categoryButtonLayout.setItemLayout(4, 0, -1.0, -1.0);
+  {
+    int h = categoryButtonHeight;
+    int p = categoryPadding;
+    categoryButtonLayout.setItemLayout(0, 0, -1.0, -1.0);
+    categoryButtonLayout.setItemLayout(1, h + p, h + p, h);
+    categoryButtonLayout.setItemLayout(2, h + p, h + p, h);
+    categoryButtonLayout.setItemLayout(3, h + p, h + p, h);
+    categoryButtonLayout.setItemLayout(4, 0, -1.0, -1.0);
+  }
 
   setSize(480, 245);
 }
@@ -70,8 +71,11 @@ void MainContentComponent::resized() {
 
   auto bounds = getLocalBounds().reduced(categoryPadding);
 
-  Component *categoryButtons[] = { nullptr, appButton.get(), gamesButton.get(),
-                                   settingsButton.get(), nullptr };
+  Component *categoryButtons[] = { nullptr,
+                                   appButton.get(),
+                                   gamesButton.get(),
+                                   settingsButton.get(),
+                                   nullptr };
   categoryButtonLayout.layOutComponents(categoryButtons, 5, bounds.getX(),
                                         bounds.getY() + categoryPadding, bounds.getWidth(),
                                         categoryButtonHeight, false, true);

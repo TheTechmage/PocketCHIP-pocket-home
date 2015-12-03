@@ -1,13 +1,13 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "IconSliderComponent.h"
 
 #include <memory>
 
 class SettingsPageComponent : public Component {
 public:
-  ScopedPointer<Slider> screenBrightnessSlider, volumeSlider;
-
+  ScopedPointer<IconSliderComponent> screenBrightnessSlider, volumeSlider;
   StretchableLayoutManager sliderLayout;
 
   SettingsPageComponent();

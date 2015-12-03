@@ -1,19 +1,16 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "SettingsPageComponent.h"
+#include "IconSliderComponent.h"
 
 static const int sliderHeight = 50;
 static const int sliderPadding = 10;
 
 SettingsPageComponent::SettingsPageComponent() {
-  auto createSlider = [&] {
-    auto s = new Slider();
-    s->setSliderStyle(Slider::LinearHorizontal);
-    s->setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
-    return ScopedPointer<Slider>(s);
-  };
+  screenBrightnessSlider = ScopedPointer<IconSliderComponent>(new IconSliderComponent(
+    BinaryData::brightnessIconLo_svg, BinaryData::brightnessIconHi_svg));
 
-  screenBrightnessSlider = createSlider();
-  volumeSlider = createSlider();
+  volumeSlider = ScopedPointer<IconSliderComponent>(new IconSliderComponent(
+    BinaryData::volumeIconLo_svg, BinaryData::volumeIconHi_svg));
 
   addAndMakeVisible(screenBrightnessSlider);
   addAndMakeVisible(volumeSlider);
