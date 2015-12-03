@@ -10,7 +10,9 @@ class MainContentComponent : public Component {
 
 public:
   std::unique_ptr<SettingsPageComponent> settingsPage;
+
   ScopedPointer<Drawable> appsIcon, gamesIcon, settingsIcon;
+  ScopedPointer<DrawableButton> appButton, gamesButton, settingsButton;
 
   MainContentComponent();
   ~MainContentComponent();

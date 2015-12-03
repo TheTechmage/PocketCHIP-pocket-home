@@ -6,6 +6,8 @@ MainContentComponent::MainContentComponent() {
   settingsPage = std::unique_ptr<SettingsPageComponent>(new SettingsPageComponent());
   addAndMakeVisible(settingsPage.get());
 
+//    void createCategoryButton();
+
   ScopedPointer<XmlElement> appsIconSvg (XmlDocument::parse (BinaryData::appsIcon_svg));
   ScopedPointer<XmlElement> gamesIconSvg (XmlDocument::parse (BinaryData::gamesIcon_svg));
   ScopedPointer<XmlElement> settingsIconSvg (XmlDocument::parse (BinaryData::settingsIcon_svg));
@@ -19,13 +21,27 @@ MainContentComponent::MainContentComponent() {
   if (settingsIconSvg != nullptr)
     settingsIcon = Drawable::createFromSVG (*settingsIconSvg);
 
-  appsIcon->setBounds(0, 0, 100, 100);
-  gamesIcon->setBounds(200, 0, 100, 100);
-  settingsIcon->setBounds(400, 0, 100, 100);
+  appButton = new DrawableButton ("Apps", DrawableButton::ImageFitted);
+  appButton->setImages(appsIcon);
+  appButton->setRadioGroupId(4444);
+  appButton->setBounds (140, 30, 50, 50);
+  appButton->setClickingTogglesState (true);
+  addAndMakeVisible(appButton);
 
-  addAndMakeVisible(appsIcon);
-  addAndMakeVisible(gamesIcon);
-  addAndMakeVisible(settingsIcon);
+  gamesButton = new DrawableButton ("Games", DrawableButton::ImageFitted);
+  gamesButton->setImages(gamesIcon);
+  gamesButton->setRadioGroupId(4444);
+  gamesButton->setBounds (200, 30, 50, 50);
+  gamesButton->setClickingTogglesState (true);
+  addAndMakeVisible(gamesButton);
+
+  settingsButton = new DrawableButton ("Settings", DrawableButton::ImageFitted);
+  settingsButton->setImages(settingsIcon);
+  settingsButton->setRadioGroupId(4444);
+  settingsButton->setBounds(260, 30, 50, 50);
+  settingsButton->setClickingTogglesState (true);
+  addAndMakeVisible(settingsButton);
+
 
   setSize(480, 245);
 }
