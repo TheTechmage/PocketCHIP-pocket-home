@@ -5,7 +5,7 @@
 
 #include <memory>
 
-class MainContentComponent : public Component {
+class MainContentComponent : public Component, private Button::Listener {
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainContentComponent)
 
 public:
@@ -20,6 +20,10 @@ public:
   MainContentComponent();
   ~MainContentComponent();
 
-  void paint(Graphics &);
-  void resized();
+  void paint(Graphics &) override;
+  void resized() override;
+
+private:
+  void buttonClicked(Button*) override;
+  
 };

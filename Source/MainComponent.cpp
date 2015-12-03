@@ -30,17 +30,22 @@ MainContentComponent::MainContentComponent() {
   setLookAndFeel(lookAndFeel);
 
   settingsPage = ScopedPointer<SettingsPageComponent>(new SettingsPageComponent());
-  addAndMakeVisible(settingsPage.get());
+  addChildComponent(settingsPage);
 
-  appButton = createCategoryButton("Apps", BinaryData::appsIcon_svg, BinaryData::appsIcon_sel_svg);
+  appButton = createCategoryButton("Apps", BinaryData::appsIcon_svg,
+                                   BinaryData::appsIcon_sel_svg);
+  appButton->addListener(this);
   addAndMakeVisible(appButton);
 
-  gamesButton =
-      createCategoryButton("Games", BinaryData::gamesIcon_svg, BinaryData::gamesIcon_sel_svg);
+
+  gamesButton = createCategoryButton("Games", BinaryData::gamesIcon_svg,
+                                     BinaryData::gamesIcon_sel_svg);
+  gamesButton->addListener(this);
   addAndMakeVisible(gamesButton);
 
   settingsButton = createCategoryButton("Settings", BinaryData::settingsIcon_svg,
                                         BinaryData::settingsIcon_sel_svg);
+  settingsButton->addListener(this);
   addAndMakeVisible(settingsButton);
 
   categoryButtonLayout.setItemLayout(0, 0, -1.0, -1.0);
@@ -72,3 +77,15 @@ void MainContentComponent::resized() {
                                         bounds.getY() + categoryPadding, bounds.getWidth(),
                                         categoryButtonHeight, false, true);
 }
+
+void MainContentComponent::buttonClicked (Button* button)
+{
+  settingsPage->setVisible(false);
+
+  if (button == appButton) {
+  }
+  else if (button == gamesButton) {
+  }
+  else if (button == settingsButton) {
+    settingsPage->setVisible(true);
+  }}
