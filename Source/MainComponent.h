@@ -9,9 +9,10 @@ class MainContentComponent : public Component {
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainContentComponent)
 
 public:
-  std::unique_ptr<SettingsPageComponent> settingsPage;
+  ScopedPointer<SettingsPageComponent> settingsPage;
 
-  ScopedPointer<Drawable> appsIcon, gamesIcon, settingsIcon;
+  StretchableLayoutManager categoryButtonLayout;
+
   ScopedPointer<DrawableButton> appButton, gamesButton, settingsButton;
 
   MainContentComponent();

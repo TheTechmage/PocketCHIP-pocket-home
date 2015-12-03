@@ -9,15 +9,14 @@ SettingsPageComponent::SettingsPageComponent() {
     auto s = new Slider();
     s->setSliderStyle(Slider::LinearHorizontal);
     s->setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
-    s->setBounds(0, 0, 0, sliderHeight);
-    return std::unique_ptr<Slider>(s);
+    return ScopedPointer<Slider>(s);
   };
 
   screenBrightnessSlider = createSlider();
   volumeSlider = createSlider();
 
-  addAndMakeVisible(screenBrightnessSlider.get());
-  addAndMakeVisible(volumeSlider.get());
+  addAndMakeVisible(screenBrightnessSlider);
+  addAndMakeVisible(volumeSlider);
 
   sliderLayout.setItemLayout(0, 0.0, -1.0, -1.0);
   sliderLayout.setItemLayout(1, sliderPadding, sliderPadding, sliderPadding);

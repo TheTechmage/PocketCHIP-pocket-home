@@ -6,7 +6,7 @@
 
 class SettingsPageComponent : public Component {
 public:
-  std::unique_ptr<Slider> screenBrightnessSlider, volumeSlider;
+  ScopedPointer<Slider> screenBrightnessSlider, volumeSlider;
 
   StretchableLayoutManager sliderLayout;
 
