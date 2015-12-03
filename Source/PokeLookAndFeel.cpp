@@ -24,6 +24,7 @@ void PokeLookAndFeel::drawLinearSliderThumb(Graphics &g, int x, int y, int width
 
     Path circle;
     circle.addCentredArc(kx, ky, radius, radius, 0.0f, 0.0f, M_PI * 2.0f);
+    circle.closeSubPath();
 
     g.fillPath(circle);
 }
@@ -59,5 +60,5 @@ void PokeLookAndFeel::drawLinearSlider(Graphics &g, int x, int y, int width, int
 }
 
 int PokeLookAndFeel::getSliderThumbRadius(Slider &slider) {
-  return jmin(10, slider.getHeight() / 2, slider.getWidth() / 2);
+  return jmin(14, slider.getHeight() / 2, slider.getWidth() / 2);
 }
