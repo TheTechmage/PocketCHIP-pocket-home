@@ -28,6 +28,7 @@ void SettingsPageComponent::resized() {
   auto bounds = getLocalBounds().reduced(sliderPadding);
 
   Component *sliders[] = { screenBrightnessSlider.get(), nullptr, volumeSlider.get() };
-  sliderLayout.layOutComponents(sliders, 3, bounds.getX(), bounds.getBottom() - sliderHeight - sliderPadding,
+  sliderLayout.layOutComponents(sliders, 3, bounds.getX(),
+                                bounds.getBottom() - sliderHeight - sliderPadding*2,
                                 bounds.getWidth(), sliderHeight, false, true);
 }
