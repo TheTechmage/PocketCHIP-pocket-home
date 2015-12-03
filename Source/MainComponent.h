@@ -24,6 +24,5 @@ public:
   void resized() override;
 
 private:
-  void buttonClicked(Button*) override;
-  
+  void buttonClicked(Button *) override;
 };

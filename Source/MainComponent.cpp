@@ -33,13 +33,12 @@ MainContentComponent::MainContentComponent() {
   addChildComponent(settingsPage);
 
 
-  appButton = createCategoryButton("Apps", BinaryData::appsIcon_svg,
-                                   BinaryData::appsIcon_sel_svg);
+  appButton = createCategoryButton("Apps", BinaryData::appsIcon_svg, BinaryData::appsIcon_sel_svg);
   appButton->addListener(this);
   addAndMakeVisible(appButton);
 
-  gamesButton = createCategoryButton("Games", BinaryData::gamesIcon_svg,
-                                     BinaryData::gamesIcon_sel_svg);
+  gamesButton =
+      createCategoryButton("Games", BinaryData::gamesIcon_svg, BinaryData::gamesIcon_sel_svg);
   gamesButton->addListener(this);
   addAndMakeVisible(gamesButton);
 
@@ -78,14 +77,12 @@ void MainContentComponent::resized() {
                                         categoryButtonHeight, false, true);
 }
 
-void MainContentComponent::buttonClicked (Button* button)
-{
+void MainContentComponent::buttonClicked(Button *button) {
   settingsPage->setVisible(false);
 
   if (button == appButton) {
-  }
-  else if (button == gamesButton) {
-  }
-  else if (button == settingsButton) {
+  } else if (button == gamesButton) {
+  } else if (button == settingsButton) {
     settingsPage->setVisible(true);
-  }}
+  }
+}
