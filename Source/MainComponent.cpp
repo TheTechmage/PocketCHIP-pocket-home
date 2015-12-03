@@ -62,7 +62,7 @@ MainContentComponent::MainContentComponent() {
   addAndMakeVisible(closeButton);
   closeButton->addListener(this);
 
-  setSize(480, 240);
+  setSize(480, 245);
 }
 
 MainContentComponent::~MainContentComponent() {}
