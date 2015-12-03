@@ -1,7 +1,7 @@
 #include "MainComponent.h"
 #include "PokeLookAndFeel.h"
 
-static const int categoryButtonHeight = 50;
+static const int categoryButtonHeight = 75;
 static const int categoryPadding = 10;
 
 static ScopedPointer<DrawableButton> createCategoryButton(const std::string name,
