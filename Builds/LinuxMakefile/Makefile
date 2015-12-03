@@ -49,6 +49,7 @@ ifeq ($(CONFIG),Release)
 endif
 
 OBJECTS := \
+  $(OBJDIR)/PokeLookAndFeel_55885106.o \
   $(OBJDIR)/SettingsPageComponent_10c3e5ac.o \
   $(OBJDIR)/MainComponent_a6ffb4a5.o \
   $(OBJDIR)/Main_90ebc5c2.o \
@@ -76,6 +77,11 @@ clean:
 strip:
 	@echo Stripping PokeLaunch
 	-@strip --strip-unneeded $(OUTDIR)/$(TARGET)
+
+$(OBJDIR)/PokeLookAndFeel_55885106.o: ../../Source/PokeLookAndFeel.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling PokeLookAndFeel.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/SettingsPageComponent_10c3e5ac.o: ../../Source/SettingsPageComponent.cpp
 	-@mkdir -p $(OBJDIR)

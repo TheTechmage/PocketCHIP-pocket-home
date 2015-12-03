@@ -17,6 +17,10 @@
             file="assets/settingsIcon_sel.svg"/>
     </GROUP>
     <GROUP id="{4593A345-C350-960A-058D-B48F8240AA1D}" name="Source">
+      <FILE id="xoVLAp" name="PokeLookAndFeel.cpp" compile="1" resource="0"
+            file="Source/PokeLookAndFeel.cpp"/>
+      <FILE id="g1eykD" name="PokeLookAndFeel.h" compile="0" resource="0"
+            file="Source/PokeLookAndFeel.h"/>
       <FILE id="g04lyK" name="SettingsPageComponent.cpp" compile="1" resource="0"
             file="Source/SettingsPageComponent.cpp"/>
       <FILE id="NRuhIp" name="SettingsPageComponent.h" compile="0" resource="0"

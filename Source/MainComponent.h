@@ -15,6 +15,8 @@ public:
 
   ScopedPointer<DrawableButton> appButton, gamesButton, settingsButton;
 
+  ScopedPointer<LookAndFeel> lookAndFeel;
+
   MainContentComponent();
   ~MainContentComponent();
 

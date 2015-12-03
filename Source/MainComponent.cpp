@@ -1,41 +1,42 @@
 #include "MainComponent.h"
+#include "PokeLookAndFeel.h"
 
 static const int categoryButtonHeight = 50;
 static const int categoryPadding = 10;
 
 static ScopedPointer<DrawableButton> createCategoryButton(const std::string name,
-                                                          const char* svgData,
-                                                          const char* svgDataSel) {
+                                                          const char *svgData,
+                                                          const char *svgDataSel) {
   ScopedPointer<DrawableButton> button;
   ScopedPointer<Drawable> icon, iconSel;
-  ScopedPointer<XmlElement> iconSvg (XmlDocument::parse (svgData));
-  ScopedPointer<XmlElement> iconSelSvg (XmlDocument::parse (svgDataSel));
+  ScopedPointer<XmlElement> iconSvg(XmlDocument::parse(svgData));
+  ScopedPointer<XmlElement> iconSelSvg(XmlDocument::parse(svgDataSel));
 
-  if (iconSvg != nullptr)
-    icon = Drawable::createFromSVG (*iconSvg);
+  if (iconSvg != nullptr) icon = Drawable::createFromSVG(*iconSvg);
 
-  if (iconSelSvg != nullptr)
-    iconSel = Drawable::createFromSVG (*iconSelSvg);
+  if (iconSelSvg != nullptr) iconSel = Drawable::createFromSVG(*iconSelSvg);
 
-  button = new DrawableButton (name, DrawableButton::ImageFitted);
+  button = new DrawableButton(name, DrawableButton::ImageFitted);
   button->setImages(icon, 0, 0, 0, iconSel);
   button->setRadioGroupId(4444);
-  button->setClickingTogglesState (true);
+  button->setClickingTogglesState(true);
   button->setColour(DrawableButton::backgroundOnColourId, Colour(0xffffffff));
 
   return button;
 };
 
 MainContentComponent::MainContentComponent() {
+  lookAndFeel = new PokeLookAndFeel();
+  setLookAndFeel(lookAndFeel);
+
   settingsPage = ScopedPointer<SettingsPageComponent>(new SettingsPageComponent());
   addAndMakeVisible(settingsPage.get());
 
-  appButton = createCategoryButton("Apps", BinaryData::appsIcon_svg,
-                                   BinaryData::appsIcon_sel_svg);
+  appButton = createCategoryButton("Apps", BinaryData::appsIcon_svg, BinaryData::appsIcon_sel_svg);
   addAndMakeVisible(appButton);
 
-  gamesButton = createCategoryButton("Games", BinaryData::gamesIcon_svg,
-                                     BinaryData::gamesIcon_sel_svg);
+  gamesButton =
+      createCategoryButton("Games", BinaryData::gamesIcon_svg, BinaryData::gamesIcon_sel_svg);
   addAndMakeVisible(gamesButton);
 
   settingsButton = createCategoryButton("Settings", BinaryData::settingsIcon_svg,
@@ -43,12 +44,12 @@ MainContentComponent::MainContentComponent() {
   addAndMakeVisible(settingsButton);
 
   categoryButtonLayout.setItemLayout(0, 0, -1.0, -1.0);
-  categoryButtonLayout.setItemLayout(1, categoryButtonHeight+categoryPadding,
-                                     categoryButtonHeight+categoryPadding, categoryButtonHeight);
-  categoryButtonLayout.setItemLayout(2, categoryButtonHeight+categoryPadding,
-                                     categoryButtonHeight+categoryPadding, categoryButtonHeight);
-  categoryButtonLayout.setItemLayout(3, categoryButtonHeight+categoryPadding,
-                                     categoryButtonHeight+categoryPadding, categoryButtonHeight);
+  categoryButtonLayout.setItemLayout(1, categoryButtonHeight + categoryPadding,
+                                     categoryButtonHeight + categoryPadding, categoryButtonHeight);
+  categoryButtonLayout.setItemLayout(2, categoryButtonHeight + categoryPadding,
+                                     categoryButtonHeight + categoryPadding, categoryButtonHeight);
+  categoryButtonLayout.setItemLayout(3, categoryButtonHeight + categoryPadding,
+                                     categoryButtonHeight + categoryPadding, categoryButtonHeight);
   categoryButtonLayout.setItemLayout(4, 0, -1.0, -1.0);
 
   setSize(480, 245);
@@ -57,11 +58,7 @@ MainContentComponent::MainContentComponent() {
 MainContentComponent::~MainContentComponent() {}
 
 void MainContentComponent::paint(Graphics &g) {
-  g.fillAll(Colour(0xffffffff));
-
-  g.setFont(Font(16.0f));
-  g.setColour(Colours::black);
-  g.drawText("Herro PokeCHIP", getLocalBounds(), Justification::centred, true);
+  g.fillAll(Colours::white);
 }
 
 void MainContentComponent::resized() {
@@ -72,7 +69,6 @@ void MainContentComponent::resized() {
   Component *categoryButtons[] = { nullptr, appButton.get(), gamesButton.get(),
                                    settingsButton.get(), nullptr };
   categoryButtonLayout.layOutComponents(categoryButtons, 5, bounds.getX(),
-                                        bounds.getY() + categoryPadding,
-                                        bounds.getWidth(), categoryButtonHeight, false, true);
-
+                                        bounds.getY() + categoryPadding, bounds.getWidth(),
+                                        categoryButtonHeight, false, true);
 }
