@@ -1,9 +1,6 @@
-#include "../JuceLibraryCode/JuceHeader.h"
 #include "GamesPageComponent.h"
 
-//==============================================================================
-GamesPageComponent::GamesPageComponent()
-{
+GamesPageComponent::GamesPageComponent() {
   trainIcons.add(new TextButton("Quake"));
   trainIcons.add(new TextButton("Halo"));
   trainIcons.add(new TextButton("Fallout 4"));
@@ -20,10 +17,9 @@ GamesPageComponent::GamesPageComponent()
 
 GamesPageComponent::~GamesPageComponent() {}
 
-void GamesPageComponent::paint (Graphics& g) {}
+void GamesPageComponent::paint(Graphics &g) {}
 
-void GamesPageComponent::resized()
-{
+void GamesPageComponent::resized() {
   auto bounds = getLocalBounds();
 
   train->centreWithSize(bounds.getWidth(), 100);

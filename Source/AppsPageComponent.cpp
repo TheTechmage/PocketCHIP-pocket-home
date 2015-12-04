@@ -1,9 +1,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "AppsPageComponent.h"
 
-//==============================================================================
-AppsPageComponent::AppsPageComponent()
-{
+AppsPageComponent::AppsPageComponent() {
   trainIcons.add(new TextButton("Iceweasel"));
   trainIcons.add(new TextButton("MPlayer"));
   trainIcons.add(new TextButton("Terminal"));
@@ -20,11 +18,10 @@ AppsPageComponent::AppsPageComponent()
 
 AppsPageComponent::~AppsPageComponent() {}
 
-void AppsPageComponent::paint (Graphics& g) {}
+void AppsPageComponent::paint(Graphics &g) {}
 
-void AppsPageComponent::resized()
-{
+void AppsPageComponent::resized() {
   auto bounds = getLocalBounds();
 
-  train->centreWithSize(bounds.getWidth(), 100);  
+  train->centreWithSize(bounds.getWidth(), 100);
 }

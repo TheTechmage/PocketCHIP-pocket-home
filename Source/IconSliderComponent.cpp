@@ -1,8 +1,6 @@
-#include "../JuceLibraryCode/JuceHeader.h"
 #include "IconSliderComponent.h"
 
 static ScopedPointer<DrawableButton> createIconButton(const std::string name, const char *svgData) {
-
   ScopedPointer<DrawableButton> button;
   ScopedPointer<Drawable> icon;
   ScopedPointer<XmlElement> iconSvg(XmlDocument::parse(svgData));
@@ -18,8 +16,7 @@ static ScopedPointer<DrawableButton> createIconButton(const std::string name, co
   return button;
 };
 
-IconSliderComponent::IconSliderComponent(const char *iconLoData, const char *iconHiData)
-{
+IconSliderComponent::IconSliderComponent(const char *iconLoData, const char *iconHiData) {
   auto createSlider = [&] {
     auto s = new Slider();
     s->setSliderStyle(Slider::LinearHorizontal);
@@ -37,21 +34,21 @@ IconSliderComponent::IconSliderComponent(const char *iconLoData, const char *ico
   addAndMakeVisible(slider);
 
   sliderLayout.setItemLayout(0, 0.0, -1.0, -1.0);
-  sliderLayout.setItemLayout(1, 50,  -1.0, -1.0);
+  sliderLayout.setItemLayout(1, 50, -1.0, -1.0);
   sliderLayout.setItemLayout(2, 0.0, -1.0, -1.0);
 }
 
 IconSliderComponent::~IconSliderComponent() {}
 
-void IconSliderComponent::paint (Graphics& g) {}
+void IconSliderComponent::paint(Graphics &g) {}
 
 void IconSliderComponent::resized() {
   auto bounds = getLocalBounds();
 
-  sliderLayout.setItemLayout(0, bounds.getHeight(),bounds.getHeight(),bounds.getHeight());
-  sliderLayout.setItemLayout(2, bounds.getHeight(),bounds.getHeight(),bounds.getHeight());
+  sliderLayout.setItemLayout(0, bounds.getHeight(), bounds.getHeight(), bounds.getHeight());
+  sliderLayout.setItemLayout(2, bounds.getHeight(), bounds.getHeight(), bounds.getHeight());
 
   Component *parts[] = { iconLow.get(), slider.get(), iconHi.get() };
-  sliderLayout.layOutComponents(parts, 3, bounds.getX(), bounds.getY(),
-                                bounds.getWidth(), bounds.getHeight(), false, true);
+  sliderLayout.layOutComponents(parts, 3, bounds.getX(), bounds.getY(), bounds.getWidth(),
+                                bounds.getHeight(), false, true);
 }

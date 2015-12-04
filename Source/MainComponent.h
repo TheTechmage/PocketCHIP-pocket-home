@@ -5,8 +5,6 @@
 #include "AppsPageComponent.h"
 #include "GamesPageComponent.h"
 
-#include <memory>
-
 class MainContentComponent : public Component, private Button::Listener {
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainContentComponent)
 
