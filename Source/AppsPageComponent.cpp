@@ -12,7 +12,7 @@ AppsPageComponent::AppsPageComponent()
   train = new TrainComponent();
 
   for (auto icon : trainIcons) {
-    train->addAndMakeVisible(icon);
+    train->addItem(icon);
   }
 
   addAndMakeVisible(train);

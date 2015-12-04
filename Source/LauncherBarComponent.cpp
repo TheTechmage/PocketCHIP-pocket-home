@@ -1,5 +1,3 @@
-#pragma once
-#include "../JuceLibraryCode/JuceHeader.h"
 #include "LauncherBarComponent.h"
 
 static const int launcherButtonHeight = 62;
