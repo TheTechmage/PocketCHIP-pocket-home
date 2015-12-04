@@ -24,6 +24,10 @@
             file="assets/volumeIconLo.svg"/>
     </GROUP>
     <GROUP id="{4593A345-C350-960A-058D-B48F8240AA1D}" name="Source">
+      <FILE id="OWABwr" name="LauncherBarComponent.cpp" compile="1" resource="0"
+            file="Source/LauncherBarComponent.cpp"/>
+      <FILE id="fwxP6X" name="LauncherBarComponent.h" compile="0" resource="0"
+            file="Source/LauncherBarComponent.h"/>
       <FILE id="zoO9Fb" name="AppsPageComponent.cpp" compile="1" resource="0"
             file="Source/AppsPageComponent.cpp"/>
       <FILE id="MMG2ZH" name="AppsPageComponent.h" compile="0" resource="0"

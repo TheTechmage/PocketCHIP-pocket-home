@@ -49,6 +49,7 @@ ifeq ($(CONFIG),Release)
 endif
 
 OBJECTS := \
+  $(OBJDIR)/LauncherBarComponent_b69b173.o \
   $(OBJDIR)/AppsPageComponent_7872953d.o \
   $(OBJDIR)/GamesPageComponent_97554cf6.o \
   $(OBJDIR)/TrainComponent_b5ba2cde.o \
@@ -81,6 +82,11 @@ clean:
 strip:
 	@echo Stripping PokeLaunch
 	-@strip --strip-unneeded $(OUTDIR)/$(TARGET)
+
+$(OBJDIR)/LauncherBarComponent_b69b173.o: ../../Source/LauncherBarComponent.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling LauncherBarComponent.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/AppsPageComponent_7872953d.o: ../../Source/AppsPageComponent.cpp
 	-@mkdir -p $(OBJDIR)
