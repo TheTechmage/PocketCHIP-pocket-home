@@ -50,11 +50,11 @@ public:
     MainWindow(String name) : DocumentWindow(name, Colours::darkgrey, DocumentWindow::closeButton) {
       setUsingNativeTitleBar(false);
       setResizable(true, false);
-      setTitleBarHeight(0);
       setContentOwned(new MainContentComponent(), true);
       centreWithSize(getWidth(), getHeight());
       setVisible(true);
 #if JUCE_LINUX
+      setTitleBarHeight(0);
       setFullScreen(true);
 #endif
     }
