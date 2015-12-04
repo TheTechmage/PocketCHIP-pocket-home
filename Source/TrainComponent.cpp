@@ -15,21 +15,17 @@ TrainComponent::TrainComponent() {
 
 TrainComponent::~TrainComponent() {}
 
-void TrainComponent::paint(Graphics &g) {
-//  g.setColour(Colours::yellow);
-//  g.fillAll();
-}
+void TrainComponent::paint(Graphics &g) {}
 
 void TrainComponent::resized() {
   dragModal->setBounds(getLocalBounds());
 
   updateItemSpacing();
-  updateItemTransforms();
   setItemBoundsToFit();
+  updateItemTransforms();
 }
 
-void TrainComponent::childrenChanged() {
-}
+void TrainComponent::childrenChanged() {}
 
 void TrainComponent::mouseDown(const MouseEvent &e) {
   updateItemSpacing();
@@ -67,19 +63,34 @@ void TrainComponent::setItemBoundsToFit() {
 
   for (auto item : items) {
     item->setBounds(0, 0, 1, 1);
-    item->setBoundsToFit(b.getX(), b.getY(), b.getWidth(), b.getHeight(), Justification::centred, false);
+    item->setBoundsToFit(b.getX(), b.getY(), b.getWidth(), b.getHeight(), Justification::centred,
+                         false);
   }
+}
+
+float smoothstep(float edge0, float edge1, float x) {
+  x = std::min(std::max((x - edge0) / (edge1 - edge0), 0.0f), 1.0f);
+  return x * x * (3.0f - 2.0f * x);
+}
+
+float mix(float a, float b, float t) {
+  return t * (b - a) + a;
 }
 
 void TrainComponent::updateItemTransforms() {
   float p = position.getPosition();
   for (auto item : items) {
-    auto xf = AffineTransform::translation(std::floor(itemSpacing * p), 0);
+    auto s = mix(1.0f, 0.8f, smoothstep(0.0f, 1.0f, std::abs(p)));
+    auto c = item->getBounds().getCentre();
+
+    auto xf = AffineTransform::identity.scaled(s, s, c.getX(), c.getY())
+                  .translated(std::floor(itemSpacing * p), 0);
+
     item->setTransform(xf);
     p += 1.0f;
   }
 }
 
 void TrainComponent::updateItemSpacing() {
-  itemSpacing = getLocalBounds().getHeight() * 1.25f;
+  itemSpacing = getLocalBounds().getHeight();
 }
