@@ -82,7 +82,7 @@ void MainContentComponent::resized() {
                                    settingsButton.get(),
                                    nullptr };
   categoryButtonLayout.layOutComponents(categoryButtons, 5, bounds.getX(),
-                                        bounds.getY() + categoryPadding, bounds.getWidth(),
+                                        bounds.getY(), bounds.getWidth(),
                                         categoryButtonHeight, false, true);
 }
 
