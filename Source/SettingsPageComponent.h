@@ -2,12 +2,16 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "IconSliderComponent.h"
+#include "TrainComponent.h"
 
 #include <memory>
 
 class SettingsPageComponent : public Component {
 public:
   ScopedPointer<IconSliderComponent> screenBrightnessSlider, volumeSlider;
+  ScopedPointer<TrainComponent> train;
+  ScopedPointer<TextButton> wifiButton, bluetoothButton;
+
   StretchableLayoutManager sliderLayout;
 
   SettingsPageComponent();
