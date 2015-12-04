@@ -29,6 +29,12 @@ MainContentComponent::MainContentComponent() {
   lookAndFeel = new PokeLookAndFeel();
   setLookAndFeel(lookAndFeel);
 
+  appsPage = ScopedPointer<AppsPageComponent>(new AppsPageComponent());
+  addChildComponent(appsPage);
+
+  gamesPage = ScopedPointer<GamesPageComponent>(new GamesPageComponent());
+  addChildComponent(gamesPage);
+
   settingsPage = ScopedPointer<SettingsPageComponent>(new SettingsPageComponent());
   addChildComponent(settingsPage);
 
@@ -72,14 +78,17 @@ void MainContentComponent::paint(Graphics &g) {
 }
 
 void MainContentComponent::resized() {
+
+  appsPage->setBounds(getLocalBounds());
+  gamesPage->setBounds(getLocalBounds());
   settingsPage->setBounds(getLocalBounds());
 
   auto bounds = getLocalBounds().reduced(categoryPadding);
 
   Component *categoryButtons[] = { nullptr,
-                                   appButton.get(),
-                                   gamesButton.get(),
-                                   settingsButton.get(),
+                                   appButton,
+                                   gamesButton,
+                                   settingsButton,
                                    nullptr };
   categoryButtonLayout.layOutComponents(categoryButtons, 5, bounds.getX(),
                                         bounds.getY(), bounds.getWidth(),
@@ -87,10 +96,14 @@ void MainContentComponent::resized() {
 }
 
 void MainContentComponent::buttonClicked(Button *button) {
+  appsPage->setVisible(false);
+  gamesPage->setVisible(false);
   settingsPage->setVisible(false);
 
   if (button == appButton) {
+    appsPage->setVisible(true);
   } else if (button == gamesButton) {
+    gamesPage->setVisible(true);
   } else if (button == settingsButton) {
     settingsPage->setVisible(true);
   } else if (button == closeButton) {

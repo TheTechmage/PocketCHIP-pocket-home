@@ -2,6 +2,8 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "SettingsPageComponent.h"
+#include "AppsPageComponent.h"
+#include "GamesPageComponent.h"
 
 #include <memory>
 
@@ -10,6 +12,8 @@ class MainContentComponent : public Component, private Button::Listener {
 
 public:
   ScopedPointer<SettingsPageComponent> settingsPage;
+  ScopedPointer<AppsPageComponent> appsPage;
+  ScopedPointer<GamesPageComponent> gamesPage;
 
   StretchableLayoutManager categoryButtonLayout;
 
