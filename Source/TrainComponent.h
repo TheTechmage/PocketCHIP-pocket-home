@@ -2,9 +2,14 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
-class TrainComponent : public Component {
+class TrainComponent
+    : public Component,
+      public AnimatedPosition<AnimatedPositionBehaviours::SnapToPageBoundaries>::Listener {
 public:
-  float position = 0.0f;
+  AnimatedPosition<AnimatedPositionBehaviours::SnapToPageBoundaries> position;
+  double itemSpacing;
+
+  Array<Component *> items;
 
   TrainComponent();
   ~TrainComponent();
@@ -15,12 +20,19 @@ public:
 
   void mouseDown(const MouseEvent &e) override;
   void mouseDrag(const MouseEvent &e) override;
+  void mouseUp(const MouseEvent &e) override;
 
-  void setChildrenBoundsToFit();
-  void updateChildrenTransforms();
+  void positionChanged(AnimatedPosition<AnimatedPositionBehaviours::SnapToPageBoundaries> &position,
+                       double newPosition) override;
+
+  void addItem(Component *item);
 
 private:
-  float positionDragStart;
+  ScopedPointer<Component> dragModal;
+
+  void setItemBoundsToFit();
+  void updateItemTransforms();
+  void updateItemSpacing();
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TrainComponent)
 };

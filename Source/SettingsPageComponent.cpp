@@ -24,8 +24,8 @@ SettingsPageComponent::SettingsPageComponent() {
     bluetoothButton = new TextButton("Bluetooth");
 
     train = new TrainComponent();
-    train->addAndMakeVisible(wifiButton);
-    train->addAndMakeVisible(bluetoothButton);
+    train->addItem(wifiButton);
+    train->addItem(bluetoothButton);
 
     addAndMakeVisible(train);
   }

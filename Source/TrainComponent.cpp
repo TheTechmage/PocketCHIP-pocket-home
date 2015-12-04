@@ -2,7 +2,15 @@
 #include "TrainComponent.h"
 
 TrainComponent::TrainComponent() {
-  setInterceptsMouseClicks(true, false);
+  position.setPosition(0.0);
+  position.addListener(this);
+
+  dragModal = new Component();
+  dragModal->setAlwaysOnTop(true);
+  dragModal->setInterceptsMouseClicks(true, false);
+  addChildComponent(dragModal);
+
+  addMouseListener(this, true);
 }
 
 TrainComponent::~TrainComponent() {}
@@ -13,42 +21,65 @@ void TrainComponent::paint(Graphics &g) {
 }
 
 void TrainComponent::resized() {
-  setChildrenBoundsToFit();
-  updateChildrenTransforms();
+  dragModal->setBounds(getLocalBounds());
+
+  updateItemSpacing();
+  updateItemTransforms();
+  setItemBoundsToFit();
 }
 
 void TrainComponent::childrenChanged() {
-//  setChildrenBoundsToFit();
-//  updateChildrenTransforms();
 }
 
 void TrainComponent::mouseDown(const MouseEvent &e) {
-  positionDragStart = position;
+  updateItemSpacing();
+  position.beginDrag();
 }
 
 void TrainComponent::mouseDrag(const MouseEvent &e) {
-  position = positionDragStart + e.getOffsetFromDragStart().getX();
-  updateChildrenTransforms();
+  if (!dragModal->isVisible() && e.getDistanceFromDragStart() > 5) {
+    dragModal->setVisible(true);
+  }
+  if (dragModal->isVisible()) {
+    position.drag(e.getOffsetFromDragStart().getX() / itemSpacing);
+  }
 }
 
-void TrainComponent::setChildrenBoundsToFit() {
+void TrainComponent::mouseUp(const MouseEvent &e) {
+  position.endDrag();
+  dragModal->setVisible(false);
+}
+
+void TrainComponent::positionChanged(
+    AnimatedPosition<AnimatedPositionBehaviours::SnapToPageBoundaries> &position,
+    double newPosition) {
+  updateItemTransforms();
+}
+
+void TrainComponent::addItem(Component *item) {
+  items.add(item);
+  addAndMakeVisible(item);
+  position.setLimits(Range<double>(1 - items.size(), 0.0));
+}
+
+void TrainComponent::setItemBoundsToFit() {
   auto b = getLocalBounds();
 
-  for (int i = 0; i < getNumChildComponents(); ++i) {
-    auto c = getChildComponent(i);
-    c->setBounds(0, 0, 1, 1);
-    c->setBoundsToFit(b.getX(), b.getY(), b.getWidth(), b.getHeight(), Justification::centred, false);
+  for (auto item : items) {
+    item->setBounds(0, 0, 1, 1);
+    item->setBoundsToFit(b.getX(), b.getY(), b.getWidth(), b.getHeight(), Justification::centred, false);
   }
 }
 
-void TrainComponent::updateChildrenTransforms() {
-  float spacing = getLocalBounds().getHeight() * 1.25f;
-
-  float positionMin = 0.0f;
-  float positionMax = spacing * (getNumChildComponents() - 1);
-
-  for (int i = 0; i < getNumChildComponents(); ++i) {
-    auto xf = AffineTransform::translation(position + spacing * i, 0);
-    getChildComponent(i)->setTransform(xf);
+void TrainComponent::updateItemTransforms() {
+  float p = position.getPosition();
+  for (auto item : items) {
+    auto xf = AffineTransform::translation(std::floor(itemSpacing * p), 0);
+    item->setTransform(xf);
+    p += 1.0f;
   }
+}
+
+void TrainComponent::updateItemSpacing() {
+  itemSpacing = getLocalBounds().getHeight() * 1.25f;
 }
