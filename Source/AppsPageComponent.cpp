@@ -23,5 +23,5 @@ void AppsPageComponent::paint(Graphics &g) {}
 void AppsPageComponent::resized() {
   auto bounds = getLocalBounds();
 
-  train->centreWithSize(bounds.getWidth(), 100);
+  train->centreWithSize(bounds.getWidth(), 96);
 }

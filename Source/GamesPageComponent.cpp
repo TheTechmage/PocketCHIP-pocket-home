@@ -22,5 +22,5 @@ void GamesPageComponent::paint(Graphics &g) {}
 void GamesPageComponent::resized() {
   auto bounds = getLocalBounds();
 
-  train->centreWithSize(bounds.getWidth(), 100);
+  train->centreWithSize(bounds.getWidth(), 96);
 }
