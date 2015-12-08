@@ -52,7 +52,6 @@ OBJECTS := \
   $(OBJDIR)/Utils_e4b11b92.o \
   $(OBJDIR)/LauncherBarComponent_b69b173.o \
   $(OBJDIR)/AppsPageComponent_7872953d.o \
-  $(OBJDIR)/GamesPageComponent_97554cf6.o \
   $(OBJDIR)/TrainComponent_b5ba2cde.o \
   $(OBJDIR)/PokeLookAndFeel_55885106.o \
   $(OBJDIR)/MainComponent_a6ffb4a5.o \
@@ -97,11 +96,6 @@ $(OBJDIR)/LauncherBarComponent_b69b173.o: ../../Source/LauncherBarComponent.cpp
 $(OBJDIR)/AppsPageComponent_7872953d.o: ../../Source/AppsPageComponent.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling AppsPageComponent.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/GamesPageComponent_97554cf6.o: ../../Source/GamesPageComponent.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling GamesPageComponent.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/TrainComponent_b5ba2cde.o: ../../Source/TrainComponent.cpp

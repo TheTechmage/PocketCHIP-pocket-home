@@ -31,7 +31,7 @@ void AppsPageComponent::addIconsFromJsonArray(const var &json) {
     for (const auto &item : *json.getArray()) {
       auto name = item["name"];
       auto icon = item["icon"];
-      if (name.isString()) {
+      if (name.isString() && icon.isString()) {
         addIcon(name, icon);
       }
     }
