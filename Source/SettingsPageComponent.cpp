@@ -18,7 +18,7 @@ SettingsPageComponent::SettingsPageComponent() {
   sliderLayout.setItemLayout(2, 0.0, -1.0, -1.0);
 
   addIcon("WiFi", "../../../../assets/wifi.svg");
-  addIcon("Bluetooth", "../../../../assets/Bluetooth.svg");
+  addIcon("Bluetooth", "../../../../assets/bluetooth.svg");
 }
 
 SettingsPageComponent::~SettingsPageComponent() {}
