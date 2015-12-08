@@ -5,7 +5,45 @@ MainContentComponent::MainContentComponent() {
   lookAndFeel = new PokeLookAndFeel();
   setLookAndFeel(lookAndFeel);
 
+#if JUCE_LINUX
   auto configJson = JSON::parse(R"json(
+[
+  {
+    "name": "Apps",
+    "icon": "../../../assets/appsIcon.svg",
+    "items": [
+      {
+        "name": "Terminal",
+        "icon": "../../../assets/Faenza/utilities-terminal.png"
+      },
+      {
+        "name": "Iceweasel",
+        "icon": "../../../assets/Faenza/iceweasel.png"
+      },
+      {
+        "name": "MPlayer",
+        "icon": "../../../assets/Faenza/mplayer.png"
+      },
+      {
+        "name": "MyPaint",
+        "icon": "../../../assets/Faenza/mypaint.png"
+      }
+    ]
+  },
+  {
+    "name": "Games",
+    "icon": "../../../assets/appsIcon.svg",
+    "items": [
+      {
+        "name": "Quake",
+        "icon": "../../../assets/Faenza/window.png"
+      }
+    ]
+  }
+]
+  )json");
+#else
+    auto configJson = JSON::parse(R"json(
 [
   {
     "name": "Apps",
@@ -41,6 +79,7 @@ MainContentComponent::MainContentComponent() {
   }
 ]
   )json");
+#endif
 
   auto categories = configJson.getArray();
   if (categories) {
