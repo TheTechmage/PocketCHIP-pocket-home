@@ -13,8 +13,8 @@ class MainContentComponent : public Component, private Button::Listener {
 public:
   ScopedPointer<LauncherBarComponent> categoryButtons;
 
-  OwnedArray<AppsPageComponent> pages;
-  HashMap<String, AppsPageComponent *> pagesByName;
+  OwnedArray<Component> pages;
+  HashMap<String, Component *> pagesByName;
 
   // ScopedPointer<SettingsPageComponent> settingsPage;
   // ScopedPointer<AppsPageComponent> appsPage;

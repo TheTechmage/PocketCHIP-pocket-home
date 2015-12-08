@@ -45,7 +45,14 @@ MainContentComponent::MainContentComponent() {
       addChildComponent(page);
     }
 
-    categoryButtons = new LauncherBarComponent(*categories, 62);
+    auto settingsPage = new SettingsPageComponent();
+    pages.add(settingsPage);
+    pagesByName.set("Settings", settingsPage);
+    addChildComponent(settingsPage);
+
+    categoryButtons = new LauncherBarComponent(62);
+    categoryButtons->addCategoriesFromJsonArray(*categories);
+    categoryButtons->addCategory("Settings");
     addAndMakeVisible(categoryButtons);
 
     // NOTE(ryan): Maybe do something with a custom event later.. For now we just listen to all the
@@ -72,7 +79,7 @@ void MainContentComponent::paint(Graphics &g) {
 void MainContentComponent::resized() {
   auto bounds = getLocalBounds();
 
-  categoryButtons->setBounds(bounds.getX(), bounds.getY() + 10, bounds.getWidth(), 62);
+  categoryButtons->setBounds(bounds.getX(), bounds.getY() + 10, bounds.getWidth(), categoryButtons->buttonSize);
 
   for (auto page : pages) {
     page->setBounds(bounds);

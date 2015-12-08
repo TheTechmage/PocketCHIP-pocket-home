@@ -1,33 +1,11 @@
 #include "LauncherBarComponent.h"
 
-LauncherBarComponent::LauncherBarComponent(const Array<var> &categories, int buttonSize) {
+LauncherBarComponent::LauncherBarComponent(int buttonSize) : buttonSize{ buttonSize } {
   ScopedPointer<XmlElement> iconSvg = XmlDocument::parse(BinaryData::appsIcon_svg);
   ScopedPointer<XmlElement> iconSelSvg = XmlDocument::parse(BinaryData::appsIconSel_svg);
 
   tempIcon = Drawable::createFromSVG(*iconSvg);
   tempIconSelected = Drawable::createFromSVG(*iconSelSvg);
-
-  layout.setItemLayout(0, 0, -1.0, -1.0);
-
-  int i = 1;
-  for (const auto &category : categories) {
-    auto name = category["name"].toString();
-
-    auto button = new DrawableButton(name, DrawableButton::ImageFitted);
-    button->setImages(tempIcon, nullptr, nullptr, nullptr, tempIconSelected);
-    button->setRadioGroupId(4444);
-    button->setClickingTogglesState(true);
-    button->setColour(DrawableButton::backgroundOnColourId, Colour(0xffffffff));
-    button->addListener(this);
-
-    buttons.add(button);
-    addAndMakeVisible(button);
-
-    int itemWidth = buttonSize + buttonPadding;
-    layout.setItemLayout(i++, itemWidth, itemWidth, buttonSize);
-  }
-
-  layout.setItemLayout(i, 0, -1.0, -1.0);
 }
 
 LauncherBarComponent::~LauncherBarComponent() {}
@@ -47,9 +25,39 @@ void LauncherBarComponent::resized() {
 
   auto bounds = getLocalBounds();
 
+  if (layoutDirty) {
+    int itemWidth = buttonSize + buttonPadding;
+    int i = 0;
+    layout.setItemLayout(i++, 0, -1.0, -1.0);
+    for (int j = 0; j < buttons.size(); ++j) {
+      layout.setItemLayout(i++, itemWidth, itemWidth, buttonSize);
+    }
+    layout.setItemLayout(i, 0, -1.0, -1.0);
+  }
+
   layout.layOutComponents(items, nitems, bounds.getX(), bounds.getY(), bounds.getWidth(),
                           bounds.getHeight(), false, true);
 }
 
-void LauncherBarComponent::buttonClicked(Button *button) {
+void LauncherBarComponent::buttonClicked(Button *button) {}
+
+void LauncherBarComponent::addCategory(const String &name) {
+  auto button = new DrawableButton(name, DrawableButton::ImageFitted);
+  button->setImages(tempIcon, nullptr, nullptr, nullptr, tempIconSelected);
+  button->setRadioGroupId(4444);
+  button->setClickingTogglesState(true);
+  button->setColour(DrawableButton::backgroundOnColourId, Colour(0xffffffff));
+  // button->addListener(this);
+
+  buttons.add(button);
+  addAndMakeVisible(button);
+
+  layoutDirty = true;
+}
+
+void LauncherBarComponent::addCategoriesFromJsonArray(const Array<var> &categories) {
+  for (const auto &category : categories) {
+    auto name = category["name"].toString();
+    addCategory(name);
+  }
 }
