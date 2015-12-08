@@ -9,25 +9,29 @@ MainContentComponent::MainContentComponent() {
 [
   {
     "name": "Apps",
-    "icon": "../assets/appsIcon.svg",
+    "icon": "../../../../assets/appsIcon.svg",
     "items": [
       {
-        "name": "Iceweasel"
+        "name": "Iceweasel",
+        "icon": "../../../../assets/appsIcon.svg"
       },
       {
-        "name": "Blah"
+        "name": "Blah",
+        "icon": "../../../../assets/appsIcon.svg"
       },
       {
-        "name": "Thing"
+        "name": "Thing",
+        "icon": "../../../../assets/appsIcon.svg"
       }
     ]
   },
   {
     "name": "Games",
-    "icon": "../assets/gamesIcon.svg",
+    "icon": "../../../../assets/appsIcon.svg",
     "items": [
       {
-        "name": "Quake"
+        "name": "Quake",
+        "icon": "../../../../assets/appsIcon.svg"
       }
     ]
   }

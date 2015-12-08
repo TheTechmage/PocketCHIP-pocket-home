@@ -1,4 +1,5 @@
 #include "AppsPageComponent.h"
+#include "Utils.h"
 
 AppsPageComponent::AppsPageComponent() {
   train = new TrainComponent();
@@ -19,10 +20,15 @@ void AppsPageComponent::populateIconsWithJsonArray(const var &json) {
   if (json.isArray()) {
     for (const auto &item : *json.getArray()) {
       auto name = item["name"];
-      // auto icon = item["icon"];
+      auto icon = item["icon"];
 
       if (name.isString()) {
-        auto button = new TextButton(name);
+        auto iconPath = icon.toString();
+        auto iconFile = File::isAbsolutePath(iconPath)
+                            ? File(iconPath)
+                            : File::getCurrentWorkingDirectory().getChildFile(iconPath);
+
+        auto button = createIconButton(name, iconFile);
         trainIcons.add(button);
         train->addItem(button);
       }
