@@ -12,16 +12,20 @@ MainContentComponent::MainContentComponent() {
     "icon": "../../../../assets/appsIcon.svg",
     "items": [
       {
+        "name": "Terminal",
+        "icon": "../../../../assets/Faenza/utilities-terminal.png"
+      },
+      {
         "name": "Iceweasel",
-        "icon": "../../../../assets/appsIcon.svg"
+        "icon": "../../../../assets/Faenza/iceweasel.png"
       },
       {
-        "name": "Blah",
-        "icon": "../../../../assets/appsIcon.svg"
+        "name": "MPlayer",
+        "icon": "../../../../assets/Faenza/mplayer.png"
       },
       {
-        "name": "Thing",
-        "icon": "../../../../assets/appsIcon.svg"
+        "name": "MyPaint",
+        "icon": "../../../../assets/Faenza/mypaint.png"
       }
     ]
   },
@@ -31,7 +35,7 @@ MainContentComponent::MainContentComponent() {
     "items": [
       {
         "name": "Quake",
-        "icon": "../../../../assets/appsIcon.svg"
+        "icon": "../../../../assets/Faenza/window.png"
       }
     ]
   }
