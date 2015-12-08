@@ -15,7 +15,8 @@ public:
   void paint(Graphics &) override;
   void resized() override;
 
-  void populateIconsWithJsonArray(const var &json);
+  void addIcon(const String &name, const String &iconPath);
+  void addIconsFromJsonArray(const var &json);
 
 private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AppsPageComponent)

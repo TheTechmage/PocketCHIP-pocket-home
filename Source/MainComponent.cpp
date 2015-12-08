@@ -47,7 +47,7 @@ MainContentComponent::MainContentComponent() {
     for (const auto &category : *categories) {
       auto name = category["name"].toString();
       auto page = new AppsPageComponent();
-      page->populateIconsWithJsonArray(category["items"]);
+      page->addIconsFromJsonArray(category["items"]);
       pages.add(page);
       pagesByName.set(name, page);
       addChildComponent(page);

@@ -1,24 +1,20 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
+
+#include "AppsPageComponent.h"
 #include "IconSliderComponent.h"
-#include "TrainComponent.h"
 
-#include <memory>
-
-class SettingsPageComponent : public Component {
+class SettingsPageComponent : public AppsPageComponent {
 public:
   ScopedPointer<IconSliderComponent> screenBrightnessSlider, volumeSlider;
-  ScopedPointer<TrainComponent> train;
-  ScopedPointer<TextButton> wifiButton, bluetoothButton;
-
   StretchableLayoutManager sliderLayout;
 
   SettingsPageComponent();
   ~SettingsPageComponent();
 
-  void paint(Graphics &g);
-  void resized();
+  void paint(Graphics &g) override;
+  void resized() override;
 
 private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsPageComponent)

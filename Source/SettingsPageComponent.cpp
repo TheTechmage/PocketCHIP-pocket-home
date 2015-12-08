@@ -1,6 +1,4 @@
-#include "../JuceLibraryCode/JuceHeader.h"
 #include "SettingsPageComponent.h"
-#include "IconSliderComponent.h"
 
 static const int sliderHeight = 50;
 static const int sliderPadding = 10;
@@ -19,16 +17,8 @@ SettingsPageComponent::SettingsPageComponent() {
   sliderLayout.setItemLayout(1, sliderPadding, sliderPadding, sliderPadding);
   sliderLayout.setItemLayout(2, 0.0, -1.0, -1.0);
 
-  {
-    wifiButton = new TextButton("WiFi");
-    bluetoothButton = new TextButton("Bluetooth");
-
-    train = new TrainComponent();
-    train->addItem(wifiButton);
-    train->addItem(bluetoothButton);
-
-    addAndMakeVisible(train);
-  }
+  addIcon("WiFi", "../../../../assets/wifi.svg");
+  addIcon("Bluetooth", "../../../../assets/Bluetooth.svg");
 }
 
 SettingsPageComponent::~SettingsPageComponent() {}
@@ -36,6 +26,8 @@ SettingsPageComponent::~SettingsPageComponent() {}
 void SettingsPageComponent::paint(Graphics &g) {}
 
 void SettingsPageComponent::resized() {
+  AppsPageComponent::resized();
+
   auto bounds = getLocalBounds();
 
   train->centreWithSize(bounds.getWidth(), 96);
