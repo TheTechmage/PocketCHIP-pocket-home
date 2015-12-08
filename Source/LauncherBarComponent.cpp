@@ -1,32 +1,55 @@
 #include "LauncherBarComponent.h"
 
-static const int launcherButtonHeight = 62;
-static const int launcherPadding = 10;
+LauncherBarComponent::LauncherBarComponent(const Array<var> &categories, int buttonSize) {
+  ScopedPointer<XmlElement> iconSvg = XmlDocument::parse(BinaryData::appsIcon_svg);
+  ScopedPointer<XmlElement> iconSelSvg = XmlDocument::parse(BinaryData::appsIconSel_svg);
 
-LauncherBarComponent::LauncherBarComponent() {
-  int h = launcherButtonHeight;
-  int p = launcherPadding;
-  launcherButtonLayout.setItemLayout(0, 0, -1.0, -1.0);
-  launcherButtonLayout.setItemLayout(1, h + p, h + p, h);
-  launcherButtonLayout.setItemLayout(2, h + p, h + p, h);
-  launcherButtonLayout.setItemLayout(3, h + p, h + p, h);
-  launcherButtonLayout.setItemLayout(4, 0, -1.0, -1.0);
+  tempIcon = Drawable::createFromSVG(*iconSvg);
+  tempIconSelected = Drawable::createFromSVG(*iconSelSvg);
+
+  layout.setItemLayout(0, 0, -1.0, -1.0);
+
+  int i = 1;
+  for (const auto &category : categories) {
+    auto name = category["name"].toString();
+
+    auto button = new DrawableButton(name, DrawableButton::ImageFitted);
+    button->setImages(tempIcon, nullptr, nullptr, nullptr, tempIconSelected);
+    button->setRadioGroupId(4444);
+    button->setClickingTogglesState(true);
+    button->setColour(DrawableButton::backgroundOnColourId, Colour(0xffffffff));
+    button->addListener(this);
+
+    buttons.add(button);
+    addAndMakeVisible(button);
+
+    int itemWidth = buttonSize + buttonPadding;
+    layout.setItemLayout(i++, itemWidth, itemWidth, buttonSize);
+  }
+
+  layout.setItemLayout(i, 0, -1.0, -1.0);
 }
 
 LauncherBarComponent::~LauncherBarComponent() {}
 
-void LauncherBarComponent::paint(Graphics &g) {
-  g.fillAll(Colours::white); // clear the background
-
-  g.setColour(Colours::grey);
-  g.drawRect(getLocalBounds(), 1); // draw an outline around the component
-
-  g.setColour(Colours::lightblue);
-  g.setFont(14.0f);
-  g.drawText("LauncherBarComponent", getLocalBounds(), Justification::centred,
-             true); // draw some placeholder text
-}
+void LauncherBarComponent::paint(Graphics &g) {}
 
 void LauncherBarComponent::resized() {
-  auto bounds = getLocalBounds().reduced(launcherPadding);
+  int nitems = buttons.size() + 2;
+  Component *items[nitems];
+  items[0] = nullptr;
+  items[nitems - 1] = nullptr;
+
+  int i = 1;
+  for (auto button : buttons) {
+    items[i++] = button;
+  }
+
+  auto bounds = getLocalBounds();
+
+  layout.layOutComponents(items, nitems, bounds.getX(), bounds.getY(), bounds.getWidth(),
+                          bounds.getHeight(), false, true);
+}
+
+void LauncherBarComponent::buttonClicked(Button *button) {
 }

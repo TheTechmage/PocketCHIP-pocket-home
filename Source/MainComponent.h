@@ -1,6 +1,8 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
+
+#include "LauncherBarComponent.h"
 #include "SettingsPageComponent.h"
 #include "AppsPageComponent.h"
 #include "GamesPageComponent.h"
@@ -9,16 +11,20 @@ class MainContentComponent : public Component, private Button::Listener {
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainContentComponent)
 
 public:
-  ScopedPointer<SettingsPageComponent> settingsPage;
-  ScopedPointer<AppsPageComponent> appsPage;
-  ScopedPointer<GamesPageComponent> gamesPage;
+  ScopedPointer<LauncherBarComponent> categoryButtons;
+
+  OwnedArray<AppsPageComponent> pages;
+  HashMap<String, AppsPageComponent *> pagesByName;
+
+  // ScopedPointer<SettingsPageComponent> settingsPage;
+  // ScopedPointer<AppsPageComponent> appsPage;
+  // ScopedPointer<GamesPageComponent> gamesPage;
 
   StretchableLayoutManager categoryButtonLayout;
 
-  ScopedPointer<DrawableButton> appButton, gamesButton, settingsButton;
+  // ScopedPointer<DrawableButton> appButton, gamesButton, settingsButton;
 
   ScopedPointer<LookAndFeel> lookAndFeel;
-
   ScopedPointer<TextButton> closeButton;
 
   MainContentComponent();

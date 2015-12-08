@@ -2,15 +2,21 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
-class LauncherBarComponent : public Component {
+class LauncherBarComponent : public Component, public ButtonListener {
 public:
-  StretchableLayoutManager launcherButtonLayout;
+  int buttonPadding = 10;
 
-  LauncherBarComponent();
+  OwnedArray<DrawableButton> buttons;
+  StretchableLayoutManager layout;
+
+  ScopedPointer<Drawable> tempIcon, tempIconSelected;
+
+  LauncherBarComponent(const Array<var> &categories, int buttonSize);
   ~LauncherBarComponent();
 
-  void paint(Graphics &);
-  void resized();
+  void paint(Graphics &) override;
+  void resized() override;
+  void buttonClicked(Button *button) override;
 
 private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LauncherBarComponent)

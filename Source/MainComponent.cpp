@@ -1,66 +1,58 @@
 #include "MainComponent.h"
 #include "PokeLookAndFeel.h"
 
-static const int categoryButtonHeight = 62;
-static const int categoryPadding = 10;
-
-static ScopedPointer<DrawableButton> createCategoryButton(const std::string name,
-                                                          const char *svgData,
-                                                          const char *svgDataSel) {
-  ScopedPointer<DrawableButton> button;
-  ScopedPointer<Drawable> icon, iconSel;
-  ScopedPointer<XmlElement> iconSvg(XmlDocument::parse(svgData));
-  ScopedPointer<XmlElement> iconSelSvg(XmlDocument::parse(svgDataSel));
-
-  if (iconSvg != nullptr) icon = Drawable::createFromSVG(*iconSvg);
-
-  if (iconSelSvg != nullptr) iconSel = Drawable::createFromSVG(*iconSelSvg);
-
-  button = new DrawableButton(name, DrawableButton::ImageFitted);
-  button->setImages(icon, 0, 0, 0, iconSel);
-  button->setRadioGroupId(4444);
-  button->setClickingTogglesState(true);
-  button->setColour(DrawableButton::backgroundOnColourId, Colour(0xffffffff));
-
-  return button;
-};
-
 MainContentComponent::MainContentComponent() {
   lookAndFeel = new PokeLookAndFeel();
   setLookAndFeel(lookAndFeel);
 
-  appsPage = ScopedPointer<AppsPageComponent>(new AppsPageComponent());
-  addChildComponent(appsPage);
-
-  gamesPage = ScopedPointer<GamesPageComponent>(new GamesPageComponent());
-  addChildComponent(gamesPage);
-
-  settingsPage = ScopedPointer<SettingsPageComponent>(new SettingsPageComponent());
-  addChildComponent(settingsPage);
-
-  appButton = createCategoryButton("Apps", BinaryData::appsIcon_svg,
-                                   BinaryData::appsIconSel_svg);
-  appButton->addListener(this);
-  addAndMakeVisible(appButton);
-
-  gamesButton = createCategoryButton("Games", BinaryData::gamesIcon_svg,
-                                     BinaryData::gamesIconSel_svg);
-  gamesButton->addListener(this);
-  addAndMakeVisible(gamesButton);
-
-  settingsButton = createCategoryButton("Settings", BinaryData::settingsIcon_svg,
-                                        BinaryData::settingsIconSel_svg);
-  settingsButton->addListener(this);
-  addAndMakeVisible(settingsButton);
-
+  auto configJson = JSON::parse(R"json(
+[
   {
-    int h = categoryButtonHeight;
-    int p = categoryPadding;
-    categoryButtonLayout.setItemLayout(0, 0, -1.0, -1.0);
-    categoryButtonLayout.setItemLayout(1, h + p, h + p, h);
-    categoryButtonLayout.setItemLayout(2, h + p, h + p, h);
-    categoryButtonLayout.setItemLayout(3, h + p, h + p, h);
-    categoryButtonLayout.setItemLayout(4, 0, -1.0, -1.0);
+    "name": "Apps",
+    "icon": "../assets/appsIcon.svg",
+    "items": [
+      {
+        "name": "Iceweasel"
+      },
+      {
+        "name": "Blah"
+      },
+      {
+        "name": "Thing"
+      }
+    ]
+  },
+  {
+    "name": "Games",
+    "icon": "../assets/gamesIcon.svg",
+    "items": [
+      {
+        "name": "Quake"
+      }
+    ]
+  }
+]
+  )json");
+
+  auto categories = configJson.getArray();
+  if (categories) {
+    for (const auto &category : *categories) {
+      auto name = category["name"].toString();
+      auto page = new AppsPageComponent();
+      page->populateIconsWithJsonArray(category["items"]);
+      pages.add(page);
+      pagesByName.set(name, page);
+      addChildComponent(page);
+    }
+
+    categoryButtons = new LauncherBarComponent(*categories, 62);
+    addAndMakeVisible(categoryButtons);
+
+    // NOTE(ryan): Maybe do something with a custom event later.. For now we just listen to all the
+    // buttons manually.
+    for (auto button : categoryButtons->buttons) {
+      button->addListener(this);
+    }
   }
 
   closeButton = new TextButton("Close");
@@ -78,35 +70,20 @@ void MainContentComponent::paint(Graphics &g) {
 }
 
 void MainContentComponent::resized() {
+  auto bounds = getLocalBounds();
 
-  appsPage->setBounds(getLocalBounds());
-  gamesPage->setBounds(getLocalBounds());
-  settingsPage->setBounds(getLocalBounds());
+  categoryButtons->setBounds(bounds.getX(), bounds.getY() + 10, bounds.getWidth(), 62);
 
-  auto bounds = getLocalBounds().reduced(categoryPadding);
-
-  Component *categoryButtons[] = { nullptr,
-                                   appButton,
-                                   gamesButton,
-                                   settingsButton,
-                                   nullptr };
-  categoryButtonLayout.layOutComponents(categoryButtons, 5, bounds.getX(),
-                                        bounds.getY(), bounds.getWidth(),
-                                        categoryButtonHeight, false, true);
+  for (auto page : pages) {
+    page->setBounds(bounds);
+  }
 }
 
 void MainContentComponent::buttonClicked(Button *button) {
-  appsPage->setVisible(false);
-  gamesPage->setVisible(false);
-  settingsPage->setVisible(false);
-
-  if (button == appButton) {
-    appsPage->setVisible(true);
-  } else if (button == gamesButton) {
-    gamesPage->setVisible(true);
-  } else if (button == settingsButton) {
-    settingsPage->setVisible(true);
-  } else if (button == closeButton) {
-    JUCEApplication::quit();
+  for (auto page : pages) {
+    page->setVisible(false);
+  }
+  if (pagesByName.contains(button->getName())) {
+    pagesByName[button->getName()]->setVisible(true);
   }
 }

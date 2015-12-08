@@ -1,18 +1,7 @@
-#include "../JuceLibraryCode/JuceHeader.h"
 #include "AppsPageComponent.h"
 
 AppsPageComponent::AppsPageComponent() {
-  trainIcons.add(new TextButton("Iceweasel"));
-  trainIcons.add(new TextButton("MPlayer"));
-  trainIcons.add(new TextButton("Terminal"));
-  trainIcons.add(new TextButton("Viewnior"));
-
   train = new TrainComponent();
-
-  for (auto icon : trainIcons) {
-    train->addItem(icon);
-  }
-
   addAndMakeVisible(train);
 }
 
@@ -24,4 +13,19 @@ void AppsPageComponent::resized() {
   auto bounds = getLocalBounds();
 
   train->centreWithSize(bounds.getWidth(), 96);
+}
+
+void AppsPageComponent::populateIconsWithJsonArray(const var &json) {
+  if (json.isArray()) {
+    for (const auto &item : *json.getArray()) {
+      auto name = item["name"];
+      // auto icon = item["icon"];
+
+      if (name.isString()) {
+        auto button = new TextButton(name);
+        trainIcons.add(button);
+        train->addItem(button);
+      }
+    }
+  }
 }

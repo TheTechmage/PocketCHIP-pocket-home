@@ -1,9 +1,8 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "TrainComponent.h"
 
-#include <memory>
+#include "TrainComponent.h"
 
 class AppsPageComponent : public Component {
 public:
@@ -13,8 +12,10 @@ public:
   AppsPageComponent();
   ~AppsPageComponent();
 
-  void paint(Graphics &);
-  void resized();
+  void paint(Graphics &) override;
+  void resized() override;
+
+  void populateIconsWithJsonArray(const var &json);
 
 private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AppsPageComponent)
