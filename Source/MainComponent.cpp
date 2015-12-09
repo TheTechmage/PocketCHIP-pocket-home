@@ -11,20 +11,19 @@ MainContentComponent::MainContentComponent(const var &configJson) {
   if (categories) {
     for (const auto &category : *categories) {
       auto name = category["name"].toString();
-      auto page = new AppsPageComponent();
+      AppsPageComponent *page;
+
+      page = name == "Settings" ?
+        new SettingsPageComponent() :
+        new AppsPageComponent();
+
       page->createIconsFromJsonArray(category["items"]);
       pages.add(page);
       pagesByName.set(name, page);
       addChildComponent(page);
     }
 
-    auto settingsPage = new SettingsPageComponent();
-    pages.add(settingsPage);
-    pagesByName.set("Settings", settingsPage);
-    addChildComponent(settingsPage);
-
     categoryButtons->addCategoriesFromJsonArray(*categories);
-    categoryButtons->addCategory("Settings");
     categoryButtons->setInterceptsMouseClicks(false, true);
     addAndMakeVisible(categoryButtons);
 

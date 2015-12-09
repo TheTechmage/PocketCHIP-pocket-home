@@ -27,6 +27,8 @@ public:
     if (flagIndex >= 0 && args.size() > flagIndex + 1) {
       auto configFile = absoluteFileFromPath(args[flagIndex + 1]);
       configJson = JSON::parse(configFile);
+    } else {
+      std::cerr << "Notice: No config file found" << std::endl;
     }
 
     mainWindow = new MainWindow(getApplicationName(), configJson);

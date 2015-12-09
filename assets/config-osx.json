@@ -23,12 +23,16 @@
   },
   {
     "name": "Games",
-    "icon": "../../../../assets/appsIcon.svg",
+    "icon": "../../../../assets/gamesIcon.svg",
     "items": [
       {
         "name": "Quake",
         "icon": "../../../../assets/Faenza/window.png"
       }
     ]
+  },
+  {
+    "name": "Settings",
+    "icon": "../../../../assets/settingsIcon.svg"
   }
 ]
