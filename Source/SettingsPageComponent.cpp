@@ -82,6 +82,8 @@ void SettingsPageComponent::resized() {
 
   auto bounds = getLocalBounds();
 
+  backButton->setBounds(10, 10, 62, 62);
+
   mainPage->setBounds(bounds);
 
   train->centreWithSize(bounds.getWidth(), 96);
