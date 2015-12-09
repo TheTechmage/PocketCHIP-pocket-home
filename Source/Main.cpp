@@ -1,5 +1,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
+
 #include "MainComponent.h"
+#include "Utils.h"
 
 class PokeLaunchApplication : public JUCEApplication {
 public:
@@ -16,9 +18,18 @@ public:
   }
 
   void initialise(const String &commandLine) override {
-    // This method is where you should put your application's initialisation code..
+    StringArray args;
+    args.addTokens(commandLine, true);
 
-    mainWindow = new MainWindow(getApplicationName());
+    auto configJson = var::null;
+
+    auto flagIndex = args.indexOf("-c");
+    if (flagIndex >= 0 && args.size() > flagIndex + 1) {
+      auto configFile = absoluteFileFromPath(args[flagIndex + 1]);
+      configJson = JSON::parse(configFile);
+    }
+
+    mainWindow = new MainWindow(getApplicationName(), configJson);
   }
 
   void shutdown() override {
@@ -47,10 +58,11 @@ public:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainWindow)
 
   public:
-    MainWindow(String name) : DocumentWindow(name, Colours::darkgrey, DocumentWindow::closeButton) {
+    MainWindow(String name, const var &configJson)
+    : DocumentWindow(name, Colours::darkgrey, DocumentWindow::closeButton) {
       setUsingNativeTitleBar(false);
       setResizable(true, false);
-      setContentOwned(new MainContentComponent(), true);
+      setContentOwned(new MainContentComponent(configJson), true);
       centreWithSize(getWidth(), getHeight());
       setVisible(true);
 #if JUCE_LINUX

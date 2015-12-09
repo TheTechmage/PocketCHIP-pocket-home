@@ -21,7 +21,7 @@ public:
   ScopedPointer<LookAndFeel> lookAndFeel;
   ScopedPointer<TextButton> closeButton;
 
-  MainContentComponent();
+  MainContentComponent(const var &configJson);
   ~MainContentComponent();
 
   void paint(Graphics &) override;
