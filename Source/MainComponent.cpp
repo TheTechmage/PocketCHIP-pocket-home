@@ -141,4 +141,7 @@ void MainContentComponent::buttonClicked(Button *button) {
   if (pagesByName.contains(button->getName())) {
     pagesByName[button->getName()]->setVisible(true);
   }
+  if (button == closeButton) {
+    JUCEApplication::quit();
+  }
 }

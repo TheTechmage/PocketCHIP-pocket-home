@@ -37,5 +37,4 @@ void SettingsPageBluetoothComponent::resized()
 {
     // This method is where you should set the bounds of any child
     // components that your component contains..
-
 }
