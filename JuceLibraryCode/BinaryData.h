@@ -15,11 +15,17 @@ namespace BinaryData
     extern const char*   appsIconSel_svg;
     const int            appsIconSel_svgSize = 1318;
 
+    extern const char*   backIcon_svg;
+    const int            backIcon_svgSize = 846;
+
+    extern const char*   bluetoothIcon_svg;
+    const int            bluetoothIcon_svgSize = 993;
+
     extern const char*   brightnessIconHi_svg;
-    const int            brightnessIconHi_svgSize = 1814;
+    const int            brightnessIconHi_svgSize = 1757;
 
     extern const char*   brightnessIconLo_svg;
-    const int            brightnessIconLo_svgSize = 1838;
+    const int            brightnessIconLo_svgSize = 1781;
 
     extern const char*   gamesIcon_svg;
     const int            gamesIcon_svgSize = 1316;
@@ -34,22 +40,19 @@ namespace BinaryData
     const int            settingsIconSel_svgSize = 1593;
 
     extern const char*   volumeIconHi_svg;
-    const int            volumeIconHi_svgSize = 1219;
+    const int            volumeIconHi_svgSize = 1162;
 
     extern const char*   volumeIconLo_svg;
-    const int            volumeIconLo_svgSize = 756;
-
-    extern const char*   bluetoothIcon_svg;
-    const int            bluetoothIcon_svgSize = 990;
+    const int            volumeIconLo_svgSize = 699;
 
     extern const char*   wifiIcon_svg;
-    const int            wifiIcon_svgSize = 1295;
+    const int            wifiIcon_svgSize = 1306;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];
 
     // Number of elements in the namedResourceList array.
-    const int namedResourceListSize = 12;
+    const int namedResourceListSize = 13;
 
     // If you provide the name of one of the binary resource variables above, this function will
     // return the corresponding data and its size (or a null pointer if the name isn't found).

@@ -56,6 +56,8 @@ OBJECTS := \
   $(OBJDIR)/PokeLookAndFeel_55885106.o \
   $(OBJDIR)/MainComponent_a6ffb4a5.o \
   $(OBJDIR)/SettingsPageComponent_10c3e5ac.o \
+  $(OBJDIR)/SettingsPageBluetoothComponent_e05cbdea.o \
+  $(OBJDIR)/SettingsPageWifiComponent_10168397.o \
   $(OBJDIR)/IconSliderComponent_f4b4d044.o \
   $(OBJDIR)/Main_90ebc5c2.o \
   $(OBJDIR)/BinaryData_ce4232d4.o \
@@ -116,6 +118,16 @@ $(OBJDIR)/MainComponent_a6ffb4a5.o: ../../Source/MainComponent.cpp
 $(OBJDIR)/SettingsPageComponent_10c3e5ac.o: ../../Source/SettingsPageComponent.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling SettingsPageComponent.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/SettingsPageBluetoothComponent_e05cbdea.o: ../../Source/SettingsPageBluetoothComponent.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling SettingsPageBluetoothComponent.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/SettingsPageWifiComponent_10168397.o: ../../Source/SettingsPageWifiComponent.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling SettingsPageWifiComponent.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/IconSliderComponent_f4b4d044.o: ../../Source/IconSliderComponent.cpp

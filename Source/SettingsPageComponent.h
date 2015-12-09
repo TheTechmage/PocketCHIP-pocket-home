@@ -10,11 +10,18 @@ public:
   ScopedPointer<IconSliderComponent> screenBrightnessSlider, volumeSlider;
   StretchableLayoutManager sliderLayout;
 
+  ScopedPointer<Component> mainPage;
+  ScopedPointer<ImageButton> backButton;
+
+  OwnedArray<Component> pages;
+  HashMap<String, Component *> pagesByName;
+
   SettingsPageComponent();
   ~SettingsPageComponent();
 
   void paint(Graphics &g) override;
   void resized() override;
+  void buttonClicked(Button *b) override;
 
 private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsPageComponent)

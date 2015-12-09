@@ -7,6 +7,9 @@
     <GROUP id="{A1DF3F2A-774E-D561-3D99-5D88F7D2D731}" name="assets">
       <FILE id="GJ5Ohw" name="appsIcon.svg" compile="0" resource="1" file="assets/appsIcon.svg"/>
       <FILE id="qRgVuJ" name="appsIconSel.svg" compile="0" resource="1" file="assets/appsIconSel.svg"/>
+      <FILE id="YZKGfj" name="backIcon.svg" compile="0" resource="1" file="assets/backIcon.svg"/>
+      <FILE id="lpsm1o" name="bluetoothIcon.svg" compile="0" resource="1"
+            file="assets/bluetoothIcon.svg"/>
       <FILE id="hHqhiE" name="brightnessIconHi.svg" compile="0" resource="1"
             file="assets/brightnessIconHi.svg"/>
       <FILE id="x9yQ09" name="brightnessIconLo.svg" compile="0" resource="1"
@@ -22,9 +25,7 @@
             file="assets/volumeIconHi.svg"/>
       <FILE id="haj4xI" name="volumeIconLo.svg" compile="0" resource="1"
             file="assets/volumeIconLo.svg"/>
-      <FILE id="kGe6rc" name="bluetoothIcon.svg" compile="0" resource="1"
-            file="assets/bluetoothIcon.svg"/>
-      <FILE id="BG4ued" name="wifiIcon.svg" compile="0" resource="1" file="assets/wifiIcon.svg"/>
+      <FILE id="rG44xd" name="wifiIcon.svg" compile="0" resource="1" file="assets/wifiIcon.svg"/>
     </GROUP>
     <GROUP id="{4593A345-C350-960A-058D-B48F8240AA1D}" name="Source">
       <FILE id="Ury6Cc" name="Utils.cpp" compile="1" resource="0" file="Source/Utils.cpp"/>
@@ -52,6 +53,14 @@
             file="Source/SettingsPageComponent.cpp"/>
       <FILE id="NRuhIp" name="SettingsPageComponent.h" compile="0" resource="0"
             file="Source/SettingsPageComponent.h"/>
+      <FILE id="TEaSbW" name="SettingsPageBluetoothComponent.cpp" compile="1"
+            resource="0" file="Source/SettingsPageBluetoothComponent.cpp"/>
+      <FILE id="ygeS0y" name="SettingsPageBluetoothComponent.h" compile="0"
+            resource="0" file="Source/SettingsPageBluetoothComponent.h"/>
+      <FILE id="WSp7Ko" name="SettingsPageWifiComponent.cpp" compile="1"
+            resource="0" file="Source/SettingsPageWifiComponent.cpp"/>
+      <FILE id="ODeJET" name="SettingsPageWifiComponent.h" compile="0" resource="0"
+            file="Source/SettingsPageWifiComponent.h"/>
       <FILE id="Uuf9X1" name="IconSliderComponent.cpp" compile="1" resource="0"
             file="Source/IconSliderComponent.cpp"/>
       <FILE id="ICQxAN" name="IconSliderComponent.h" compile="0" resource="0"
