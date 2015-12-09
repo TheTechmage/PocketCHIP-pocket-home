@@ -75,3 +75,10 @@ float smoothstep(float edge0, float edge1, float x) {
 float mix(float a, float b, float t) {
   return t * (b - a) + a;
 }
+
+void animateTranslation(Component *component, int x, int y, float alpha, int durationMillis) {
+  const auto &bounds = component->getBounds();
+  auto destBounds = bounds.translated(x - bounds.getX(), y - bounds.getY());
+  Desktop::getInstance().getAnimator().animateComponent(component, destBounds, alpha,
+                                                        durationMillis, false, 0, 0);
+}

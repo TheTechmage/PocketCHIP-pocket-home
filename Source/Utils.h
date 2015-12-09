@@ -14,3 +14,5 @@ void fitRectInRect(Rectangle<int> &rect, const Rectangle<int> &container,
 
 float smoothstep(float edge0, float edge1, float x);
 float mix(float a, float b, float t);
+
+void animateTranslation(Component *component, int x, int y, float alpha, int durationMillis);

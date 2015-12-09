@@ -1,5 +1,6 @@
 #include "MainComponent.h"
 #include "PokeLookAndFeel.h"
+#include "Utils.h"
 
 MainContentComponent::MainContentComponent(const var &configJson) {
   lookAndFeel = new PokeLookAndFeel();
@@ -67,22 +68,33 @@ void MainContentComponent::buttonClicked(Button *button) {
 }
 
 void MainContentComponent::pushPage(Component *page) {
+  auto bounds = getLocalBounds();
   if (!pageStack.empty()) {
-    animator.fadeOut(pageStack.getLast(), pageTransitionDurationMillis);
+    animateTranslation(page, -bounds.getWidth(), 0, 1.0f, pageTransitionDurationMillis);
+    // animator.fadeOut(pageStack.getLast(), pageTransitionDurationMillis);
   }
   pageStack.add(page);
-  animator.fadeIn(page, pageTransitionDurationMillis);
+  page->setBounds(bounds.translated(bounds.getWidth(), 0));
+  animateTranslation(page, 0, 0, 1.0f, pageTransitionDurationMillis);
+  // animator.fadeIn(page, pageTransitionDurationMillis);
 }
 
 void MainContentComponent::swapPage(Component *page) {
   popPage();
+
   pageStack.add(page);
-  animator.fadeIn(page, pageTransitionDurationMillis);
+
+  auto bounds = getLocalBounds();
+  page->setBounds(bounds.translated(bounds.getWidth(), 0));
+  animateTranslation(page, 0, 0, 1.0f, pageTransitionDurationMillis);
+  // animator.fadeIn(page, pageTransitionDurationMillis);
 }
 
 void MainContentComponent::popPage() {
   if (!pageStack.empty()) {
-    animator.fadeOut(pageStack.getLast(), pageTransitionDurationMillis);
+    animateTranslation(pageStack.getLast(), -getLocalBounds().getWidth(), 0, 1.0f,
+                       pageTransitionDurationMillis);
+    // animator.fadeOut(pageStack.getLast(), pageTransitionDurationMillis);
     pageStack.removeLast();
   }
 }
