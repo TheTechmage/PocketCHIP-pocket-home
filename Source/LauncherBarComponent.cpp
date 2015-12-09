@@ -1,4 +1,5 @@
 #include "LauncherBarComponent.h"
+#include "Utils.h"
 
 LauncherBarComponent::LauncherBarComponent(int buttonSize) : buttonSize{ buttonSize } {
   ScopedPointer<XmlElement> iconSvg = XmlDocument::parse(BinaryData::appsIcon_svg);
@@ -41,23 +42,19 @@ void LauncherBarComponent::resized() {
 
 void LauncherBarComponent::buttonClicked(Button *button) {}
 
-void LauncherBarComponent::addCategory(const String &name) {
-  auto button = new DrawableButton(name, DrawableButton::ImageFitted);
-  button->setImages(tempIcon, nullptr, nullptr, nullptr, tempIconSelected);
-  button->setRadioGroupId(4444);
-  button->setClickingTogglesState(true);
-  button->setColour(DrawableButton::backgroundOnColourId, Colour(0xffffffff));
-  // button->addListener(this);
-
+void LauncherBarComponent::addCategory(const String &name, const String &iconPath) {
+  auto iconFile = File(absoluteFileFromPath(iconPath));
+  auto button = createImageButton(name, iconFile);
+  button->addListener(this);
   buttons.add(button);
   addAndMakeVisible(button);
-
   layoutDirty = true;
 }
 
 void LauncherBarComponent::addCategoriesFromJsonArray(const Array<var> &categories) {
   for (const auto &category : categories) {
     auto name = category["name"].toString();
-    addCategory(name);
+    auto icon = category["icon"].toString();
+    addCategory(name, icon);
   }
 }

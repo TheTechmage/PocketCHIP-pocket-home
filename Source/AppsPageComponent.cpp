@@ -12,7 +12,6 @@ void AppsPageComponent::paint(Graphics &g) {}
 
 void AppsPageComponent::resized() {
   auto bounds = getLocalBounds();
-
   train->centreWithSize(bounds.getWidth(), 96);
 }
 
@@ -22,13 +21,13 @@ void AppsPageComponent::addAndOwnIcon(const String &name, Component *icon) {
 }
 
 ImageButton *AppsPageComponent::createAndOwnIcon(const String &name, const String &iconPath) {
-  auto icon = createIconButton(name, absoluteFileFromPath(iconPath));
-  if (icon) {
-    addAndOwnIcon(name, icon);
+  auto imageButton = createImageButton(name, absoluteFileFromPath(iconPath));
+  if (imageButton) {
+    addAndOwnIcon(name, imageButton);
   } else {
     std::cerr << "Could not load icon from " << iconPath << std::endl;
   }
-  return icon;
+  return imageButton;
 }
 
 Array<ImageButton *> AppsPageComponent::createIconsFromJsonArray(const var &json) {

@@ -4,7 +4,8 @@
 
 File absoluteFileFromPath(const String &path);
 
-ImageButton *createIconButton(const String &name, const File &imageFile);
+Image createImage(const File &imageFile);
+ImageButton *createImageButton(const String &name, const File &imageFile);
 
 void fitRectInRect(Rectangle<int> &rect, int x, int y, int width, int height,
                    Justification justification, const bool onlyReduceInSize);

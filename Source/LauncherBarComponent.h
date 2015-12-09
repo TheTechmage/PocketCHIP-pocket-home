@@ -7,7 +7,7 @@ public:
   int buttonSize;
   int buttonPadding = 10;
 
-  OwnedArray<DrawableButton> buttons;
+  OwnedArray<ImageButton> buttons;
 
   StretchableLayoutManager layout;
   bool layoutDirty = false;
@@ -21,7 +21,7 @@ public:
   void resized() override;
   void buttonClicked(Button *button) override;
 
-  void addCategory(const String &name);
+  void addCategory(const String &name, const String &iconPath);
   void addCategoriesFromJsonArray(const Array<var> &categories);
 
 private:
