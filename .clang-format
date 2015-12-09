@@ -1,0 +1,19 @@
+---
+BasedOnStyle: Mozilla
+ColumnLimit: 100
+IndentWidth: 2
+ContinuationIndentWidth: 4
+Standard: Cpp11
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: true
+AllowShortLoopsOnASingleLine: true
+ConstructorInitializerIndentWidth: 0
+PointerAlignment: Right
+AlwaysBreakTemplateDeclarations: true
+BreakConstructorInitializersBeforeComma: false
+MaxEmptyLinesToKeep: 2
+BreakBeforeBraces: Attach
+AlwaysBreakAfterDefinitionReturnType: None
+KeepEmptyLinesAtTheStartOfBlocks: false
+...
+
