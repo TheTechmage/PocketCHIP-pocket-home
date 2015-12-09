@@ -217,6 +217,49 @@ static const unsigned char temp_binary_data_9[] =
 
 const char* volumeIconLo_svg = (const char*) temp_binary_data_9;
 
+//================== bluetoothIcon.svg ==================
+static const unsigned char temp_binary_data_10[] =
+"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
+"<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r\n"
+"<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\r\n"
+"<svg version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\"\r\n"
+"\t width=\"75px\" height=\"75px\" viewBox=\"0 0 75 75\" enable-background=\"new 0 0 75 75\" xml:space=\"preserve\">\r\n"
+"<g id=\"Bluetooth_Icon\">\r\n"
+"\t<g>\r\n"
+"\t\t<polyline fill=\"none\" stroke=\"#231F20\" stroke-width=\"4.2504\" stroke-miterlimit=\"10\" points=\"27.281,27.29 47.303,47.313 \r\n"
+"\t\t\t37.292,57.842 37.291,57.421 37.293,17.241 47.303,27.29 27.279,47.313 \t\t\"/>\r\n"
+"\t</g>\r\n"
+"</g>\r\n"
+"<path fill=\"none\" stroke=\"#231F20\" stroke-width=\"5\" stroke-miterlimit=\"10\" d=\"M70.561,62.826c0,4.271-3.463,7.732-7.733,7.732\r\n"
+"\tH12.175c-4.272,0-7.734-3.463-7.734-7.732V12.173c0-4.27,3.462-7.732,7.734-7.732h50.651c4.271,0,7.732,3.463,7.732,7.732v50.653\r\n"
+"\tH70.561z\"/>\r\n"
+"</svg>\r\n";
+
+const char* bluetoothIcon_svg = (const char*) temp_binary_data_10;
+
+//================== wifiIcon.svg ==================
+static const unsigned char temp_binary_data_11[] =
+"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
+"<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r\n"
+"<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\r\n"
+"<svg version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\"\r\n"
+"\t width=\"75px\" height=\"75px\" viewBox=\"0 0 75 75\" enable-background=\"new 0 0 75 75\" xml:space=\"preserve\">\r\n"
+"<g id=\"WIFI_Icon\">\r\n"
+"\t<path fill=\"#231F20\" d=\"M29.988,45.76c4.527-4.938,11.861-4.939,16.385,0l-8.191,8.945L29.988,45.76z\"/>\r\n"
+"\t<path fill=\"none\" stroke=\"#231F20\" stroke-width=\"5.0285\" stroke-miterlimit=\"10\" d=\"M16.593,31.138\r\n"
+"\t\tc11.924-13.014,31.254-13.017,43.179,0\"/>\r\n"
+"\t<path fill=\"none\" stroke=\"#231F20\" stroke-width=\"5.0285\" stroke-miterlimit=\"10\" d=\"M26.737,42.213\r\n"
+"\t\tc6.321-6.901,16.568-6.901,22.888,0\"/>\r\n"
+"\t<path fill=\"none\" stroke=\"#231F20\" stroke-width=\"5.0285\" stroke-miterlimit=\"10\" d=\"M21.664,36.672\r\n"
+"\t\tc9.124-9.959,23.915-9.959,33.036,0\"/>\r\n"
+"\t<path fill=\"none\" stroke=\"#231F20\" stroke-width=\"5\" stroke-miterlimit=\"10\" d=\"M70.56,62.826c0,4.271-3.463,7.733-7.733,7.733\r\n"
+"\t\tH12.175c-4.272,0-7.734-3.463-7.734-7.733V12.173c0-4.27,3.462-7.732,7.734-7.732h50.651c4.271,0,7.733,3.463,7.733,7.732V62.826z\"\r\n"
+"\t\t/>\r\n"
+"</g>\r\n"
+"</svg>\r\n";
+
+const char* wifiIcon_svg = (const char*) temp_binary_data_11;
+
 
 const char* getNamedResource (const char*, int&) throw();
 const char* getNamedResource (const char* resourceNameUTF8, int& numBytes) throw()
@@ -238,6 +281,8 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes) throw
         case 0xbb220623:  numBytes = 1593; return settingsIconSel_svg;
         case 0x8579e6b9:  numBytes = 1219; return volumeIconHi_svg;
         case 0x8ca1d63b:  numBytes = 756; return volumeIconLo_svg;
+        case 0xf5dfde6c:  numBytes = 990; return bluetoothIcon_svg;
+        case 0xa29973d3:  numBytes = 1295; return wifiIcon_svg;
         default: break;
     }
 
@@ -256,7 +301,9 @@ const char* namedResourceList[] =
     "settingsIcon_svg",
     "settingsIconSel_svg",
     "volumeIconHi_svg",
-    "volumeIconLo_svg"
+    "volumeIconLo_svg",
+    "bluetoothIcon_svg",
+    "wifiIcon_svg"
 };
 
 }

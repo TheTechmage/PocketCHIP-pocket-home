@@ -17,8 +17,11 @@ SettingsPageComponent::SettingsPageComponent() {
   sliderLayout.setItemLayout(1, sliderPadding, sliderPadding, sliderPadding);
   sliderLayout.setItemLayout(2, 0.0, -1.0, -1.0);
 
-  addIcon("WiFi", "../../../../assets/wifi.svg");
-  addIcon("Bluetooth", "../../../../assets/bluetooth.svg");
+  ScopedPointer<XmlElement> wifiSvg = XmlDocument::parse(BinaryData::wifiIcon_svg);
+  ScopedPointer<XmlElement> bluetoothSvg = XmlDocument::parse(BinaryData::bluetoothIcon_svg);
+
+  addAndOwnIcon("WiFi", Drawable::createFromSVG(*wifiSvg));
+  addAndOwnIcon("Bluetooth", Drawable::createFromSVG(*bluetoothSvg));
 }
 
 SettingsPageComponent::~SettingsPageComponent() {}

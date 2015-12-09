@@ -22,6 +22,9 @@
             file="assets/volumeIconHi.svg"/>
       <FILE id="haj4xI" name="volumeIconLo.svg" compile="0" resource="1"
             file="assets/volumeIconLo.svg"/>
+      <FILE id="kGe6rc" name="bluetoothIcon.svg" compile="0" resource="1"
+            file="assets/bluetoothIcon.svg"/>
+      <FILE id="BG4ued" name="wifiIcon.svg" compile="0" resource="1" file="assets/wifiIcon.svg"/>
     </GROUP>
     <GROUP id="{4593A345-C350-960A-058D-B48F8240AA1D}" name="Source">
       <FILE id="Ury6Cc" name="Utils.cpp" compile="1" resource="0" file="Source/Utils.cpp"/>

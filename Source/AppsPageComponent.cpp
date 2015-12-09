@@ -16,24 +16,27 @@ void AppsPageComponent::resized() {
   train->centreWithSize(bounds.getWidth(), 96);
 }
 
-void AppsPageComponent::addIcon(const String &name, const String &iconPath) {
-  auto iconFile = File::isAbsolutePath(iconPath)
-                      ? File(iconPath)
-                      : File::getCurrentWorkingDirectory().getChildFile(iconPath);
-
-  auto button = createIconButton(name, iconFile);
-  trainIcons.add(button);
-  train->addItem(button);
+void AppsPageComponent::addAndOwnIcon(const String &name, Component *icon) {
+  trainIcons.add(icon);
+  train->addItem(icon);
 }
 
-void AppsPageComponent::addIconsFromJsonArray(const var &json) {
+ImageButton *AppsPageComponent::createAndOwnIcon(const String &name, const String &iconPath) {
+  auto icon = createIconButton(name, absoluteFileFromPath(iconPath));
+  addAndOwnIcon(name, icon);
+  return icon;
+}
+
+Array<ImageButton *> AppsPageComponent::createIconsFromJsonArray(const var &json) {
+  Array<ImageButton *> buttons;
   if (json.isArray()) {
     for (const auto &item : *json.getArray()) {
       auto name = item["name"];
       auto icon = item["icon"];
       if (name.isString() && icon.isString()) {
-        addIcon(name, icon);
+        buttons.add(createAndOwnIcon(name, icon));
       }
     }
   }
+  return buttons;
 }
