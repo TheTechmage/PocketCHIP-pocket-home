@@ -40,3 +40,6 @@ Array<ImageButton *> AppsPageComponent::createIconsFromJsonArray(const var &json
   }
   return buttons;
 }
+
+void AppsPageComponent::buttonClicked(Button *button) {}
+
