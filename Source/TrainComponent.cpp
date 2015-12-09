@@ -1,5 +1,5 @@
-#include "../JuceLibraryCode/JuceHeader.h"
 #include "TrainComponent.h"
+#include "Utils.h"
 
 TrainComponent::TrainComponent() {
   position.setPosition(0.0);
@@ -66,15 +66,6 @@ void TrainComponent::setItemBoundsToFit() {
     item->setBoundsToFit(b.getX(), b.getY(), b.getWidth(), b.getHeight(), Justification::centred,
                          false);
   }
-}
-
-float smoothstep(float edge0, float edge1, float x) {
-  x = std::min(std::max((x - edge0) / (edge1 - edge0), 0.0f), 1.0f);
-  return x * x * (3.0f - 2.0f * x);
-}
-
-float mix(float a, float b, float t) {
-  return t * (b - a) + a;
 }
 
 void TrainComponent::updateItemTransforms() {

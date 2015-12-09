@@ -27,3 +27,49 @@ ImageButton *createIconButton(const String &name, const File &imageFile) {
 
   return button;
 }
+
+void fitRectInRect(Rectangle<int> &rect, int x, int y, int width, int height,
+                   Justification justification, const bool onlyReduceInSize) {
+  // it's no good calling this method unless both the component and
+  // target rectangle have a finite size.
+  jassert(rect.getWidth() > 0 && rect.getHeight() > 0 && width > 0 && height > 0);
+
+  if (rect.getWidth() > 0 && rect.getHeight() > 0 && width > 0 && height > 0) {
+    int newW, newH;
+
+    if (onlyReduceInSize && rect.getWidth() <= width && rect.getHeight() <= height) {
+      newW = rect.getWidth();
+      newH = rect.getHeight();
+    } else {
+      const double imageRatio = rect.getHeight() / (double)rect.getWidth();
+      const double targetRatio = height / (double)width;
+
+      if (imageRatio <= targetRatio) {
+        newW = width;
+        newH = jmin(height, roundToInt(newW * imageRatio));
+      } else {
+        newH = height;
+        newW = jmin(width, roundToInt(newH / imageRatio));
+      }
+    }
+
+    if (newW > 0 && newH > 0)
+      rect = justification.appliedToRectangle(Rectangle<int>(newW, newH),
+                                              Rectangle<int>(x, y, width, height));
+  }
+}
+
+void fitRectInRect(Rectangle<int> &rect, const Rectangle<int> &container,
+                   Justification justification, const bool onlyReduceInSize) {
+  fitRectInRect(rect, container.getX(), container.getY(), container.getWidth(),
+                container.getHeight(), justification, onlyReduceInSize);
+}
+
+float smoothstep(float edge0, float edge1, float x) {
+  x = std::min(std::max((x - edge0) / (edge1 - edge0), 0.0f), 1.0f);
+  return x * x * (3.0f - 2.0f * x);
+}
+
+float mix(float a, float b, float t) {
+  return t * (b - a) + a;
+}

@@ -5,6 +5,7 @@
 #include "LauncherBarComponent.h"
 #include "SettingsPageComponent.h"
 #include "AppsPageComponent.h"
+#include "SwitchComponent.h"
 
 class MainContentComponent : public Component, private Button::Listener {
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainContentComponent)

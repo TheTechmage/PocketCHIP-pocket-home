@@ -28,6 +28,10 @@
       <FILE id="rG44xd" name="wifiIcon.svg" compile="0" resource="1" file="assets/wifiIcon.svg"/>
     </GROUP>
     <GROUP id="{4593A345-C350-960A-058D-B48F8240AA1D}" name="Source">
+      <FILE id="CvUayI" name="SwitchComponent.cpp" compile="1" resource="0"
+            file="Source/SwitchComponent.cpp"/>
+      <FILE id="vb1qdw" name="SwitchComponent.h" compile="0" resource="0"
+            file="Source/SwitchComponent.h"/>
       <FILE id="Ury6Cc" name="Utils.cpp" compile="1" resource="0" file="Source/Utils.cpp"/>
       <FILE id="AywA6o" name="Utils.h" compile="0" resource="0" file="Source/Utils.h"/>
       <FILE id="OWABwr" name="LauncherBarComponent.cpp" compile="1" resource="0"

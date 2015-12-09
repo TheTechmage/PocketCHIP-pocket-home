@@ -43,7 +43,7 @@ MainContentComponent::MainContentComponent() {
 ]
   )json");
 #else
-    auto configJson = JSON::parse(R"json(
+  auto configJson = JSON::parse(R"json(
 [
   {
     "name": "Apps",
@@ -81,6 +81,8 @@ MainContentComponent::MainContentComponent() {
   )json");
 #endif
 
+  categoryButtons = new LauncherBarComponent(62);
+
   auto categories = configJson.getArray();
   if (categories) {
     for (const auto &category : *categories) {
@@ -97,7 +99,6 @@ MainContentComponent::MainContentComponent() {
     pagesByName.set("Settings", settingsPage);
     addChildComponent(settingsPage);
 
-    categoryButtons = new LauncherBarComponent(62);
     categoryButtons->addCategoriesFromJsonArray(*categories);
     categoryButtons->addCategory("Settings");
     categoryButtons->setInterceptsMouseClicks(false, true);
@@ -127,7 +128,8 @@ void MainContentComponent::paint(Graphics &g) {
 void MainContentComponent::resized() {
   auto bounds = getLocalBounds();
 
-  categoryButtons->setBounds(bounds.getX(), bounds.getY() + 10, bounds.getWidth(), categoryButtons->buttonSize);
+  categoryButtons->setBounds(bounds.getX(), bounds.getY() + 10, bounds.getWidth(),
+                             categoryButtons->buttonSize);
 
   for (auto page : pages) {
     page->setBounds(bounds);
