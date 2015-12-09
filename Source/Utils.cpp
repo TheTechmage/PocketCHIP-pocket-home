@@ -10,8 +10,7 @@ ImageButton *createIconButton(const String &name, const File &imageFile) {
   auto image = Image(Image::RGB, 128, 128, true);
 
   if (imageFile.getFileExtension() == ".svg") {
-    ScopedPointer<XmlElement> svgElement = XmlDocument::parse(imageFile);
-    ScopedPointer<Drawable> svgDrawable = Drawable::createFromSVG(*svgElement);
+    ScopedPointer<Drawable> svgDrawable = Drawable::createFromSVG(*XmlDocument::parse(imageFile));
 
     Graphics g(image);
     svgDrawable->drawWithin(g, Rectangle<float>(0, 0, image.getWidth(), image.getHeight()),
