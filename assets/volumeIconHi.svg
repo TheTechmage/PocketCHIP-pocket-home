@@ -3,17 +3,17 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="75px" height="75px" viewBox="0 0 75 75" enable-background="new 0 0 75 75" xml:space="preserve">
-<circle fill="none" stroke="#FFFFFF" stroke-width="5" stroke-miterlimit="10" cx="37.501" cy="37.5" r="32.491"/>
+<circle fill="none" cx="37.501" cy="37.5" r="32.491"/>
 <g>
 	<g>
-		<rect x="20.604" y="33.892" width="7.217" height="7.216"/>
+		<rect x="20.604" y="33.892" width="7.217" height="7.215"/>
 	</g>
 	<polygon points="32.61,45.939 24.171,37.501 32.61,29.061 32.61,37.501 	"/>
 </g>
 <path fill="none" stroke="#000000" stroke-width="5" stroke-linecap="round" stroke-miterlimit="10" d="M37.913,41.704
-	c2.26-2.262,2.26-5.926,0-8.187"/>
+	c2.26-2.263,2.26-5.926,0-8.187"/>
 <path fill="none" stroke="#000000" stroke-width="5" stroke-linecap="round" stroke-miterlimit="10" d="M43.305,44.898
-	c4.025-4.025,4.025-10.551,0-14.577"/>
+	c4.025-4.025,4.025-10.551,0-14.578"/>
 <path fill="none" stroke="#000000" stroke-width="5" stroke-linecap="round" stroke-miterlimit="10" d="M47.419,25.026
 	c6.951,6.95,6.951,18.221,0,25.171"/>
 </svg>
