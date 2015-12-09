@@ -23,7 +23,11 @@ void AppsPageComponent::addAndOwnIcon(const String &name, Component *icon) {
 
 ImageButton *AppsPageComponent::createAndOwnIcon(const String &name, const String &iconPath) {
   auto icon = createIconButton(name, absoluteFileFromPath(iconPath));
-  addAndOwnIcon(name, icon);
+  if (icon) {
+    addAndOwnIcon(name, icon);
+  } else {
+    std::cerr << "Could not load icon from " << iconPath << std::endl;
+  }
   return icon;
 }
 
@@ -32,9 +36,12 @@ Array<ImageButton *> AppsPageComponent::createIconsFromJsonArray(const var &json
   if (json.isArray()) {
     for (const auto &item : *json.getArray()) {
       auto name = item["name"];
-      auto icon = item["icon"];
-      if (name.isString() && icon.isString()) {
-        buttons.add(createAndOwnIcon(name, icon));
+      auto iconPath = item["icon"];
+      if (name.isString() && iconPath.isString()) {
+        auto icon = createAndOwnIcon(name, iconPath);
+        if (icon) {
+          buttons.add(icon);
+        }
       }
     }
   }
@@ -42,4 +49,3 @@ Array<ImageButton *> AppsPageComponent::createIconsFromJsonArray(const var &json
 }
 
 void AppsPageComponent::buttonClicked(Button *button) {}
-
