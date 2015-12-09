@@ -9,14 +9,10 @@ MainContentComponent::MainContentComponent(const var &configJson) {
 
   auto categories = configJson.getArray();
   if (categories) {
+
     for (const auto &category : *categories) {
       auto name = category["name"].toString();
-      AppsPageComponent *page;
-
-      page = name == "Settings" ?
-        new SettingsPageComponent() :
-        new AppsPageComponent();
-
+      auto page = name == "Settings" ? new SettingsPageComponent() : new AppsPageComponent();
       page->createIconsFromJsonArray(category["items"]);
       pages.add(page);
       pagesByName.set(name, page);
