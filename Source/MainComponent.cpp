@@ -100,6 +100,7 @@ MainContentComponent::MainContentComponent() {
     categoryButtons = new LauncherBarComponent(62);
     categoryButtons->addCategoriesFromJsonArray(*categories);
     categoryButtons->addCategory("Settings");
+    categoryButtons->setInterceptsMouseClicks(false, true);
     addAndMakeVisible(categoryButtons);
 
     // NOTE(ryan): Maybe do something with a custom event later.. For now we just listen to all the
