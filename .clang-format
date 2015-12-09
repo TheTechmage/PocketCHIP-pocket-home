@@ -16,4 +16,3 @@ BreakBeforeBraces: Attach
 AlwaysBreakAfterDefinitionReturnType: None
 KeepEmptyLinesAtTheStartOfBlocks: false
 ...
-

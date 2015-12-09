@@ -14,6 +14,7 @@ public:
   ScopedPointer<LauncherBarComponent> categoryButtons;
 
   OwnedArray<Component> pages;
+  Array<Component *> pageStack;
   HashMap<String, Component *> pagesByName;
 
   StretchableLayoutManager categoryButtonLayout;
@@ -21,11 +22,19 @@ public:
   ScopedPointer<LookAndFeel> lookAndFeel;
   ScopedPointer<TextButton> closeButton;
 
+  ComponentAnimator animator;
+
+  int pageTransitionDurationMillis = 200;
+
   MainContentComponent(const var &configJson);
   ~MainContentComponent();
 
   void paint(Graphics &) override;
   void resized() override;
+
+  void pushPage(Component *page);
+  void swapPage(Component *page);
+  void popPage();
 
 private:
   void buttonClicked(Button *) override;

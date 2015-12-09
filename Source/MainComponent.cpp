@@ -9,10 +9,10 @@ MainContentComponent::MainContentComponent(const var &configJson) {
 
   auto categories = configJson.getArray();
   if (categories) {
-
     for (const auto &category : *categories) {
       auto name = category["name"].toString();
       auto page = name == "Settings" ? new SettingsPageComponent() : new AppsPageComponent();
+      page->setName(name);
       page->createIconsFromJsonArray(category["items"]);
       pages.add(page);
       pagesByName.set(name, page);
@@ -56,13 +56,32 @@ void MainContentComponent::resized() {
 }
 
 void MainContentComponent::buttonClicked(Button *button) {
-  for (auto page : pages) {
-    page->setVisible(false);
-  }
-  if (pagesByName.contains(button->getName())) {
-    pagesByName[button->getName()]->setVisible(true);
+  if ((pageStack.empty() || pageStack.getLast()->getName() != button->getName()) &&
+      pagesByName.contains(button->getName())) {
+    swapPage(pagesByName[button->getName()]);
   }
   if (button == closeButton) {
     JUCEApplication::quit();
+  }
+}
+
+void MainContentComponent::pushPage(Component *page) {
+  if (!pageStack.empty()) {
+    animator.fadeOut(pageStack.getLast(), pageTransitionDurationMillis);
+  }
+  pageStack.add(page);
+  animator.fadeIn(page, pageTransitionDurationMillis);
+}
+
+void MainContentComponent::swapPage(Component *page) {
+  popPage();
+  pageStack.add(page);
+  animator.fadeIn(page, pageTransitionDurationMillis);
+}
+
+void MainContentComponent::popPage() {
+  if (!pageStack.empty()) {
+    animator.fadeOut(pageStack.getLast(), pageTransitionDurationMillis);
+    pageStack.removeLast();
   }
 }
