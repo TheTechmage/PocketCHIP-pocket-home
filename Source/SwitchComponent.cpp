@@ -18,8 +18,8 @@ void SwitchComponent::paintButton(Graphics &g, bool isMouseOverButton, bool isBu
                          pillBounds.getHeight(), radius);
 
   g.setColour(Colours::black);
-  g.drawRoundedRectangle(pillBounds.getX(), pillBounds.getY(),
-                         pillBounds.getWidth(), pillBounds.getHeight(), radius, 4);
+  g.drawRoundedRectangle(pillBounds.getX(), pillBounds.getY(), pillBounds.getWidth(),
+                         pillBounds.getHeight(), radius, 4);
 
   {
     auto insetBounds = pillBounds.reduced(4);
