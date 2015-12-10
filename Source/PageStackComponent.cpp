@@ -1,7 +1,9 @@
 #include "PageStackComponent.h"
 #include "Utils.h"
 
-PageStackComponent::PageStackComponent() {}
+PageStackComponent::PageStackComponent() {
+  setInterceptsMouseClicks(false, true);
+}
 PageStackComponent::~PageStackComponent() {}
 
 void PageStackComponent::paint(Graphics &g) {}
