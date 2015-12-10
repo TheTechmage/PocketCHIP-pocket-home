@@ -10,7 +10,7 @@ static ImageButton *createButtonFromDrawable(const String &name, const Drawable 
   auto image = Image(Image::RGB, 128, 128, true);
   Graphics g(image);
   drawable.drawWithin(g, Rectangle<float>(0, 0, image.getWidth(), image.getHeight()),
-                          RectanglePlacement::fillDestination, 1.0f);
+                      RectanglePlacement::fillDestination, 1.0f);
   button->setImages(true, true, true,                       //
                     image, 1.0f, Colours::transparentWhite, // normal
                     image, 1.0f, Colours::transparentWhite, // over
@@ -19,9 +19,7 @@ static ImageButton *createButtonFromDrawable(const String &name, const Drawable 
   return button;
 }
 
-
 SettingsPageComponent::SettingsPageComponent() {
-
   mainPage = new Component();
   addAndMakeVisible(mainPage);
   mainPage->toBack();
@@ -94,8 +92,7 @@ void SettingsPageComponent::resized() {
   }
 
   Component *sliders[] = { screenBrightnessSlider.get(), nullptr, volumeSlider.get() };
-  sliderLayout.layOutComponents(sliders, 3, bounds.getX(),
-                                bounds.getBottom() - sliderHeight - sliderPadding * 2,
+  sliderLayout.layOutComponents(sliders, 3, bounds.getX(), bounds.getBottom() - sliderHeight,
                                 bounds.getWidth(), sliderHeight, false, true);
 }
 

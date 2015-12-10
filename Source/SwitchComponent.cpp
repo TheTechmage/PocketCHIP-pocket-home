@@ -3,7 +3,7 @@
 #include "Utils.h"
 
 SwitchComponent::SwitchComponent() {
-  setSize(32, 32);
+  setSize(48, 24);
 }
 
 SwitchComponent::~SwitchComponent() {}
