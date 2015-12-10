@@ -49,12 +49,9 @@ void MainContentComponent::paint(Graphics &g) {
 
 void MainContentComponent::resized() {
   auto bounds = getLocalBounds();
-
   closeButton->setBounds(bounds.getWidth() - 40, 0, 40, 20);
-
   categoryButtons->setBounds(bounds.getX(), bounds.getY() + 10, bounds.getWidth(),
                              categoryButtons->buttonSize);
-
   pageStack->setBounds(bounds);
   for (auto page : pages) {
     page->setBounds(bounds);

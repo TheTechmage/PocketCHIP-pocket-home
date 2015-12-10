@@ -5,7 +5,7 @@ File absoluteFileFromPath(const String &path) {
                                     : File::getCurrentWorkingDirectory().getChildFile(path);
 }
 
-Image createImage(const File &imageFile) {
+Image createImageFromFile(const File &imageFile) {
   auto image = Image(Image::RGB, 128, 128, true);
   if (imageFile.getFileExtension() == ".svg") {
     ScopedPointer<XmlElement> svgElement = XmlDocument::parse(imageFile);
@@ -21,7 +21,7 @@ Image createImage(const File &imageFile) {
 
 ImageButton *createImageButton(const String &name, const File &imageFile) {
   auto button = new ImageButton(name);
-  auto image = createImage(imageFile);
+  auto image = createImageFromFile(imageFile);
   button->setImages(true, true, true,                       //
                     image, 1.0f, Colours::transparentWhite, // normal
                     image, 1.0f, Colours::transparentWhite, // over

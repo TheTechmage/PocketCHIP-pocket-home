@@ -70,7 +70,6 @@ SettingsPageComponent::SettingsPageComponent() {
 
   addChildComponent(backButton);
   backButton->setAlwaysOnTop(true);
-
 }
 
 SettingsPageComponent::~SettingsPageComponent() {}

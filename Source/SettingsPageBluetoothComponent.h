@@ -7,6 +7,8 @@ class SettingsPageBluetoothComponent    : public Component
 public:
     SettingsPageBluetoothComponent();
     ~SettingsPageBluetoothComponent();
+    
+    ScopedPointer<Image> bluetoothIcon;
 
     void paint (Graphics&);
     void resized();
