@@ -13,11 +13,10 @@ struct SourceItemListboxContents : public ListBoxModel {
     }
     g.setColour(Colours::black);
     g.setFont(height * 0.7f);
-    g.drawText("WIFI SSID #" + String(rowNumber + 1), 5, 0, width, height, Justification::centredLeft,
-               true);
+    g.drawText("WIFI SSID #" + String(rowNumber + 1), 5, 0, width, height,
+               Justification::centredLeft, true);
   }
 };
-
 
 
 SettingsPageWifiComponent::SettingsPageWifiComponent() {
@@ -42,15 +41,14 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
 SettingsPageWifiComponent::~SettingsPageWifiComponent() {}
 
 void SettingsPageWifiComponent::setWifiEnabled(Boolean enabled) {
-//  wifiPanel->setVisible(enabled);
+  //  wifiPanel->setVisible(enabled);
   ssidListPanel->setVisible(enabled);
 }
 
 void SettingsPageWifiComponent::paint(Graphics &g) {}
 
 void SettingsPageWifiComponent::resized() {
-
-//  wifiPanel->setVisible(wifiEnabled);
+  //  wifiPanel->setVisible(wifiEnabled);
 
   auto bounds = getLocalBounds();
 
