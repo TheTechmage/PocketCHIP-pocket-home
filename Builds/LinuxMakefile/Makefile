@@ -12,7 +12,7 @@ ifeq ($(CONFIG),Debug)
   BINDIR := build
   LIBDIR := build
   OBJDIR := build/intermediate/Debug
-  OUTDIR := ../../build
+  OUTDIR := ../../build/Debug
 
   ifeq ($(TARGET_ARCH),)
     TARGET_ARCH := -march=native
@@ -32,7 +32,7 @@ ifeq ($(CONFIG),Release)
   BINDIR := build
   LIBDIR := build
   OBJDIR := build/intermediate/Release
-  OUTDIR := ../../build
+  OUTDIR := ../../build/Release
 
   ifeq ($(TARGET_ARCH),)
     TARGET_ARCH := -march=native
@@ -49,6 +49,7 @@ ifeq ($(CONFIG),Release)
 endif
 
 OBJECTS := \
+  $(OBJDIR)/PageStackComponent_8da9db4d.o \
   $(OBJDIR)/SwitchComponent_a904080a.o \
   $(OBJDIR)/Utils_e4b11b92.o \
   $(OBJDIR)/LauncherBarComponent_b69b173.o \
@@ -85,6 +86,11 @@ clean:
 strip:
 	@echo Stripping PokeLaunch
 	-@strip --strip-unneeded $(OUTDIR)/$(TARGET)
+
+$(OBJDIR)/PageStackComponent_8da9db4d.o: ../../Source/PageStackComponent.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling PageStackComponent.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/SwitchComponent_a904080a.o: ../../Source/SwitchComponent.cpp
 	-@mkdir -p $(OBJDIR)

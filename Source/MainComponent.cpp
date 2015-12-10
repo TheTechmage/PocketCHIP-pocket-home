@@ -6,7 +6,11 @@ MainContentComponent::MainContentComponent(const var &configJson) {
   lookAndFeel = new PokeLookAndFeel();
   setLookAndFeel(lookAndFeel);
 
+  pageStack = new PageStackComponent();
+  addAndMakeVisible(pageStack);
+
   categoryButtons = new LauncherBarComponent(62);
+  addAndMakeVisible(categoryButtons);
 
   auto categories = configJson.getArray();
   if (categories) {
@@ -17,12 +21,11 @@ MainContentComponent::MainContentComponent(const var &configJson) {
       page->createIconsFromJsonArray(category["items"]);
       pages.add(page);
       pagesByName.set(name, page);
-      addChildComponent(page);
+      pageStack->addChildComponent(page);
     }
 
     categoryButtons->addCategoriesFromJsonArray(*categories);
     categoryButtons->setInterceptsMouseClicks(false, true);
-    addAndMakeVisible(categoryButtons);
 
     // NOTE(ryan): Maybe do something with a custom event later.. For now we just listen to all the
     // buttons manually.
@@ -52,49 +55,20 @@ void MainContentComponent::resized() {
   categoryButtons->setBounds(bounds.getX(), bounds.getY() + 10, bounds.getWidth(),
                              categoryButtons->buttonSize);
 
+  pageStack->setBounds(bounds);
   for (auto page : pages) {
     page->setBounds(bounds);
   }
 }
 
 void MainContentComponent::buttonClicked(Button *button) {
-  if ((pageStack.empty() || pageStack.getLast()->getName() != button->getName()) &&
+  auto currentPage = pageStack->getCurrentPage();
+  if ((!currentPage || currentPage->getName() != button->getName()) &&
       pagesByName.contains(button->getName())) {
-    swapPage(pagesByName[button->getName()]);
+    pageStack->swapPage(pagesByName[button->getName()],
+                        PageStackComponent::kTransitionTranslateHorizontal);
   }
   if (button == closeButton) {
     JUCEApplication::quit();
-  }
-}
-
-void MainContentComponent::pushPage(Component *page) {
-  auto bounds = getLocalBounds();
-  if (!pageStack.empty()) {
-    animateTranslation(page, -bounds.getWidth(), 0, 1.0f, pageTransitionDurationMillis);
-    // animator.fadeOut(pageStack.getLast(), pageTransitionDurationMillis);
-  }
-  pageStack.add(page);
-  page->setBounds(bounds.translated(bounds.getWidth(), 0));
-  animateTranslation(page, 0, 0, 1.0f, pageTransitionDurationMillis);
-  // animator.fadeIn(page, pageTransitionDurationMillis);
-}
-
-void MainContentComponent::swapPage(Component *page) {
-  popPage();
-
-  pageStack.add(page);
-
-  auto bounds = getLocalBounds();
-  page->setBounds(bounds.translated(bounds.getWidth(), 0));
-  animateTranslation(page, 0, 0, 1.0f, pageTransitionDurationMillis);
-  // animator.fadeIn(page, pageTransitionDurationMillis);
-}
-
-void MainContentComponent::popPage() {
-  if (!pageStack.empty()) {
-    animateTranslation(pageStack.getLast(), -getLocalBounds().getWidth(), 0, 1.0f,
-                       pageTransitionDurationMillis);
-    // animator.fadeOut(pageStack.getLast(), pageTransitionDurationMillis);
-    pageStack.removeLast();
   }
 }

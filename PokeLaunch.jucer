@@ -28,6 +28,10 @@
       <FILE id="rG44xd" name="wifiIcon.svg" compile="0" resource="1" file="assets/wifiIcon.svg"/>
     </GROUP>
     <GROUP id="{4593A345-C350-960A-058D-B48F8240AA1D}" name="Source">
+      <FILE id="pIj8mU" name="PageStackComponent.cpp" compile="1" resource="0"
+            file="Source/PageStackComponent.cpp"/>
+      <FILE id="uhO7dM" name="PageStackComponent.h" compile="0" resource="0"
+            file="Source/PageStackComponent.h"/>
       <FILE id="CvUayI" name="SwitchComponent.cpp" compile="1" resource="0"
             file="Source/SwitchComponent.cpp"/>
       <FILE id="vb1qdw" name="SwitchComponent.h" compile="0" resource="0"
@@ -94,9 +98,9 @@
     <LINUX_MAKE targetFolder="Builds/LinuxMakefile" cppLanguageStandard="-std=c++11">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"
-                       targetName="PokeLaunch" binaryPath="build"/>
+                       targetName="PokeLaunch" binaryPath="build/Debug"/>
         <CONFIGURATION name="Release" libraryPath="/usr/X11R6/lib/" isDebug="0" optimisation="3"
-                       targetName="PokeLaunch" binaryPath="build"/>
+                       targetName="PokeLaunch" binaryPath="build/Release"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="deps/JUCE/modules"/>
