@@ -26,6 +26,7 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
 
   switchComponent = new SwitchComponent();
   switchComponent->addListener(this);
+  switchComponent->toFront(false);
   addAndMakeVisible(switchComponent);
 
   ssidList = new ListBox();
@@ -54,9 +55,14 @@ void SettingsPageWifiComponent::resized() {
 
   ssidListPanel->setBounds(120, 0, bounds.getWidth() - 100, bounds.getHeight());
   ssidList->setBounds(0, 0, 200, bounds.getHeight());
-
   wifiIcon->setTopLeftPosition(bounds.getX(), bounds.getHeight() / 2.0f - 20);
-  switchComponent->setTopLeftPosition(bounds.getX() + 80, bounds.getHeight() / 2.0);
+
+  {
+    auto t = switchComponent->getTransform();
+    t = AffineTransform::identity.rotated(-float_Pi / 2.0)
+            .translated(bounds.getX() + 75, bounds.getHeight() / 2.0f + 40);
+    switchComponent->setTransform(t);
+  }
 }
 
 void SettingsPageWifiComponent::buttonClicked(Button *button) {}

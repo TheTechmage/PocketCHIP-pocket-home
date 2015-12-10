@@ -17,9 +17,9 @@ void SwitchComponent::paintButton(Graphics &g, bool isMouseOverButton, bool isBu
   g.fillRoundedRectangle(pillBounds.getX(), pillBounds.getY(), pillBounds.getWidth(),
                          pillBounds.getHeight(), radius);
 
-  g.setColour(Colours::pink);
-  g.drawRoundedRectangle(pillBounds.getX(), pillBounds.getY(), pillBounds.getWidth(),
-                         pillBounds.getHeight(), radius, 2);
+  g.setColour(Colours::black);
+  g.drawRoundedRectangle(pillBounds.getX(), pillBounds.getY(),
+                         pillBounds.getWidth(), pillBounds.getHeight(), radius, 4);
 
   {
     auto insetBounds = pillBounds.reduced(4);
@@ -35,4 +35,5 @@ void SwitchComponent::paintButton(Graphics &g, bool isMouseOverButton, bool isBu
 void SwitchComponent::resized() {
   pillBounds.setBounds(0, 0, 2, 1);
   fitRectInRect(pillBounds, getLocalBounds(), Justification::centred, false);
+  pillBounds = pillBounds.reduced(2.0);
 }
