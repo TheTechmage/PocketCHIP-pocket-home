@@ -10,7 +10,7 @@
 namespace BinaryData
 {
     extern const char*   appsIcon_svg;
-    const int            appsIcon_svgSize = 1318;
+    const int            appsIcon_svgSize = 1323;
 
     extern const char*   appsIconSel_svg;
     const int            appsIconSel_svgSize = 1318;
@@ -28,13 +28,13 @@ namespace BinaryData
     const int            brightnessIconLo_svgSize = 1781;
 
     extern const char*   gamesIcon_svg;
-    const int            gamesIcon_svgSize = 1316;
+    const int            gamesIcon_svgSize = 1319;
 
     extern const char*   gamesIconSel_svg;
     const int            gamesIconSel_svgSize = 1316;
 
     extern const char*   settingsIcon_svg;
-    const int            settingsIcon_svgSize = 1593;
+    const int            settingsIcon_svgSize = 1585;
 
     extern const char*   settingsIconSel_svg;
     const int            settingsIconSel_svgSize = 1593;

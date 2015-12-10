@@ -1,38 +1,38 @@
 [
   {
     "name": "Apps",
-    "icon": "../../../../assets/appsIcon.svg",
+    "icon": "../../assets/appsIcon.svg",
     "items": [
       {
         "name": "Terminal",
-        "icon": "../../../../assets/Faenza/utilities-terminal.png"
+        "icon": "../../assets/Faenza/utilities-terminal.png"
       },
       {
         "name": "Iceweasel",
-        "icon": "../../../../assets/Faenza/iceweasel.png"
+        "icon": "../../assets/Faenza/iceweasel.png"
       },
       {
         "name": "MPlayer",
-        "icon": "../../../../assets/Faenza/mplayer.png"
+        "icon": "../../assets/Faenza/mplayer.png"
       },
       {
         "name": "MyPaint",
-        "icon": "../../../../assets/Faenza/mypaint.png"
+        "icon": "../../assets/Faenza/mypaint.png"
       }
     ]
   },
   {
     "name": "Games",
-    "icon": "../../../../assets/gamesIcon.svg",
+    "icon": "../../assets/gamesIcon.svg",
     "items": [
       {
         "name": "Quake",
-        "icon": "../../../../assets/Faenza/window.png"
+        "icon": "../../assets/Faenza/window.png"
       }
     ]
   },
   {
     "name": "Settings",
-    "icon": "../../../../assets/settingsIcon.svg"
+    "icon": "../../assets/settingsIcon.svg"
   }
 ]

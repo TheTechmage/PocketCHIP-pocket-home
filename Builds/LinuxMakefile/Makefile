@@ -12,7 +12,7 @@ ifeq ($(CONFIG),Debug)
   BINDIR := build
   LIBDIR := build
   OBJDIR := build/intermediate/Debug
-  OUTDIR := build
+  OUTDIR := ../../build
 
   ifeq ($(TARGET_ARCH),)
     TARGET_ARCH := -march=native
@@ -32,7 +32,7 @@ ifeq ($(CONFIG),Release)
   BINDIR := build
   LIBDIR := build
   OBJDIR := build/intermediate/Release
-  OUTDIR := build
+  OUTDIR := ../../build
 
   ifeq ($(TARGET_ARCH),)
     TARGET_ARCH := -march=native

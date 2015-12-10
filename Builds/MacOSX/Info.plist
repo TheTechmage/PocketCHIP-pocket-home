@@ -8,7 +8,7 @@
     <key>CFBundleIconFile</key>
     <string></string>
     <key>CFBundleIdentifier</key>
-    <string>com.yourcompany.PokeLaunch</string>
+    <string>co.nextthing.PokeLaunch</string>
     <key>CFBundleName</key>
     <string>PokeLaunch</string>
     <key>CFBundlePackageType</key>

@@ -27,8 +27,13 @@ public:
     if (flagIndex >= 0 && args.size() > flagIndex + 1) {
       auto configFile = absoluteFileFromPath(args[flagIndex + 1]);
       configJson = JSON::parse(configFile);
+      if (!configJson) {
+        std::cerr << "Could not read config file from " << configFile.getFullPathName() << std::endl;
+        quit();
+      }
     } else {
-      std::cerr << "Notice: No config file found" << std::endl;
+      std::cout << "Usage: PokeLaunch -c <config-file.json>" << std::endl;
+      quit();
     }
 
     mainWindow = new MainWindow(getApplicationName(), configJson);

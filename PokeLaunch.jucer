@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="EFuQKG" name="PokeLaunch" projectType="guiapp" version="0.0.1"
-              bundleIdentifier="com.yourcompany.PokeLaunch" includeBinaryInAppConfig="1"
+              bundleIdentifier="co.nextthing.PokeLaunch" includeBinaryInAppConfig="1"
               jucerVersion="4.0.2" companyName="Next Thing Co." companyWebsite="http://nextthing.co">
   <MAINGROUP id="NYF1Vz" name="PokeLaunch">
     <GROUP id="{A1DF3F2A-774E-D561-3D99-5D88F7D2D731}" name="assets">
@@ -76,10 +76,11 @@
     <XCODE_MAC targetFolder="Builds/MacOSX">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" osxSDK="default" osxCompatibility="10.10 SDK" osxArchitecture="default"
-                       isDebug="1" optimisation="1" targetName="PokeLaunch" cppLanguageStandard="c++11"/>
+                       isDebug="1" optimisation="1" targetName="PokeLaunch" cppLanguageStandard="c++11"
+                       binaryPath="build"/>
         <CONFIGURATION name="Release" osxSDK="default" osxCompatibility="10.10 SDK"
                        osxArchitecture="default" isDebug="0" optimisation="3" targetName="PokeLaunch"
-                       cppLanguageStandard="c++11"/>
+                       cppLanguageStandard="c++11" binaryPath="build"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="deps/JUCE/modules"/>
@@ -93,9 +94,9 @@
     <LINUX_MAKE targetFolder="Builds/LinuxMakefile" cppLanguageStandard="-std=c++11">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"
-                       targetName="PokeLaunch"/>
+                       targetName="PokeLaunch" binaryPath="build"/>
         <CONFIGURATION name="Release" libraryPath="/usr/X11R6/lib/" isDebug="0" optimisation="3"
-                       targetName="PokeLaunch"/>
+                       targetName="PokeLaunch" binaryPath="build"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="deps/JUCE/modules"/>
