@@ -1,10 +1,7 @@
-#include "../JuceLibraryCode/JuceHeader.h"
 #include "SettingsPageBluetoothComponent.h"
 #include "Utils.h"
 
-//==============================================================================
-SettingsPageBluetoothComponent::SettingsPageBluetoothComponent() {
-}
+SettingsPageBluetoothComponent::SettingsPageBluetoothComponent() {}
 
 SettingsPageBluetoothComponent::~SettingsPageBluetoothComponent() {}
 
