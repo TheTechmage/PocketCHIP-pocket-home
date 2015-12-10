@@ -2,26 +2,16 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
-#include "LauncherBarComponent.h"
-#include "SettingsPageComponent.h"
-#include "AppsPageComponent.h"
-#include "SwitchComponent.h"
+#include "LauncherComponent.h"
 #include "PageStackComponent.h"
 
 class MainContentComponent : public Component, private Button::Listener {
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainContentComponent)
-
 public:
-  ScopedPointer<LauncherBarComponent> categoryButtons;
-
-  OwnedArray<Component> pages;
-  ScopedPointer<PageStackComponent> pageStack;
-  HashMap<String, Component *> pagesByName;
-
-  StretchableLayoutManager categoryButtonLayout;
-
+  ScopedPointer<LauncherComponent> launcher;
   ScopedPointer<LookAndFeel> lookAndFeel;
   ScopedPointer<TextButton> closeButton;
+
+  ScopedPointer<PageStackComponent> pageStack;
 
   MainContentComponent(const var &configJson);
   ~MainContentComponent();
@@ -30,5 +20,7 @@ public:
   void resized() override;
 
 private:
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainContentComponent)
+
   void buttonClicked(Button *) override;
 };
