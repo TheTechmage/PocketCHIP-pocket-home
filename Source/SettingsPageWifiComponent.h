@@ -14,6 +14,8 @@ public:
 
   ScopedPointer<PageStackComponent> pageStack;
 
+  ScopedPointer<ImageButton> backButton;
+
   ScopedPointer<Component> ssidListPage;
   ScopedPointer<ListBox> ssidList;
   ScopedPointer<ListBoxModel> ssidListModel;

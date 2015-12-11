@@ -11,7 +11,6 @@ public:
   StretchableLayoutManager sliderLayout;
 
   ScopedPointer<Component> mainPage;
-  ScopedPointer<ImageButton> backButton;
 
   OwnedArray<Component> pages;
   HashMap<String, Component *> pagesByName;

@@ -2,23 +2,10 @@
 #include "SettingsPageWifiComponent.h"
 #include "SettingsPageBluetoothComponent.h"
 #include "Main.h"
+#include "Utils.h"
 
 static const int sliderHeight = 50;
 static const int sliderPadding = 10;
-
-static ImageButton *createButtonFromDrawable(const String &name, const Drawable &drawable) {
-  auto button = new ImageButton(name);
-  auto image = Image(Image::RGB, 128, 128, true);
-  Graphics g(image);
-  drawable.drawWithin(g, Rectangle<float>(0, 0, image.getWidth(), image.getHeight()),
-                      RectanglePlacement::fillDestination, 1.0f);
-  button->setImages(true, true, true,                       //
-                    image, 1.0f, Colours::transparentWhite, // normal
-                    image, 1.0f, Colours::transparentWhite, // over
-                    image, 0.7f, Colours::transparentBlack, // down
-                    0.5f);
-  return button;
-}
 
 SettingsPageComponent::SettingsPageComponent() {
   mainPage = new Component();
@@ -40,19 +27,15 @@ SettingsPageComponent::SettingsPageComponent() {
 
   ScopedPointer<XmlElement> wifiSvg = XmlDocument::parse(BinaryData::wifiIcon_svg);
   ScopedPointer<XmlElement> bluetoothSvg = XmlDocument::parse(BinaryData::bluetoothIcon_svg);
-  ScopedPointer<XmlElement> backButtonSvg = XmlDocument::parse(BinaryData::backIcon_svg);
 
   ScopedPointer<Drawable> wifiDrawable = Drawable::createFromSVG(*wifiSvg);
   ScopedPointer<Drawable> bluetoothDrawable = Drawable::createFromSVG(*bluetoothSvg);
-  ScopedPointer<Drawable> backButtonDrawable = Drawable::createFromSVG(*backButtonSvg);
 
-  auto wifiButton = createButtonFromDrawable("WiFi", *wifiDrawable);
-  auto bluetoothButton = createButtonFromDrawable("Bluetooth", *bluetoothDrawable);
-  backButton = createButtonFromDrawable("Back", *backButtonDrawable);
+  auto wifiButton = createImageButtonFromDrawable("WiFi", *wifiDrawable);
+  auto bluetoothButton = createImageButtonFromDrawable("Bluetooth", *bluetoothDrawable);
 
   wifiButton->addListener(this);
   bluetoothButton->addListener(this);
-  backButton->addListener(this);
 
   addAndOwnIcon(wifiButton->getName(), wifiButton);
   addAndOwnIcon(bluetoothButton->getName(), bluetoothButton);
@@ -64,9 +47,6 @@ SettingsPageComponent::SettingsPageComponent() {
   auto bluetoothPage = new SettingsPageBluetoothComponent();
   pages.add(bluetoothPage);
   pagesByName.set(bluetoothButton->getName(), bluetoothPage);
-
-  addChildComponent(backButton);
-  backButton->setAlwaysOnTop(true);
 }
 
 SettingsPageComponent::~SettingsPageComponent() {}
@@ -77,8 +57,6 @@ void SettingsPageComponent::resized() {
   AppsPageComponent::resized();
 
   auto bounds = getLocalBounds();
-
-  backButton->setBounds(10, 10, 62, 62);
 
   mainPage->setBounds(bounds);
 
@@ -102,8 +80,5 @@ void SettingsPageComponent::buttonClicked(Button *button) {
   if (pagesByName.contains(button->getName())) {
     auto page = pagesByName[button->getName()];
     getMainStack().pushPage(page, PageStackComponent::kTransitionTranslateHorizontal);
-  }
-  if (button == backButton) {
-    getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
   }
 }

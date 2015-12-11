@@ -6,6 +6,7 @@ File absoluteFileFromPath(const String &path);
 
 Image createImageFromFile(const File &imageFile);
 ImageButton *createImageButton(const String &name, const File &imageFile);
+ImageButton *createImageButtonFromDrawable(const String &name, const Drawable &drawable);
 
 void fitRectInRect(Rectangle<int> &rect, int x, int y, int width, int height,
                    Justification justification, const bool onlyReduceInSize);

@@ -30,6 +30,20 @@ ImageButton *createImageButton(const String &name, const File &imageFile) {
   return button;
 }
 
+ImageButton *createImageButtonFromDrawable(const String &name, const Drawable &drawable) {
+  auto button = new ImageButton(name);
+  auto image = Image(Image::RGB, 128, 128, true);
+  Graphics g(image);
+  drawable.drawWithin(g, Rectangle<float>(0, 0, image.getWidth(), image.getHeight()),
+                      RectanglePlacement::fillDestination, 1.0f);
+  button->setImages(true, true, true,                       //
+                    image, 1.0f, Colours::transparentWhite, // normal
+                    image, 1.0f, Colours::transparentWhite, // over
+                    image, 0.7f, Colours::transparentBlack, // down
+                    0.5f);
+  return button;
+}
+
 void fitRectInRect(Rectangle<int> &rect, int x, int y, int width, int height,
                    Justification justification, const bool onlyReduceInSize) {
   // it's no good calling this method unless both the component and

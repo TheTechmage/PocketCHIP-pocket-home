@@ -1,5 +1,6 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "SettingsPageWifiComponent.h"
+#include "Main.h"
 #include "Utils.h"
 
 SettingsPageWifiComponent::SettingsPageWifiComponent() {
@@ -14,6 +15,14 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   switchComponent->addListener(this);
   switchComponent->toFront(false);
   addAndMakeVisible(switchComponent);
+  
+  // create back button
+  ScopedPointer<XmlElement> backButtonSvg = XmlDocument::parse(BinaryData::backIcon_svg);
+  ScopedPointer<Drawable> backButtonDrawable = Drawable::createFromSVG(*backButtonSvg);  
+  backButton = createImageButtonFromDrawable("Back", *backButtonDrawable);
+  backButton->addListener(this);  
+  backButton->setAlwaysOnTop(true);
+  addAndMakeVisible(backButton);
 
   // create ssid list "page"
   ssidListPage = new Component("SSID List Page");
@@ -61,6 +70,8 @@ void SettingsPageWifiComponent::resized() {
   auto bounds = getLocalBounds();
   auto pageBounds = Rectangle<int>(120, 0, bounds.getWidth() - 120, bounds.getHeight());
 
+  backButton->setBounds(10, 10, 62, 62);
+
   pageStack->setBounds(pageBounds);
   ssidList->setBounds(0, 0, pageBounds.getWidth(), pageBounds.getHeight());
 
@@ -91,6 +102,9 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
       wifiConnected = true;
     }
   }
+  if (button == backButton) {
+    getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
+  }  
 }
 
 void SettingsPageWifiComponent::buttonStateChanged(Button *button) {
