@@ -35,6 +35,11 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   passwordEditor->setColour(TextEditor::ColourIds::backgroundColourId, Colours::lightgrey);
   connectionPage->addAndMakeVisible(passwordEditor);
 
+  connectionButton = new TextButton("Connection Button");
+  connectionButton->setButtonText("Connect");
+  connectionButton->addListener(this);
+  connectionPage->addAndMakeVisible(connectionButton);
+
   // add pages to page stack
   pageStack->addChildComponent(ssidListPage);
   pageStack->addChildComponent(connectionPage);
@@ -61,6 +66,7 @@ void SettingsPageWifiComponent::resized() {
 
   connectionLabel->setBounds(10, 90, pageBounds.getWidth() - 20, 24);
   passwordEditor->setBounds(90, 120, pageBounds.getWidth() - 180, 24);
+  connectionButton->setBounds(90, 160, pageBounds.getWidth() - 180, 24);
 
   wifiIcon->setTopLeftPosition(bounds.getX(), bounds.getHeight() / 2.0f - 20);
 
@@ -72,7 +78,20 @@ void SettingsPageWifiComponent::resized() {
   }
 }
 
-void SettingsPageWifiComponent::buttonClicked(Button *button) {}
+void SettingsPageWifiComponent::buttonClicked(Button *button) {
+  if (button == connectionButton) {
+    if (wifiConnected) {
+      passwordEditor->setVisible(true);
+      connectionButton->setButtonText("Connect");
+      wifiConnected = false;
+      pageStack->pushPage(ssidListPage, PageStackComponent::kTransitionNone);
+    } else {
+      passwordEditor->setVisible(false);
+      connectionButton->setButtonText("Disconnect");
+      wifiConnected = true;
+    }
+  }
+}
 
 void SettingsPageWifiComponent::buttonStateChanged(Button *button) {
   if (button == switchComponent && wifiEnabled != button->getToggleState()) {
@@ -90,20 +109,14 @@ void SettingsPageWifiComponent::paintListBoxItem(int rowNumber, Graphics &g, int
   if (rowIsSelected) g.fillAll(Colours::lightgrey);
   g.setColour(Colours::black);
   g.setFont(height * 0.7f);
-  g.drawText("WIFI SSID #" + String(rowNumber), 5, 0, width, height, Justification::centredLeft,
+  g.drawText("WIFI SSID " + String(rowNumber), 5, 0, width, height, Justification::centredLeft,
              true);
 }
 
-void SettingsPageWifiComponent::listBoxItemClicked(int row, const MouseEvent &) {
-  DBG("Clicked Row: " + String(row));
-
-  auto currentPage = pageStack->getCurrentPage();
-  if (currentPage->getName() == "SSID List Page") {
+void SettingsPageWifiComponent::listBoxItemClicked(int rowNumber, const MouseEvent &) {
+  connectionLabel->setText("WIFI SSID " + String(rowNumber),
+                           juce::NotificationType::dontSendNotification);
+  if (pageStack->getCurrentPage()->getName() == "SSID List Page") {
     pageStack->pushPage(connectionPage, PageStackComponent::kTransitionTranslateHorizontal);
   }
-  //  if ((!currentPage || currentPage->getName() != button->getName()) &&
-  //      pagesByName.contains(button->getName())) {
-  //    pageStack->swapPage(pagesByName[button->getName()],
-  //                        PageStackComponent::kTransitionTranslateHorizontal);
-  //  }
 }
