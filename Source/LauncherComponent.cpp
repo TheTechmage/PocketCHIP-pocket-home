@@ -19,7 +19,6 @@ LauncherComponent::LauncherComponent(const var &configJson) {
       page->createIconsFromJsonArray(category["items"]);
       pages.add(page);
       pagesByName.set(name, page);
-      pageStack->addChildComponent(page);
     }
 
     categoryButtons->addCategoriesFromJsonArray(*categories);

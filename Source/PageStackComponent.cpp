@@ -33,6 +33,8 @@ void PageStackComponent::popPage(Transition transtion) {
 
 void PageStackComponent::transitionIn(Component *component, Transition transtion,
                                       int durationMillis) {
+  addAndMakeVisible(component);
+
   auto bounds = getLocalBounds();
   switch (transtion) {
     case kTransitionTranslateHorizontal: {
@@ -53,8 +55,10 @@ void PageStackComponent::transitionOut(Component *component, Transition transtio
       auto bounds = getLocalBounds();
       animateTranslation(component, -bounds.getWidth(), 0, 1.0f, durationMillis);
     } break;
-    default: { component->setVisible(false); }
+    default: {}
   }
+
+  removeChildComponent(component);
 }
 
 Component *PageStackComponent::getCurrentPage() {

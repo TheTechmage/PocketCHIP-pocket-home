@@ -2,11 +2,9 @@
 #include "SettingsPageWifiComponent.h"
 #include "Utils.h"
 
-
 SettingsPageWifiComponent::SettingsPageWifiComponent() {
-
   pageStack = new PageStackComponent();
-  addAndMakeVisible(pageStack);  
+  addAndMakeVisible(pageStack);
 
   ScopedPointer<XmlElement> wifiSvg = XmlDocument::parse(BinaryData::wifiIcon_svg);
   wifiIcon = Drawable::createFromSVG(*wifiSvg);
@@ -32,8 +30,8 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   connectionLabel->setJustificationType(juce::Justification::centred);
   connectionPage->addAndMakeVisible(connectionLabel);
 
-  passwordEditor = new TextEditor("Password", (juce_wchar) 0x2022);
-  passwordEditor->setText ("Password");
+  passwordEditor = new TextEditor("Password", (juce_wchar)0x2022);
+  passwordEditor->setText("Password");
   passwordEditor->setColour(TextEditor::ColourIds::backgroundColourId, Colours::lightgrey);
   connectionPage->addAndMakeVisible(passwordEditor);
 
@@ -55,7 +53,6 @@ void SettingsPageWifiComponent::setWifiEnabled(Boolean enabled) {
 void SettingsPageWifiComponent::paint(Graphics &g) {}
 
 void SettingsPageWifiComponent::resized() {
-
   auto bounds = getLocalBounds();
   auto pageBounds = Rectangle<int>(120, 0, bounds.getWidth() - 120, bounds.getHeight());
 
@@ -89,25 +86,24 @@ int SettingsPageWifiComponent::getNumRows() {
 }
 
 void SettingsPageWifiComponent::paintListBoxItem(int rowNumber, Graphics &g, int width, int height,
-                      bool rowIsSelected) {
+                                                 bool rowIsSelected) {
   if (rowIsSelected) g.fillAll(Colours::lightgrey);
   g.setColour(Colours::black);
   g.setFont(height * 0.7f);
-  g.drawText("WIFI SSID #" + String(rowNumber), 5, 0, width, height,
-             Justification::centredLeft, true);
+  g.drawText("WIFI SSID #" + String(rowNumber), 5, 0, width, height, Justification::centredLeft,
+             true);
 }
 
-void SettingsPageWifiComponent::listBoxItemClicked (int row, const MouseEvent&) {
+void SettingsPageWifiComponent::listBoxItemClicked(int row, const MouseEvent &) {
   DBG("Clicked Row: " + String(row));
 
   auto currentPage = pageStack->getCurrentPage();
   if (currentPage->getName() == "SSID List Page") {
     pageStack->pushPage(connectionPage, PageStackComponent::kTransitionTranslateHorizontal);
   }
-//  if ((!currentPage || currentPage->getName() != button->getName()) &&
-//      pagesByName.contains(button->getName())) {
-//    pageStack->swapPage(pagesByName[button->getName()],
-//                        PageStackComponent::kTransitionTranslateHorizontal);
-//  }
-
+  //  if ((!currentPage || currentPage->getName() != button->getName()) &&
+  //      pagesByName.contains(button->getName())) {
+  //    pageStack->swapPage(pagesByName[button->getName()],
+  //                        PageStackComponent::kTransitionTranslateHorizontal);
+  //  }
 }

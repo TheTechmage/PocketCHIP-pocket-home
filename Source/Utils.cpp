@@ -80,5 +80,5 @@ void animateTranslation(Component *component, int x, int y, float alpha, int dur
   const auto &bounds = component->getBounds();
   auto destBounds = bounds.translated(x - bounds.getX(), y - bounds.getY());
   Desktop::getInstance().getAnimator().animateComponent(component, destBounds, alpha,
-                                                        durationMillis, false, 0, 0);
+                                                        durationMillis, true, 0, 0);
 }

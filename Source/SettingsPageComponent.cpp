@@ -59,12 +59,12 @@ SettingsPageComponent::SettingsPageComponent() {
   auto wifiPage = new SettingsPageWifiComponent();
   pages.add(wifiPage);
   pagesByName.set(wifiButton->getName(), wifiPage);
-  addChildComponent(wifiPage);
+  // addChildComponent(wifiPage);
 
   auto bluetoothPage = new SettingsPageBluetoothComponent();
   pages.add(bluetoothPage);
   pagesByName.set(bluetoothButton->getName(), bluetoothPage);
-  addChildComponent(bluetoothPage);
+  // addChildComponent(bluetoothPage);
 
   addChildComponent(backButton);
   backButton->setAlwaysOnTop(true);
@@ -101,10 +101,10 @@ void SettingsPageComponent::buttonClicked(Button *button) {
     page->setVisible(false);
   }
   if (pagesByName.contains(button->getName())) {
-    backButton->setVisible(true);
-    train->setVisible(false);
-    mainPage->setVisible(false);
-    pagesByName[button->getName()]->setVisible(true);
+    // backButton->setVisible(true);
+    // train->setVisible(false);
+    // mainPage->setVisible(false);
+    // pagesByName[button->getName()]->setVisible(true);
   }
   if (button == backButton) {
     backButton->setVisible(false);
