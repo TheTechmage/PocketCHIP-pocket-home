@@ -41,7 +41,6 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
 
   passwordEditor = new TextEditor("Password", (juce_wchar)0x2022);
   passwordEditor->setText("Password");
-  passwordEditor->setColour(TextEditor::ColourIds::backgroundColourId, Colours::lightgrey);
   connectionPage->addAndMakeVisible(passwordEditor);
 
   connectionButton = new TextButton("Connection Button");
@@ -121,7 +120,6 @@ int SettingsPageWifiComponent::getNumRows() {
 void SettingsPageWifiComponent::paintListBoxItem(int rowNumber, Graphics &g, int width, int height,
                                                  bool rowIsSelected) {
   if (rowIsSelected) g.fillAll(Colours::lightgrey);
-  g.setColour(Colours::black);
   g.setFont(height * 0.7f);
   g.drawText("WIFI SSID " + String(rowNumber), 5, 0, width, height, Justification::centredLeft,
              true);

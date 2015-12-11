@@ -3,6 +3,9 @@
 PokeLookAndFeel::PokeLookAndFeel() {
   setColour(Slider::backgroundColourId, Colour(0xffe1e1e1));
   setColour(Slider::thumbColourId, Colour(0xffeb008b));
+  setColour(TextEditor::backgroundColourId, Colours::lightgrey);
+  setColour(ListBox::backgroundColourId, Colours::white);
+  setColour(ListBox::textColourId, Colours::black);
 }
 
 void PokeLookAndFeel::drawLinearSliderThumb(Graphics &g, int x, int y, int width, int height,
