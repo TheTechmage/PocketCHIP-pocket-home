@@ -1,6 +1,7 @@
 #include "SettingsPageComponent.h"
 #include "SettingsPageWifiComponent.h"
 #include "SettingsPageBluetoothComponent.h"
+#include "Main.h"
 
 static const int sliderHeight = 50;
 static const int sliderPadding = 10;
@@ -59,12 +60,10 @@ SettingsPageComponent::SettingsPageComponent() {
   auto wifiPage = new SettingsPageWifiComponent();
   pages.add(wifiPage);
   pagesByName.set(wifiButton->getName(), wifiPage);
-  // addChildComponent(wifiPage);
 
   auto bluetoothPage = new SettingsPageBluetoothComponent();
   pages.add(bluetoothPage);
   pagesByName.set(bluetoothButton->getName(), bluetoothPage);
-  // addChildComponent(bluetoothPage);
 
   addChildComponent(backButton);
   backButton->setAlwaysOnTop(true);
@@ -101,14 +100,10 @@ void SettingsPageComponent::buttonClicked(Button *button) {
     page->setVisible(false);
   }
   if (pagesByName.contains(button->getName())) {
-    // backButton->setVisible(true);
-    // train->setVisible(false);
-    // mainPage->setVisible(false);
-    // pagesByName[button->getName()]->setVisible(true);
+    auto page = pagesByName[button->getName()];
+    getMainStack().pushPage(page, PageStackComponent::kTransitionTranslateHorizontal);
   }
   if (button == backButton) {
-    backButton->setVisible(false);
-    train->setVisible(true);
-    mainPage->setVisible(true);
+    getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
   }
 }

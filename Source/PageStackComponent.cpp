@@ -7,7 +7,12 @@ PageStackComponent::PageStackComponent() {
 PageStackComponent::~PageStackComponent() {}
 
 void PageStackComponent::paint(Graphics &g) {}
-void PageStackComponent::resized() {}
+
+void PageStackComponent::resized() {
+  if (!stack.empty()) {
+    stack.getLast()->setBounds(getBounds());
+  }
+}
 
 void PageStackComponent::pushPage(Component *page, Transition transtion) {
   auto bounds = getLocalBounds();

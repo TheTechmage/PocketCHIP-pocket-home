@@ -3,14 +3,15 @@
 #include "LauncherComponent.h"
 #include "Utils.h"
 
-
-
 MainContentComponent::MainContentComponent(const var &configJson) {
   lookAndFeel = new PokeLookAndFeel();
   setLookAndFeel(lookAndFeel);
 
+  pageStack = new PageStackComponent();
+  addAndMakeVisible(pageStack);
+
   launcher = new LauncherComponent(configJson);
-  addAndMakeVisible(launcher);
+  pageStack->pushPage(launcher, PageStackComponent::kTransitionNone);
 
   closeButton = new TextButton("Close");
   addAndMakeVisible(closeButton);
@@ -27,7 +28,7 @@ void MainContentComponent::paint(Graphics &g) {
 
 void MainContentComponent::resized() {
   auto bounds = getLocalBounds();
-  launcher->setBounds(bounds);
+  pageStack->setBounds(bounds);
   closeButton->setBounds(bounds.getRight() - 40, 0, 40, 20);
 }
 
