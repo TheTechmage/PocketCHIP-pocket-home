@@ -24,7 +24,10 @@ void PageStackComponent::pushPage(Component *page, Transition transition) {
 }
 
 void PageStackComponent::swapPage(Component *page, Transition transition) {
-  popPage(transition);
+  if (!stack.empty()) {
+    transitionOut(stack.getLast(), transition, transitionDurationMillis);
+    stack.removeLast();
+  }
   stack.add(page);
   transitionIn(page, transition, transitionDurationMillis);
 }
