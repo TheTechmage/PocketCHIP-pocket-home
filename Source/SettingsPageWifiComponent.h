@@ -1,19 +1,28 @@
 #pragma once
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "SwitchComponent.h"
+#include "PageStackComponent.h"
 
-class SettingsPageWifiComponent : public Component, private Button::Listener {
+class SettingsPageWifiComponent : public Component, private Button::Listener, private ListBoxModel {
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsPageWifiComponent)
 
 public:
   SettingsPageWifiComponent();
   ~SettingsPageWifiComponent();
 
-  ScopedPointer<Component> ssidListPanel;
+  Boolean wifiEnabled = false, wifiConnected = false;
+
+  ScopedPointer<PageStackComponent> pageStack;
+
+  ScopedPointer<Component> ssidListPage;
   ScopedPointer<ListBox> ssidList;
   ScopedPointer<ListBoxModel> ssidListModel;
 
-  Boolean wifiEnabled = false;
+  ScopedPointer<Component> connectionPage;
+  ScopedPointer<Label> connectionLabel;
+  ScopedPointer<TextEditor> passwordEditor;
+  ScopedPointer<TextButton> connectionButton;
+
   ScopedPointer<Drawable> wifiIcon;
   ScopedPointer<SwitchComponent> switchComponent;
 
@@ -22,6 +31,10 @@ public:
   void resized() override;
 
 private:
+  int getNumRows() override;
+  void paintListBoxItem(int rowNumber, Graphics &g, int width, int height,
+                        bool rowIsSelected) override;
+  void listBoxItemClicked(int row, const MouseEvent &) override;
   void buttonClicked(Button *) override;
   void buttonStateChanged(Button *) override;
 };

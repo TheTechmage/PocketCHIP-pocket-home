@@ -2,24 +2,12 @@
 #include "SettingsPageWifiComponent.h"
 #include "Utils.h"
 
-struct SourceItemListboxContents : public ListBoxModel {
-  int getNumRows() override {
-    return 15;
-  }
-  void paintListBoxItem(int rowNumber, Graphics &g, int width, int height,
-                        bool rowIsSelected) override {
-    if (rowIsSelected) {
-      g.fillAll(Colours::lightgrey);
-    }
-    g.setColour(Colours::black);
-    g.setFont(height * 0.7f);
-    g.drawText("WIFI SSID #" + String(rowNumber + 1), 5, 0, width, height,
-               Justification::centredLeft, true);
-  }
-};
-
 
 SettingsPageWifiComponent::SettingsPageWifiComponent() {
+
+  pageStack = new PageStackComponent();
+  addAndMakeVisible(pageStack);  
+
   ScopedPointer<XmlElement> wifiSvg = XmlDocument::parse(BinaryData::wifiIcon_svg);
   wifiIcon = Drawable::createFromSVG(*wifiSvg);
   addAndMakeVisible(wifiIcon);
@@ -29,32 +17,54 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   switchComponent->toFront(false);
   addAndMakeVisible(switchComponent);
 
-  ssidList = new ListBox();
-  ssidListModel = new SourceItemListboxContents();
-  ssidList->setModel(ssidListModel);
-  ssidList->setMultipleSelectionEnabled(false);
+  // create ssid list "page"
+  ssidListPage = new Component("SSID List Page");
 
-  ssidListPanel = new Component();
-  addChildComponent(ssidListPanel);
-  ssidListPanel->addAndMakeVisible(ssidList);
+  ssidList = new ListBox();
+  ssidList->setModel(this);
+  ssidList->setMultipleSelectionEnabled(false);
+  ssidListPage->addAndMakeVisible(ssidList);
+
+  // create connection "page"
+  connectionPage = new Component("Connection Page");
+
+  connectionLabel = new Label("Connected", "Connection Label");
+  connectionLabel->setJustificationType(juce::Justification::centred);
+  connectionPage->addAndMakeVisible(connectionLabel);
+
+  passwordEditor = new TextEditor("Password", (juce_wchar) 0x2022);
+  passwordEditor->setText ("Password");
+  passwordEditor->setColour(TextEditor::ColourIds::backgroundColourId, Colours::lightgrey);
+  connectionPage->addAndMakeVisible(passwordEditor);
+
+  // add pages to page stack
+  pageStack->addChildComponent(ssidListPage);
+  pageStack->addChildComponent(connectionPage);
 }
 
 SettingsPageWifiComponent::~SettingsPageWifiComponent() {}
 
 void SettingsPageWifiComponent::setWifiEnabled(Boolean enabled) {
-  //  wifiPanel->setVisible(enabled);
-  ssidListPanel->setVisible(enabled);
+  pageStack->setVisible(enabled);
+  if (enabled) {
+    auto nextPage = wifiConnected ? &connectionPage : &ssidListPage;
+    pageStack->pushPage(*nextPage, PageStackComponent::kTransitionNone);
+  }
 }
 
 void SettingsPageWifiComponent::paint(Graphics &g) {}
 
 void SettingsPageWifiComponent::resized() {
-  //  wifiPanel->setVisible(wifiEnabled);
 
   auto bounds = getLocalBounds();
+  auto pageBounds = Rectangle<int>(120, 0, bounds.getWidth() - 120, bounds.getHeight());
 
-  ssidListPanel->setBounds(120, 0, bounds.getWidth() - 100, bounds.getHeight());
-  ssidList->setBounds(0, 0, 200, bounds.getHeight());
+  pageStack->setBounds(pageBounds);
+  ssidList->setBounds(0, 0, pageBounds.getWidth(), pageBounds.getHeight());
+
+  connectionLabel->setBounds(10, 90, pageBounds.getWidth() - 20, 24);
+  passwordEditor->setBounds(90, 120, pageBounds.getWidth() - 180, 24);
+
   wifiIcon->setTopLeftPosition(bounds.getX(), bounds.getHeight() / 2.0f - 20);
 
   {
@@ -68,10 +78,36 @@ void SettingsPageWifiComponent::resized() {
 void SettingsPageWifiComponent::buttonClicked(Button *button) {}
 
 void SettingsPageWifiComponent::buttonStateChanged(Button *button) {
-  if (button == switchComponent) {
-    if (wifiEnabled != button->getToggleState()) {
-      wifiEnabled = button->getToggleState();
-      setWifiEnabled(wifiEnabled);
-    }
+  if (button == switchComponent && wifiEnabled != button->getToggleState()) {
+    wifiEnabled = button->getToggleState();
+    setWifiEnabled(wifiEnabled);
   }
+}
+
+int SettingsPageWifiComponent::getNumRows() {
+  return 15;
+}
+
+void SettingsPageWifiComponent::paintListBoxItem(int rowNumber, Graphics &g, int width, int height,
+                      bool rowIsSelected) {
+  if (rowIsSelected) g.fillAll(Colours::lightgrey);
+  g.setColour(Colours::black);
+  g.setFont(height * 0.7f);
+  g.drawText("WIFI SSID #" + String(rowNumber), 5, 0, width, height,
+             Justification::centredLeft, true);
+}
+
+void SettingsPageWifiComponent::listBoxItemClicked (int row, const MouseEvent&) {
+  DBG("Clicked Row: " + String(row));
+
+  auto currentPage = pageStack->getCurrentPage();
+  if (currentPage->getName() == "SSID List Page") {
+    pageStack->pushPage(connectionPage, PageStackComponent::kTransitionTranslateHorizontal);
+  }
+//  if ((!currentPage || currentPage->getName() != button->getName()) &&
+//      pagesByName.contains(button->getName())) {
+//    pageStack->swapPage(pagesByName[button->getName()],
+//                        PageStackComponent::kTransitionTranslateHorizontal);
+//  }
+
 }
