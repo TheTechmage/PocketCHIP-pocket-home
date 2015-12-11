@@ -1,4 +1,3 @@
-#include "../JuceLibraryCode/JuceHeader.h"
 #include "SettingsPageWifiComponent.h"
 #include "Main.h"
 #include "Utils.h"
@@ -15,12 +14,12 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   switchComponent->addListener(this);
   switchComponent->toFront(false);
   addAndMakeVisible(switchComponent);
-  
+
   // create back button
   ScopedPointer<XmlElement> backButtonSvg = XmlDocument::parse(BinaryData::backIcon_svg);
-  ScopedPointer<Drawable> backButtonDrawable = Drawable::createFromSVG(*backButtonSvg);  
+  ScopedPointer<Drawable> backButtonDrawable = Drawable::createFromSVG(*backButtonSvg);
   backButton = createImageButtonFromDrawable("Back", *backButtonDrawable);
-  backButton->addListener(this);  
+  backButton->addListener(this);
   backButton->setAlwaysOnTop(true);
   addAndMakeVisible(backButton);
 
@@ -103,7 +102,7 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
   }
   if (button == backButton) {
     getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
-  }  
+  }
 }
 
 void SettingsPageWifiComponent::buttonStateChanged(Button *button) {

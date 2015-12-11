@@ -14,9 +14,9 @@ public:
 
   enum Transition { kTransitionNone, kTransitionTranslateHorizontal };
 
-  void pushPage(Component *page, Transition transtion);
-  void swapPage(Component *page, Transition transtion);
-  void popPage(Transition transtion);
+  void pushPage(Component *page, Transition transition);
+  void swapPage(Component *page, Transition transition);
+  void popPage(Transition transition);
 
   Component *getCurrentPage();
 
@@ -25,6 +25,8 @@ private:
 
   Array<Component *> stack;
 
-  void transitionIn(Component *component, Transition transtion, int durationMillis);
-  void transitionOut(Component *component, Transition transtion, int durationMillis);
+  void transitionIn(Component *component, Transition transition, int durationMillis,
+                    bool reverse = false);
+  void transitionOut(Component *component, Transition transition, int durationMillis,
+                     bool reverse = false);
 };

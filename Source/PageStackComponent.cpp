@@ -14,36 +14,40 @@ void PageStackComponent::resized() {
   }
 }
 
-void PageStackComponent::pushPage(Component *page, Transition transtion) {
+void PageStackComponent::pushPage(Component *page, Transition transition) {
   auto bounds = getLocalBounds();
   if (!stack.empty()) {
-    transitionOut(stack.getLast(), transtion, transitionDurationMillis);
+    transitionOut(stack.getLast(), transition, transitionDurationMillis);
   }
   stack.add(page);
-  transitionIn(page, transtion, transitionDurationMillis);
+  transitionIn(page, transition, transitionDurationMillis);
 }
 
-void PageStackComponent::swapPage(Component *page, Transition transtion) {
-  popPage(transtion);
+void PageStackComponent::swapPage(Component *page, Transition transition) {
+  popPage(transition);
   stack.add(page);
-  transitionIn(page, transtion, transitionDurationMillis);
+  transitionIn(page, transition, transitionDurationMillis);
 }
 
-void PageStackComponent::popPage(Transition transtion) {
+void PageStackComponent::popPage(Transition transition) {
   if (!stack.empty()) {
-    transitionOut(stack.getLast(), transtion, transitionDurationMillis);
+    transitionOut(stack.getLast(), transition, transitionDurationMillis, true);
     stack.removeLast();
+    if (!stack.empty()) {
+      transitionIn(stack.getLast(), transition, transitionDurationMillis, true);
+    }
   }
 }
 
-void PageStackComponent::transitionIn(Component *component, Transition transtion,
-                                      int durationMillis) {
+void PageStackComponent::transitionIn(Component *component, Transition transition,
+                                      int durationMillis, bool reverse) {
   addAndMakeVisible(component);
 
   auto bounds = getLocalBounds();
-  switch (transtion) {
+  switch (transition) {
     case kTransitionTranslateHorizontal: {
-      component->setBounds(bounds.translated(bounds.getWidth(), 0));
+      float dir = reverse ? -1.0f : 1.0f;
+      component->setBounds(bounds.translated(bounds.getWidth() * dir, 0));
       animateTranslation(component, 0, 0, 1.0f, durationMillis);
     } break;
     default: {
@@ -53,12 +57,13 @@ void PageStackComponent::transitionIn(Component *component, Transition transtion
   }
 }
 
-void PageStackComponent::transitionOut(Component *component, Transition transtion,
-                                       int durationMillis) {
-  switch (transtion) {
+void PageStackComponent::transitionOut(Component *component, Transition transition,
+                                       int durationMillis, bool reverse) {
+  switch (transition) {
     case kTransitionTranslateHorizontal: {
       auto bounds = getLocalBounds();
-      animateTranslation(component, -bounds.getWidth(), 0, 1.0f, durationMillis);
+      float dir = reverse ? 1.0f : -1.0f;
+      animateTranslation(component, bounds.getWidth() * dir, 0, 1.0f, durationMillis);
     } break;
     default: {}
   }

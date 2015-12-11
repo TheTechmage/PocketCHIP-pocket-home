@@ -1,4 +1,5 @@
 #pragma once
+
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "SwitchComponent.h"
 #include "PageStackComponent.h"
