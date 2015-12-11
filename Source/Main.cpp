@@ -1,100 +1,87 @@
-#include "../JuceLibraryCode/JuceHeader.h"
-
+#include "Main.h"
 #include "MainComponent.h"
 #include "Utils.h"
 
-class PokeLaunchApplication : public JUCEApplication {
-public:
-  PokeLaunchApplication() {}
+PageStackComponent &getMainStack() {
+  return dynamic_cast<PokeLaunchApplication *>(JUCEApplication::getInstance())->getMainStack();
+}
 
-  const String getApplicationName() override {
-    return ProjectInfo::projectName;
-  }
-  const String getApplicationVersion() override {
-    return ProjectInfo::versionString;
-  }
-  bool moreThanOneInstanceAllowed() override {
-    return false;
-  }
+PokeLaunchApplication::PokeLaunchApplication() {}
 
-  void initialise(const String &commandLine) override {
-    StringArray args;
-    args.addTokens(commandLine, true);
+const String PokeLaunchApplication::getApplicationName() {
+  return ProjectInfo::projectName;
+}
 
-    auto configJson = var::null;
+const String PokeLaunchApplication::getApplicationVersion() {
+  return ProjectInfo::versionString;
+}
 
-    auto flagIndex = args.indexOf("-c");
-    if (flagIndex >= 0 && args.size() > flagIndex + 1) {
-      auto configFile = absoluteFileFromPath(args[flagIndex + 1]);
-      configJson = JSON::parse(configFile);
-      if (!configJson) {
-        std::cerr << "Could not read config file from " << configFile.getFullPathName() << std::endl;
-        quit();
-      }
-    } else {
-      std::cout << "Usage: PokeLaunch -c <config-file.json>" << std::endl;
+bool PokeLaunchApplication::moreThanOneInstanceAllowed() {
+  return false;
+}
+
+void PokeLaunchApplication::initialise(const String &commandLine) {
+  StringArray args;
+  args.addTokens(commandLine, true);
+
+  auto configJson = var::null;
+
+  auto flagIndex = args.indexOf("-c");
+  if (flagIndex >= 0 && args.size() > flagIndex + 1) {
+    auto configFile = absoluteFileFromPath(args[flagIndex + 1]);
+    configJson = JSON::parse(configFile);
+    if (!configJson) {
+      std::cerr << "Could not read config file from " << configFile.getFullPathName() << std::endl;
       quit();
     }
-
-    mainWindow = new MainWindow(getApplicationName(), configJson);
-  }
-
-  void shutdown() override {
-    // Add your application's shutdown code here..
-
-    mainWindow = nullptr; // (deletes our window)
-  }
-
-  void systemRequestedQuit() override {
-    // This is called when the app is being asked to quit: you can ignore this
-    // request and let the app carry on running, or call quit() to allow the app to close.
+  } else {
+    std::cout << "Usage: PokeLaunch -c <config-file.json>" << std::endl;
     quit();
   }
 
-  void anotherInstanceStarted(const String &commandLine) override {
-    // When another instance of the app is launched while this one is running,
-    // this method is invoked, and the commandLine parameter tells you what
-    // the other instance's command-line arguments were.
-  }
+  mainWindow = new MainWindow(getApplicationName(), configJson);
+}
 
-  /*
-      This class implements the desktop window that contains an instance of
-      our MainContentComponent class.
-  */
-  class MainWindow : public DocumentWindow {
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainWindow)
+void PokeLaunchApplication::shutdown() {
+  // Add your application's shutdown code here..
 
-  public:
-    MainWindow(String name, const var &configJson)
-    : DocumentWindow(name, Colours::darkgrey, DocumentWindow::closeButton) {
-      setUsingNativeTitleBar(false);
-      setResizable(true, false);
-      setContentOwned(new MainContentComponent(configJson), true);
-      centreWithSize(getWidth(), getHeight());
-      setVisible(true);
+  mainWindow = nullptr; // (deletes our window)
+}
+
+void PokeLaunchApplication::systemRequestedQuit() {
+  // This is called when the app is being asked to quit: you can ignore this
+  // request and let the app carry on running, or call quit() to allow the app to close.
+  quit();
+}
+
+void PokeLaunchApplication::anotherInstanceStarted(const String &commandLine) {
+  // When another instance of the app is launched while this one is running,
+  // this method is invoked, and the commandLine parameter tells you what
+  // the other instance's command-line arguments were.
+}
+
+PageStackComponent &PokeLaunchApplication::getMainStack() {
+  return *dynamic_cast<MainContentComponent *>(mainWindow->getContentComponent())->pageStack;
+}
+
+PokeLaunchApplication::MainWindow::MainWindow(String name, const var &configJson)
+: DocumentWindow(name, Colours::darkgrey, DocumentWindow::closeButton) {
+  setUsingNativeTitleBar(false);
+  setResizable(true, false);
+  setContentOwned(new MainContentComponent(configJson), true);
+  centreWithSize(getWidth(), getHeight());
+  setVisible(true);
 #if JUCE_LINUX
-      setTitleBarHeight(0);
-      setFullScreen(true);
+  setTitleBarHeight(0);
+  setFullScreen(true);
 #endif
-    }
+}
 
-    void closeButtonPressed() override {
-      // This is called when the user tries to close this window. Here, we'll just
-      // ask the app to quit when this happens, but you can change this to do
-      // whatever you need.
-      JUCEApplication::getInstance()->systemRequestedQuit();
-    }
-
-    /* Note: Be careful if you override any DocumentWindow methods - the base
-       class uses a lot of them, so by overriding you might break its functionality.
-       It's best to do all your work in your content component instead, but if
-       you really have to override any DocumentWindow methods, make sure your
-       subclass also calls the superclass's method.
-    */
-  };
-
-private:
-  ScopedPointer<MainWindow> mainWindow;
-};
+void PokeLaunchApplication::MainWindow::closeButtonPressed() {
+  // This is called when the user tries to close this window. Here, we'll just
+  // ask the app to quit when this happens, but you can change this to do
+  // whatever you need.
+  JUCEApplication::getInstance()->systemRequestedQuit();
+}
 
 START_JUCE_APPLICATION(PokeLaunchApplication)

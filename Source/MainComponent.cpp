@@ -3,6 +3,8 @@
 #include "LauncherComponent.h"
 #include "Utils.h"
 
+
+
 MainContentComponent::MainContentComponent(const var &configJson) {
   lookAndFeel = new PokeLookAndFeel();
   setLookAndFeel(lookAndFeel);
