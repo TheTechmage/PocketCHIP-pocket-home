@@ -54,6 +54,8 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
 
 SettingsPageWifiComponent::~SettingsPageWifiComponent() {}
 
+void SettingsPageWifiComponent::paint(Graphics &g) {}
+
 void SettingsPageWifiComponent::setWifiEnabled(Boolean enabled) {
   pageStack->setVisible(enabled);
   if (enabled) {
@@ -61,8 +63,6 @@ void SettingsPageWifiComponent::setWifiEnabled(Boolean enabled) {
     pageStack->pushPage(*nextPage, PageStackComponent::kTransitionNone);
   }
 }
-
-void SettingsPageWifiComponent::paint(Graphics &g) {}
 
 void SettingsPageWifiComponent::resized() {
   auto bounds = getLocalBounds();

@@ -4,7 +4,9 @@
 #include "SwitchComponent.h"
 #include "PageStackComponent.h"
 
-class SettingsPageWifiComponent : public Component, private Button::Listener, private ListBoxModel {
+class SettingsPageWifiComponent : public Component, 
+                                  private Button::Listener, 
+                                  private ListBoxModel {
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsPageWifiComponent)
 
 public:
