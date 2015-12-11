@@ -13,7 +13,7 @@ public:
   SettingsPageWifiComponent();
   ~SettingsPageWifiComponent();
 
-  Boolean wifiEnabled = false, wifiConnected = false;
+  bool wifiEnabled = false, wifiConnected = false;
 
   ScopedPointer<PageStackComponent> pageStack;
 
@@ -31,7 +31,7 @@ public:
   ScopedPointer<Drawable> wifiIcon;
   ScopedPointer<SwitchComponent> switchComponent;
 
-  void setWifiEnabled(Boolean enabled);
+  void setWifiEnabled(bool enabled);
   void paint(Graphics &) override;
   void resized() override;
 

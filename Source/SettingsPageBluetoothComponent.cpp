@@ -46,7 +46,7 @@ SettingsPageBluetoothComponent::~SettingsPageBluetoothComponent() {}
 
 void SettingsPageBluetoothComponent::paint(Graphics &g) { }
 
-void SettingsPageBluetoothComponent::setBluetoothEnabled(Boolean enabled) {
+void SettingsPageBluetoothComponent::setBluetoothEnabled(bool enabled) {
   pageStack->setVisible(enabled);
   if (enabled) {
     pageStack->pushPage(deviceListPage, PageStackComponent::kTransitionNone);

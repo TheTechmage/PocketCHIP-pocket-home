@@ -13,7 +13,7 @@ public:
   SettingsPageBluetoothComponent();
   ~SettingsPageBluetoothComponent();
   
-  Boolean bluetoothEnabled = false;
+  bool bluetoothEnabled = false;
   
   ScopedPointer<PageStackComponent> pageStack;
   
@@ -29,7 +29,7 @@ public:
   ScopedPointer<Drawable> btIcon;
   ScopedPointer<SwitchComponent> switchComponent;
   
-  void setBluetoothEnabled(Boolean enabled);
+  void setBluetoothEnabled(bool enabled);
   void paint(Graphics &) override;
   void resized() override;
 

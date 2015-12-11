@@ -56,7 +56,7 @@ SettingsPageWifiComponent::~SettingsPageWifiComponent() {}
 
 void SettingsPageWifiComponent::paint(Graphics &g) {}
 
-void SettingsPageWifiComponent::setWifiEnabled(Boolean enabled) {
+void SettingsPageWifiComponent::setWifiEnabled(bool enabled) {
   pageStack->setVisible(enabled);
   if (enabled) {
     auto nextPage = wifiConnected ? &connectionPage : &ssidListPage;
