@@ -47,6 +47,13 @@ void PageStackComponent::popPage(Transition transition) {
   }
 }
 
+void PageStackComponent::clear(Transition transition) {
+  if (!stack.empty()) {
+    transitionOut(stack.getLast(), transition, transitionDurationMillis, true);
+  }
+  stack.clear();
+}
+
 void PageStackComponent::transitionIn(Component *component, Transition transition,
                                       int durationMillis, bool reverse) {
   addAndMakeVisible(component);

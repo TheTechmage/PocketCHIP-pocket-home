@@ -17,6 +17,7 @@ public:
   void pushPage(Component *page, Transition transition);
   void swapPage(Component *page, Transition transition);
   void popPage(Transition transition);
+  void clear(Transition transition);
 
   int getDepth() const;
 

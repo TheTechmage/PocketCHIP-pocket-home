@@ -60,7 +60,7 @@ SettingsPageBluetoothComponent::SettingsPageBluetoothComponent() {
   connectionButton->addListener(this);
   connectionPage->addAndMakeVisible(connectionButton);
 
-  pageStack->setVisible(false);
+//  pageStack->setVisible(false);
 }
 
 
@@ -69,10 +69,10 @@ SettingsPageBluetoothComponent::~SettingsPageBluetoothComponent() {}
 void SettingsPageBluetoothComponent::paint(Graphics &g) {}
 
 void SettingsPageBluetoothComponent::setBluetoothEnabled(bool enabled) {
-  pageStack->setVisible(enabled);
-  if (enabled) {
+  if (enabled)
     pageStack->pushPage(deviceListPage, PageStackComponent::kTransitionNone);
-  }
+  else
+    pageStack->clear(PageStackComponent::kTransitionNone);
 }
 
 void SettingsPageBluetoothComponent::resized() {
@@ -100,12 +100,8 @@ void SettingsPageBluetoothComponent::resized() {
 void SettingsPageBluetoothComponent::buttonClicked(Button *button) {
   if (button == connectionButton) {
     auto &curDevice = deviceList[currentDeviceIndex];
-    if (curDevice.connected) {
-      curDevice.connected = false;
-    } else {
-      curDevice.connected = true;
-    }
-    pageStack->pushPage(deviceListPage, PageStackComponent::kTransitionNone);
+    curDevice.connected = !curDevice.connected;
+    pageStack->popPage(PageStackComponent::kTransitionTranslateHorizontal);
   }
   if (button == backButton) {
     if (pageStack->getDepth() > 1) {
