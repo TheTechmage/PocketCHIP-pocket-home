@@ -83,7 +83,7 @@ var SettingsPageWifiComponent::parseWifiListJson(const String &path) {
   auto ssidListJson = JSON::parse(ssidListFile);
   if (!ssidListJson) {
     std::cerr << "Could not read wifi.json file from " << ssidListFile.getFullPathName()
-    << std::endl;
+              << std::endl;
   }
   return ssidListJson;
 }
@@ -148,23 +148,20 @@ void SettingsPageWifiComponent::paintListBoxItem(int rowNumber, Graphics &g, int
                                                  bool rowIsSelected) {
   const auto &accessPoint = ssidList[rowNumber];
   auto contentHeight = height * 0.7f;
-  
+
   if (rowIsSelected) g.fillAll(Colours::lightgrey);
-  
+
   if (accessPoint.auth) {
-//    lockIcon->setSize(contentHeight, contentHeight);
-    lockIcon->drawWithin(g,
-                          Rectangle<float>(width - (height * 6), 6, contentHeight-5, contentHeight-5),
-                          RectanglePlacement::fillDestination, 1.0f);
-  }  
-  
+    lockIcon->drawWithin(
+        g, Rectangle<float>(width - (height * 6), 6, contentHeight - 5, contentHeight - 5),
+        RectanglePlacement::fillDestination, 1.0f);
+  }
+
   g.setFont(contentHeight);
-  g.drawText(accessPoint.name, 5, 0, width, height, Justification::centredLeft,
-             true);
+  g.drawText(accessPoint.name, 5, 0, width, height, Justification::centredLeft, true);
 }
 
 void SettingsPageWifiComponent::listBoxItemClicked(int rowNumber, const MouseEvent &) {
-
   const auto &accessPoint = ssidList[rowNumber];
 
   connectionLabel->setText(accessPoint.name, juce::NotificationType::dontSendNotification);
