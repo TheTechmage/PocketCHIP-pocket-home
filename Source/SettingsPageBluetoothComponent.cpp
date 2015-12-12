@@ -17,7 +17,6 @@ SettingsPageBluetoothComponent::SettingsPageBluetoothComponent() {
     deviceList.push_back(device);
   }
 
-
   ScopedPointer<XmlElement> btSvg = XmlDocument::parse(BinaryData::bluetoothIcon_svg);
   btIcon = Drawable::createFromSVG(*btSvg);
   addAndMakeVisible(btIcon);
@@ -57,8 +56,6 @@ SettingsPageBluetoothComponent::SettingsPageBluetoothComponent() {
   connectionButton->setButtonText("Connect");
   connectionButton->addListener(this);
   connectionPage->addAndMakeVisible(connectionButton);
-
-//  pageStack->setVisible(false);
 }
 
 
@@ -121,7 +118,7 @@ var SettingsPageBluetoothComponent::parseDeviceListJson(const String &path) {
   auto btDeviceListFile = absoluteFileFromPath(path);
   auto btDeviceJson = JSON::parse(btDeviceListFile);
   if (!btDeviceJson) {
-    std::cerr << "Could not read bluetooth.json file from " << btDeviceListFile.getFullPathName()
+    std::cerr << "Could not read bluetootxh.json file from " << btDeviceListFile.getFullPathName()
               << std::endl;
   }
   return btDeviceJson;

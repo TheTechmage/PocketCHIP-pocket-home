@@ -21,7 +21,7 @@ public:
 
   ScopedPointer<ImageButton> backButton;
   ScopedPointer<Drawable> wifiIcon;
-  ScopedPointer<Drawable> lockIcon;  
+  ScopedPointer<Drawable> lockIcon;
 
   ScopedPointer<Component> ssidListPage;
   ScopedPointer<ListBox> ssidListBox;
