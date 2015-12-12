@@ -6,8 +6,6 @@ SettingsPageBluetoothComponent::SettingsPageBluetoothComponent() {
   pageStack = new PageStackComponent();
   addAndMakeVisible(pageStack);
 
-  // populate device list json
-  // TODO: Use custom class for list rows, not JSON
   auto deviceListJson = parseDeviceListJson("../../assets/bluetooth.json");
   auto deviceListArray = deviceListJson.getArray();
   for (const auto &btDevice : *deviceListArray) {

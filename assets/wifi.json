@@ -1,0 +1,52 @@
+[
+  {
+    "name" : "MyFi",
+    "strength" : 1,
+    "auth" : true
+  },
+  {
+    "name" : "Hotspot",
+    "strength" : 1,
+    "auth" : false
+  },
+    {
+    "name" : "SF Wifi",
+    "strength" : 1,
+    "auth" : false
+  },
+  {
+    "name" : "The Hive",
+    "strength" : 1,
+    "auth" : true
+  },
+    {
+    "name" : "2WIRE454",
+    "strength" : 1,
+    "auth" : true
+  },
+  {
+    "name" : "Free Wifi",
+    "strength" : 1,
+    "auth" : false
+  },
+    {
+    "name" : "ATT3453",
+    "strength" : 1,
+    "auth" : true
+  },
+  {
+    "name" : "NETGEAR",
+    "strength" : 1,
+    "auth" : true
+  },
+ {
+    "name" : "HOME-F898",
+    "strength" : 1,
+    "auth" : true
+  },
+  {
+    "name" : "DLINK",
+    "strength" : 1,
+    "auth" : true
+  }   
+]

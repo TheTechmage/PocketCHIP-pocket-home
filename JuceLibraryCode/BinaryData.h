@@ -37,7 +37,7 @@ namespace BinaryData
     const int            gamesIconSel_svgSize = 1316;
 
     extern const char*   lock_svg;
-    const int            lock_svgSize = 854;
+    const int            lock_svgSize = 894;
 
     extern const char*   settingsIcon_svg;
     const int            settingsIcon_svgSize = 1585;

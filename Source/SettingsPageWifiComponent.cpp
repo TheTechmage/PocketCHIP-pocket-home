@@ -6,9 +6,23 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   pageStack = new PageStackComponent();
   addAndMakeVisible(pageStack);
 
+  auto wifiListJson = parseWifiListJson("../../assets/wifi.json");
+  auto wifiListArray = wifiListJson.getArray();
+  for (const auto &wifiAccessPoint : *wifiListArray) {
+    WifiAccessPoint accessPoint;
+    accessPoint.name = wifiAccessPoint["name"].toString();
+    accessPoint.strength = wifiAccessPoint["strength"];
+    accessPoint.auth = wifiAccessPoint["auth"];
+    DBG(accessPoint.name);
+    ssidList.push_back(accessPoint);
+  }
+
   ScopedPointer<XmlElement> wifiSvg = XmlDocument::parse(BinaryData::wifiIcon_svg);
   wifiIcon = Drawable::createFromSVG(*wifiSvg);
   addAndMakeVisible(wifiIcon);
+
+  ScopedPointer<XmlElement> lockSvg = XmlDocument::parse(BinaryData::lock_svg);
+  lockIcon = Drawable::createFromSVG(*lockSvg);
 
   switchComponent = new SwitchComponent();
   switchComponent->addListener(this);
@@ -26,10 +40,10 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   // create ssid list "page"
   ssidListPage = new Component("SSID List Page");
 
-  ssidList = new ListBox();
-  ssidList->setModel(this);
-  ssidList->setMultipleSelectionEnabled(false);
-  ssidListPage->addAndMakeVisible(ssidList);
+  ssidListBox = new ListBox();
+  ssidListBox->setModel(this);
+  ssidListBox->setMultipleSelectionEnabled(false);
+  ssidListPage->addAndMakeVisible(ssidListBox);
 
   // create connection "page"
   connectionPage = new Component("Connection Page");
@@ -64,6 +78,16 @@ void SettingsPageWifiComponent::setWifiEnabled(bool enabled) {
   }
 }
 
+var SettingsPageWifiComponent::parseWifiListJson(const String &path) {
+  auto ssidListFile = absoluteFileFromPath(path);
+  auto ssidListJson = JSON::parse(ssidListFile);
+  if (!ssidListJson) {
+    std::cerr << "Could not read wifi.json file from " << ssidListFile.getFullPathName()
+    << std::endl;
+  }
+  return ssidListJson;
+}
+
 void SettingsPageWifiComponent::resized() {
   auto bounds = getLocalBounds();
   auto pageBounds = Rectangle<int>(120, 0, bounds.getWidth() - 120, bounds.getHeight());
@@ -71,7 +95,7 @@ void SettingsPageWifiComponent::resized() {
   backButton->setBounds(10, 10, 62, 62);
 
   pageStack->setBounds(pageBounds);
-  ssidList->setBounds(0, 0, pageBounds.getWidth(), pageBounds.getHeight());
+  ssidListBox->setBounds(0, 0, pageBounds.getWidth(), pageBounds.getHeight());
 
   connectionLabel->setBounds(10, 90, pageBounds.getWidth() - 20, 24);
   passwordEditor->setBounds(90, 120, pageBounds.getWidth() - 180, 24);
@@ -117,20 +141,33 @@ void SettingsPageWifiComponent::buttonStateChanged(Button *button) {
 }
 
 int SettingsPageWifiComponent::getNumRows() {
-  return 15;
+  return ssidList.size();
 }
 
 void SettingsPageWifiComponent::paintListBoxItem(int rowNumber, Graphics &g, int width, int height,
                                                  bool rowIsSelected) {
+  const auto &accessPoint = ssidList[rowNumber];
+  auto contentHeight = height * 0.7f;
+  
   if (rowIsSelected) g.fillAll(Colours::lightgrey);
-  g.setFont(height * 0.7f);
-  g.drawText("WIFI SSID " + String(rowNumber), 5, 0, width, height, Justification::centredLeft,
+  
+  if (accessPoint.auth) {
+//    lockIcon->setSize(contentHeight, contentHeight);
+    lockIcon->drawWithin(g,
+                          Rectangle<float>(width - (height * 6), 6, contentHeight-5, contentHeight-5),
+                          RectanglePlacement::fillDestination, 1.0f);
+  }  
+  
+  g.setFont(contentHeight);
+  g.drawText(accessPoint.name, 5, 0, width, height, Justification::centredLeft,
              true);
 }
 
 void SettingsPageWifiComponent::listBoxItemClicked(int rowNumber, const MouseEvent &) {
-  connectionLabel->setText("WIFI SSID " + String(rowNumber),
-                           juce::NotificationType::dontSendNotification);
+
+  const auto &accessPoint = ssidList[rowNumber];
+
+  connectionLabel->setText(accessPoint.name, juce::NotificationType::dontSendNotification);
   if (pageStack->getCurrentPage()->getName() == "SSID List Page") {
     pageStack->pushPage(connectionPage, PageStackComponent::kTransitionTranslateHorizontal);
   }

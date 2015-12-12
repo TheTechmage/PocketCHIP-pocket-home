@@ -180,11 +180,11 @@ static const unsigned char temp_binary_data_9[] =
 "<svg version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\"\r\n"
 "\t width=\"32px\" height=\"32px\" viewBox=\"-4.334 -8.667 32 32\" enable-background=\"new -4.334 -8.667 32 32\" xml:space=\"preserve\">\r\n"
 "<g>\r\n"
-"\t<path fill=\"#231F20\" d=\"M11.916-1.167c2.343,0,4.25,1.907,4.25,4.25s-1.907,4.25-4.25,4.25s-4.25-1.907-4.25-4.25\r\n"
-"\t\tS9.573-1.167,11.916-1.167 M11.916-6.167c-5.108,0-9.25,4.141-9.25,9.25s4.142,9.25,9.25,9.25s9.25-4.141,9.25-9.25\r\n"
-"\t\tS17.024-6.167,11.916-6.167L11.916-6.167z\"/>\r\n"
+"\t<path fill=\"#231F20\" d=\"M11.916-1.731c3.094,0,5.611,2.517,5.611,5.611s-2.517,5.611-5.611,5.611S6.305,6.975,6.305,3.88\r\n"
+"\t\tS8.822-1.731,11.916-1.731 M11.916-3.731c-4.204,0-7.611,3.408-7.611,7.611c0,4.204,3.408,7.611,7.611,7.611\r\n"
+"\t\ts7.611-3.407,7.611-7.611C19.527-0.323,16.12-3.731,11.916-3.731L11.916-3.731z\"/>\r\n"
 "</g>\r\n"
-"<rect x=\"2.666\" y=\"2.833\" fill=\"#231F20\" width=\"18.5\" height=\"18.5\"/>\r\n"
+"<rect x=\"4.305\" y=\"3.675\" fill=\"#231F20\" width=\"15.223\" height=\"15.223\"/>\r\n"
 "</svg>\r\n";
 
 const char* lock_svg = (const char*) temp_binary_data_9;
@@ -324,7 +324,7 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes) throw
         case 0x17c70ead:  numBytes = 626; return check_svg;
         case 0x1a028b7f:  numBytes = 1319; return gamesIcon_svg;
         case 0x3ae9e0c5:  numBytes = 1316; return gamesIconSel_svg;
-        case 0x71d32550:  numBytes = 854; return lock_svg;
+        case 0x71d32550:  numBytes = 894; return lock_svg;
         case 0x124592e1:  numBytes = 1585; return settingsIcon_svg;
         case 0xbb220623:  numBytes = 1593; return settingsIconSel_svg;
         case 0x8579e6b9:  numBytes = 1162; return volumeIconHi_svg;

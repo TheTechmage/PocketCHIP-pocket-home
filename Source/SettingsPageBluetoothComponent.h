@@ -14,7 +14,6 @@ struct BTDevice {
 class SettingsPageBluetoothComponent : public Component,
                                        private Button::Listener,
                                        private ListBoxModel {
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsPageBluetoothComponent)
 
 public:
   SettingsPageBluetoothComponent();
@@ -47,6 +46,8 @@ public:
   void resized() override;
 
 private:
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsPageBluetoothComponent)
+  
   int getNumRows() override;
   void paintListBoxItem(int rowNumber, Graphics &g, int width, int height,
                         bool rowIsSelected) override;
