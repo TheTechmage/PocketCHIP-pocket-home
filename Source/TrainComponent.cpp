@@ -37,7 +37,9 @@ void TrainComponent::mouseDrag(const MouseEvent &e) {
     dragModal->setVisible(true);
   }
   if (dragModal->isVisible()) {
-    position.drag(e.getOffsetFromDragStart().getX() / itemSpacing);
+    auto offset = orientation == kOrientationHorizontal ? e.getOffsetFromDragStart().getX()
+                                                        : e.getOffsetFromDragStart().getY();
+    position.drag(offset / itemSpacing);
   }
 }
 
@@ -58,6 +60,10 @@ void TrainComponent::addItem(Component *item) {
   position.setLimits(Range<double>(1 - items.size(), 0.0));
 }
 
+void TrainComponent::setOrientation(Orientation orientation_) {
+  orientation = orientation_;
+}
+
 void TrainComponent::setItemBoundsToFit() {
   auto b = getLocalBounds();
 
@@ -74,8 +80,16 @@ void TrainComponent::updateItemTransforms() {
     auto s = mix(1.0f, 0.8f, smoothstep(0.0f, 1.0f, std::abs(p)));
     auto c = item->getBounds().getCentre();
 
-    auto xf = AffineTransform::identity.scaled(s, s, c.getX(), c.getY())
-                  .translated(std::floor(itemSpacing * p), 0);
+    auto xf = AffineTransform::identity.scaled(s, s, c.getX(), c.getY());
+
+    switch (orientation) {
+      case kOrientationHorizontal: {
+        xf = xf.translated(std::floor(itemSpacing * p), 0);
+      } break;
+      case kOrientationVertical: {
+        xf = xf.translated(0, std::floor(itemSpacing * p));
+      } break;
+    }
 
     item->setTransform(xf);
     p += 1.0f;

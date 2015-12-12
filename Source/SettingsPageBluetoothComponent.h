@@ -21,25 +21,25 @@ public:
 
   bool bluetoothEnabled = false;
   int currentDeviceIndex;
-  
+
   ScopedPointer<PageStackComponent> pageStack;
-  
+
   ScopedPointer<ImageButton> backButton;
   ScopedPointer<Drawable> checkIcon;
   ScopedPointer<Drawable> btIcon;
 
-  ScopedPointer<Component> deviceListPage;  
+  ScopedPointer<Component> deviceListPage;
   ScopedPointer<ListBox> deviceListBox;
   ScopedPointer<ListBoxModel> deviceListModel;
-  
+
   ScopedPointer<Component> connectionPage;
   ScopedPointer<Label> connectionLabel;
   ScopedPointer<TextButton> connectionButton;
 
   ScopedPointer<SwitchComponent> switchComponent;
-  
+
   var parseDeviceListJson(const String &path);
-  std::vector<BTDevice> deviceList;  
+  std::vector<BTDevice> deviceList;
 
   void setBluetoothEnabled(bool enabled);
   void paint(Graphics &) override;
@@ -53,5 +53,5 @@ private:
                         bool rowIsSelected) override;
   void listBoxItemClicked(int row, const MouseEvent &) override;
   void buttonClicked(Button *) override;
-  void buttonStateChanged(Button *) override;    
+  void buttonStateChanged(Button *) override;
 };

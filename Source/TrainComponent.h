@@ -6,6 +6,13 @@ class TrainComponent
     : public Component,
       public AnimatedPosition<AnimatedPositionBehaviours::SnapToPageBoundaries>::Listener {
 public:
+  enum Orientation {
+    kOrientationHorizontal,
+    kOrientationVertical
+  };
+
+  Orientation orientation = kOrientationHorizontal;
+
   AnimatedPosition<AnimatedPositionBehaviours::SnapToPageBoundaries> position;
   double itemSpacing;
 
@@ -26,6 +33,8 @@ public:
                        double newPosition) override;
 
   void addItem(Component *item);
+
+  void setOrientation(Orientation orientation_);
 
 private:
   ScopedPointer<Component> dragModal;
