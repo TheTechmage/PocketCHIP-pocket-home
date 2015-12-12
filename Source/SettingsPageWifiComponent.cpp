@@ -164,6 +164,8 @@ void SettingsPageWifiComponent::paintListBoxItem(int rowNumber, Graphics &g, int
 void SettingsPageWifiComponent::listBoxItemClicked(int rowNumber, const MouseEvent &) {
   const auto &accessPoint = ssidList[rowNumber];
 
+  passwordEditor->setVisible(accessPoint.auth);
+
   connectionLabel->setText(accessPoint.name, juce::NotificationType::dontSendNotification);
   if (pageStack->getCurrentPage()->getName() == "SSID List Page") {
     pageStack->pushPage(connectionPage, PageStackComponent::kTransitionTranslateHorizontal);
