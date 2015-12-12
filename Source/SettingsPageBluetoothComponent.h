@@ -4,6 +4,13 @@
 #include "SwitchComponent.h"
 #include "PageStackComponent.h"
 
+struct BTDevice {
+  String name = "";
+  String mac = "";
+  bool connected = false;
+  bool paired = false;
+};
+
 class SettingsPageBluetoothComponent : public Component,
                                        private Button::Listener,
                                        private ListBoxModel {
@@ -12,23 +19,29 @@ class SettingsPageBluetoothComponent : public Component,
 public:
   SettingsPageBluetoothComponent();
   ~SettingsPageBluetoothComponent();
-  
+
   bool bluetoothEnabled = false;
+  int currentDeviceIndex;
   
   ScopedPointer<PageStackComponent> pageStack;
   
   ScopedPointer<ImageButton> backButton;
-  
+  ScopedPointer<Drawable> checkIcon;
+  ScopedPointer<Drawable> btIcon;
+
   ScopedPointer<Component> deviceListPage;  
-  ScopedPointer<ListBox> deviceList;
+  ScopedPointer<ListBox> deviceListBox;
   ScopedPointer<ListBoxModel> deviceListModel;
   
   ScopedPointer<Component> connectionPage;
   ScopedPointer<Label> connectionLabel;
+  ScopedPointer<TextButton> connectionButton;
 
-  ScopedPointer<Drawable> btIcon;
   ScopedPointer<SwitchComponent> switchComponent;
   
+  var parseDeviceListJson(const String &path);
+  std::vector<BTDevice> deviceList;  
+
   void setBluetoothEnabled(bool enabled);
   void paint(Graphics &) override;
   void resized() override;

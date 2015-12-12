@@ -122,8 +122,20 @@ static const unsigned char temp_binary_data_5[] =
 
 const char* brightnessIconLo_svg = (const char*) temp_binary_data_5;
 
-//================== gamesIcon.svg ==================
+//================== check.svg ==================
 static const unsigned char temp_binary_data_6[] =
+"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
+"<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r\n"
+"<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\r\n"
+"<svg version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\"\r\n"
+"\t width=\"32px\" height=\"32px\" viewBox=\"-4.334 -8.667 32 32\" enable-background=\"new -4.334 -8.667 32 32\" xml:space=\"preserve\">\r\n"
+"<polyline fill=\"none\" stroke=\"#231F20\" stroke-width=\"7\" stroke-miterlimit=\"10\" points=\"2.102,5.626 9.12,14.621 22.23,-4.954 \"/>\r\n"
+"</svg>\r\n";
+
+const char* check_svg = (const char*) temp_binary_data_6;
+
+//================== gamesIcon.svg ==================
+static const unsigned char temp_binary_data_7[] =
 "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
 "<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\r\n"
@@ -139,10 +151,10 @@ static const unsigned char temp_binary_data_6[] =
 "\tC56.121,43.624,56.044,43.203,55.934,42.794z\"/>\r\n"
 "</svg>\r\n";
 
-const char* gamesIcon_svg = (const char*) temp_binary_data_6;
+const char* gamesIcon_svg = (const char*) temp_binary_data_7;
 
 //================== gamesIconSel.svg ==================
-static const unsigned char temp_binary_data_7[] =
+static const unsigned char temp_binary_data_8[] =
 "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
 "<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\r\n"
@@ -158,10 +170,27 @@ static const unsigned char temp_binary_data_7[] =
 "\tC56.121,43.624,56.044,43.203,55.934,42.794z\"/>\r\n"
 "</svg>\r\n";
 
-const char* gamesIconSel_svg = (const char*) temp_binary_data_7;
+const char* gamesIconSel_svg = (const char*) temp_binary_data_8;
+
+//================== lock.svg ==================
+static const unsigned char temp_binary_data_9[] =
+"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
+"<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r\n"
+"<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\r\n"
+"<svg version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\"\r\n"
+"\t width=\"32px\" height=\"32px\" viewBox=\"-4.334 -8.667 32 32\" enable-background=\"new -4.334 -8.667 32 32\" xml:space=\"preserve\">\r\n"
+"<g>\r\n"
+"\t<path fill=\"#231F20\" d=\"M11.916-1.167c2.343,0,4.25,1.907,4.25,4.25s-1.907,4.25-4.25,4.25s-4.25-1.907-4.25-4.25\r\n"
+"\t\tS9.573-1.167,11.916-1.167 M11.916-6.167c-5.108,0-9.25,4.141-9.25,9.25s4.142,9.25,9.25,9.25s9.25-4.141,9.25-9.25\r\n"
+"\t\tS17.024-6.167,11.916-6.167L11.916-6.167z\"/>\r\n"
+"</g>\r\n"
+"<rect x=\"2.666\" y=\"2.833\" fill=\"#231F20\" width=\"18.5\" height=\"18.5\"/>\r\n"
+"</svg>\r\n";
+
+const char* lock_svg = (const char*) temp_binary_data_9;
 
 //================== settingsIcon.svg ==================
-static const unsigned char temp_binary_data_8[] =
+static const unsigned char temp_binary_data_10[] =
 "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
 "<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\r\n"
@@ -183,10 +212,10 @@ static const unsigned char temp_binary_data_8[] =
 "</g>\r\n"
 "</svg>\r\n";
 
-const char* settingsIcon_svg = (const char*) temp_binary_data_8;
+const char* settingsIcon_svg = (const char*) temp_binary_data_10;
 
 //================== settingsIconSel.svg ==================
-static const unsigned char temp_binary_data_9[] =
+static const unsigned char temp_binary_data_11[] =
 "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
 "<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\r\n"
@@ -208,10 +237,10 @@ static const unsigned char temp_binary_data_9[] =
 "</g>\r\n"
 "</svg>\r\n";
 
-const char* settingsIconSel_svg = (const char*) temp_binary_data_9;
+const char* settingsIconSel_svg = (const char*) temp_binary_data_11;
 
 //================== volumeIconHi.svg ==================
-static const unsigned char temp_binary_data_10[] =
+static const unsigned char temp_binary_data_12[] =
 "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
 "<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\r\n"
@@ -232,10 +261,10 @@ static const unsigned char temp_binary_data_10[] =
 "\tc6.951,6.95,6.951,18.221,0,25.171\"/>\r\n"
 "</svg>\r\n";
 
-const char* volumeIconHi_svg = (const char*) temp_binary_data_10;
+const char* volumeIconHi_svg = (const char*) temp_binary_data_12;
 
 //================== volumeIconLo.svg ==================
-static const unsigned char temp_binary_data_11[] =
+static const unsigned char temp_binary_data_13[] =
 "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
 "<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\r\n"
@@ -250,10 +279,10 @@ static const unsigned char temp_binary_data_11[] =
 "</g>\r\n"
 "</svg>\r\n";
 
-const char* volumeIconLo_svg = (const char*) temp_binary_data_11;
+const char* volumeIconLo_svg = (const char*) temp_binary_data_13;
 
 //================== wifiIcon.svg ==================
-static const unsigned char temp_binary_data_12[] =
+static const unsigned char temp_binary_data_14[] =
 "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
 "<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r\n"
 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\r\n"
@@ -273,7 +302,7 @@ static const unsigned char temp_binary_data_12[] =
 "</g>\r\n"
 "</svg>\r\n";
 
-const char* wifiIcon_svg = (const char*) temp_binary_data_12;
+const char* wifiIcon_svg = (const char*) temp_binary_data_14;
 
 
 const char* getNamedResource (const char*, int&) throw();
@@ -292,8 +321,10 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes) throw
         case 0xf5dfde6c:  numBytes = 993; return bluetoothIcon_svg;
         case 0x75015330:  numBytes = 1757; return brightnessIconHi_svg;
         case 0x7c2942b2:  numBytes = 1781; return brightnessIconLo_svg;
+        case 0x17c70ead:  numBytes = 626; return check_svg;
         case 0x1a028b7f:  numBytes = 1319; return gamesIcon_svg;
         case 0x3ae9e0c5:  numBytes = 1316; return gamesIconSel_svg;
+        case 0x71d32550:  numBytes = 854; return lock_svg;
         case 0x124592e1:  numBytes = 1585; return settingsIcon_svg;
         case 0xbb220623:  numBytes = 1593; return settingsIconSel_svg;
         case 0x8579e6b9:  numBytes = 1162; return volumeIconHi_svg;
@@ -314,8 +345,10 @@ const char* namedResourceList[] =
     "bluetoothIcon_svg",
     "brightnessIconHi_svg",
     "brightnessIconLo_svg",
+    "check_svg",
     "gamesIcon_svg",
     "gamesIconSel_svg",
+    "lock_svg",
     "settingsIcon_svg",
     "settingsIconSel_svg",
     "volumeIconHi_svg",

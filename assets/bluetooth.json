@@ -1,0 +1,56 @@
+[
+  {
+    "name" : "Keyboard",
+    "mac" : "62:c8:47:50:35:00",
+    "connected" : true,
+    "paired" : true
+  },
+  {
+    "name": "Mouse",
+    "mac" : "62:c1:47:50:35:00",    
+    "connected" : true,
+    "paired" : true    
+  },
+  {
+    "name": "Speaker",
+    "mac" : "62:c4:47:50:35:00",    
+    "connected" : false,
+    "paired" : false
+  },
+  {
+    "name": "Game Controller",
+    "mac" : "62:c5:43:50:35:00",    
+    "connected" : false,
+    "paired" : false
+  },
+  {
+    "name": "Headset",
+    "mac" : "62:c5:41:50:35:00",    
+    "connected" : false,
+    "paired" : false
+  },
+  {
+    "name": "Refrigerator",
+    "mac" : "62:c5:40:50:35:00",    
+    "connected" : false,
+    "paired" : false    
+  },
+  {
+    "name": "Toaster",
+    "mac" : "62:c5:27:50:35:00",    
+    "connected" : false,
+    "paired" : false    
+  },   
+  {
+    "name": "Drone",
+    "mac" : "62:c5:07:50:35:00",    
+    "connected" : false,
+    "paired" : false
+  },
+  {
+    "name": "Massager",
+    "mac" : "62:c5:11:50:35:00",    
+    "connected" : false,
+    "paired" : false    
+  }  
+]

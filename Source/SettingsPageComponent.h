@@ -18,6 +18,8 @@ public:
   SettingsPageComponent();
   ~SettingsPageComponent();
 
+  void getDeviceList();
+
   void paint(Graphics &g) override;
   void resized() override;
   void buttonClicked(Button *b) override;

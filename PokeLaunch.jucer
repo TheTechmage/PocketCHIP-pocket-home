@@ -14,9 +14,11 @@
             file="assets/brightnessIconHi.svg"/>
       <FILE id="x9yQ09" name="brightnessIconLo.svg" compile="0" resource="1"
             file="assets/brightnessIconLo.svg"/>
+      <FILE id="ersXEr" name="check.svg" compile="0" resource="1" file="assets/check.svg"/>
       <FILE id="vPqxZe" name="gamesIcon.svg" compile="0" resource="1" file="assets/gamesIcon.svg"/>
       <FILE id="escajm" name="gamesIconSel.svg" compile="0" resource="1"
             file="assets/gamesIconSel.svg"/>
+      <FILE id="o0Lksy" name="lock.svg" compile="0" resource="1" file="assets/lock.svg"/>
       <FILE id="zfWrKL" name="settingsIcon.svg" compile="0" resource="1"
             file="assets/settingsIcon.svg"/>
       <FILE id="fyKa3u" name="settingsIconSel.svg" compile="0" resource="1"
