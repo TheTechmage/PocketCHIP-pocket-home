@@ -88,7 +88,11 @@ void SettingsPageBluetoothComponent::buttonClicked(Button *button) {
   //   }
   // }
   if (button == backButton) {
-    getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
+    if (pageStack->getDepth() > 1) {
+      pageStack->popPage(PageStackComponent::kTransitionTranslateHorizontal);
+    } else {
+      getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
+    }
   }
 }
 

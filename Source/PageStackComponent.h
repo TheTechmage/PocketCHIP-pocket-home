@@ -18,6 +18,8 @@ public:
   void swapPage(Component *page, Transition transition);
   void popPage(Transition transition);
 
+  int getDepth() const;
+
   Component *getCurrentPage();
 
 private:

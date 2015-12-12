@@ -4,6 +4,7 @@
 PageStackComponent::PageStackComponent() {
   setInterceptsMouseClicks(false, true);
 }
+
 PageStackComponent::~PageStackComponent() {}
 
 void PageStackComponent::paint(Graphics &g) {}
@@ -12,6 +13,10 @@ void PageStackComponent::resized() {
   if (!stack.empty()) {
     stack.getLast()->setBounds(getBounds());
   }
+}
+
+int PageStackComponent::getDepth() const {
+  return stack.size();
 }
 
 void PageStackComponent::pushPage(Component *page, Transition transition) {
