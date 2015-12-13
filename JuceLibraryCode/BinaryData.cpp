@@ -304,6 +304,74 @@ static const unsigned char temp_binary_data_14[] =
 
 const char* wifiIcon_svg = (const char*) temp_binary_data_14;
 
+//================== wifiStrength0.svg ==================
+static const unsigned char temp_binary_data_15[] =
+"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
+"<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r\n"
+"<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\r\n"
+"<svg version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\"\r\n"
+"\t width=\"32px\" height=\"32px\" viewBox=\"-4.334 -8.667 32 32\" enable-background=\"new -4.334 -8.667 32 32\" xml:space=\"preserve\">\r\n"
+"<g id=\"WIFI_Icon\">\r\n"
+"\t<path fill=\"#231F20\" d=\"M6.503,13.327c2.679-2.921,7.019-2.922,9.695,0l-4.847,5.293L6.503,13.327z\"/>\r\n"
+"\t<path fill=\"none\" stroke=\"#BABABA\" stroke-width=\"3\" stroke-miterlimit=\"10\" d=\"M-1.422,4.675c7.056-7.7,18.493-7.702,25.549,0\"/>\r\n"
+"\t<path fill=\"none\" stroke=\"#BABABA\" stroke-width=\"3\" stroke-miterlimit=\"10\" d=\"M4.58,11.228c3.74-4.083,9.803-4.083,13.542,0\"/>\r\n"
+"\t<path fill=\"none\" stroke=\"#BABABA\" stroke-width=\"3\" stroke-miterlimit=\"10\" d=\"M1.578,7.95c5.399-5.893,14.15-5.893,19.547,0\"/>\r\n"
+"</g>\r\n"
+"</svg>\r\n";
+
+const char* wifiStrength0_svg = (const char*) temp_binary_data_15;
+
+//================== wifiStrength1.svg ==================
+static const unsigned char temp_binary_data_16[] =
+"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
+"<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r\n"
+"<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\r\n"
+"<svg version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\"\r\n"
+"\t width=\"32px\" height=\"32px\" viewBox=\"-4.334 -8.667 32 32\" enable-background=\"new -4.334 -8.667 32 32\" xml:space=\"preserve\">\r\n"
+"<g id=\"WIFI_Icon\">\r\n"
+"\t<path fill=\"#231F20\" d=\"M6.503,13.327c2.679-2.921,7.019-2.922,9.695,0l-4.847,5.293L6.503,13.327z\"/>\r\n"
+"\t<path fill=\"none\" stroke=\"#BABABA\" stroke-width=\"3\" stroke-miterlimit=\"10\" d=\"M-1.422,4.675c7.056-7.7,18.493-7.702,25.549,0\"/>\r\n"
+"\t<path fill=\"none\" stroke=\"#231F20\" stroke-width=\"3\" stroke-miterlimit=\"10\" d=\"M4.58,11.228c3.74-4.083,9.803-4.083,13.542,0\"/>\r\n"
+"\t<path fill=\"none\" stroke=\"#BABABA\" stroke-width=\"3\" stroke-miterlimit=\"10\" d=\"M1.578,7.95c5.399-5.893,14.15-5.893,19.547,0\"/>\r\n"
+"</g>\r\n"
+"</svg>\r\n";
+
+const char* wifiStrength1_svg = (const char*) temp_binary_data_16;
+
+//================== wifiStrength2.svg ==================
+static const unsigned char temp_binary_data_17[] =
+"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
+"<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r\n"
+"<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\r\n"
+"<svg version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\"\r\n"
+"\t width=\"32px\" height=\"32px\" viewBox=\"-4.334 -8.667 32 32\" enable-background=\"new -4.334 -8.667 32 32\" xml:space=\"preserve\">\r\n"
+"<g id=\"WIFI_Icon\">\r\n"
+"\t<path fill=\"#231F20\" d=\"M6.503,13.327c2.679-2.921,7.019-2.922,9.695,0l-4.847,5.293L6.503,13.327z\"/>\r\n"
+"\t<path fill=\"none\" stroke=\"#BABABA\" stroke-width=\"3\" stroke-miterlimit=\"10\" d=\"M-1.422,4.675c7.056-7.7,18.493-7.702,25.549,0\"/>\r\n"
+"\t<path fill=\"none\" stroke=\"#231F20\" stroke-width=\"3\" stroke-miterlimit=\"10\" d=\"M4.58,11.228c3.74-4.083,9.803-4.083,13.542,0\"/>\r\n"
+"\t<path fill=\"none\" stroke=\"#231F20\" stroke-width=\"3\" stroke-miterlimit=\"10\" d=\"M1.578,7.95c5.399-5.893,14.15-5.893,19.547,0\"/>\r\n"
+"</g>\r\n"
+"</svg>\r\n";
+
+const char* wifiStrength2_svg = (const char*) temp_binary_data_17;
+
+//================== wifiStrength3.svg ==================
+static const unsigned char temp_binary_data_18[] =
+"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
+"<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r\n"
+"<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\r\n"
+"<svg version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\"\r\n"
+"\t width=\"32px\" height=\"32px\" viewBox=\"-4.334 -8.667 32 32\" enable-background=\"new -4.334 -8.667 32 32\" xml:space=\"preserve\">\r\n"
+"<g id=\"WIFI_Icon\">\r\n"
+"\t<path fill=\"#231F20\" d=\"M6.503,13.327c2.679-2.921,7.019-2.922,9.695,0l-4.847,5.293L6.503,13.327z\"/>\r\n"
+"\t<path fill=\"none\" stroke=\"#231F20\" stroke-width=\"3\" stroke-miterlimit=\"10\" d=\"M-1.422,4.675c7.056-7.7,18.493-7.702,25.549,0\"/>\r\n"
+"\t<path fill=\"none\" stroke=\"#231F20\" stroke-width=\"3\" stroke-miterlimit=\"10\" d=\"M4.58,11.228c3.74-4.083,9.803-4.083,13.542,0\"/>\r\n"
+"\t<path fill=\"none\" stroke=\"#231F20\" stroke-width=\"3\" stroke-miterlimit=\"10\" d=\"M1.578,7.95c5.399-5.893,14.15-5.893,19.547,0\"/>\r\n"
+"</g>\r\n"
+"</svg>\r\n";
+
+const char* wifiStrength3_svg = (const char*) temp_binary_data_18;
+
 
 const char* getNamedResource (const char*, int&) throw();
 const char* getNamedResource (const char* resourceNameUTF8, int& numBytes) throw()
@@ -330,6 +398,10 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes) throw
         case 0x8579e6b9:  numBytes = 1162; return volumeIconHi_svg;
         case 0x8ca1d63b:  numBytes = 699; return volumeIconLo_svg;
         case 0xa29973d3:  numBytes = 1306; return wifiIcon_svg;
+        case 0x2296711f:  numBytes = 1010; return wifiStrength0_svg;
+        case 0x22a488a0:  numBytes = 1010; return wifiStrength1_svg;
+        case 0x22b2a021:  numBytes = 1010; return wifiStrength2_svg;
+        case 0x22c0b7a2:  numBytes = 1010; return wifiStrength3_svg;
         default: break;
     }
 
@@ -353,7 +425,11 @@ const char* namedResourceList[] =
     "settingsIconSel_svg",
     "volumeIconHi_svg",
     "volumeIconLo_svg",
-    "wifiIcon_svg"
+    "wifiIcon_svg",
+    "wifiStrength0_svg",
+    "wifiStrength1_svg",
+    "wifiStrength2_svg",
+    "wifiStrength3_svg"
 };
 
 }

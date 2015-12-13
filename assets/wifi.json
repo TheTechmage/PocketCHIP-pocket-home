@@ -6,12 +6,12 @@
   },
   {
     "name" : "Hotspot",
-    "strength" : 1,
+    "strength" : 0,
     "auth" : false
   },
     {
     "name" : "SF Wifi",
-    "strength" : 1,
+    "strength" : 3,
     "auth" : false
   },
   {
@@ -21,12 +21,12 @@
   },
     {
     "name" : "2WIRE454",
-    "strength" : 1,
+    "strength" : 2,
     "auth" : true
   },
   {
     "name" : "Free Wifi",
-    "strength" : 1,
+    "strength" : 3,
     "auth" : false
   },
     {
@@ -36,17 +36,42 @@
   },
   {
     "name" : "NETGEAR",
-    "strength" : 1,
+    "strength" : 3,
     "auth" : true
   },
  {
     "name" : "HOME-F898",
-    "strength" : 1,
+    "strength" : 3,
     "auth" : true
   },
   {
     "name" : "DLINK",
-    "strength" : 1,
+    "strength" : 0,
     "auth" : true
-  }   
+  },
+  {
+    "name" : "NTC",
+    "strength" : 3,
+    "auth" : true
+  },
+  {
+    "name" : "Public WiFi",
+    "strength" : 2,
+    "auth" : false
+  },
+  {
+    "name" : "LinkSys",
+    "strength" : 3,
+    "auth" : true
+  },
+  {
+    "name" : "Cisco",
+    "strength" : 2,
+    "auth" : true
+  },
+  {
+    "name" : "xfinitywifi",
+    "strength" : 0,
+    "auth" : false
+  }
 ]

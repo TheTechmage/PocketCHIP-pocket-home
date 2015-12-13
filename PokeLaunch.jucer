@@ -28,6 +28,14 @@
       <FILE id="haj4xI" name="volumeIconLo.svg" compile="0" resource="1"
             file="assets/volumeIconLo.svg"/>
       <FILE id="rG44xd" name="wifiIcon.svg" compile="0" resource="1" file="assets/wifiIcon.svg"/>
+      <FILE id="oewR63" name="wifiStrength0.svg" compile="0" resource="1"
+            file="assets/wifiStrength0.svg"/>
+      <FILE id="JwGJh1" name="wifiStrength1.svg" compile="0" resource="1"
+            file="assets/wifiStrength1.svg"/>
+      <FILE id="StDJYd" name="wifiStrength2.svg" compile="0" resource="1"
+            file="assets/wifiStrength2.svg"/>
+      <FILE id="Ls8ign" name="wifiStrength3.svg" compile="0" resource="1"
+            file="assets/wifiStrength3.svg"/>
     </GROUP>
     <GROUP id="{4593A345-C350-960A-058D-B48F8240AA1D}" name="Source">
       <FILE id="SsaxMA" name="LauncherComponent.cpp" compile="1" resource="0"

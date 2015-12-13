@@ -54,11 +54,23 @@ namespace BinaryData
     extern const char*   wifiIcon_svg;
     const int            wifiIcon_svgSize = 1306;
 
+    extern const char*   wifiStrength0_svg;
+    const int            wifiStrength0_svgSize = 1010;
+
+    extern const char*   wifiStrength1_svg;
+    const int            wifiStrength1_svgSize = 1010;
+
+    extern const char*   wifiStrength2_svg;
+    const int            wifiStrength2_svgSize = 1010;
+
+    extern const char*   wifiStrength3_svg;
+    const int            wifiStrength3_svgSize = 1010;
+
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];
 
     // Number of elements in the namedResourceList array.
-    const int namedResourceListSize = 15;
+    const int namedResourceListSize = 19;
 
     // If you provide the name of one of the binary resource variables above, this function will
     // return the corresponding data and its size (or a null pointer if the name isn't found).

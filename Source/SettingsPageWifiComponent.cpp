@@ -24,6 +24,17 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   ScopedPointer<XmlElement> lockSvg = XmlDocument::parse(BinaryData::lock_svg);
   lockIcon = Drawable::createFromSVG(*lockSvg);
 
+
+  wifiStrength = OwnedArray<Drawable>();
+  ScopedPointer<XmlElement> wifi0Xvg = XmlDocument::parse(BinaryData::wifiStrength0_svg);
+  ScopedPointer<XmlElement> wifi1Xvg = XmlDocument::parse(BinaryData::wifiStrength1_svg);
+  ScopedPointer<XmlElement> wifi2Xvg = XmlDocument::parse(BinaryData::wifiStrength2_svg);
+  ScopedPointer<XmlElement> wifi3Xvg = XmlDocument::parse(BinaryData::wifiStrength3_svg);
+  wifiStrength.set(0, Drawable::createFromSVG(*wifi0Xvg));
+  wifiStrength.set(1, Drawable::createFromSVG(*wifi1Xvg));
+  wifiStrength.set(2, Drawable::createFromSVG(*wifi2Xvg));
+  wifiStrength.set(3, Drawable::createFromSVG(*wifi3Xvg));
+
   switchComponent = new SwitchComponent();
   switchComponent->addListener(this);
   switchComponent->toFront(false);
@@ -114,14 +125,14 @@ void SettingsPageWifiComponent::resized() {
 void SettingsPageWifiComponent::buttonClicked(Button *button) {
   if (button == connectionButton) {
     if (wifiConnected) {
+      wifiConnected = false;
       passwordEditor->setVisible(true);
       connectionButton->setButtonText("Connect");
-      wifiConnected = false;
       pageStack->pushPage(ssidListPage, PageStackComponent::kTransitionNone);
     } else {
+      wifiConnected = true;
       passwordEditor->setVisible(false);
       connectionButton->setButtonText("Disconnect");
-      wifiConnected = true;
     }
   }
   if (button == backButton) {
@@ -156,6 +167,10 @@ void SettingsPageWifiComponent::paintListBoxItem(int rowNumber, Graphics &g, int
         g, Rectangle<float>(width - (height * 6), 6, contentHeight - 5, contentHeight - 5),
         RectanglePlacement::fillDestination, 1.0f);
   }
+
+  wifiStrength[accessPoint.strength]->drawWithin(
+      g, Rectangle<float>(width - (height * 5), 6, contentHeight - 5, contentHeight - 5),
+      RectanglePlacement::fillDestination, 1.0f);
 
   g.setFont(contentHeight);
   g.drawText(accessPoint.name, 5, 0, width, height, Justification::centredLeft, true);
