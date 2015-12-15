@@ -13,7 +13,6 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
     accessPoint.name = wifiAccessPoint["name"].toString();
     accessPoint.strength = wifiAccessPoint["strength"];
     accessPoint.auth = wifiAccessPoint["auth"];
-    DBG(accessPoint.name);
     ssidList.push_back(accessPoint);
   }
 
