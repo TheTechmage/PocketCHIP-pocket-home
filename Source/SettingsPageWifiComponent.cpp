@@ -2,37 +2,51 @@
 #include "Main.h"
 #include "Utils.h"
 
+WifiAccessPointListItem::WifiAccessPointListItem(const WifiAccessPoint &ap, WifiIcons *icons)
+: Button{ ap.ssid }, ap{ ap }, icons{ icons } {}
+
+void WifiAccessPointListItem::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) {
+  auto bounds = getLocalBounds();
+  auto w = bounds.getWidth(), h = bounds.getHeight();
+
+  auto iconBounds = Rectangle<float>(w - h, 0, h, h);
+
+  if (ap.requiresAuth) {
+    icons->lockIcon->drawWithin(g, iconBounds, RectanglePlacement::fillDestination, 1.0f);
+  }
+
+  iconBounds.translate(-h, 0);
+
+  icons->wifiStrength[ap.signalStrength]->drawWithin(g, iconBounds,
+                                                     RectanglePlacement::fillDestination, 1.0f);
+
+  g.setFont(h);
+  g.setColour(findColour(DrawableButton::textColourId));
+  g.drawText(getName(), bounds, Justification::centredLeft);
+}
+
 SettingsPageWifiComponent::SettingsPageWifiComponent() {
   pageStack = new PageStackComponent();
   addAndMakeVisible(pageStack);
-
-  auto wifiListJson = parseWifiListJson("../../assets/wifi.json");
-  auto wifiListArray = wifiListJson.getArray();
-  for (const auto &wifiAccessPoint : *wifiListArray) {
-    WifiAccessPoint accessPoint;
-    accessPoint.name = wifiAccessPoint["name"].toString();
-    accessPoint.strength = wifiAccessPoint["strength"];
-    accessPoint.auth = wifiAccessPoint["auth"];
-    ssidList.push_back(accessPoint);
-  }
 
   ScopedPointer<XmlElement> wifiSvg = XmlDocument::parse(BinaryData::wifiIcon_svg);
   wifiIcon = Drawable::createFromSVG(*wifiSvg);
   addAndMakeVisible(wifiIcon);
 
+  icons = new WifiIcons();
+
   ScopedPointer<XmlElement> lockSvg = XmlDocument::parse(BinaryData::lock_svg);
-  lockIcon = Drawable::createFromSVG(*lockSvg);
+  icons->lockIcon = Drawable::createFromSVG(*lockSvg);
 
-
-  wifiStrength = OwnedArray<Drawable>();
+  icons->wifiStrength = OwnedArray<Drawable>();
   ScopedPointer<XmlElement> wifi0Xvg = XmlDocument::parse(BinaryData::wifiStrength0_svg);
   ScopedPointer<XmlElement> wifi1Xvg = XmlDocument::parse(BinaryData::wifiStrength1_svg);
   ScopedPointer<XmlElement> wifi2Xvg = XmlDocument::parse(BinaryData::wifiStrength2_svg);
   ScopedPointer<XmlElement> wifi3Xvg = XmlDocument::parse(BinaryData::wifiStrength3_svg);
-  wifiStrength.set(0, Drawable::createFromSVG(*wifi0Xvg));
-  wifiStrength.set(1, Drawable::createFromSVG(*wifi1Xvg));
-  wifiStrength.set(2, Drawable::createFromSVG(*wifi2Xvg));
-  wifiStrength.set(3, Drawable::createFromSVG(*wifi3Xvg));
+  icons->wifiStrength.set(0, Drawable::createFromSVG(*wifi0Xvg));
+  icons->wifiStrength.set(1, Drawable::createFromSVG(*wifi1Xvg));
+  icons->wifiStrength.set(2, Drawable::createFromSVG(*wifi2Xvg));
+  icons->wifiStrength.set(3, Drawable::createFromSVG(*wifi3Xvg));
 
   switchComponent = new SwitchComponent();
   switchComponent->addListener(this);
@@ -48,12 +62,22 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   addAndMakeVisible(backButton);
 
   // create ssid list "page"
-  ssidListPage = new Component("SSID List Page");
+  accessPointListPage = new TrainComponent();
+  accessPointListPage->setOrientation(TrainComponent::kOrientationVertical);
+  accessPointListPage->itemHeight = 32;
+  accessPointListPage->itemScaleMin = 0.9f;
 
-  ssidListBox = new ListBox();
-  ssidListBox->setModel(this);
-  ssidListBox->setMultipleSelectionEnabled(false);
-  ssidListPage->addAndMakeVisible(ssidListBox);
+  auto wifiListJson = parseWifiListJson("../../assets/wifi.json");
+  for (const auto &apJson : *wifiListJson.getArray()) {
+    WifiAccessPoint ap;
+    ap.ssid = apJson["name"];
+    ap.signalStrength = apJson["strength"];
+    ap.requiresAuth = apJson["auth"];
+    auto item = new WifiAccessPointListItem(ap, icons);
+    item->addListener(this);
+    accessPointItems.add(item);
+    accessPointListPage->addItem(item);
+  }
 
   // create connection "page"
   connectionPage = new Component("Connection Page");
@@ -70,10 +94,6 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   connectionButton->setButtonText("Connect");
   connectionButton->addListener(this);
   connectionPage->addAndMakeVisible(connectionButton);
-
-  // add pages to page stack
-  pageStack->addChildComponent(ssidListPage);
-  pageStack->addChildComponent(connectionPage);
 }
 
 SettingsPageWifiComponent::~SettingsPageWifiComponent() {}
@@ -83,8 +103,8 @@ void SettingsPageWifiComponent::paint(Graphics &g) {}
 void SettingsPageWifiComponent::setWifiEnabled(bool enabled) {
   pageStack->setVisible(enabled);
   if (enabled) {
-    auto nextPage = wifiConnected ? &connectionPage : &ssidListPage;
-    pageStack->pushPage(*nextPage, PageStackComponent::kTransitionNone);
+    Component *nextPage = wifiConnected ? connectionPage : accessPointListPage;
+    pageStack->pushPage(nextPage, PageStackComponent::kTransitionNone);
   }
 }
 
@@ -105,7 +125,6 @@ void SettingsPageWifiComponent::resized() {
   backButton->setBounds(10, 10, 62, 62);
 
   pageStack->setBounds(pageBounds);
-  ssidListBox->setBounds(0, 0, pageBounds.getWidth(), pageBounds.getHeight());
 
   connectionLabel->setBounds(10, 90, pageBounds.getWidth() - 20, 24);
   passwordEditor->setBounds(90, 120, pageBounds.getWidth() - 180, 24);
@@ -127,13 +146,14 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
       wifiConnected = false;
       passwordEditor->setVisible(true);
       connectionButton->setButtonText("Connect");
-      pageStack->pushPage(ssidListPage, PageStackComponent::kTransitionNone);
+      pageStack->pushPage(accessPointListPage, PageStackComponent::kTransitionNone);
     } else {
       wifiConnected = true;
       passwordEditor->setVisible(false);
       connectionButton->setButtonText("Disconnect");
     }
   }
+
   if (button == backButton) {
     if (pageStack->getDepth() > 1) {
       pageStack->popPage(PageStackComponent::kTransitionTranslateHorizontal);
@@ -141,47 +161,20 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
       getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
     }
   }
+
+  auto apButton = dynamic_cast<WifiAccessPointListItem *>(button);
+  std::cout << apButton << std::endl;
+  if (apButton) {
+    passwordEditor->setVisible(apButton->ap.requiresAuth);
+
+    connectionLabel->setText(apButton->ap.ssid, juce::NotificationType::dontSendNotification);
+    pageStack->pushPage(connectionPage, PageStackComponent::kTransitionTranslateHorizontal);
+  }
 }
 
 void SettingsPageWifiComponent::buttonStateChanged(Button *button) {
   if (button == switchComponent && wifiEnabled != button->getToggleState()) {
     wifiEnabled = button->getToggleState();
     setWifiEnabled(wifiEnabled);
-  }
-}
-
-int SettingsPageWifiComponent::getNumRows() {
-  return ssidList.size();
-}
-
-void SettingsPageWifiComponent::paintListBoxItem(int rowNumber, Graphics &g, int width, int height,
-                                                 bool rowIsSelected) {
-  const auto &accessPoint = ssidList[rowNumber];
-  auto contentHeight = height * 0.7f;
-
-  if (rowIsSelected) g.fillAll(Colours::lightgrey);
-
-  if (accessPoint.auth) {
-    lockIcon->drawWithin(
-        g, Rectangle<float>(width - (height * 6), 6, contentHeight - 5, contentHeight - 5),
-        RectanglePlacement::fillDestination, 1.0f);
-  }
-
-  wifiStrength[accessPoint.strength]->drawWithin(
-      g, Rectangle<float>(width - (height * 5), 6, contentHeight - 5, contentHeight - 5),
-      RectanglePlacement::fillDestination, 1.0f);
-
-  g.setFont(contentHeight);
-  g.drawText(accessPoint.name, 5, 0, width, height, Justification::centredLeft, true);
-}
-
-void SettingsPageWifiComponent::listBoxItemClicked(int rowNumber, const MouseEvent &) {
-  const auto &accessPoint = ssidList[rowNumber];
-
-  passwordEditor->setVisible(accessPoint.auth);
-
-  connectionLabel->setText(accessPoint.name, juce::NotificationType::dontSendNotification);
-  if (pageStack->getCurrentPage()->getName() == "SSID List Page") {
-    pageStack->pushPage(connectionPage, PageStackComponent::kTransitionTranslateHorizontal);
   }
 }

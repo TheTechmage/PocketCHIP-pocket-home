@@ -1,32 +1,51 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
+
 #include "SwitchComponent.h"
 #include "PageStackComponent.h"
+#include "TrainComponent.h"
 
 struct WifiAccessPoint {
-  String name = "";
-  int strength = 0;
-  bool auth = false;
+  String ssid;
+  int signalStrength; // -120 to 0
+  bool requiresAuth;
 };
 
-class SettingsPageWifiComponent : public Component, private Button::Listener, private ListBoxModel {
+struct WifiIcons {
+  OwnedArray<Drawable> wifiStrength;
+  ScopedPointer<Drawable> lockIcon;
+};
+
+class WifiAccessPointListItem : public Button {
+public:
+  WifiAccessPoint ap;
+
+  WifiAccessPointListItem(const WifiAccessPoint &ap, WifiIcons *icons);
+
+  void paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) override;
+
+private:
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WifiAccessPointListItem)
+
+  WifiIcons *icons;
+};
+
+class SettingsPageWifiComponent : public Component, private Button::Listener {
 public:
   SettingsPageWifiComponent();
   ~SettingsPageWifiComponent();
 
-  bool wifiEnabled = false, wifiConnected = false;
+  bool wifiEnabled = false;
+  bool wifiConnected = false;
 
   ScopedPointer<PageStackComponent> pageStack;
 
   ScopedPointer<ImageButton> backButton;
   ScopedPointer<Drawable> wifiIcon;
-  OwnedArray<Drawable> wifiStrength;
-  ScopedPointer<Drawable> lockIcon;
+  ScopedPointer<WifiIcons> icons;
 
-  ScopedPointer<Component> ssidListPage;
-  ScopedPointer<ListBox> ssidListBox;
-  ScopedPointer<ListBoxModel> ssidListModel;
+  ScopedPointer<TrainComponent> accessPointListPage;
 
   ScopedPointer<Component> connectionPage;
   ScopedPointer<Label> connectionLabel;
@@ -36,19 +55,16 @@ public:
   ScopedPointer<SwitchComponent> switchComponent;
 
   var parseWifiListJson(const String &path);
-  std::vector<WifiAccessPoint> ssidList;
+
+  OwnedArray<WifiAccessPointListItem> accessPointItems;
 
   void setWifiEnabled(bool enabled);
-  void paint(Graphics &) override;
+  void paint(Graphics &g) override;
   void resized() override;
 
 private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsPageWifiComponent)
 
-  int getNumRows() override;
-  void paintListBoxItem(int rowNumber, Graphics &g, int width, int height,
-                        bool rowIsSelected) override;
-  void listBoxItemClicked(int row, const MouseEvent &) override;
   void buttonClicked(Button *) override;
   void buttonStateChanged(Button *) override;
 };

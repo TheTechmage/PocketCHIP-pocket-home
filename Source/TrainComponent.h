@@ -13,8 +13,11 @@ public:
 
   Orientation orientation = kOrientationHorizontal;
 
-  AnimatedPosition<AnimatedPositionBehaviours::SnapToPageBoundaries> position;
-  double itemSpacing;
+  int itemWidth = 0;
+  int itemHeight = 0;
+
+  float itemScaleMin = 0.8f;
+  float itemScaleMax = 1.0f;
 
   Array<Component *> items;
 
@@ -38,6 +41,11 @@ public:
 
 private:
   ScopedPointer<Component> dragModal;
+
+  AnimatedPosition<AnimatedPositionBehaviours::SnapToPageBoundaries> position;
+  Rectangle<int> itemBounds;
+
+  int itemSpacing;
 
   void setItemBoundsToFit();
   void updateItemTransforms();
