@@ -163,7 +163,6 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
   }
 
   auto apButton = dynamic_cast<WifiAccessPointListItem *>(button);
-  std::cout << apButton << std::endl;
   if (apButton) {
     passwordEditor->setVisible(apButton->ap.requiresAuth);
 
