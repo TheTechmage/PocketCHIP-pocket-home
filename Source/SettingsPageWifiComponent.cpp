@@ -3,7 +3,7 @@
 #include "Utils.h"
 
 WifiAccessPointListItem::WifiAccessPointListItem(const WifiAccessPoint &ap, WifiIcons *icons)
-: Button{ ap.ssid }, ap{ ap }, icons{ icons } {}
+: Button{ ap.ssid }, ap(ap), icons{ icons } {}
 
 void WifiAccessPointListItem::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) {
   auto bounds = getLocalBounds();
