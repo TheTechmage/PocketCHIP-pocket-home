@@ -9,11 +9,11 @@
 
 namespace BinaryData
 {
-    extern const char*   appsIcon_svg;
-    const int            appsIcon_svgSize = 1323;
+    extern const char*   appsIcon_png;
+    const int            appsIcon_pngSize = 2391;
 
-    extern const char*   appsIconSel_svg;
-    const int            appsIconSel_svgSize = 1318;
+    extern const char*   backIcon_png;
+    const int            backIcon_pngSize = 629;
 
     extern const char*   backIcon_svg;
     const int            backIcon_svgSize = 846;
@@ -21,35 +21,29 @@ namespace BinaryData
     extern const char*   bluetoothIcon_svg;
     const int            bluetoothIcon_svgSize = 993;
 
-    extern const char*   brightnessIconHi_svg;
-    const int            brightnessIconHi_svgSize = 1757;
+    extern const char*   brightnessIconHi_png;
+    const int            brightnessIconHi_pngSize = 1094;
 
-    extern const char*   brightnessIconLo_svg;
-    const int            brightnessIconLo_svgSize = 1781;
+    extern const char*   brightnessIconLo_png;
+    const int            brightnessIconLo_pngSize = 803;
 
     extern const char*   check_svg;
     const int            check_svgSize = 626;
 
-    extern const char*   gamesIcon_svg;
-    const int            gamesIcon_svgSize = 1319;
-
-    extern const char*   gamesIconSel_svg;
-    const int            gamesIconSel_svgSize = 1316;
+    extern const char*   gamesIcon_png;
+    const int            gamesIcon_pngSize = 2375;
 
     extern const char*   lock_svg;
     const int            lock_svgSize = 894;
 
-    extern const char*   settingsIcon_svg;
-    const int            settingsIcon_svgSize = 1585;
+    extern const char*   settingsIcon_png;
+    const int            settingsIcon_pngSize = 2098;
 
-    extern const char*   settingsIconSel_svg;
-    const int            settingsIconSel_svgSize = 1593;
+    extern const char*   volumeIconHi_png;
+    const int            volumeIconHi_pngSize = 963;
 
-    extern const char*   volumeIconHi_svg;
-    const int            volumeIconHi_svgSize = 1162;
-
-    extern const char*   volumeIconLo_svg;
-    const int            volumeIconLo_svgSize = 699;
+    extern const char*   volumeIconLo_png;
+    const int            volumeIconLo_pngSize = 325;
 
     extern const char*   wifiIcon_svg;
     const int            wifiIcon_svgSize = 1306;
@@ -70,7 +64,7 @@ namespace BinaryData
     extern const char* namedResourceList[];
 
     // Number of elements in the namedResourceList array.
-    const int namedResourceListSize = 19;
+    const int namedResourceListSize = 17;
 
     // If you provide the name of one of the binary resource variables above, this function will
     // return the corresponding data and its size (or a null pointer if the name isn't found).

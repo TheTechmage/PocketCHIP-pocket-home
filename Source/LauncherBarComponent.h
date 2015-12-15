@@ -12,7 +12,7 @@ public:
   StretchableLayoutManager layout;
   bool layoutDirty = false;
 
-  ScopedPointer<Drawable> tempIcon, tempIconSelected;
+  ScopedPointer<Drawable> tempIcon;
 
   LauncherBarComponent(int buttonSize);
   ~LauncherBarComponent();

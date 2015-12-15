@@ -2,25 +2,27 @@
 #include "Utils.h"
 
 LauncherBarComponent::LauncherBarComponent(int buttonSize) : buttonSize{ buttonSize } {
-  ScopedPointer<XmlElement> iconSvg = XmlDocument::parse(BinaryData::appsIcon_svg);
-  ScopedPointer<XmlElement> iconSelSvg = XmlDocument::parse(BinaryData::appsIconSel_svg);
-
-  tempIcon = Drawable::createFromSVG(*iconSvg);
-  tempIconSelected = Drawable::createFromSVG(*iconSelSvg);
+  tempIcon = Drawable::createFromImageData(BinaryData::appsIcon_png, BinaryData::appsIcon_pngSize);
 }
 
 LauncherBarComponent::~LauncherBarComponent() {}
 
-void LauncherBarComponent::paint(Graphics &g) {}
+void LauncherBarComponent::paint(Graphics &g) {
+  g.fillAll (Colours::black); // clear the background
+}
 
 void LauncherBarComponent::resized() {
-  int nitems = buttons.size() + 2;
-  Component *items[nitems];
-  items[0] = nullptr;
-  items[nitems - 1] = nullptr;
 
-  int i = 1;
+  int nitems = buttons.size() + 1;
+  Component *items[nitems];
+  items[nitems - 2] = nullptr; // second to last item is spacer
+
+  int i = 0;
   for (auto button : buttons) {
+    if (button->getName() == "Settings") {
+      items[nitems - 1] = button; // set last button to be settings
+      continue;
+    }
     items[i++] = button;
   }
 
@@ -29,11 +31,10 @@ void LauncherBarComponent::resized() {
   if (layoutDirty) {
     int itemWidth = buttonSize + buttonPadding;
     int i = 0;
-    layout.setItemLayout(i++, 0, -1.0, -1.0);
-    for (int j = 0; j < buttons.size(); ++j) {
+    for (int j = 0; j < nitems; ++j) {
       layout.setItemLayout(i++, itemWidth, itemWidth, buttonSize);
     }
-    layout.setItemLayout(i, 0, -1.0, -1.0);
+    layout.setItemLayout(nitems - 2, 0, -1.0, -1.0); // set second to last item (spacer) to be 100%
   }
 
   layout.layOutComponents(items, nitems, bounds.getX(), bounds.getY(), bounds.getWidth(),

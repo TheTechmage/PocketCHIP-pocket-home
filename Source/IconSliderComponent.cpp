@@ -1,4 +1,5 @@
 #include "IconSliderComponent.h"
+#include "Utils.h"
 
 static ScopedPointer<DrawableButton> createIconButton(const std::string name, const char *svgData) {
   ScopedPointer<DrawableButton> button;
@@ -13,7 +14,7 @@ static ScopedPointer<DrawableButton> createIconButton(const std::string name, co
   return button;
 };
 
-IconSliderComponent::IconSliderComponent(const char *iconLoData, const char *iconHiData) {
+IconSliderComponent::IconSliderComponent(const Drawable &iconLoDrawable, const Drawable &iconHiDrawable) {
   auto createSlider = [&] {
     auto s = new Slider();
     s->setSliderStyle(Slider::LinearHorizontal);
@@ -21,8 +22,9 @@ IconSliderComponent::IconSliderComponent(const char *iconLoData, const char *ico
     return ScopedPointer<Slider>(s);
   };
 
-  iconLow = createIconButton("Lo", iconLoData);
-  iconHi = createIconButton("Hi", iconHiData);
+  iconLow = createImageButtonFromDrawable("Lo", iconLoDrawable);
+  iconHi = createImageButtonFromDrawable("Hi", iconHiDrawable);
+
   addAndMakeVisible(iconLow);
   addAndMakeVisible(iconHi);
 

@@ -5,11 +5,12 @@
 class IconSliderComponent : public Component {
 public:
   ScopedPointer<Slider> slider;
-  ScopedPointer<DrawableButton> iconLow, iconHi;
+  ScopedPointer<ImageButton> iconLow, iconHi;
 
   StretchableLayoutManager sliderLayout;
 
-  IconSliderComponent(const char *loData, const char *hiData);
+//  IconSliderComponent(const char *loData, const char *hiData);
+  IconSliderComponent(const Drawable &lo, const Drawable &hi);
   ~IconSliderComponent();
 
   void paint(Graphics &);

@@ -12,11 +12,18 @@ SettingsPageComponent::SettingsPageComponent() {
   addAndMakeVisible(mainPage);
   mainPage->toBack();
 
-  screenBrightnessSlider = ScopedPointer<IconSliderComponent>(
-      new IconSliderComponent(BinaryData::brightnessIconLo_svg, BinaryData::brightnessIconHi_svg));
+  ScopedPointer<Drawable> brightLo = Drawable::createFromImageData(
+      BinaryData::brightnessIconLo_png, BinaryData::brightnessIconLo_pngSize);
+  ScopedPointer<Drawable> brightHi = Drawable::createFromImageData(
+      BinaryData::brightnessIconHi_png, BinaryData::brightnessIconHi_pngSize);
+  screenBrightnessSlider =
+      ScopedPointer<IconSliderComponent>(new IconSliderComponent(*brightLo, *brightHi));
 
-  volumeSlider = ScopedPointer<IconSliderComponent>(
-      new IconSliderComponent(BinaryData::volumeIconLo_svg, BinaryData::volumeIconHi_svg));
+  ScopedPointer<Drawable> volLo =
+      Drawable::createFromImageData(BinaryData::volumeIconLo_png, BinaryData::volumeIconLo_pngSize);
+  ScopedPointer<Drawable> volHi =
+      Drawable::createFromImageData(BinaryData::volumeIconHi_png, BinaryData::volumeIconHi_pngSize);
+  volumeSlider = ScopedPointer<IconSliderComponent>(new IconSliderComponent(*volLo, *volHi));
 
   mainPage->addAndMakeVisible(screenBrightnessSlider);
   mainPage->addAndMakeVisible(volumeSlider);
@@ -69,7 +76,7 @@ void SettingsPageComponent::resized() {
   }
 
   Component *sliders[] = { screenBrightnessSlider.get(), nullptr, volumeSlider.get() };
-  sliderLayout.layOutComponents(sliders, 3, bounds.getX(), bounds.getBottom() - sliderHeight,
+  sliderLayout.layOutComponents(sliders, 3, bounds.getX(), bounds.getBottom() - 100 - sliderHeight,
                                 bounds.getWidth(), sliderHeight, false, true);
 }
 

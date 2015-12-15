@@ -5,28 +5,24 @@
               jucerVersion="4.0.2" companyName="Next Thing Co." companyWebsite="http://nextthing.co">
   <MAINGROUP id="NYF1Vz" name="PokeLaunch">
     <GROUP id="{A1DF3F2A-774E-D561-3D99-5D88F7D2D731}" name="assets">
-      <FILE id="GJ5Ohw" name="appsIcon.svg" compile="0" resource="1" file="assets/appsIcon.svg"/>
-      <FILE id="qRgVuJ" name="appsIconSel.svg" compile="0" resource="1" file="assets/appsIconSel.svg"/>
+      <FILE id="fXAS6U" name="appsIcon.png" compile="0" resource="1" file="assets/appsIcon.png"/>
+      <FILE id="Q1mu9C" name="backIcon.png" compile="0" resource="1" file="assets/backIcon.png"/>
       <FILE id="YZKGfj" name="backIcon.svg" compile="0" resource="1" file="assets/backIcon.svg"/>
       <FILE id="lpsm1o" name="bluetoothIcon.svg" compile="0" resource="1"
             file="assets/bluetoothIcon.svg"/>
-      <FILE id="hHqhiE" name="brightnessIconHi.svg" compile="0" resource="1"
-            file="assets/brightnessIconHi.svg"/>
-      <FILE id="x9yQ09" name="brightnessIconLo.svg" compile="0" resource="1"
-            file="assets/brightnessIconLo.svg"/>
+      <FILE id="UdO4Ze" name="brightnessIconHi.png" compile="0" resource="1"
+            file="assets/brightnessIconHi.png"/>
+      <FILE id="kiOY7j" name="brightnessIconLo.png" compile="0" resource="1"
+            file="assets/brightnessIconLo.png"/>
       <FILE id="ersXEr" name="check.svg" compile="0" resource="1" file="assets/check.svg"/>
-      <FILE id="vPqxZe" name="gamesIcon.svg" compile="0" resource="1" file="assets/gamesIcon.svg"/>
-      <FILE id="escajm" name="gamesIconSel.svg" compile="0" resource="1"
-            file="assets/gamesIconSel.svg"/>
+      <FILE id="dtLXN6" name="gamesIcon.png" compile="0" resource="1" file="assets/gamesIcon.png"/>
       <FILE id="o0Lksy" name="lock.svg" compile="0" resource="1" file="assets/lock.svg"/>
-      <FILE id="zfWrKL" name="settingsIcon.svg" compile="0" resource="1"
-            file="assets/settingsIcon.svg"/>
-      <FILE id="fyKa3u" name="settingsIconSel.svg" compile="0" resource="1"
-            file="assets/settingsIconSel.svg"/>
-      <FILE id="Ub98WG" name="volumeIconHi.svg" compile="0" resource="1"
-            file="assets/volumeIconHi.svg"/>
-      <FILE id="haj4xI" name="volumeIconLo.svg" compile="0" resource="1"
-            file="assets/volumeIconLo.svg"/>
+      <FILE id="sInlJA" name="settingsIcon.png" compile="0" resource="1"
+            file="assets/settingsIcon.png"/>
+      <FILE id="WLBzbC" name="volumeIconHi.png" compile="0" resource="1"
+            file="assets/volumeIconHi.png"/>
+      <FILE id="w0qzKx" name="volumeIconLo.png" compile="0" resource="1"
+            file="assets/volumeIconLo.png"/>
       <FILE id="rG44xd" name="wifiIcon.svg" compile="0" resource="1" file="assets/wifiIcon.svg"/>
       <FILE id="oewR63" name="wifiStrength0.svg" compile="0" resource="1"
             file="assets/wifiStrength0.svg"/>

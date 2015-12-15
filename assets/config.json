@@ -1,7 +1,7 @@
 [
   {
     "name": "Apps",
-    "icon": "../../assets/appsIcon.svg",
+    "icon": "../../assets/appsIcon.png",
     "items": [
       {
         "name": "Terminal",
@@ -23,7 +23,7 @@
   },
   {
     "name": "Games",
-    "icon": "../../assets/gamesIcon.svg",
+    "icon": "../../assets/gamesIcon.png",
     "items": [
       {
         "name": "Quake",
@@ -33,6 +33,6 @@
   },
   {
     "name": "Settings",
-    "icon": "../../assets/settingsIcon.svg"
+    "icon": "../../assets/settingsIcon.png"
   }
 ]

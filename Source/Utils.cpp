@@ -26,7 +26,7 @@ ImageButton *createImageButton(const String &name, const File &imageFile) {
                     image, 1.0f, Colours::transparentWhite, // normal
                     image, 1.0f, Colours::transparentWhite, // over
                     image, 0.7f, Colours::transparentBlack, // down
-                    0.5f);
+                    0);
   return button;
 }
 
@@ -40,7 +40,7 @@ ImageButton *createImageButtonFromDrawable(const String &name, const Drawable &d
                     image, 1.0f, Colours::transparentWhite, // normal
                     image, 1.0f, Colours::transparentWhite, // over
                     image, 0.7f, Colours::transparentBlack, // down
-                    0.5f);
+                    0);
   return button;
 }
 

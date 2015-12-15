@@ -1,6 +1,7 @@
 #include "LauncherComponent.h"
 #include "AppsPageComponent.h"
 #include "SettingsPageComponent.h"
+#include "Main.h"
 #include "Utils.h"
 
 LauncherComponent::LauncherComponent(const var &configJson) {
@@ -40,8 +41,8 @@ void LauncherComponent::paint(Graphics &g) {
 
 void LauncherComponent::resized() {
   auto bounds = getLocalBounds();
-  categoryButtons->setBounds(bounds.getX(), bounds.getY() + 10, bounds.getWidth(),
-                             categoryButtons->buttonSize);
+  categoryButtons->setBounds(bounds.getX(), bounds.getHeight() - categoryButtons->buttonSize,
+                             bounds.getWidth(), categoryButtons->buttonSize);
   pageStack->setBounds(bounds);
   for (auto page : pages) {
     page->setBounds(bounds);
@@ -52,7 +53,11 @@ void LauncherComponent::buttonClicked(Button *button) {
   auto currentPage = pageStack->getCurrentPage();
   if ((!currentPage || currentPage->getName() != button->getName()) &&
       pagesByName.contains(button->getName())) {
-    pageStack->swapPage(pagesByName[button->getName()],
-                        PageStackComponent::kTransitionTranslateHorizontal);
+    auto page = pagesByName[button->getName()];
+    if (button->getName() == "Settings") {
+      getMainStack().pushPage(page, PageStackComponent::kTransitionTranslateHorizontal);
+    } else {
+      pageStack->swapPage(page, PageStackComponent::kTransitionTranslateHorizontal);
+    }
   }
 }
