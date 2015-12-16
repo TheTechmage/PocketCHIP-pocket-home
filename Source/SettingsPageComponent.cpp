@@ -32,6 +32,13 @@ SettingsPageComponent::SettingsPageComponent() {
   sliderLayout.setItemLayout(1, sliderPadding, sliderPadding, sliderPadding);
   sliderLayout.setItemLayout(2, 0.0, -1.0, -1.0);
 
+  // create back button
+  ScopedPointer<Drawable> backButtonDrawable = Drawable::createFromImageData(BinaryData::backIcon_png, BinaryData::backIcon_pngSize);
+  backButton = createImageButtonFromDrawable("Back", *backButtonDrawable);
+  backButton->addListener(this);
+  backButton->setAlwaysOnTop(true);
+  addAndMakeVisible(backButton);
+
   ScopedPointer<XmlElement> wifiSvg = XmlDocument::parse(BinaryData::wifiIcon_svg);
   ScopedPointer<XmlElement> bluetoothSvg = XmlDocument::parse(BinaryData::bluetoothIcon_svg);
 
@@ -67,9 +74,9 @@ void SettingsPageComponent::resized() {
 
   mainPage->setBounds(bounds);
 
-  train->centreWithSize(bounds.getWidth(), 96);
+  backButton->setBounds(0, bounds.getBottom() - 64, 50, 50);
 
-  bounds.reduce(sliderPadding, sliderPadding);
+  train->centreWithSize(bounds.getWidth(), 96);
 
   for (auto page : pages) {
     page->setBounds(bounds);
@@ -87,5 +94,8 @@ void SettingsPageComponent::buttonClicked(Button *button) {
   if (pagesByName.contains(button->getName())) {
     auto page = pagesByName[button->getName()];
     getMainStack().pushPage(page, PageStackComponent::kTransitionTranslateHorizontal);
+  }
+  if (button == backButton) {
+    getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
   }
 }

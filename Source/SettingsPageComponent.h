@@ -9,6 +9,8 @@ class SettingsPageComponent : public AppsPageComponent {
 public:
   ScopedPointer<IconSliderComponent> screenBrightnessSlider, volumeSlider;
   StretchableLayoutManager sliderLayout;
+  
+  ScopedPointer<ImageButton> backButton;
 
   ScopedPointer<Component> mainPage;
 
