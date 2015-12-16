@@ -65,7 +65,11 @@ SettingsPageComponent::SettingsPageComponent() {
 
 SettingsPageComponent::~SettingsPageComponent() {}
 
-void SettingsPageComponent::paint(Graphics &g) {}
+void SettingsPageComponent::paint(Graphics &g) {
+  auto bounds = getLocalBounds();
+  g.setColour(Colours::black);
+  g.fillRect(0, bounds.getBottom() - 62, 62, 62);
+}
 
 void SettingsPageComponent::resized() {
   AppsPageComponent::resized();
@@ -74,7 +78,7 @@ void SettingsPageComponent::resized() {
 
   mainPage->setBounds(bounds);
 
-  backButton->setBounds(0, bounds.getBottom() - 64, 50, 50);
+  backButton->setBounds(3, bounds.getBottom() - 56, 50, 50);
 
   train->centreWithSize(bounds.getWidth(), 96);
 
