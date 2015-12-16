@@ -74,6 +74,9 @@ PokeLaunchApplication::MainWindow::MainWindow(String name, const var &configJson
 #if JUCE_LINUX
   setTitleBarHeight(0);
   setFullScreen(true);
+  setBounds(getParentMonitorArea());
+  toFront();
+
 #endif
 }
 
