@@ -17,7 +17,7 @@ MainContentComponent::MainContentComponent(const var &configJson) {
   addAndMakeVisible(closeButton);
   closeButton->addListener(this);
 
-  setSize(480, 245);
+  setSize(480, 225);
 }
 
 MainContentComponent::~MainContentComponent() {}

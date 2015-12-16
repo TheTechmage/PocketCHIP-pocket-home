@@ -65,17 +65,15 @@ PageStackComponent &PokeLaunchApplication::getMainStack() {
 }
 
 PokeLaunchApplication::MainWindow::MainWindow(String name, const var &configJson)
-: DocumentWindow(name, Colours::darkgrey, DocumentWindow::closeButton) {
-  setUsingNativeTitleBar(false);
+: DocumentWindow(name, Colours::darkgrey, DocumentWindow::allButtons) {
+  setUsingNativeTitleBar(true);
   setResizable(true, false);
   setContentOwned(new MainContentComponent(configJson), true);
   centreWithSize(getWidth(), getHeight());
   setVisible(true);
 #if JUCE_LINUX
-  setTitleBarHeight(0);
-  setFullScreen(true);
-  setBounds(getParentMonitorArea());
-
+//  setTitleBarHeight(0);
+//  setFullScreen(true);
 #endif
 }
 
