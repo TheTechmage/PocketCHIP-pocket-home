@@ -5,11 +5,10 @@
 #include "LauncherComponent.h"
 #include "PageStackComponent.h"
 
-class MainContentComponent : public Component, private Button::Listener {
+class MainContentComponent : public Component {
 public:
   ScopedPointer<LauncherComponent> launcher;
   ScopedPointer<LookAndFeel> lookAndFeel;
-  ScopedPointer<TextButton> closeButton;
 
   ScopedPointer<PageStackComponent> pageStack;
 
@@ -21,6 +20,4 @@ public:
 
 private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainContentComponent)
-
-  void buttonClicked(Button *) override;
 };

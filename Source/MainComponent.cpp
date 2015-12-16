@@ -13,10 +13,6 @@ MainContentComponent::MainContentComponent(const var &configJson) {
   launcher = new LauncherComponent(configJson);
   pageStack->pushPage(launcher, PageStackComponent::kTransitionNone);
 
-  closeButton = new TextButton("Close");
-  addAndMakeVisible(closeButton);
-  closeButton->addListener(this);
-
   setSize(480, 225);
 }
 
@@ -29,11 +25,4 @@ void MainContentComponent::paint(Graphics &g) {
 void MainContentComponent::resized() {
   auto bounds = getLocalBounds();
   pageStack->setBounds(bounds);
-  closeButton->setBounds(bounds.getRight() - 40, 0, 40, 20);
-}
-
-void MainContentComponent::buttonClicked(Button *button) {
-  if (button == closeButton) {
-    JUCEApplication::quit();
-  }
 }
