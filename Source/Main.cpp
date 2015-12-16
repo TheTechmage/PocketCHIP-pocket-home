@@ -75,7 +75,6 @@ PokeLaunchApplication::MainWindow::MainWindow(String name, const var &configJson
   setTitleBarHeight(0);
   setFullScreen(true);
   setBounds(getParentMonitorArea());
-  toFront();
 
 #endif
 }
