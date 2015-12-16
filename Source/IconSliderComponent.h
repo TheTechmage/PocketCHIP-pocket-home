@@ -5,7 +5,7 @@
 class IconSliderComponent : public Component {
 public:
   ScopedPointer<Slider> slider;
-  ScopedPointer<ImageButton> iconLow, iconHi;
+  ScopedPointer<DrawableButton> iconLow, iconHi;
 
   StretchableLayoutManager sliderLayout;
 

@@ -1,19 +1,6 @@
 #include "IconSliderComponent.h"
 #include "Utils.h"
 
-static ScopedPointer<DrawableButton> createIconButton(const std::string name, const char *svgData) {
-  ScopedPointer<DrawableButton> button;
-  ScopedPointer<Drawable> icon;
-  ScopedPointer<XmlElement> iconSvg(XmlDocument::parse(svgData));
-
-  if (iconSvg != nullptr) icon = Drawable::createFromSVG(*iconSvg);
-
-  button = new DrawableButton(name, DrawableButton::ImageFitted);
-  button->setImages(icon);
-
-  return button;
-};
-
 IconSliderComponent::IconSliderComponent(const Drawable &iconLoDrawable, const Drawable &iconHiDrawable) {
   auto createSlider = [&] {
     auto s = new Slider();
@@ -22,8 +9,11 @@ IconSliderComponent::IconSliderComponent(const Drawable &iconLoDrawable, const D
     return ScopedPointer<Slider>(s);
   };
 
-  iconLow = createImageButtonFromDrawable("Lo", iconLoDrawable);
-  iconHi = createImageButtonFromDrawable("Hi", iconHiDrawable);
+  iconLow = new DrawableButton("lo", DrawableButton::ImageFitted);
+  iconLow->setImages(&iconLoDrawable);
+
+  iconHi = new DrawableButton("hi", DrawableButton::ImageFitted);
+  iconHi->setImages(&iconHiDrawable);
 
   addAndMakeVisible(iconLow);
   addAndMakeVisible(iconHi);
