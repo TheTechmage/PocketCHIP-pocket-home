@@ -33,17 +33,17 @@ SettingsPageComponent::SettingsPageComponent() {
   sliderLayout.setItemLayout(2, 0.0, -1.0, -1.0);
 
   // create back button
-  ScopedPointer<Drawable> backButtonDrawable = Drawable::createFromImageData(BinaryData::backIcon_png, BinaryData::backIcon_pngSize);
+  ScopedPointer<Drawable> backButtonDrawable =
+      Drawable::createFromImageData(BinaryData::backIcon_png, BinaryData::backIcon_pngSize);
   backButton = createImageButtonFromDrawable("Back", *backButtonDrawable);
   backButton->addListener(this);
   backButton->setAlwaysOnTop(true);
   addAndMakeVisible(backButton);
 
-  ScopedPointer<XmlElement> wifiSvg = XmlDocument::parse(BinaryData::wifiIcon_svg);
-  ScopedPointer<XmlElement> bluetoothSvg = XmlDocument::parse(BinaryData::bluetoothIcon_svg);
-
-  ScopedPointer<Drawable> wifiDrawable = Drawable::createFromSVG(*wifiSvg);
-  ScopedPointer<Drawable> bluetoothDrawable = Drawable::createFromSVG(*bluetoothSvg);
+  ScopedPointer<Drawable> wifiDrawable =
+      Drawable::createFromImageData(BinaryData::wifiIcon_png, BinaryData::wifiIcon_pngSize);
+  ScopedPointer<Drawable> bluetoothDrawable = Drawable::createFromImageData(
+      BinaryData::bluetoothIcon_png, BinaryData::bluetoothIcon_pngSize);
 
   auto wifiButton = createImageButtonFromDrawable("WiFi", *wifiDrawable);
   auto bluetoothButton = createImageButtonFromDrawable("Bluetooth", *bluetoothDrawable);

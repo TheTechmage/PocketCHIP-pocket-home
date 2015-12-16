@@ -29,24 +29,22 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   pageStack = new PageStackComponent();
   addAndMakeVisible(pageStack);
 
-  ScopedPointer<XmlElement> wifiSvg = XmlDocument::parse(BinaryData::wifiIcon_svg);
-  wifiIcon = Drawable::createFromSVG(*wifiSvg);
+  wifiIcon = Drawable::createFromImageData(BinaryData::wifiIcon_png, BinaryData::wifiIcon_pngSize);
   addAndMakeVisible(wifiIcon);
 
   icons = new WifiIcons();
 
-  ScopedPointer<XmlElement> lockSvg = XmlDocument::parse(BinaryData::lock_svg);
-  icons->lockIcon = Drawable::createFromSVG(*lockSvg);
+  icons->lockIcon = Drawable::createFromImageData(BinaryData::lock_png, BinaryData::lock_pngSize);
 
   icons->wifiStrength = OwnedArray<Drawable>();
-  ScopedPointer<XmlElement> wifi0Xvg = XmlDocument::parse(BinaryData::wifiStrength0_svg);
-  ScopedPointer<XmlElement> wifi1Xvg = XmlDocument::parse(BinaryData::wifiStrength1_svg);
-  ScopedPointer<XmlElement> wifi2Xvg = XmlDocument::parse(BinaryData::wifiStrength2_svg);
-  ScopedPointer<XmlElement> wifi3Xvg = XmlDocument::parse(BinaryData::wifiStrength3_svg);
-  icons->wifiStrength.set(0, Drawable::createFromSVG(*wifi0Xvg));
-  icons->wifiStrength.set(1, Drawable::createFromSVG(*wifi1Xvg));
-  icons->wifiStrength.set(2, Drawable::createFromSVG(*wifi2Xvg));
-  icons->wifiStrength.set(3, Drawable::createFromSVG(*wifi3Xvg));
+  icons->wifiStrength.set(0, Drawable::createFromImageData(BinaryData::wifiStrength0_png,
+                                                           BinaryData::wifiStrength0_pngSize));
+  icons->wifiStrength.set(1, Drawable::createFromImageData(BinaryData::wifiStrength1_png,
+                                                           BinaryData::wifiStrength1_pngSize));
+  icons->wifiStrength.set(2, Drawable::createFromImageData(BinaryData::wifiStrength2_png,
+                                                           BinaryData::wifiStrength2_pngSize));
+  icons->wifiStrength.set(3, Drawable::createFromImageData(BinaryData::wifiStrength3_png,
+                                                           BinaryData::wifiStrength3_pngSize));
 
   switchComponent = new SwitchComponent();
   switchComponent->addListener(this);
@@ -54,8 +52,8 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   addAndMakeVisible(switchComponent);
 
   // create back button
-  ScopedPointer<XmlElement> backButtonSvg = XmlDocument::parse(BinaryData::backIcon_svg);
-  ScopedPointer<Drawable> backButtonDrawable = Drawable::createFromSVG(*backButtonSvg);
+  ScopedPointer<Drawable> backButtonDrawable =
+      Drawable::createFromImageData(BinaryData::backIcon_png, BinaryData::backIcon_pngSize);
   backButton = createImageButtonFromDrawable("Back", *backButtonDrawable);
   backButton->addListener(this);
   backButton->setAlwaysOnTop(true);

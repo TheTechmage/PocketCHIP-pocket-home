@@ -7,31 +7,30 @@
     <GROUP id="{A1DF3F2A-774E-D561-3D99-5D88F7D2D731}" name="assets">
       <FILE id="fXAS6U" name="appsIcon.png" compile="0" resource="1" file="assets/appsIcon.png"/>
       <FILE id="Q1mu9C" name="backIcon.png" compile="0" resource="1" file="assets/backIcon.png"/>
-      <FILE id="YZKGfj" name="backIcon.svg" compile="0" resource="1" file="assets/backIcon.svg"/>
-      <FILE id="lpsm1o" name="bluetoothIcon.svg" compile="0" resource="1"
-            file="assets/bluetoothIcon.svg"/>
+      <FILE id="Mqbn9F" name="bluetoothIcon.png" compile="0" resource="1"
+            file="assets/bluetoothIcon.png"/>
       <FILE id="UdO4Ze" name="brightnessIconHi.png" compile="0" resource="1"
             file="assets/brightnessIconHi.png"/>
       <FILE id="kiOY7j" name="brightnessIconLo.png" compile="0" resource="1"
             file="assets/brightnessIconLo.png"/>
-      <FILE id="ersXEr" name="check.svg" compile="0" resource="1" file="assets/check.svg"/>
+      <FILE id="MzytiH" name="check.png" compile="0" resource="1" file="assets/check.png"/>
       <FILE id="dtLXN6" name="gamesIcon.png" compile="0" resource="1" file="assets/gamesIcon.png"/>
-      <FILE id="o0Lksy" name="lock.svg" compile="0" resource="1" file="assets/lock.svg"/>
+      <FILE id="R7QzGg" name="lock.png" compile="0" resource="1" file="assets/lock.png"/>
       <FILE id="sInlJA" name="settingsIcon.png" compile="0" resource="1"
             file="assets/settingsIcon.png"/>
       <FILE id="WLBzbC" name="volumeIconHi.png" compile="0" resource="1"
             file="assets/volumeIconHi.png"/>
       <FILE id="w0qzKx" name="volumeIconLo.png" compile="0" resource="1"
             file="assets/volumeIconLo.png"/>
-      <FILE id="rG44xd" name="wifiIcon.svg" compile="0" resource="1" file="assets/wifiIcon.svg"/>
-      <FILE id="oewR63" name="wifiStrength0.svg" compile="0" resource="1"
-            file="assets/wifiStrength0.svg"/>
-      <FILE id="JwGJh1" name="wifiStrength1.svg" compile="0" resource="1"
-            file="assets/wifiStrength1.svg"/>
-      <FILE id="StDJYd" name="wifiStrength2.svg" compile="0" resource="1"
-            file="assets/wifiStrength2.svg"/>
-      <FILE id="Ls8ign" name="wifiStrength3.svg" compile="0" resource="1"
-            file="assets/wifiStrength3.svg"/>
+      <FILE id="MHXOcG" name="wifiIcon.png" compile="0" resource="1" file="assets/wifiIcon.png"/>
+      <FILE id="t36Y3Q" name="wifiStrength0.png" compile="0" resource="1"
+            file="assets/wifiStrength0.png"/>
+      <FILE id="O15Fzb" name="wifiStrength1.png" compile="0" resource="1"
+            file="assets/wifiStrength1.png"/>
+      <FILE id="pOIVZ9" name="wifiStrength2.png" compile="0" resource="1"
+            file="assets/wifiStrength2.png"/>
+      <FILE id="khsgPd" name="wifiStrength3.png" compile="0" resource="1"
+            file="assets/wifiStrength3.png"/>
     </GROUP>
     <GROUP id="{4593A345-C350-960A-058D-B48F8240AA1D}" name="Source">
       <FILE id="SsaxMA" name="LauncherComponent.cpp" compile="1" resource="0"

@@ -17,12 +17,11 @@ SettingsPageBluetoothComponent::SettingsPageBluetoothComponent() {
     deviceList.push_back(device);
   }
 
-  ScopedPointer<XmlElement> btSvg = XmlDocument::parse(BinaryData::bluetoothIcon_svg);
-  btIcon = Drawable::createFromSVG(*btSvg);
+  btIcon = Drawable::createFromImageData(BinaryData::bluetoothIcon_png,
+                                         BinaryData::bluetoothIcon_pngSize);
   addAndMakeVisible(btIcon);
 
-  ScopedPointer<XmlElement> checkSvg = XmlDocument::parse(BinaryData::check_svg);
-  checkIcon = Drawable::createFromSVG(*checkSvg);
+  checkIcon = Drawable::createFromImageData(BinaryData::check_png, BinaryData::check_pngSize);
 
   switchComponent = new SwitchComponent();
   switchComponent->addListener(this);
@@ -30,8 +29,8 @@ SettingsPageBluetoothComponent::SettingsPageBluetoothComponent() {
   addAndMakeVisible(switchComponent);
 
   // create back button
-  ScopedPointer<XmlElement> backButtonSvg = XmlDocument::parse(BinaryData::backIcon_svg);
-  ScopedPointer<Drawable> backButtonDrawable = Drawable::createFromSVG(*backButtonSvg);
+  ScopedPointer<Drawable> backButtonDrawable =
+      Drawable::createFromImageData(BinaryData::backIcon_png, BinaryData::backIcon_pngSize);
   backButton = createImageButtonFromDrawable("Back", *backButtonDrawable);
   backButton->addListener(this);
   backButton->setAlwaysOnTop(true);

@@ -15,11 +15,8 @@ namespace BinaryData
     extern const char*   backIcon_png;
     const int            backIcon_pngSize = 629;
 
-    extern const char*   backIcon_svg;
-    const int            backIcon_svgSize = 846;
-
-    extern const char*   bluetoothIcon_svg;
-    const int            bluetoothIcon_svgSize = 993;
+    extern const char*   bluetoothIcon_png;
+    const int            bluetoothIcon_pngSize = 813;
 
     extern const char*   brightnessIconHi_png;
     const int            brightnessIconHi_pngSize = 1094;
@@ -27,14 +24,14 @@ namespace BinaryData
     extern const char*   brightnessIconLo_png;
     const int            brightnessIconLo_pngSize = 803;
 
-    extern const char*   check_svg;
-    const int            check_svgSize = 626;
+    extern const char*   check_png;
+    const int            check_pngSize = 739;
 
     extern const char*   gamesIcon_png;
     const int            gamesIcon_pngSize = 2375;
 
-    extern const char*   lock_svg;
-    const int            lock_svgSize = 894;
+    extern const char*   lock_png;
+    const int            lock_pngSize = 636;
 
     extern const char*   settingsIcon_png;
     const int            settingsIcon_pngSize = 2098;
@@ -45,26 +42,26 @@ namespace BinaryData
     extern const char*   volumeIconLo_png;
     const int            volumeIconLo_pngSize = 325;
 
-    extern const char*   wifiIcon_svg;
-    const int            wifiIcon_svgSize = 1306;
+    extern const char*   wifiIcon_png;
+    const int            wifiIcon_pngSize = 1316;
 
-    extern const char*   wifiStrength0_svg;
-    const int            wifiStrength0_svgSize = 1010;
+    extern const char*   wifiStrength0_png;
+    const int            wifiStrength0_pngSize = 1716;
 
-    extern const char*   wifiStrength1_svg;
-    const int            wifiStrength1_svgSize = 1010;
+    extern const char*   wifiStrength1_png;
+    const int            wifiStrength1_pngSize = 1576;
 
-    extern const char*   wifiStrength2_svg;
-    const int            wifiStrength2_svgSize = 1010;
+    extern const char*   wifiStrength2_png;
+    const int            wifiStrength2_pngSize = 1538;
 
-    extern const char*   wifiStrength3_svg;
-    const int            wifiStrength3_svgSize = 1010;
+    extern const char*   wifiStrength3_png;
+    const int            wifiStrength3_pngSize = 1251;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];
 
     // Number of elements in the namedResourceList array.
-    const int namedResourceListSize = 17;
+    const int namedResourceListSize = 16;
 
     // If you provide the name of one of the binary resource variables above, this function will
     // return the corresponding data and its size (or a null pointer if the name isn't found).
