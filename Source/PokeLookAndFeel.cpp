@@ -6,6 +6,15 @@ PokeLookAndFeel::PokeLookAndFeel() {
   setColour(TextEditor::backgroundColourId, Colours::lightgrey);
   setColour(ListBox::backgroundColourId, Colours::white);
   setColour(ListBox::textColourId, Colours::black);
+
+  _232MK =
+      Typeface::createSystemTypefaceFor(BinaryData::_232MKM___TTF, BinaryData::_232MKM___TTFSize);
+}
+
+PokeLookAndFeel::~PokeLookAndFeel(){};
+
+Typeface::Ptr PokeLookAndFeel::getTypefaceForFont(const Font &font) {
+  return _232MK;
 }
 
 void PokeLookAndFeel::drawLinearSliderThumb(Graphics &g, int x, int y, int width, int height,

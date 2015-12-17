@@ -530,6 +530,7 @@
 		B39330D838AE9A32096BDD5B = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_KeyListener.cpp"; path = "../../deps/JUCE/modules/juce_gui_basics/keyboard/juce_KeyListener.cpp"; sourceTree = "SOURCE_ROOT"; };
 		B3A5608BCEAA50A70B5F9B00 = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_TextEditor.h"; path = "../../deps/JUCE/modules/juce_gui_basics/widgets/juce_TextEditor.h"; sourceTree = "SOURCE_ROOT"; };
 		B3E04BE15A5BA5C605B63564 = {isa = PBXFileReference; lastKnownFileType = image.png; name = wifiStrength2.png; path = ../../assets/wifiStrength2.png; sourceTree = "SOURCE_ROOT"; };
+		B45FD01065F6822D5C69E9E5 = {isa = PBXFileReference; lastKnownFileType = file.TTF; name = "232MKM__.TTF"; path = "../../assets/232MKM__.TTF"; sourceTree = "SOURCE_ROOT"; };
 		B4D0847BB381337F45A3C8C4 = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_DrawableButton.h"; path = "../../deps/JUCE/modules/juce_gui_basics/buttons/juce_DrawableButton.h"; sourceTree = "SOURCE_ROOT"; };
 		B5297EF3D1FA63A1B5DBF629 = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_MarkerList.cpp"; path = "../../deps/JUCE/modules/juce_gui_basics/positioning/juce_MarkerList.cpp"; sourceTree = "SOURCE_ROOT"; };
 		B55728A7204CA4E24046F414 = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_ResizableEdgeComponent.h"; path = "../../deps/JUCE/modules/juce_gui_basics/layout/juce_ResizableEdgeComponent.h"; sourceTree = "SOURCE_ROOT"; };
@@ -733,6 +734,7 @@
 		FF3039AD7CCCC481C9944962 = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_Range.h"; path = "../../deps/JUCE/modules/juce_core/maths/juce_Range.h"; sourceTree = "SOURCE_ROOT"; };
 		FF6550945CF8C7B515B6005E = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_linux_CommonFile.cpp"; path = "../../deps/JUCE/modules/juce_core/native/juce_linux_CommonFile.cpp"; sourceTree = "SOURCE_ROOT"; };
 		8276413844176736FBBD93FD = {isa = PBXGroup; children = (
+					B45FD01065F6822D5C69E9E5,
 					FEE046F1AF9FB9272F313F50,
 					45DE1AEF66DEAD2601C8BAF9,
 					5DD14F7531B8735611582982,

@@ -2,8 +2,13 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
-struct PokeLookAndFeel : public LookAndFeel_V3 {
+class PokeLookAndFeel : public LookAndFeel_V3 {
+
+public:
   PokeLookAndFeel();
+  ~PokeLookAndFeel();
+
+  Typeface::Ptr getTypefaceForFont(const Font& font) override;
 
   void drawLinearSliderThumb(Graphics &g, int x, int y, int width, int height, float sliderPos,
                              float minSliderPos, float maxSliderPos,
@@ -16,4 +21,8 @@ struct PokeLookAndFeel : public LookAndFeel_V3 {
                         Slider &slider) override;
 
   int getSliderThumbRadius(Slider &slider) override;
+
+private:
+  Typeface::Ptr _232MK;
+
 };

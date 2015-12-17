@@ -5,6 +5,7 @@
               jucerVersion="4.0.2" companyName="Next Thing Co." companyWebsite="http://nextthing.co">
   <MAINGROUP id="NYF1Vz" name="PokeLaunch">
     <GROUP id="{A1DF3F2A-774E-D561-3D99-5D88F7D2D731}" name="assets">
+      <FILE id="eIIRhN" name="232MKM__.TTF" compile="0" resource="1" file="assets/232MKM__.TTF"/>
       <FILE id="fXAS6U" name="appsIcon.png" compile="0" resource="1" file="assets/appsIcon.png"/>
       <FILE id="Q1mu9C" name="backIcon.png" compile="0" resource="1" file="assets/backIcon.png"/>
       <FILE id="Mqbn9F" name="bluetoothIcon.png" compile="0" resource="1"

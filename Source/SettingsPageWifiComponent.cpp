@@ -20,6 +20,7 @@ void WifiAccessPointListItem::paintButton(Graphics &g, bool isMouseOverButton, b
   icons->wifiStrength[ap.signalStrength]->drawWithin(g, iconBounds,
                                                      RectanglePlacement::fillDestination, 1.0f);
 
+  g.setFont(Font(getLookAndFeel().getTypefaceForFont(Font())));
   g.setFont(h);
   g.setColour(findColour(DrawableButton::textColourId));
   g.drawText(getName(), bounds, Justification::centredLeft);
