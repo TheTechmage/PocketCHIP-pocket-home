@@ -1,11 +1,43 @@
 #include "SettingsPageComponent.h"
-#include "SettingsPageWifiComponent.h"
-#include "SettingsPageBluetoothComponent.h"
 #include "Main.h"
 #include "Utils.h"
 
-static const int sliderHeight = 50;
-static const int sliderPadding = 10;
+SettingsCategoryItemComponent::SettingsCategoryItemComponent(const Drawable *iconImage)
+: icon{ new DrawableButton("icon", DrawableButton::ImageFitted) },
+  toggle{ new SwitchComponent() },
+  button{ new TextButton() } {
+  icon->setImages(iconImage);
+  toggle->addListener(this);
+  addAndMakeVisible(icon);
+  addAndMakeVisible(toggle);
+  addAndMakeVisible(button);
+}
+
+void SettingsCategoryItemComponent::paint(Graphics &g) {}
+
+void SettingsCategoryItemComponent::resized() {
+  auto b = getLocalBounds();
+  auto h = b.getHeight();
+
+  int spacing = 10;
+
+  layout.setItemLayout(0, h, h, h);
+  layout.setItemLayout(1, spacing, spacing, spacing);
+  layout.setItemLayout(2, h, h, h);
+  layout.setItemLayout(3, spacing, spacing, spacing);
+  layout.setItemLayout(4, h, -1, -1);
+
+  Component *comps[] = { icon, nullptr, toggle, nullptr, button };
+  layout.layOutComponents(comps, 5, b.getX(), b.getY(), b.getWidth(), b.getHeight(), false, true);
+}
+
+void SettingsCategoryItemComponent::buttonClicked(Button *b) {}
+
+void SettingsCategoryItemComponent::buttonStateChanged(Button *b) {
+  if (b == toggle) {
+    button->setVisible(toggle->getToggleState());
+  }
+}
 
 SettingsPageComponent::SettingsPageComponent() {
   mainPage = new Component();
@@ -28,10 +60,6 @@ SettingsPageComponent::SettingsPageComponent() {
   mainPage->addAndMakeVisible(screenBrightnessSlider);
   mainPage->addAndMakeVisible(volumeSlider);
 
-  sliderLayout.setItemLayout(0, 0.0, -1.0, -1.0);
-  sliderLayout.setItemLayout(1, sliderPadding, sliderPadding, sliderPadding);
-  sliderLayout.setItemLayout(2, 0.0, -1.0, -1.0);
-
   // create back button
   ScopedPointer<Drawable> backButtonDrawable =
       Drawable::createFromImageData(BinaryData::backIcon_png, BinaryData::backIcon_pngSize);
@@ -40,66 +68,57 @@ SettingsPageComponent::SettingsPageComponent() {
   backButton->setAlwaysOnTop(true);
   addAndMakeVisible(backButton);
 
-  ScopedPointer<Drawable> wifiDrawable =
-      Drawable::createFromImageData(BinaryData::wifiIcon_png, BinaryData::wifiIcon_pngSize);
-  ScopedPointer<Drawable> bluetoothDrawable = Drawable::createFromImageData(
-      BinaryData::bluetoothIcon_png, BinaryData::bluetoothIcon_pngSize);
+  wifiIcon = Drawable::createFromImageData(BinaryData::wifiIcon_png, BinaryData::wifiIcon_pngSize);
+  bluetoothIcon = Drawable::createFromImageData(BinaryData::bluetoothIcon_png,
+                                                BinaryData::bluetoothIcon_pngSize);
 
-  auto wifiButton = createImageButtonFromDrawable("WiFi", *wifiDrawable);
-  auto bluetoothButton = createImageButtonFromDrawable("Bluetooth", *bluetoothDrawable);
+  wifiCategoryItem = new SettingsCategoryItemComponent(wifiIcon);
+  wifiCategoryItem->button->addListener(this);
+  addAndMakeVisible(wifiCategoryItem);
 
-  wifiButton->addListener(this);
-  bluetoothButton->addListener(this);
+  bluetoothCategoryItem = new SettingsCategoryItemComponent(bluetoothIcon);
+  bluetoothCategoryItem->button->addListener(this);
+  addAndMakeVisible(bluetoothCategoryItem);
 
-  addAndOwnIcon(wifiButton->getName(), wifiButton);
-  addAndOwnIcon(bluetoothButton->getName(), bluetoothButton);
+  addAndMakeVisible(screenBrightnessSlider);
+  addAndMakeVisible(volumeSlider);
 
-  auto wifiPage = new SettingsPageWifiComponent();
-  pages.add(wifiPage);
-  pagesByName.set(wifiButton->getName(), wifiPage);
-
-  auto bluetoothPage = new SettingsPageBluetoothComponent();
-  pages.add(bluetoothPage);
-  pagesByName.set(bluetoothButton->getName(), bluetoothPage);
+  wifiPage = new SettingsPageWifiComponent();
+  bluetoothPage = new SettingsPageBluetoothComponent();
 }
 
 SettingsPageComponent::~SettingsPageComponent() {}
 
-void SettingsPageComponent::paint(Graphics &g) {
-  auto bounds = getLocalBounds();
-  g.setColour(Colours::black);
-  g.fillRect(0, bounds.getBottom() - 62, 62, 62);
-}
+void SettingsPageComponent::paint(Graphics &g) {}
 
 void SettingsPageComponent::resized() {
-  AppsPageComponent::resized();
-
   auto bounds = getLocalBounds();
+
+  {
+    for (int i = 0, j = 0; i < 4; ++i) {
+      if (i > 0) verticalLayout.setItemLayout(j++, 0, -1, -1);
+      verticalLayout.setItemLayout(j++, 48, 48, 48);
+    }
+
+    Component *settingsItems[] = { wifiCategoryItem,       nullptr, bluetoothCategoryItem, nullptr,
+                                   screenBrightnessSlider, nullptr, volumeSlider };
+    auto b = bounds.reduced(10);
+    b.setLeft(70);
+    verticalLayout.layOutComponents(settingsItems, 7, b.getX(), b.getY(), b.getWidth(),
+                                    b.getHeight(), true, true);
+  }
 
   mainPage->setBounds(bounds);
 
-  backButton->setBounds(3, bounds.getBottom() - 56, 50, 50);
-
-  train->centreWithSize(bounds.getWidth(), 96);
-
-  for (auto page : pages) {
-    page->setBounds(bounds);
-  }
-
-  Component *sliders[] = { screenBrightnessSlider.get(), nullptr, volumeSlider.get() };
-  sliderLayout.layOutComponents(sliders, 3, bounds.getX(), bounds.getBottom() - 100 - sliderHeight,
-                                bounds.getWidth(), sliderHeight, false, true);
+  backButton->setBounds(bounds.getX(), bounds.getY(), 60, bounds.getHeight());
 }
 
 void SettingsPageComponent::buttonClicked(Button *button) {
-  for (auto page : pages) {
-    page->setVisible(false);
-  }
-  if (pagesByName.contains(button->getName())) {
-    auto page = pagesByName[button->getName()];
-    getMainStack().pushPage(page, PageStackComponent::kTransitionTranslateHorizontal);
-  }
   if (button == backButton) {
     getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
+  } else if (button == wifiCategoryItem->button) {
+    getMainStack().pushPage(wifiPage, PageStackComponent::kTransitionTranslateHorizontal);
+  } else if (button == bluetoothCategoryItem->button) {
+    getMainStack().pushPage(bluetoothPage, PageStackComponent::kTransitionTranslateHorizontal);
   }
 }

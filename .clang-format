@@ -8,6 +8,7 @@ AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: true
 AllowShortLoopsOnASingleLine: true
 ConstructorInitializerIndentWidth: 0
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
 PointerAlignment: Right
 AlwaysBreakTemplateDeclarations: true
 BreakConstructorInitializersBeforeComma: false

@@ -15,9 +15,15 @@ LauncherComponent::LauncherComponent(const var &configJson) {
   if (categories) {
     for (const auto &category : *categories) {
       auto name = category["name"].toString();
-      auto page = name == "Settings" ? new SettingsPageComponent() : new AppsPageComponent();
+      Component *page = nullptr;
+      if (name == "Settings") {
+        page = new SettingsPageComponent();
+      } else {
+        auto appsPage = new AppsPageComponent();
+        appsPage->createIconsFromJsonArray(category["items"]);
+        page = appsPage;
+      }
       page->setName(name);
-      page->createIconsFromJsonArray(category["items"]);
       pages.add(page);
       pagesByName.set(name, page);
     }
