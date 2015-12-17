@@ -1,7 +1,8 @@
 #include "IconSliderComponent.h"
 #include "Utils.h"
 
-IconSliderComponent::IconSliderComponent(const Drawable &iconLoDrawable, const Drawable &iconHiDrawable) {
+IconSliderComponent::IconSliderComponent(const Drawable &iconLoDrawable,
+                                         const Drawable &iconHiDrawable) {
   auto createSlider = [&] {
     auto s = new Slider();
     s->setSliderStyle(Slider::LinearHorizontal);
@@ -25,6 +26,11 @@ IconSliderComponent::IconSliderComponent(const Drawable &iconLoDrawable, const D
 IconSliderComponent::~IconSliderComponent() {}
 
 void IconSliderComponent::paint(Graphics &g) {
+  // NOTE(anonymous): KLUDGE KLUDGE WHO PUT THIS HERE DONT DO THIS EXCEPT DO.
+  if (!lookedandfelt){
+    lookedandfelt = true;
+    slider->setLookAndFeel(&getLookAndFeel());
+  }
 }
 
 void IconSliderComponent::resized() {

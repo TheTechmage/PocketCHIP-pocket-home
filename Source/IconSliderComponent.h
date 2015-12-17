@@ -9,12 +9,13 @@ public:
 
   StretchableLayoutManager sliderLayout;
 
-//  IconSliderComponent(const char *loData, const char *hiData);
   IconSliderComponent(const Drawable &lo, const Drawable &hi);
   ~IconSliderComponent();
 
   void paint(Graphics &);
   void resized();
+
+  bool lookedandfelt = false;
 
 private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IconSliderComponent)

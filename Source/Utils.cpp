@@ -90,6 +90,10 @@ float mix(float a, float b, float t) {
   return t * (b - a) + a;
 }
 
+float mapLinear(float x, float imin, float imax, float omin, float omax) {
+  return mix(omin, omax, (x - imin) / (imax - imin));
+}
+
 void animateTranslation(Component *component, int x, int y, float alpha, int durationMillis) {
   const auto &bounds = component->getBounds();
   auto destBounds = bounds.translated(x - bounds.getX(), y - bounds.getY());
