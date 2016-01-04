@@ -15,13 +15,15 @@ PokeLookAndFeel::PokeLookAndFeel() {
   setColour(SwitchComponent::colorIdHandle, chipPink);
 
   _232MK =
-      Typeface::createSystemTypefaceFor(BinaryData::_232MKM___TTF, BinaryData::_232MKM___TTFSize);
+    Typeface::createSystemTypefaceFor(BinaryData::_232MKM_TTF, BinaryData::_232MKM_TTFSize);
+  roboto =
+    Typeface::createSystemTypefaceFor(BinaryData::RobotoRegular_ttf, BinaryData::RobotoRegular_ttfSize);
 }
 
 PokeLookAndFeel::~PokeLookAndFeel(){};
 
 Typeface::Ptr PokeLookAndFeel::getTypefaceForFont(const Font &font) {
-  return _232MK;
+  return roboto;
 }
 
 void PokeLookAndFeel::drawLinearSliderThumb(Graphics &g, int x, int y, int width, int height,

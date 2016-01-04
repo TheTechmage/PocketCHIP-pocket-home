@@ -23,6 +23,6 @@ public:
   int getSliderThumbRadius(Slider &slider) override;
 
 private:
-  Typeface::Ptr _232MK;
+  Typeface::Ptr _232MK, roboto;
 
 };

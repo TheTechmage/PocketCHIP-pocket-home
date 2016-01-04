@@ -5,7 +5,7 @@
               jucerVersion="4.0.2" companyName="Next Thing Co." companyWebsite="http://nextthing.co">
   <MAINGROUP id="NYF1Vz" name="PokeLaunch">
     <GROUP id="{A1DF3F2A-774E-D561-3D99-5D88F7D2D731}" name="assets">
-      <FILE id="eIIRhN" name="232MKM__.TTF" compile="0" resource="1" file="assets/232MKM__.TTF"/>
+      <FILE id="aNBeA8" name="232MKM.TTF" compile="0" resource="1" file="assets/fonts/232MKM.TTF"/>
       <FILE id="fXAS6U" name="appsIcon.png" compile="0" resource="1" file="assets/appsIcon.png"/>
       <FILE id="Q1mu9C" name="backIcon.png" compile="0" resource="1" file="assets/backIcon.png"/>
       <FILE id="Mqbn9F" name="bluetoothIcon.png" compile="0" resource="1"
@@ -17,6 +17,8 @@
       <FILE id="MzytiH" name="check.png" compile="0" resource="1" file="assets/check.png"/>
       <FILE id="dtLXN6" name="gamesIcon.png" compile="0" resource="1" file="assets/gamesIcon.png"/>
       <FILE id="R7QzGg" name="lock.png" compile="0" resource="1" file="assets/lock.png"/>
+      <FILE id="BQy1t9" name="Roboto-Regular.ttf" compile="0" resource="1"
+            file="assets/fonts/roboto/Roboto-Regular.ttf"/>
       <FILE id="sInlJA" name="settingsIcon.png" compile="0" resource="1"
             file="assets/settingsIcon.png"/>
       <FILE id="WLBzbC" name="volumeIconHi.png" compile="0" resource="1"
