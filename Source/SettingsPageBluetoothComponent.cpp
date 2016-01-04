@@ -2,9 +2,34 @@
 #include "Main.h"
 #include "Utils.h"
 
+BluetoothDeviceListItem::BluetoothDeviceListItem(const BTDevice &device, BTIcons *icons) : Button{ device.name }, device(device), icons{ icons } {}
+
+void BluetoothDeviceListItem::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) {
+  auto width = getLocalBounds().getWidth();
+  auto height = getLocalBounds().getHeight();
+
+  auto contentHeight = height * 0.7f;
+
+  if (device.connected) {
+    icons->checkIcon->setSize(height, height);
+    icons->checkIcon->drawWithin(g,
+                          Rectangle<float>(width - (height * 6), 3, contentHeight, contentHeight),
+                          RectanglePlacement::fillDestination, 1.0f);
+  }
+
+  g.setFont(contentHeight);
+  g.drawText(device.name, 5, 0, width, height, Justification::centredLeft, true);
+}
+
 SettingsPageBluetoothComponent::SettingsPageBluetoothComponent() {
   pageStack = new PageStackComponent();
   addAndMakeVisible(pageStack);
+
+  // create device list "page"
+  deviceListPage = new TrainComponent();
+  deviceListPage->setOrientation(TrainComponent::kOrientationVertical);
+  deviceListPage->itemHeight = 32;
+  deviceListPage->itemScaleMin = 0.9f;
 
   auto deviceListJson = parseDeviceListJson("../../assets/bluetooth.json");
   auto deviceListArray = deviceListJson.getArray();
@@ -15,13 +40,16 @@ SettingsPageBluetoothComponent::SettingsPageBluetoothComponent() {
     device.connected = btDevice["connected"];
     device.paired = btDevice["paired"];
     deviceList.push_back(device);
+
+    auto item = new BluetoothDeviceListItem(device, &icons);
+    item->addListener(this);
+    deviceListItems.add(item);
+    deviceListPage->addItem(item);
   }
 
   btIcon = Drawable::createFromImageData(BinaryData::bluetoothIcon_png,
                                          BinaryData::bluetoothIcon_pngSize);
   addAndMakeVisible(btIcon);
-
-  checkIcon = Drawable::createFromImageData(BinaryData::check_png, BinaryData::check_pngSize);
 
   switchComponent = new SwitchComponent();
   switchComponent->addListener(this);
@@ -36,14 +64,6 @@ SettingsPageBluetoothComponent::SettingsPageBluetoothComponent() {
   backButton->setAlwaysOnTop(true);
   addAndMakeVisible(backButton);
 
-  // create device list "page"
-  deviceListPage = new Component("Device List Page");
-
-  deviceListBox = new ListBox();
-  deviceListBox->setModel(this);
-  deviceListBox->setMultipleSelectionEnabled(false);
-  deviceListPage->addAndMakeVisible(deviceListBox);
-
   // create device connection "page"
   connectionPage = new Component("Connection Page");
 
@@ -55,8 +75,9 @@ SettingsPageBluetoothComponent::SettingsPageBluetoothComponent() {
   connectionButton->setButtonText("Connect");
   connectionButton->addListener(this);
   connectionPage->addAndMakeVisible(connectionButton);
-}
 
+  icons.checkIcon = Drawable::createFromImageData(BinaryData::check_png, BinaryData::check_pngSize);
+}
 
 SettingsPageBluetoothComponent::~SettingsPageBluetoothComponent() {}
 
@@ -76,7 +97,6 @@ void SettingsPageBluetoothComponent::resized() {
   backButton->setBounds(10, 10, 62, 62);
 
   pageStack->setBounds(pageBounds);
-  deviceListBox->setBounds(0, 0, pageBounds.getWidth(), pageBounds.getHeight());
   connectionButton->setBounds(90, 160, pageBounds.getWidth() - 180, 24);
 
   connectionLabel->setBounds(10, 90, pageBounds.getWidth() - 20, 24);
@@ -123,39 +143,35 @@ var SettingsPageBluetoothComponent::parseDeviceListJson(const String &path) {
   return btDeviceJson;
 }
 
-int SettingsPageBluetoothComponent::getNumRows() {
-  return deviceList.size();
-}
-
-void SettingsPageBluetoothComponent::paintListBoxItem(int rowNumber, Graphics &g, int width,
-                                                      int height, bool rowIsSelected) {
-  const auto &device = deviceList[rowNumber];
-  auto contentHeight = height * 0.7f;
-
-  if (rowIsSelected) g.fillAll(Colours::lightgrey);
-
-  if (device.connected) {
-    checkIcon->setSize(height, height);
-    checkIcon->drawWithin(g,
-                          Rectangle<float>(width - (height * 6), 3, contentHeight, contentHeight),
-                          RectanglePlacement::fillDestination, 1.0f);
-  }
-
-  g.setFont(contentHeight);
-  g.drawText(device.name, 5, 0, width, height, Justification::centredLeft, true);
-}
-
-void SettingsPageBluetoothComponent::listBoxItemClicked(int rowNumber, const MouseEvent &) {
-  currentDeviceIndex = rowNumber;
-
-  const auto &device = deviceList[rowNumber];
-
-  connectionLabel->setText(device.name + "\n" + device.mac,
-                           juce::NotificationType::dontSendNotification);
-
-  connectionButton->setButtonText(device.connected ? "Disconnect" : "Connect");
-
-  if (pageStack->getCurrentPage()->getName() == "Device List Page") {
-    pageStack->pushPage(connectionPage, PageStackComponent::kTransitionTranslateHorizontal);
-  }
-}
+//void SettingsPageBluetoothComponent::paintListBoxItem(int rowNumber, Graphics &g, int width,
+//                                                      int height, bool rowIsSelected) {
+//  const auto &device = deviceList[rowNumber];
+//  auto contentHeight = height * 0.7f;
+//
+//  if (rowIsSelected) g.fillAll(Colours::lightgrey);
+//
+//  if (device.connected) {
+//    checkIcon->setSize(height, height);
+//    checkIcon->drawWithin(g,
+//                          Rectangle<float>(width - (height * 6), 3, contentHeight, contentHeight),
+//                          RectanglePlacement::fillDestination, 1.0f);
+//  }
+//
+//  g.setFont(contentHeight);
+//  g.drawText(device.name, 5, 0, width, height, Justification::centredLeft, true);
+//}
+//
+//void SettingsPageBluetoothComponent::listBoxItemClicked(int rowNumber, const MouseEvent &) {
+//  currentDeviceIndex = rowNumber;
+//
+//  const auto &device = deviceList[rowNumber];
+//
+//  connectionLabel->setText(device.name + "\n" + device.mac,
+//                           juce::NotificationType::dontSendNotification);
+//
+//  connectionButton->setButtonText(device.connected ? "Disconnect" : "Connect");
+//
+//  if (pageStack->getCurrentPage()->getName() == "Device List Page") {
+//    pageStack->pushPage(connectionPage, PageStackComponent::kTransitionTranslateHorizontal);
+//  }
+//}

@@ -3,6 +3,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "SwitchComponent.h"
 #include "PageStackComponent.h"
+#include "TrainComponent.h"
 
 struct BTDevice {
   String name = "";
@@ -11,9 +12,24 @@ struct BTDevice {
   bool paired = false;
 };
 
-class SettingsPageBluetoothComponent : public Component,
-                                       private Button::Listener,
-                                       private ListBoxModel {
+struct BTIcons {
+  ScopedPointer<Drawable> checkIcon;
+};
+
+class BluetoothDeviceListItem : public Button {
+public:
+  BTDevice device;
+  BTIcons *icons;
+
+  BluetoothDeviceListItem(const BTDevice &device, BTIcons *icons);
+
+  void paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) override;
+
+private:
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BluetoothDeviceListItem)
+};
+
+class SettingsPageBluetoothComponent : public Component, private Button::Listener {
 public:
   SettingsPageBluetoothComponent();
   ~SettingsPageBluetoothComponent();
@@ -27,15 +43,16 @@ public:
   ScopedPointer<Drawable> checkIcon;
   ScopedPointer<Drawable> btIcon;
 
-  ScopedPointer<Component> deviceListPage;
-  ScopedPointer<ListBox> deviceListBox;
-  ScopedPointer<ListBoxModel> deviceListModel;
+  ScopedPointer<TrainComponent> deviceListPage;
+  OwnedArray<Component> deviceListItems;
 
   ScopedPointer<Component> connectionPage;
   ScopedPointer<Label> connectionLabel;
   ScopedPointer<TextButton> connectionButton;
 
   ScopedPointer<SwitchComponent> switchComponent;
+
+  BTIcons icons;
 
   var parseDeviceListJson(const String &path);
   std::vector<BTDevice> deviceList;
@@ -47,10 +64,6 @@ public:
 private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsPageBluetoothComponent)
 
-  int getNumRows() override;
-  void paintListBoxItem(int rowNumber, Graphics &g, int width, int height,
-                        bool rowIsSelected) override;
-  void listBoxItemClicked(int row, const MouseEvent &) override;
   void buttonClicked(Button *) override;
   void buttonStateChanged(Button *) override;
 };
