@@ -1,38 +1,41 @@
-[
-  {
-    "name": "Apps",
-    "icon": "../../assets/appsIcon.png",
-    "items": [
-      {
-        "name": "Terminal",
-        "icon": "../../assets/Faenza/utilities-terminal.png"
-      },
-      {
-        "name": "Iceweasel",
-        "icon": "../../assets/Faenza/iceweasel.png"
-      },
-      {
-        "name": "MPlayer",
-        "icon": "../../assets/Faenza/mplayer.png"
-      },
-      {
-        "name": "MyPaint",
-        "icon": "../../assets/Faenza/mypaint.png"
-      }
-    ]
-  },
-  {
-    "name": "Games",
-    "icon": "../../assets/gamesIcon.png",
-    "items": [
-      {
-        "name": "Quake",
-        "icon": "../../assets/Faenza/window.png"
-      }
-    ]
-  },
-  {
-    "name": "Settings",
-    "icon": "../../assets/settingsIcon.png"
-  }
-]
+{
+  "defaultCategory" : "Apps",
+  "categories": [
+    {
+      "name": "Apps",
+      "icon": "../../assets/appsIcon.png",
+      "items": [
+        {
+          "name": "Terminal",
+          "icon": "../../assets/Faenza/utilities-terminal.png"
+        },
+        {
+          "name": "Iceweasel",
+          "icon": "../../assets/Faenza/iceweasel.png"
+        },
+        {
+          "name": "MPlayer",
+          "icon": "../../assets/Faenza/mplayer.png"
+        },
+        {
+          "name": "MyPaint",
+          "icon": "../../assets/Faenza/mypaint.png"
+        }
+      ]
+    },
+    {
+      "name": "Games",
+      "icon": "../../assets/gamesIcon.png",
+      "items": [
+        {
+          "name": "Quake",
+          "icon": "../../assets/Faenza/window.png"
+        }
+      ]
+    },
+    {
+      "name": "Settings",
+      "icon": "../../assets/settingsIcon.png"
+    }
+  ]
+}

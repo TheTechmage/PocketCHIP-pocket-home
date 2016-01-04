@@ -11,7 +11,7 @@ LauncherComponent::LauncherComponent(const var &configJson) {
   categoryButtons = new LauncherBarComponent(62);
   addAndMakeVisible(categoryButtons);
 
-  auto categories = configJson.getArray();
+  auto categories = configJson["categories"].getArray();
   if (categories) {
     for (const auto &category : *categories) {
       auto name = category["name"].toString();
@@ -37,6 +37,8 @@ LauncherComponent::LauncherComponent(const var &configJson) {
       button->addListener(this);
     }
   }
+
+  defaultPage = pagesByName[configJson["defaultCategory"]];
 }
 
 LauncherComponent::~LauncherComponent() {}
@@ -55,6 +57,13 @@ void LauncherComponent::resized() {
   for (auto page : pages) {
     page->setBounds(bounds);
   }
+
+  // init
+  if (!resize) {
+    resize = true;
+    pageStack->swapPage(defaultPage, PageStackComponent::kTransitionNone);
+  }
+
 }
 
 void LauncherComponent::buttonClicked(Button *button) {

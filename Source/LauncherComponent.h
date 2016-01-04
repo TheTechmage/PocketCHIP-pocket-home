@@ -8,10 +8,13 @@
 class LauncherComponent : public Component, private Button::Listener {
 public:
   ScopedPointer<LauncherBarComponent> categoryButtons;
+  Component* defaultPage;
 
   OwnedArray<Component> pages;
   ScopedPointer<PageStackComponent> pageStack;
   HashMap<String, Component *> pagesByName;
+
+  bool resize = false;
 
   StretchableLayoutManager categoryButtonLayout;
 
