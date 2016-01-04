@@ -3,7 +3,7 @@
 #include "Utils.h"
 
 SwitchComponent::SwitchComponent() {
-  handle = new DrawablePath();
+    handle = new DrawablePath();
   addAndMakeVisible(handle);
 
   setSize(42, 24);
@@ -31,12 +31,12 @@ void SwitchComponent::resized() {
     handleBoundsOff = { insetBounds.getX(), insetBounds.getY(), d, d };
     handleBoundsOn = { insetBounds.getRight() - d, insetBounds.getY(), d, d };
 
-    Path path;
-    path.addEllipse(0, 0, d, d);
-    handle->setPath(path);
-
-    handle->setFill(FillType(findColour(colorIdHandle)));
     handle->setBounds(getToggleState() ? handleBoundsOn : handleBoundsOff);
+
+    Path path;
+    path.addEllipse(handle->getBounds().toType<float>());
+    handle->setPath(path);
+    handle->setFill(FillType(findColour(colorIdHandle)));
   }
 }
 
