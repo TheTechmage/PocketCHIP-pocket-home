@@ -1,12 +1,18 @@
 #include "PokeLookAndFeel.h"
+#include "SwitchComponent.h"
 #include "Utils.h"
 
 PokeLookAndFeel::PokeLookAndFeel() {
-  setColour(Slider::backgroundColourId, Colour(0xffe1e1e1));
-  setColour(Slider::thumbColourId, Colour(0xffeb008b));
-  setColour(TextEditor::backgroundColourId, Colours::lightgrey);
+  auto lightGrey = Colour(0xffe1e1e1);
+  auto chipPink = Colour(0xffeb008b);
+
+  setColour(Slider::backgroundColourId, lightGrey);
+  setColour(Slider::thumbColourId, chipPink);
+  setColour(TextEditor::backgroundColourId, lightGrey);
   setColour(ListBox::backgroundColourId, Colours::white);
   setColour(ListBox::textColourId, Colours::black);
+  setColour(SwitchComponent::colorIdBackground, lightGrey);
+  setColour(SwitchComponent::colorIdHandle, chipPink);
 
   _232MK =
       Typeface::createSystemTypefaceFor(BinaryData::_232MKM___TTF, BinaryData::_232MKM___TTFSize);

@@ -26,11 +26,6 @@ IconSliderComponent::IconSliderComponent(const Drawable &iconLoDrawable,
 IconSliderComponent::~IconSliderComponent() {}
 
 void IconSliderComponent::paint(Graphics &g) {
-  // NOTE(anonymous): KLUDGE KLUDGE WHO PUT THIS HERE DONT DO THIS EXCEPT DO.
-  if (!lookedandfelt){
-    lookedandfelt = true;
-    slider->setLookAndFeel(&getLookAndFeel());
-  }
 }
 
 void IconSliderComponent::resized() {

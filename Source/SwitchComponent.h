@@ -4,11 +4,20 @@
 
 class SwitchComponent : public ToggleButton {
 public:
+  enum ColorIds {
+    colorIdBackground = 0x100f000,
+    colorIdHandle     = 0x100f001
+  };
+
   SwitchComponent();
   ~SwitchComponent();
 
   void paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) override;
   void resized() override;
+  void clicked() override;
+
+  ScopedPointer<DrawablePath> handle;
+  Rectangle<int> handleBoundsOff, handleBoundsOn;
 
 private:
   Rectangle<int> pillBounds;
