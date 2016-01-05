@@ -51,12 +51,8 @@ void LauncherComponent::resized() {
   auto bounds = getLocalBounds();
   categoryButtons->setBounds(bounds.getX(), bounds.getHeight() - categoryButtons->buttonSize,
                              bounds.getWidth(), categoryButtons->buttonSize);
-//  pageStack->setBounds(bounds);
   pageStack->setBounds(bounds.getX(), bounds.getY(),
                        bounds.getWidth(), bounds.getHeight() - categoryButtons->buttonSize);
-  for (auto page : pages) {
-    page->setBounds(bounds);
-  }
 
   // init
   if (!resize) {
