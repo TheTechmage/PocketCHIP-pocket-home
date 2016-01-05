@@ -2,7 +2,8 @@
 #include "Main.h"
 #include "Utils.h"
 
-BluetoothDeviceListItem::BluetoothDeviceListItem(const BTDevice &device, BTIcons *icons) : Button{ device.name }, device(device), icons{ icons } {}
+BluetoothDeviceListItem::BluetoothDeviceListItem(const BTDevice &device, BTIcons *icons)
+: Button{ device.name }, device(device), icons{ icons } {}
 
 void BluetoothDeviceListItem::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) {
   auto width = getLocalBounds().getWidth();
@@ -12,9 +13,9 @@ void BluetoothDeviceListItem::paintButton(Graphics &g, bool isMouseOverButton, b
 
   if (device.connected) {
     icons->checkIcon->setSize(height, height);
-    icons->checkIcon->drawWithin(g,
-                          Rectangle<float>(width - (height * 6), 3, contentHeight, contentHeight),
-                          RectanglePlacement::fillDestination, 1.0f);
+    icons->checkIcon->drawWithin(
+        g, Rectangle<float>(width - (height * 6), 3, contentHeight, contentHeight),
+        RectanglePlacement::fillDestination, 1.0f);
   }
 
   g.setFont(contentHeight);
@@ -47,14 +48,17 @@ SettingsPageBluetoothComponent::SettingsPageBluetoothComponent() {
     deviceListPage->addItem(item);
   }
 
-  btIcon = Drawable::createFromImageData(BinaryData::bluetoothIcon_png,
-                                         BinaryData::bluetoothIcon_pngSize);
+  btIcon = new ImageComponent("WiFi Icon");
+  btIcon->setImage(
+      ImageFileFormat::loadFrom(BinaryData::bluetoothIcon_png, BinaryData::bluetoothIcon_pngSize));
   addAndMakeVisible(btIcon);
 
-  switchComponent = new SwitchComponent();
-  switchComponent->addListener(this);
-  switchComponent->toFront(false);
-  addAndMakeVisible(switchComponent);
+  addAndMakeVisible(btIcon);
+
+//  switchComponent = new SwitchComponent();
+//  switchComponent->addListener(this);
+//  switchComponent->toFront(false);
+//  addAndMakeVisible(switchComponent);
 
   // create back button
   ScopedPointer<Drawable> backButtonDrawable =
@@ -101,14 +105,14 @@ void SettingsPageBluetoothComponent::resized() {
 
   connectionLabel->setBounds(10, 90, pageBounds.getWidth() - 20, 24);
 
-  btIcon->setTopLeftPosition(bounds.getX(), bounds.getHeight() / 2.0f - 20);
+  btIcon->setBounds(bounds.getX() + 2, bounds.getHeight() / 2.0f - 40, 80, 80);
 
-  {
-    auto t = switchComponent->getTransform();
-    t = AffineTransform::identity.rotated(-float_Pi / 2.0)
-            .translated(bounds.getX() + 75, bounds.getHeight() / 2.0f + 40);
-    switchComponent->setTransform(t);
-  }
+//  {
+//    auto t = switchComponent->getTransform();
+//    t = AffineTransform::identity.rotated(-float_Pi / 2.0)
+//            .translated(bounds.getX() + 75, bounds.getHeight() / 2.0f + 40);
+//    switchComponent->setTransform(t);
+//  }
 }
 
 void SettingsPageBluetoothComponent::buttonClicked(Button *button) {
@@ -127,10 +131,10 @@ void SettingsPageBluetoothComponent::buttonClicked(Button *button) {
 }
 
 void SettingsPageBluetoothComponent::buttonStateChanged(Button *button) {
-  if (button == switchComponent && bluetoothEnabled != button->getToggleState()) {
-    bluetoothEnabled = button->getToggleState();
-    setBluetoothEnabled(bluetoothEnabled);
-  }
+//  if (button == switchComponent && bluetoothEnabled != button->getToggleState()) {
+//    bluetoothEnabled = button->getToggleState();
+//    setBluetoothEnabled(bluetoothEnabled);
+//  }
 }
 
 var SettingsPageBluetoothComponent::parseDeviceListJson(const String &path) {
@@ -143,7 +147,7 @@ var SettingsPageBluetoothComponent::parseDeviceListJson(const String &path) {
   return btDeviceJson;
 }
 
-//void SettingsPageBluetoothComponent::paintListBoxItem(int rowNumber, Graphics &g, int width,
+// void SettingsPageBluetoothComponent::paintListBoxItem(int rowNumber, Graphics &g, int width,
 //                                                      int height, bool rowIsSelected) {
 //  const auto &device = deviceList[rowNumber];
 //  auto contentHeight = height * 0.7f;
@@ -161,7 +165,7 @@ var SettingsPageBluetoothComponent::parseDeviceListJson(const String &path) {
 //  g.drawText(device.name, 5, 0, width, height, Justification::centredLeft, true);
 //}
 //
-//void SettingsPageBluetoothComponent::listBoxItemClicked(int rowNumber, const MouseEvent &) {
+// void SettingsPageBluetoothComponent::listBoxItemClicked(int rowNumber, const MouseEvent &) {
 //  currentDeviceIndex = rowNumber;
 //
 //  const auto &device = deviceList[rowNumber];

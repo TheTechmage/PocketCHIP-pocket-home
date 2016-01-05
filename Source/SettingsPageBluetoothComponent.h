@@ -41,7 +41,7 @@ public:
 
   ScopedPointer<ImageButton> backButton;
   ScopedPointer<Drawable> checkIcon;
-  ScopedPointer<Drawable> btIcon;
+  ScopedPointer<ImageComponent> btIcon;
 
   ScopedPointer<TrainComponent> deviceListPage;
   OwnedArray<Component> deviceListItems;
@@ -50,7 +50,7 @@ public:
   ScopedPointer<Label> connectionLabel;
   ScopedPointer<TextButton> connectionButton;
 
-  ScopedPointer<SwitchComponent> switchComponent;
+//  ScopedPointer<SwitchComponent> switchComponent;
 
   BTIcons icons;
 
