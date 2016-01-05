@@ -2,8 +2,8 @@
 #include "Main.h"
 #include "Utils.h"
 
-BluetoothDeviceListItem::BluetoothDeviceListItem(const BTDevice &device, BTIcons *icons)
-: Button{ device.name }, device(device), icons{ icons } {}
+BluetoothDeviceListItem::BluetoothDeviceListItem(BluetoothDevice *device, BTIcons *icons)
+: Button{ device->name }, device(device), icons{ icons } {}
 
 void BluetoothDeviceListItem::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) {
   auto bounds = getLocalBounds();
@@ -13,7 +13,7 @@ void BluetoothDeviceListItem::paintButton(Graphics &g, bool isMouseOverButton, b
 
   auto contentHeight = h * 0.7f;
 
-  if (device.connected) {
+  if (device->connected) {
     icons->checkIcon->setSize(h, h);
     icons->checkIcon->drawWithin(g, Rectangle<float>(w - h, 3, contentHeight, contentHeight),
                                  RectanglePlacement::fillDestination, 1.0f);
@@ -22,7 +22,7 @@ void BluetoothDeviceListItem::paintButton(Graphics &g, bool isMouseOverButton, b
   g.setFont(Font(getLookAndFeel().getTypefaceForFont(Font())));
   g.setFont(h);
   g.setColour(findColour(DrawableButton::textColourId));
-  g.drawText(device.name, 5, 0, w, h, Justification::centredLeft, true);
+  g.drawText(device->name, 5, 0, w, h, Justification::centredLeft, true);
 }
 
 SettingsPageBluetoothComponent::SettingsPageBluetoothComponent() {
@@ -35,17 +35,8 @@ SettingsPageBluetoothComponent::SettingsPageBluetoothComponent() {
   deviceListPage->itemHeight = 32;
   deviceListPage->itemScaleMin = 0.9f;
 
-  auto deviceListJson = parseDeviceListJson("../../assets/bluetooth.json");
-  auto deviceListArray = deviceListJson.getArray();
-  for (const auto &btDevice : *deviceListArray) {
-    BTDevice device;
-    device.name = btDevice["name"].toString();
-    device.mac = btDevice["mac"].toString();
-    device.connected = btDevice["connected"];
-    device.paired = btDevice["paired"];
-    deviceList.push_back(device);
-
-    auto item = new BluetoothDeviceListItem(device, &icons);
+  for (auto btDevice : getBluetoothStatus().devices) {
+    auto item = new BluetoothDeviceListItem(btDevice, &icons);
     item->addListener(this);
     deviceListItems.add(item);
     deviceListPage->addItem(item);
@@ -121,20 +112,10 @@ void SettingsPageBluetoothComponent::buttonClicked(Button *button) {
 
   auto btButton = dynamic_cast<BluetoothDeviceListItem *>(button);
   if (btButton) {
-    selectedDevice = &btButton->device;
+    selectedDevice = btButton->device;
     connectionButton->setButtonText(selectedDevice->connected ? "Disconnect" : "Connect");
-    connectionLabel->setText(selectedDevice->name + "\n" + selectedDevice->mac,
+    connectionLabel->setText(selectedDevice->name + "\n" + selectedDevice->macAddress,
                              juce::NotificationType::dontSendNotification);
     pageStack->pushPage(connectionPage, PageStackComponent::kTransitionTranslateHorizontal);
   }
-}
-
-var SettingsPageBluetoothComponent::parseDeviceListJson(const String &path) {
-  auto btDeviceListFile = absoluteFileFromPath(path);
-  auto btDeviceJson = JSON::parse(btDeviceListFile);
-  if (!btDeviceJson) {
-    std::cerr << "Could not read bluetootxh.json file from " << btDeviceListFile.getFullPathName()
-              << std::endl;
-  }
-  return btDeviceJson;
 }

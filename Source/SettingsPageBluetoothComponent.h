@@ -4,13 +4,7 @@
 #include "SwitchComponent.h"
 #include "PageStackComponent.h"
 #include "TrainComponent.h"
-
-struct BTDevice {
-  String name = "";
-  String mac = "";
-  bool connected = false;
-  bool paired = false;
-};
+#include "Main.h"
 
 struct BTIcons {
   ScopedPointer<Drawable> checkIcon;
@@ -18,10 +12,10 @@ struct BTIcons {
 
 class BluetoothDeviceListItem : public Button {
 public:
-  BTDevice device;
+  BluetoothDevice *device;
   BTIcons *icons;
 
-  BluetoothDeviceListItem(const BTDevice &device, BTIcons *icons);
+  BluetoothDeviceListItem(BluetoothDevice *device, BTIcons *icons);
 
   void paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) override;
 
@@ -39,7 +33,7 @@ public:
   bool bluetoothEnabled = true;
   int currentDeviceIndex;
 
-  BTDevice* selectedDevice;
+  BluetoothDevice *selectedDevice;
 
   ScopedPointer<PageStackComponent> pageStack;
 
@@ -54,12 +48,7 @@ public:
   ScopedPointer<Label> connectionLabel;
   ScopedPointer<TextButton> connectionButton;
 
-//  ScopedPointer<SwitchComponent> switchComponent;
-
   BTIcons icons;
-
-  var parseDeviceListJson(const String &path);
-  std::vector<BTDevice> deviceList;
 
   void paint(Graphics &) override;
   void resized() override;

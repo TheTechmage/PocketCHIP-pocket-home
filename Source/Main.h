@@ -23,12 +23,27 @@ struct WifiStatus {
   void populateFromJson(const var &json);
 };
 
+struct BluetoothDevice {
+  String name, macAddress;
+  bool connected = false;
+  bool paired = false;
+};
+
+struct BluetoothStatus {
+  OwnedArray<BluetoothDevice> devices;
+  bool enabled = false;
+
+  void populateFromJson(const var &json);
+};
+
 PageStackComponent &getMainStack();
 WifiStatus &getWifiStatus();
+BluetoothStatus &getBluetoothStatus();
 
 class PokeLaunchApplication : public JUCEApplication {
 public:
   WifiStatus wifiStatus;
+  BluetoothStatus bluetoothStatus;
 
   PokeLaunchApplication();
 

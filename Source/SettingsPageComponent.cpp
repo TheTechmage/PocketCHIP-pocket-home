@@ -2,6 +2,8 @@
 #include "Main.h"
 #include "Utils.h"
 
+#include <numeric>
+
 SettingsCategoryButton::SettingsCategoryButton(const String &name)
 : Button(name), displayText(name) {}
 
@@ -88,11 +90,24 @@ BluetoothCategoryItemComponent::BluetoothCategoryItemComponent()
 }
 
 void BluetoothCategoryItemComponent::enabledStateChanged(bool enabled) {
+  getBluetoothStatus().enabled = enabled;
   updateButtonText();
 }
 
 void BluetoothCategoryItemComponent::updateButtonText() {
-  button->setText("Bluetooth Blah!");
+  const auto &status = getBluetoothStatus();
+  if (status.enabled) {
+    int connectedDeviceCount =
+        std::accumulate(status.devices.begin(), status.devices.end(), 0,
+                        [](int n, BluetoothDevice *d) { return n + d->connected; });
+    if (connectedDeviceCount > 0) {
+      button->setText(std::to_string(connectedDeviceCount) + " Devices Connected");
+    } else {
+      button->setText("No Devices Connected");
+    }
+  } else {
+    button->setText("Bluetooth Off");
+  }
 }
 
 SettingsPageComponent::SettingsPageComponent() {

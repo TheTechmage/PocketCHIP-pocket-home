@@ -26,12 +26,29 @@ void WifiStatus::populateFromJson(const var &json) {
   }
 }
 
+void BluetoothStatus::populateFromJson(const var &json) {
+  devices.clear();
+
+  for (const auto &btDevice : *json.getArray()) {
+    auto device = new BluetoothDevice();
+    device->name = btDevice["name"].toString();
+    device->macAddress = btDevice["mac"].toString();
+    device->connected = btDevice["connected"];
+    device->paired = btDevice["paired"];
+    devices.add(device);
+  }
+}
+
 PageStackComponent &getMainStack() {
   return PokeLaunchApplication::get()->getMainStack();
 }
 
 WifiStatus &getWifiStatus() {
   return PokeLaunchApplication::get()->wifiStatus;
+}
+
+BluetoothStatus &getBluetoothStatus() {
+  return PokeLaunchApplication::get()->bluetoothStatus;
 }
 
 PokeLaunchApplication::PokeLaunchApplication() {}
@@ -75,6 +92,9 @@ void PokeLaunchApplication::initialise(const String &commandLine) {
   {
     auto ssidListFile = absoluteFileFromPath("../../assets/wifi.json");
     wifiStatus.populateFromJson(JSON::parse(ssidListFile));
+
+    auto deviceListFile = absoluteFileFromPath("../../assets/bluetooth.json");
+    bluetoothStatus.populateFromJson(JSON::parse(deviceListFile));
   }
 
   mainWindow = new MainWindow(getApplicationName(), configJson);
