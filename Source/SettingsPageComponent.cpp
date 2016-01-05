@@ -10,7 +10,7 @@ SettingsCategoryItemComponent::SettingsCategoryItemComponent(const Drawable *ico
   toggle->addListener(this);
   addAndMakeVisible(icon);
   addAndMakeVisible(toggle);
-  addAndMakeVisible(button);
+  addChildComponent(button);
 }
 
 void SettingsCategoryItemComponent::paint(Graphics &g) {}
