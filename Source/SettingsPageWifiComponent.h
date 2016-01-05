@@ -36,15 +36,17 @@ public:
   SettingsPageWifiComponent();
   ~SettingsPageWifiComponent();
 
-  bool wifiEnabled = false;
+  bool init = false;
+
+  bool wifiEnabled = true;
   bool wifiConnected = false;
-  WifiAccessPoint* connectedAp;
-  WifiAccessPoint* selectedAp;
+  WifiAccessPoint *connectedAp;
+  WifiAccessPoint *selectedAp;
 
   ScopedPointer<PageStackComponent> pageStack;
 
   ScopedPointer<ImageButton> backButton;
-  ScopedPointer<Drawable> wifiIcon;
+  ScopedPointer<ImageComponent> wifiIconComponent;
   ScopedPointer<WifiIcons> icons;
 
   ScopedPointer<TrainComponent> accessPointListPage;
@@ -68,5 +70,4 @@ private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsPageWifiComponent)
 
   void buttonClicked(Button *) override;
-  void buttonStateChanged(Button *) override;
 };

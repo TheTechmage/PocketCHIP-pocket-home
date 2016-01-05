@@ -30,8 +30,10 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   pageStack = new PageStackComponent();
   addAndMakeVisible(pageStack);
 
-  wifiIcon = Drawable::createFromImageData(BinaryData::wifiIcon_png, BinaryData::wifiIcon_pngSize);
-  addAndMakeVisible(wifiIcon);
+  wifiIconComponent = new ImageComponent("WiFi Icon");
+  wifiIconComponent->setImage(
+      ImageFileFormat::loadFrom(BinaryData::wifiIcon_png, BinaryData::wifiIcon_pngSize));
+  addAndMakeVisible(wifiIconComponent);
 
   icons = new WifiIcons();
 
@@ -46,11 +48,6 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
                                                            BinaryData::wifiStrength2_pngSize));
   icons->wifiStrength.set(3, Drawable::createFromImageData(BinaryData::wifiStrength3_png,
                                                            BinaryData::wifiStrength3_pngSize));
-
-  switchComponent = new SwitchComponent();
-  switchComponent->addListener(this);
-  switchComponent->toFront(false);
-  addAndMakeVisible(switchComponent);
 
   // create back button
   ScopedPointer<Drawable> backButtonDrawable =
@@ -130,18 +127,16 @@ void SettingsPageWifiComponent::resized() {
   passwordEditor->setBounds(90, 120, pageBounds.getWidth() - 180, 24);
   connectionButton->setBounds(90, 160, pageBounds.getWidth() - 180, 24);
 
-  wifiIcon->setTopLeftPosition(bounds.getX(), bounds.getHeight() / 2.0f - 20);
+  wifiIconComponent->setBounds(bounds.getX() + 7, bounds.getHeight() / 2.0f - 40, 80, 80);
 
-  {
-    auto t = switchComponent->getTransform();
-    t = AffineTransform::identity.rotated(-float_Pi / 2.0)
-            .translated(bounds.getX() + 75, bounds.getHeight() / 2.0f + 40);
-    switchComponent->setTransform(t);
+  if (!init) { // TODO: cruft to resize page correctly on init? arrg. Should be in constructor,
+               //  or not at all
+    init = true;
+    pageStack->pushPage(accessPointListPage, PageStackComponent::kTransitionNone);
   }
 }
 
 void SettingsPageWifiComponent::buttonClicked(Button *button) {
-
   passwordEditor->setVisible(false);
 
   if (button == connectionButton) {
@@ -176,17 +171,6 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
       pageStack->popPage(PageStackComponent::kTransitionTranslateHorizontal);
     } else {
       getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
-    }
-  }
-}
-
-void SettingsPageWifiComponent::buttonStateChanged(Button *button) {
-  if (button == switchComponent && wifiEnabled != button->getToggleState()) {
-    wifiEnabled = button->getToggleState();
-    setWifiEnabled(wifiEnabled);
-    if (wifiEnabled) {
-      pageStack->clear(PageStackComponent::kTransitionNone);
-      pageStack->pushPage(accessPointListPage, PageStackComponent::kTransitionNone);
     }
   }
 }

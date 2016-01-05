@@ -7,7 +7,11 @@ PageStackComponent::PageStackComponent() {
 
 PageStackComponent::~PageStackComponent() {}
 
-void PageStackComponent::paint(Graphics &g) {}
+void PageStackComponent::paint(Graphics &g) {
+  g.fillAll (Colours::grey);
+  g.setColour (Colours::blue);
+  g.drawRect (getLocalBounds(), 1);
+}
 
 void PageStackComponent::resized() {
   if (!stack.empty()) {
