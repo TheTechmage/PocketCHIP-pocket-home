@@ -15,9 +15,8 @@ void BluetoothDeviceListItem::paintButton(Graphics &g, bool isMouseOverButton, b
 
   if (device.connected) {
     icons->checkIcon->setSize(h, h);
-    icons->checkIcon->drawWithin(
-        g, Rectangle<float>(w - h, 3, contentHeight, contentHeight),
-        RectanglePlacement::fillDestination, 1.0f);
+    icons->checkIcon->drawWithin(g, Rectangle<float>(w - h, 3, contentHeight, contentHeight),
+                                 RectanglePlacement::fillDestination, 1.0f);
   }
 
   g.setFont(Font(getLookAndFeel().getTypefaceForFont(Font())));
@@ -106,10 +105,8 @@ void SettingsPageBluetoothComponent::resized() {
 }
 
 void SettingsPageBluetoothComponent::buttonClicked(Button *button) {
-
-  if (button == connectionButton) {
-    auto &curDevice = deviceList[currentDeviceIndex];
-    curDevice.connected = !curDevice.connected;
+  if (button == connectionButton && selectedDevice) {
+    selectedDevice->connected = !selectedDevice->connected;
     pageStack->popPage(PageStackComponent::kTransitionTranslateHorizontal);
   }
 
@@ -119,6 +116,16 @@ void SettingsPageBluetoothComponent::buttonClicked(Button *button) {
     } else {
       getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
     }
+  }
+
+
+  auto btButton = dynamic_cast<BluetoothDeviceListItem *>(button);
+  if (btButton) {
+    selectedDevice = &btButton->device;
+    connectionButton->setButtonText(selectedDevice->connected ? "Disconnect" : "Connect");
+    connectionLabel->setText(selectedDevice->name + "\n" + selectedDevice->mac,
+                             juce::NotificationType::dontSendNotification);
+    pageStack->pushPage(connectionPage, PageStackComponent::kTransitionTranslateHorizontal);
   }
 }
 
@@ -131,36 +138,3 @@ var SettingsPageBluetoothComponent::parseDeviceListJson(const String &path) {
   }
   return btDeviceJson;
 }
-
-// void SettingsPageBluetoothComponent::paintListBoxItem(int rowNumber, Graphics &g, int width,
-//                                                      int height, bool rowIsSelected) {
-//  const auto &device = deviceList[rowNumber];
-//  auto contentHeight = height * 0.7f;
-//
-//  if (rowIsSelected) g.fillAll(Colours::lightgrey);
-//
-//  if (device.connected) {
-//    checkIcon->setSize(height, height);
-//    checkIcon->drawWithin(g,
-//                          Rectangle<float>(width - (height * 6), 3, contentHeight, contentHeight),
-//                          RectanglePlacement::fillDestination, 1.0f);
-//  }
-//
-//  g.setFont(contentHeight);
-//  g.drawText(device.name, 5, 0, width, height, Justification::centredLeft, true);
-//}
-//
-// void SettingsPageBluetoothComponent::listBoxItemClicked(int rowNumber, const MouseEvent &) {
-//  currentDeviceIndex = rowNumber;
-//
-//  const auto &device = deviceList[rowNumber];
-//
-//  connectionLabel->setText(device.name + "\n" + device.mac,
-//                           juce::NotificationType::dontSendNotification);
-//
-//  connectionButton->setButtonText(device.connected ? "Disconnect" : "Connect");
-//
-//  if (pageStack->getCurrentPage()->getName() == "Device List Page") {
-//    pageStack->pushPage(connectionPage, PageStackComponent::kTransitionTranslateHorizontal);
-//  }
-//}

@@ -39,6 +39,8 @@ public:
   bool bluetoothEnabled = true;
   int currentDeviceIndex;
 
+  BTDevice* selectedDevice;
+
   ScopedPointer<PageStackComponent> pageStack;
 
   ScopedPointer<ImageButton> backButton;
