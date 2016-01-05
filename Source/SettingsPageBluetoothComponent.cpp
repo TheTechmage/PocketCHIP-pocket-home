@@ -87,12 +87,6 @@ SettingsPageBluetoothComponent::~SettingsPageBluetoothComponent() {}
 
 void SettingsPageBluetoothComponent::paint(Graphics &g) {}
 
-void SettingsPageBluetoothComponent::setBluetoothEnabled(bool enabled) {
-  if (enabled)
-    pageStack->pushPage(deviceListPage, PageStackComponent::kTransitionNone);
-  else
-    pageStack->clear(PageStackComponent::kTransitionNone);
-}
 
 void SettingsPageBluetoothComponent::resized() {
   auto bounds = getLocalBounds();
@@ -107,12 +101,11 @@ void SettingsPageBluetoothComponent::resized() {
 
   btIcon->setBounds(bounds.getX() + 2, bounds.getHeight() / 2.0f - 40, 80, 80);
 
-//  {
-//    auto t = switchComponent->getTransform();
-//    t = AffineTransform::identity.rotated(-float_Pi / 2.0)
-//            .translated(bounds.getX() + 75, bounds.getHeight() / 2.0f + 40);
-//    switchComponent->setTransform(t);
-//  }
+  if (!init) { // TODO: Stupid shim to layout page correctly.
+               // Should be in Constructor, or not at all.
+    init = true;
+    pageStack->pushPage(deviceListPage, PageStackComponent::kTransitionNone);
+  }
 }
 
 void SettingsPageBluetoothComponent::buttonClicked(Button *button) {
@@ -128,13 +121,6 @@ void SettingsPageBluetoothComponent::buttonClicked(Button *button) {
       getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
     }
   }
-}
-
-void SettingsPageBluetoothComponent::buttonStateChanged(Button *button) {
-//  if (button == switchComponent && bluetoothEnabled != button->getToggleState()) {
-//    bluetoothEnabled = button->getToggleState();
-//    setBluetoothEnabled(bluetoothEnabled);
-//  }
 }
 
 var SettingsPageBluetoothComponent::parseDeviceListJson(const String &path) {

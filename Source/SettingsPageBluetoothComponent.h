@@ -34,7 +34,9 @@ public:
   SettingsPageBluetoothComponent();
   ~SettingsPageBluetoothComponent();
 
-  bool bluetoothEnabled = false;
+  bool init = false;
+
+  bool bluetoothEnabled = true;
   int currentDeviceIndex;
 
   ScopedPointer<PageStackComponent> pageStack;
@@ -57,7 +59,6 @@ public:
   var parseDeviceListJson(const String &path);
   std::vector<BTDevice> deviceList;
 
-  void setBluetoothEnabled(bool enabled);
   void paint(Graphics &) override;
   void resized() override;
 
@@ -65,5 +66,4 @@ private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsPageBluetoothComponent)
 
   void buttonClicked(Button *) override;
-  void buttonStateChanged(Button *) override;
 };
