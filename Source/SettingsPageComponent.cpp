@@ -20,10 +20,11 @@ void SettingsCategoryItemComponent::resized() {
   auto h = b.getHeight();
 
   int spacing = 10;
+  int togWidth = h * 1.1f;
 
   layout.setItemLayout(0, h, h, h);
   layout.setItemLayout(1, spacing, spacing, spacing);
-  layout.setItemLayout(2, h, h, h);
+  layout.setItemLayout(2, togWidth, togWidth, togWidth);
   layout.setItemLayout(3, spacing, spacing, spacing);
   layout.setItemLayout(4, h, -1, -1);
 
