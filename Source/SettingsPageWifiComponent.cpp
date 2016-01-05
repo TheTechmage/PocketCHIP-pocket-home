@@ -101,7 +101,8 @@ void SettingsPageWifiComponent::paint(Graphics &g) {}
 
 void SettingsPageWifiComponent::setWifiEnabled(bool enabled) {
   pageStack->setVisible(enabled);
-  if (enabled) {
+  if (enabled && pageStack->getCurrentPage() != connectionPage) {
+    pageStack->clear(PageStackComponent::kTransitionNone);
     Component *nextPage = wifiConnected ? connectionPage : accessPointListPage;
     pageStack->pushPage(nextPage, PageStackComponent::kTransitionNone);
   }
@@ -140,17 +141,33 @@ void SettingsPageWifiComponent::resized() {
 }
 
 void SettingsPageWifiComponent::buttonClicked(Button *button) {
+
+  passwordEditor->setVisible(false);
+
   if (button == connectionButton) {
-    if (wifiConnected) {
-      wifiConnected = false;
-      passwordEditor->setVisible(true);
+    if (wifiConnected && selectedAp == connectedAp) {
       connectionButton->setButtonText("Connect");
-      pageStack->pushPage(accessPointListPage, PageStackComponent::kTransitionNone);
+      passwordEditor->setVisible(connectedAp->requiresAuth);
+      wifiConnected = false;
+      connectedAp = nullptr;
     } else {
-      wifiConnected = true;
-      passwordEditor->setVisible(false);
       connectionButton->setButtonText("Disconnect");
+      wifiConnected = true;
+      connectedAp = selectedAp;
     }
+  }
+
+  auto apButton = dynamic_cast<WifiAccessPointListItem *>(button);
+  if (apButton) {
+    selectedAp = &apButton->ap;
+    connectionLabel->setText(apButton->ap.ssid, juce::NotificationType::dontSendNotification);
+    if (selectedAp == connectedAp) {
+      connectionButton->setButtonText("Disconnect");
+    } else {
+      passwordEditor->setVisible(apButton->ap.requiresAuth);
+      connectionButton->setButtonText("Connect");
+    }
+    pageStack->pushPage(connectionPage, PageStackComponent::kTransitionTranslateHorizontal);
   }
 
   if (button == backButton) {
@@ -159,14 +176,6 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
     } else {
       getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
     }
-  }
-
-  auto apButton = dynamic_cast<WifiAccessPointListItem *>(button);
-  if (apButton) {
-    passwordEditor->setVisible(apButton->ap.requiresAuth);
-
-    connectionLabel->setText(apButton->ap.ssid, juce::NotificationType::dontSendNotification);
-    pageStack->pushPage(connectionPage, PageStackComponent::kTransitionTranslateHorizontal);
   }
 }
 

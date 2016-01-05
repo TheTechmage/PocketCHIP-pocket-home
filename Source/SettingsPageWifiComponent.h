@@ -38,6 +38,8 @@ public:
 
   bool wifiEnabled = false;
   bool wifiConnected = false;
+  WifiAccessPoint* connectedAp;
+  WifiAccessPoint* selectedAp;
 
   ScopedPointer<PageStackComponent> pageStack;
 
