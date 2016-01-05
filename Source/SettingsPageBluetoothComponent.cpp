@@ -53,13 +53,6 @@ SettingsPageBluetoothComponent::SettingsPageBluetoothComponent() {
       ImageFileFormat::loadFrom(BinaryData::bluetoothIcon_png, BinaryData::bluetoothIcon_pngSize));
   addAndMakeVisible(btIcon);
 
-  addAndMakeVisible(btIcon);
-
-//  switchComponent = new SwitchComponent();
-//  switchComponent->addListener(this);
-//  switchComponent->toFront(false);
-//  addAndMakeVisible(switchComponent);
-
   // create back button
   ScopedPointer<Drawable> backButtonDrawable =
       Drawable::createFromImageData(BinaryData::backIcon_png, BinaryData::backIcon_pngSize);
