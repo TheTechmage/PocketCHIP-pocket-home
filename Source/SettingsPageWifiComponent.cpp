@@ -150,6 +150,7 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
       passwordEditor->setVisible(connectedAp->requiresAuth);
       wifiConnected = false;
       connectedAp = nullptr;
+      pageStack->popPage(PageStackComponent::kTransitionTranslateHorizontal);
     } else {
       connectionButton->setButtonText("Disconnect");
       wifiConnected = true;
@@ -183,5 +184,9 @@ void SettingsPageWifiComponent::buttonStateChanged(Button *button) {
   if (button == switchComponent && wifiEnabled != button->getToggleState()) {
     wifiEnabled = button->getToggleState();
     setWifiEnabled(wifiEnabled);
+    if (wifiEnabled) {
+      pageStack->clear(PageStackComponent::kTransitionNone);
+      pageStack->pushPage(accessPointListPage, PageStackComponent::kTransitionNone);
+    }
   }
 }
