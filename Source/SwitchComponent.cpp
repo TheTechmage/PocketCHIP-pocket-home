@@ -3,8 +3,12 @@
 #include "Utils.h"
 
 SwitchComponent::SwitchComponent() {
-    handle = new DrawablePath();
-  addAndMakeVisible(handle);
+  handleParent = new Component();
+  handleParent->setInterceptsMouseClicks(false, false);
+  addAndMakeVisible(handleParent);
+
+  handle = new DrawablePath();
+  handleParent->addAndMakeVisible(handle);
 
   setSize(42, 24);
 }
@@ -31,16 +35,16 @@ void SwitchComponent::resized() {
     handleBoundsOff = { insetBounds.getX(), insetBounds.getY(), d, d };
     handleBoundsOn = { insetBounds.getRight() - d, insetBounds.getY(), d, d };
 
-    handle->setBounds(getToggleState() ? handleBoundsOn : handleBoundsOff);
-
     Path path;
-    path.addEllipse(handle->getBounds().toType<float>());
+    path.addEllipse(0, 0, d, d);
     handle->setPath(path);
     handle->setFill(FillType(findColour(colorIdHandle)));
+
+    handleParent->setBounds(getToggleState() ? handleBoundsOn : handleBoundsOff);
   }
 }
 
 void SwitchComponent::clicked() {
   auto bounds = getToggleState() ? handleBoundsOn : handleBoundsOff;
-  Desktop::getInstance().getAnimator().animateComponent(handle, bounds, 1.0f, 150, false, 0.0, 0.0);
+  Desktop::getInstance().getAnimator().animateComponent(handleParent, bounds, 1.0f, 150, false, 0.0, 0.0);
 }

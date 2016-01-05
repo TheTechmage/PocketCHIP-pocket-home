@@ -17,6 +17,7 @@ public:
   void clicked() override;
 
   ScopedPointer<DrawablePath> handle;
+  ScopedPointer<Component> handleParent;
   Rectangle<int> handleBoundsOff, handleBoundsOn;
 
 private:
