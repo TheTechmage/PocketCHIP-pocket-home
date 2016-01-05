@@ -2,27 +2,33 @@
 #include "Main.h"
 #include "Utils.h"
 
-SettingsCategoryButton::SettingsCategoryButton(const String &name) : Button(name), displayText(name) {}
+SettingsCategoryButton::SettingsCategoryButton(const String &name)
+: Button(name), displayText(name) {}
 
 void SettingsCategoryButton::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) {
   auto bounds = getLocalBounds();
 
   g.setColour(findColour(isButtonDown ? TextButton::textColourOnId : TextButton::textColourOffId));
   g.setFont(20);
-  g.drawText(displayText, bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), Justification::centred);
+  g.drawText(displayText, bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(),
+             Justification::centred);
 }
 
 void SettingsCategoryButton::resized() {}
 
-SettingsCategoryItemComponent::SettingsCategoryItemComponent(const String &name, const Drawable *iconImage)
+void SettingsCategoryButton::setText(const String &text) {
+  displayText = text;
+  repaint();
+}
+
+SettingsCategoryItemComponent::SettingsCategoryItemComponent(const String &name)
 : icon{ new DrawableButton("icon", DrawableButton::ImageFitted) },
   toggle{ new SwitchComponent() },
   button{ new SettingsCategoryButton(name) } {
-  icon->setImages(iconImage);
   toggle->addListener(this);
   addAndMakeVisible(icon);
   addAndMakeVisible(toggle);
-  addChildComponent(button);
+  addAndMakeVisible(button);
 }
 
 void SettingsCategoryItemComponent::paint(Graphics &g) {}
@@ -48,8 +54,45 @@ void SettingsCategoryItemComponent::buttonClicked(Button *b) {}
 
 void SettingsCategoryItemComponent::buttonStateChanged(Button *b) {
   if (b == toggle) {
-    button->setVisible(toggle->getToggleState());
+    enabledStateChanged(toggle->getToggleState());
   }
+}
+
+WifiCategoryItemComponent::WifiCategoryItemComponent() : SettingsCategoryItemComponent("wifi") {
+  iconDrawable =
+      Drawable::createFromImageData(BinaryData::wifiIcon_png, BinaryData::wifiIcon_pngSize);
+  icon->setImages(iconDrawable);
+  updateButtonText();
+}
+
+void WifiCategoryItemComponent::enabledStateChanged(bool enabled) {
+  getWifiStatus().enabled = enabled;
+  updateButtonText();
+}
+
+void WifiCategoryItemComponent::updateButtonText() {
+  const auto &status = getWifiStatus();
+  if (status.enabled) {
+    button->setText(status.connected ? status.connectedAccessPoint->ssid : "Not Connected");
+  } else {
+    button->setText("WiFi Off");
+  }
+}
+
+BluetoothCategoryItemComponent::BluetoothCategoryItemComponent()
+: SettingsCategoryItemComponent("bluetooth") {
+  iconDrawable = Drawable::createFromImageData(BinaryData::bluetoothIcon_png,
+                                               BinaryData::bluetoothIcon_pngSize);
+  icon->setImages(iconDrawable);
+  updateButtonText();
+}
+
+void BluetoothCategoryItemComponent::enabledStateChanged(bool enabled) {
+  updateButtonText();
+}
+
+void BluetoothCategoryItemComponent::updateButtonText() {
+  button->setText("Bluetooth Blah!");
 }
 
 SettingsPageComponent::SettingsPageComponent() {
@@ -81,15 +124,11 @@ SettingsPageComponent::SettingsPageComponent() {
   backButton->setAlwaysOnTop(true);
   addAndMakeVisible(backButton);
 
-  wifiIcon = Drawable::createFromImageData(BinaryData::wifiIcon_png, BinaryData::wifiIcon_pngSize);
-  bluetoothIcon = Drawable::createFromImageData(BinaryData::bluetoothIcon_png,
-                                                BinaryData::bluetoothIcon_pngSize);
-
-  wifiCategoryItem = new SettingsCategoryItemComponent("wifi", wifiIcon);
+  wifiCategoryItem = new WifiCategoryItemComponent();
   wifiCategoryItem->button->addListener(this);
   addAndMakeVisible(wifiCategoryItem);
 
-  bluetoothCategoryItem = new SettingsCategoryItemComponent("bluetooth", bluetoothIcon);
+  bluetoothCategoryItem = new BluetoothCategoryItemComponent();
   bluetoothCategoryItem->button->addListener(this);
   addAndMakeVisible(bluetoothCategoryItem);
 
