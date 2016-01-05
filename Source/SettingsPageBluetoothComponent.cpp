@@ -6,20 +6,24 @@ BluetoothDeviceListItem::BluetoothDeviceListItem(const BTDevice &device, BTIcons
 : Button{ device.name }, device(device), icons{ icons } {}
 
 void BluetoothDeviceListItem::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) {
-  auto width = getLocalBounds().getWidth();
-  auto height = getLocalBounds().getHeight();
+  auto bounds = getLocalBounds();
+  auto w = bounds.getWidth(), h = bounds.getHeight();
 
-  auto contentHeight = height * 0.7f;
+  auto iconBounds = Rectangle<float>(w - h, 0, h, h);
+
+  auto contentHeight = h * 0.7f;
 
   if (device.connected) {
-    icons->checkIcon->setSize(height, height);
+    icons->checkIcon->setSize(h, h);
     icons->checkIcon->drawWithin(
-        g, Rectangle<float>(width - (height * 6), 3, contentHeight, contentHeight),
+        g, Rectangle<float>(w - h, 3, contentHeight, contentHeight),
         RectanglePlacement::fillDestination, 1.0f);
   }
 
-  g.setFont(contentHeight);
-  g.drawText(device.name, 5, 0, width, height, Justification::centredLeft, true);
+  g.setFont(Font(getLookAndFeel().getTypefaceForFont(Font())));
+  g.setFont(h);
+  g.setColour(findColour(DrawableButton::textColourId));
+  g.drawText(device.name, 5, 0, w, h, Justification::centredLeft, true);
 }
 
 SettingsPageBluetoothComponent::SettingsPageBluetoothComponent() {
@@ -102,11 +106,13 @@ void SettingsPageBluetoothComponent::resized() {
 }
 
 void SettingsPageBluetoothComponent::buttonClicked(Button *button) {
+
   if (button == connectionButton) {
     auto &curDevice = deviceList[currentDeviceIndex];
     curDevice.connected = !curDevice.connected;
     pageStack->popPage(PageStackComponent::kTransitionTranslateHorizontal);
   }
+
   if (button == backButton) {
     if (pageStack->getDepth() > 1) {
       pageStack->popPage(PageStackComponent::kTransitionTranslateHorizontal);
