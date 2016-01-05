@@ -46,5 +46,6 @@ void SwitchComponent::resized() {
 
 void SwitchComponent::clicked() {
   auto bounds = getToggleState() ? handleBoundsOn : handleBoundsOff;
-  Desktop::getInstance().getAnimator().animateComponent(handleParent, bounds, 1.0f, 150, false, 0.0, 0.0);
+  Desktop::getInstance().getAnimator().animateComponent(handleParent, bounds, 1.0f, 150, false, 0.0,
+                                                        0.0);
 }

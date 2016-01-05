@@ -2,8 +2,8 @@
 #include "Main.h"
 #include "Utils.h"
 
-WifiAccessPointListItem::WifiAccessPointListItem(const WifiAccessPoint &ap, WifiIcons *icons)
-: Button{ ap.ssid }, ap(ap), icons{ icons } {}
+WifiAccessPointListItem::WifiAccessPointListItem(WifiAccessPoint *ap, WifiIcons *icons)
+: Button{ ap->ssid }, ap{ ap }, icons{ icons } {}
 
 void WifiAccessPointListItem::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) {
   auto bounds = getLocalBounds();
@@ -11,14 +11,14 @@ void WifiAccessPointListItem::paintButton(Graphics &g, bool isMouseOverButton, b
 
   auto iconBounds = Rectangle<float>(w - h, 0, h, h);
 
-  if (ap.requiresAuth) {
+  if (ap->requiresAuth) {
     icons->lockIcon->drawWithin(g, iconBounds, RectanglePlacement::fillDestination, 1.0f);
   }
 
   iconBounds.translate(-h, 0);
 
-  icons->wifiStrength[ap.signalStrength]->drawWithin(g, iconBounds,
-                                                     RectanglePlacement::fillDestination, 1.0f);
+  icons->wifiStrength[ap->signalStrength]->drawWithin(g, iconBounds,
+                                                      RectanglePlacement::fillDestination, 1.0f);
 
   g.setFont(Font(getLookAndFeel().getTypefaceForFont(Font())));
   g.setFont(h);
@@ -63,12 +63,7 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   accessPointListPage->itemHeight = 32;
   accessPointListPage->itemScaleMin = 0.9f;
 
-  auto wifiListJson = parseWifiListJson("../../assets/wifi.json");
-  for (const auto &apJson : *wifiListJson.getArray()) {
-    WifiAccessPoint ap;
-    ap.ssid = apJson["name"];
-    ap.signalStrength = apJson["strength"];
-    ap.requiresAuth = apJson["auth"];
+  for (auto ap : getWifiStatus().accessPoints) {
     auto item = new WifiAccessPointListItem(ap, icons);
     item->addListener(this);
     accessPointItems.add(item);
@@ -100,19 +95,9 @@ void SettingsPageWifiComponent::setWifiEnabled(bool enabled) {
   pageStack->setVisible(enabled);
   if (enabled && pageStack->getCurrentPage() != connectionPage) {
     pageStack->clear(PageStackComponent::kTransitionNone);
-    Component *nextPage = wifiConnected ? connectionPage : accessPointListPage;
+    Component *nextPage = getWifiStatus().connected ? connectionPage : accessPointListPage;
     pageStack->pushPage(nextPage, PageStackComponent::kTransitionNone);
   }
-}
-
-var SettingsPageWifiComponent::parseWifiListJson(const String &path) {
-  auto ssidListFile = absoluteFileFromPath(path);
-  auto ssidListJson = JSON::parse(ssidListFile);
-  if (!ssidListJson) {
-    std::cerr << "Could not read wifi.json file from " << ssidListFile.getFullPathName()
-              << std::endl;
-  }
-  return ssidListJson;
 }
 
 void SettingsPageWifiComponent::resized() {
@@ -139,28 +124,28 @@ void SettingsPageWifiComponent::resized() {
 void SettingsPageWifiComponent::buttonClicked(Button *button) {
   passwordEditor->setVisible(false);
 
+  auto &status = getWifiStatus();
+
   if (button == connectionButton) {
-    if (wifiConnected && selectedAp == connectedAp) {
+    if (status.connected && selectedAp == status.connectedAccessPoint) {
       connectionButton->setButtonText("Connect");
-      passwordEditor->setVisible(connectedAp->requiresAuth);
-      wifiConnected = false;
-      connectedAp = nullptr;
+      passwordEditor->setVisible(status.connectedAccessPoint->requiresAuth);
+      getWifiStatus().setDisconnected();
       pageStack->popPage(PageStackComponent::kTransitionTranslateHorizontal);
     } else {
       connectionButton->setButtonText("Disconnect");
-      wifiConnected = true;
-      connectedAp = selectedAp;
+      status.setConnectedAccessPoint(selectedAp);
     }
   }
 
   auto apButton = dynamic_cast<WifiAccessPointListItem *>(button);
   if (apButton) {
-    selectedAp = &apButton->ap;
-    connectionLabel->setText(apButton->ap.ssid, juce::NotificationType::dontSendNotification);
-    if (selectedAp == connectedAp) {
+    selectedAp = apButton->ap;
+    connectionLabel->setText(apButton->ap->ssid, juce::NotificationType::dontSendNotification);
+    if (selectedAp == status.connectedAccessPoint) {
       connectionButton->setButtonText("Disconnect");
     } else {
-      passwordEditor->setVisible(apButton->ap.requiresAuth);
+      passwordEditor->setVisible(apButton->ap->requiresAuth);
       connectionButton->setButtonText("Connect");
     }
     pageStack->pushPage(connectionPage, PageStackComponent::kTransitionTranslateHorizontal);

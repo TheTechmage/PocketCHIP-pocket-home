@@ -5,11 +5,34 @@
 #include "MainComponent.h"
 #include "Utils.h"
 
+struct WifiAccessPoint {
+  String ssid;
+  int signalStrength; // -120 to 0
+  bool requiresAuth;
+};
+
+struct WifiStatus {
+  OwnedArray<WifiAccessPoint> accessPoints;
+  WifiAccessPoint *connectedAccessPoint = nullptr;
+  bool enabled = false;
+  bool connected = false;
+
+  void setConnectedAccessPoint(WifiAccessPoint *ap);
+  void setDisconnected();
+
+  void populateFromJson(const var &json);
+};
+
 PageStackComponent &getMainStack();
+WifiStatus &getWifiStatus();
 
 class PokeLaunchApplication : public JUCEApplication {
 public:
+  WifiStatus wifiStatus;
+
   PokeLaunchApplication();
+
+  static PokeLaunchApplication *get();
 
   const String getApplicationName() override;
   const String getApplicationVersion() override;

@@ -5,12 +5,7 @@
 #include "SwitchComponent.h"
 #include "PageStackComponent.h"
 #include "TrainComponent.h"
-
-struct WifiAccessPoint {
-  String ssid;
-  int signalStrength; // -120 to 0
-  bool requiresAuth;
-};
+#include "Main.h"
 
 struct WifiIcons {
   OwnedArray<Drawable> wifiStrength;
@@ -19,9 +14,9 @@ struct WifiIcons {
 
 class WifiAccessPointListItem : public Button {
 public:
-  WifiAccessPoint ap;
+  WifiAccessPoint *ap;
 
-  WifiAccessPointListItem(const WifiAccessPoint &ap, WifiIcons *icons);
+  WifiAccessPointListItem(WifiAccessPoint *ap, WifiIcons *icons);
 
   void paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) override;
 
@@ -38,9 +33,6 @@ public:
 
   bool init = false;
 
-  bool wifiEnabled = true;
-  bool wifiConnected = false;
-  WifiAccessPoint *connectedAp;
   WifiAccessPoint *selectedAp;
 
   ScopedPointer<PageStackComponent> pageStack;
@@ -57,8 +49,6 @@ public:
   ScopedPointer<TextButton> connectionButton;
 
   ScopedPointer<SwitchComponent> switchComponent;
-
-  var parseWifiListJson(const String &path);
 
   OwnedArray<WifiAccessPointListItem> accessPointItems;
 

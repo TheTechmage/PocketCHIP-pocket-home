@@ -2,10 +2,22 @@
 #include "Main.h"
 #include "Utils.h"
 
-SettingsCategoryItemComponent::SettingsCategoryItemComponent(const Drawable *iconImage)
+SettingsCategoryButton::SettingsCategoryButton(const String &name) : Button(name), displayText(name) {}
+
+void SettingsCategoryButton::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) {
+  auto bounds = getLocalBounds();
+
+  g.setColour(findColour(isButtonDown ? TextButton::textColourOnId : TextButton::textColourOffId));
+  g.setFont(20);
+  g.drawText(displayText, bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), Justification::centred);
+}
+
+void SettingsCategoryButton::resized() {}
+
+SettingsCategoryItemComponent::SettingsCategoryItemComponent(const String &name, const Drawable *iconImage)
 : icon{ new DrawableButton("icon", DrawableButton::ImageFitted) },
   toggle{ new SwitchComponent() },
-  button{ new TextButton() } {
+  button{ new SettingsCategoryButton(name) } {
   icon->setImages(iconImage);
   toggle->addListener(this);
   addAndMakeVisible(icon);
@@ -73,11 +85,11 @@ SettingsPageComponent::SettingsPageComponent() {
   bluetoothIcon = Drawable::createFromImageData(BinaryData::bluetoothIcon_png,
                                                 BinaryData::bluetoothIcon_pngSize);
 
-  wifiCategoryItem = new SettingsCategoryItemComponent(wifiIcon);
+  wifiCategoryItem = new SettingsCategoryItemComponent("wifi", wifiIcon);
   wifiCategoryItem->button->addListener(this);
   addAndMakeVisible(wifiCategoryItem);
 
-  bluetoothCategoryItem = new SettingsCategoryItemComponent(bluetoothIcon);
+  bluetoothCategoryItem = new SettingsCategoryItemComponent("bluetooth", bluetoothIcon);
   bluetoothCategoryItem->button->addListener(this);
   addAndMakeVisible(bluetoothCategoryItem);
 

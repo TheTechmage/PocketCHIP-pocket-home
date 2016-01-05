@@ -2,11 +2,43 @@
 #include "MainComponent.h"
 #include "Utils.h"
 
+void WifiStatus::setConnectedAccessPoint(WifiAccessPoint *ap) {
+  connected = ap != nullptr;
+  connectedAccessPoint = ap;
+}
+
+void WifiStatus::setDisconnected() {
+  setConnectedAccessPoint(nullptr);
+}
+
+void WifiStatus::populateFromJson(const var &json) {
+  connectedAccessPoint = nullptr;
+  connected = false;
+
+  accessPoints.clear();
+
+  for (const auto &apJson : *json.getArray()) {
+    auto ap = new WifiAccessPoint();
+    ap->ssid = apJson["name"];
+    ap->signalStrength = apJson["strength"];
+    ap->requiresAuth = apJson["auth"];
+    accessPoints.add(ap);
+  }
+}
+
 PageStackComponent &getMainStack() {
-  return dynamic_cast<PokeLaunchApplication *>(JUCEApplication::getInstance())->getMainStack();
+  return PokeLaunchApplication::get()->getMainStack();
+}
+
+WifiStatus &getWifiStatus() {
+  return PokeLaunchApplication::get()->wifiStatus;
 }
 
 PokeLaunchApplication::PokeLaunchApplication() {}
+
+PokeLaunchApplication *PokeLaunchApplication::get() {
+  return dynamic_cast<PokeLaunchApplication *>(JUCEApplication::getInstance());
+}
 
 const String PokeLaunchApplication::getApplicationName() {
   return ProjectInfo::projectName;
@@ -37,6 +69,12 @@ void PokeLaunchApplication::initialise(const String &commandLine) {
   } else {
     std::cout << "Usage: PokeLaunch -c <config-file.json>" << std::endl;
     quit();
+  }
+
+  // Populate with dummy data
+  {
+    auto ssidListFile = absoluteFileFromPath("../../assets/wifi.json");
+    wifiStatus.populateFromJson(JSON::parse(ssidListFile));
   }
 
   mainWindow = new MainWindow(getApplicationName(), configJson);

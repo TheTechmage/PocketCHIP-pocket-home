@@ -9,15 +9,29 @@
 #include "SettingsPageWifiComponent.h"
 #include "SettingsPageBluetoothComponent.h"
 
+class SettingsCategoryButton : public Button {
+public:
+  String displayText;
+
+  SettingsCategoryButton(const String &name);
+  ~SettingsCategoryButton() {}
+
+  void paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) override;
+  void resized() override;
+
+private:
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsCategoryButton)
+};
+
 class SettingsCategoryItemComponent : public Component, private Button::Listener {
 public:
   ScopedPointer<DrawableButton> icon;
   ScopedPointer<SwitchComponent> toggle;
-  ScopedPointer<TextButton> button;
+  ScopedPointer<SettingsCategoryButton> button;
 
   StretchableLayoutManager layout;
 
-  SettingsCategoryItemComponent(const Drawable *iconImage);
+  SettingsCategoryItemComponent(const String &name, const Drawable *iconImage);
   ~SettingsCategoryItemComponent() {}
 
   void paint(Graphics &g) override;
