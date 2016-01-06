@@ -59,7 +59,6 @@ void LauncherComponent::resized() {
     resize = true;
     pageStack->swapPage(defaultPage, PageStackComponent::kTransitionNone);
   }
-
 }
 
 void LauncherComponent::buttonClicked(Button *button) {

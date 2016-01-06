@@ -60,6 +60,10 @@ void SettingsCategoryItemComponent::buttonStateChanged(Button *b) {
   }
 }
 
+void SettingsCategoryItemComponent::enablementChanged() {
+  updateButtonText();
+}
+
 WifiCategoryItemComponent::WifiCategoryItemComponent() : SettingsCategoryItemComponent("wifi") {
   iconDrawable =
       Drawable::createFromImageData(BinaryData::wifiIcon_png, BinaryData::wifiIcon_pngSize);
@@ -91,6 +95,7 @@ BluetoothCategoryItemComponent::BluetoothCategoryItemComponent()
 
 void BluetoothCategoryItemComponent::enabledStateChanged(bool enabled) {
   getBluetoothStatus().enabled = enabled;
+  button->setEnabled(enabled);
   updateButtonText();
 }
 

@@ -70,6 +70,8 @@ void PageStackComponent::transitionIn(Component *component, Transition transitio
       component->setVisible(true);
     }
   }
+
+  component->setEnabled(true);
 }
 
 void PageStackComponent::transitionOut(Component *component, Transition transition,
@@ -83,6 +85,7 @@ void PageStackComponent::transitionOut(Component *component, Transition transiti
     default: {}
   }
 
+  component->setEnabled(false);
   removeChildComponent(component);
 }
 
