@@ -10,7 +10,9 @@ void WifiAccessPointListItem::paintButton(Graphics &g, bool isMouseOverButton, b
   auto inset = bounds.reduced(6, 4);
   auto w = bounds.getWidth(), h = bounds.getHeight();
 
-  auto iconBounds = Rectangle<float>(w - h, h/8.0, h*0.8, h*0.8);
+  auto iconBounds = Rectangle<float>(w - h*1.7, h/8.0, h*0.8, h*0.8);
+
+  auto contentHeight = h * 0.7f;
 
   if (ap->requiresAuth) {
     icons->lockIcon->drawWithin(g, iconBounds, RectanglePlacement::fillDestination, 1.0f);
@@ -19,6 +21,10 @@ void WifiAccessPointListItem::paintButton(Graphics &g, bool isMouseOverButton, b
   iconBounds.translate(-h*0.8, 0);
   icons->wifiStrength[ap->signalStrength]->drawWithin(g, iconBounds,
                                                       RectanglePlacement::fillDestination, 1.0f);
+
+  icons->arrowIcon->setSize(h, h);
+  icons->arrowIcon->drawWithin(g, Rectangle<float>(w - (h/8), contentHeight + 8, contentHeight, contentHeight),
+                               RectanglePlacement::fillDestination, 1.0f);
 
   auto listOutline = Path();
   listOutline.addRoundedRectangle(inset.toFloat(), 10.0f);
@@ -54,6 +60,11 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
                                                            BinaryData::wifiStrength2_pngSize));
   icons->wifiStrength.set(3, Drawable::createFromImageData(BinaryData::wifiStrength3_png,
                                                            BinaryData::wifiStrength3_pngSize));
+
+  icons->arrowIcon = Drawable::createFromImageData(BinaryData::backIcon_png, BinaryData::backIcon_pngSize);
+  auto xf = AffineTransform::identity.rotated(M_PI);
+  icons->arrowIcon->setTransform(xf);
+
 
   // create back button
   ScopedPointer<Drawable> backButtonDrawable =
@@ -110,15 +121,13 @@ void SettingsPageWifiComponent::resized() {
   auto bounds = getLocalBounds();
   auto pageBounds = Rectangle<int>(120, 0, bounds.getWidth() - 120, bounds.getHeight());
 
-  backButton->setBounds(10, 10, 62, 62);
-
   pageStack->setBounds(pageBounds);
 
-  connectionLabel->setBounds(10, 90, pageBounds.getWidth() - 20, 24);
-  passwordEditor->setBounds(90, 120, pageBounds.getWidth() - 180, 24);
-  connectionButton->setBounds(90, 160, pageBounds.getWidth() - 180, 24);
-
-  wifiIconComponent->setBounds(bounds.getX() + 7, bounds.getHeight() / 2.0f - 40, 80, 80);
+  connectionLabel->setBounds(10, 50, pageBounds.getWidth() - 20, 50);
+  passwordEditor->setBounds(90, 100, pageBounds.getWidth() - 180, 50);
+  connectionButton->setBounds(90, 160, pageBounds.getWidth() - 180, 50);
+  wifiIconComponent->setBounds(0, 0, 80, 80);
+  backButton->setBounds(bounds.getX(), bounds.getY(), 60, bounds.getHeight());
 
   if (!init) { // TODO: cruft to resize page correctly on init? arrg. Should be in constructor,
                //  or not at all

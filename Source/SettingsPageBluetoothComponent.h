@@ -8,6 +8,7 @@
 
 struct BTIcons {
   ScopedPointer<Drawable> checkIcon;
+  ScopedPointer<Drawable> arrowIcon;
 };
 
 class BluetoothDeviceListItem : public Button {

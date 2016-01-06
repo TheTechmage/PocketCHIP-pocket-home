@@ -10,7 +10,8 @@ SettingsCategoryButton::SettingsCategoryButton(const String &name)
 void SettingsCategoryButton::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) {
   auto bounds = getLocalBounds();
 
-  g.setColour(findColour(isButtonDown ? TextButton::textColourOnId : TextButton::textColourOffId));
+//  g.setColour(findColour(isButtonDown ? TextButton::textColourOnId : TextButton::textColourOffId));
+  g.setColour(Colours::black);
   g.setFont(20);
   g.drawText(displayText, bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(),
              Justification::centred);

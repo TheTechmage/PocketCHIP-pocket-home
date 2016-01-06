@@ -3,9 +3,13 @@
 #include "Utils.h"
 
 PokeLookAndFeel::PokeLookAndFeel() {
-  auto lightGrey = Colour(0xffe1e1e1);
-  auto chipPink = Colour(0xffeb008b);
+  lightGrey = Colour(0xffe1e1e1);
+  chipPink = Colour(0xffeb008b);
 
+  setColour(TextButton::buttonColourId, chipPink);
+  setColour(TextButton::buttonOnColourId, chipPink);
+  setColour(TextButton::textColourOnId, Colours::white);
+  setColour(TextButton::textColourOffId, Colours::white);
   setColour(Slider::backgroundColourId, lightGrey);
   setColour(Slider::thumbColourId, chipPink);
   setColour(TextEditor::backgroundColourId, lightGrey);
@@ -83,3 +87,40 @@ void PokeLookAndFeel::drawLinearSlider(Graphics &g, int x, int y, int width, int
 int PokeLookAndFeel::getSliderThumbRadius(Slider &slider) {
   return jmin(14, slider.getHeight() / 2, slider.getWidth() / 2);
 }
+
+void PokeLookAndFeel::drawButtonText (Graphics& g, TextButton& button, bool /*isMouseOverButton*/, bool /*isButtonDown*/)
+{
+  Font font (getTextButtonFont (button, button.getHeight()));
+  g.setFont (font);
+  g.setFont (24);
+  g.setColour (button.findColour (button.getToggleState() ? TextButton::textColourOnId
+                                  : TextButton::textColourOffId)
+               .withMultipliedAlpha (button.isEnabled() ? 1.0f : 0.5f));
+
+  const int yIndent = jmin (4, button.proportionOfHeight (0.3f));
+  const int cornerSize = jmin (button.getHeight(), button.getWidth()) / 2;
+
+  const int fontHeight = roundToInt (font.getHeight() * 0.6f);
+  const int leftIndent  = jmin (fontHeight, 2 + cornerSize / (button.isConnectedOnLeft() ? 4 : 2));
+  const int rightIndent = jmin (fontHeight, 2 + cornerSize / (button.isConnectedOnRight() ? 4 : 2));
+
+  g.drawFittedText (button.getButtonText(),
+                    leftIndent,
+                    yIndent,
+                    button.getWidth() - leftIndent - rightIndent,
+                    button.getHeight() - yIndent * 2,
+                    Justification::centred, 2);
+}
+
+void PokeLookAndFeel::drawButtonBackground (Graphics &g, Button &button, const Colour &backgroundColour,
+                           bool isMouseOverButton, bool isButtonDown) {
+
+  const int width = button.getWidth();
+  const int height = button.getHeight();
+
+  auto path = Path();
+  path.addRoundedRectangle(0, 0, width, height, 10);
+  g.setColour(chipPink);
+  g.fillPath(path);
+}
+

@@ -10,6 +10,7 @@
 struct WifiIcons {
   OwnedArray<Drawable> wifiStrength;
   ScopedPointer<Drawable> lockIcon;
+  ScopedPointer<Drawable> arrowIcon;
 };
 
 class WifiAccessPointListItem : public Button {

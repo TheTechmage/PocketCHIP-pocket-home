@@ -7,6 +7,7 @@ BluetoothDeviceListItem::BluetoothDeviceListItem(BluetoothDevice *device, BTIcon
 
 void BluetoothDeviceListItem::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) {
   auto bounds = getLocalBounds();
+  auto inset = bounds.reduced(6, 4);
   auto w = bounds.getWidth(), h = bounds.getHeight();
 
   auto iconBounds = Rectangle<float>(w - h, 0, h, h);
@@ -15,14 +16,24 @@ void BluetoothDeviceListItem::paintButton(Graphics &g, bool isMouseOverButton, b
 
   if (device->connected) {
     icons->checkIcon->setSize(h, h);
-    icons->checkIcon->drawWithin(g, Rectangle<float>(w - h, 3, contentHeight, contentHeight),
+    icons->checkIcon->drawWithin(g, Rectangle<float>(w - h*2, 7, contentHeight, contentHeight),
                                  RectanglePlacement::fillDestination, 1.0f);
   }
 
+  icons->arrowIcon->setSize(h, h);
+  icons->arrowIcon->drawWithin(g, Rectangle<float>(w - (h/8), contentHeight + 8, contentHeight, contentHeight),
+                               RectanglePlacement::fillDestination, 1.0f);
+
+  auto listOutline = Path();
+  listOutline.addRoundedRectangle(inset.toFloat(), 10.0f);
+
+  g.setColour(findColour(ListBox::ColourIds::backgroundColourId));
+  g.strokePath(listOutline, PathStrokeType(5.0f));
+
   g.setFont(Font(getLookAndFeel().getTypefaceForFont(Font())));
-  g.setFont(h);
+  g.setFont(h * 0.5);
   g.setColour(findColour(DrawableButton::textColourId));
-  g.drawText(device->name, 5, 0, w, h, Justification::centredLeft, true);
+  g.drawText(getName(), inset.reduced(h * 0.2, 0), Justification::centredLeft, true);
 }
 
 SettingsPageBluetoothComponent::SettingsPageBluetoothComponent() {
@@ -32,8 +43,8 @@ SettingsPageBluetoothComponent::SettingsPageBluetoothComponent() {
   // create device list "page"
   deviceListPage = new TrainComponent();
   deviceListPage->setOrientation(TrainComponent::kOrientationVertical);
-  deviceListPage->itemHeight = 32;
-  deviceListPage->itemScaleMin = 0.9f;
+  deviceListPage->itemHeight = 50;
+  deviceListPage->itemScaleMin = deviceListPage->itemScaleMax = 1.0;
 
   for (auto btDevice : getBluetoothStatus().devices) {
     auto item = new BluetoothDeviceListItem(btDevice, &icons);
@@ -42,7 +53,7 @@ SettingsPageBluetoothComponent::SettingsPageBluetoothComponent() {
     deviceListPage->addItem(item);
   }
 
-  btIcon = new ImageComponent("WiFi Icon");
+  btIcon = new ImageComponent("BT Icon");
   btIcon->setImage(
       ImageFileFormat::loadFrom(BinaryData::bluetoothIcon_png, BinaryData::bluetoothIcon_pngSize));
   addAndMakeVisible(btIcon);
@@ -68,6 +79,9 @@ SettingsPageBluetoothComponent::SettingsPageBluetoothComponent() {
   connectionPage->addAndMakeVisible(connectionButton);
 
   icons.checkIcon = Drawable::createFromImageData(BinaryData::check_png, BinaryData::check_pngSize);
+  icons.arrowIcon = Drawable::createFromImageData(BinaryData::backIcon_png, BinaryData::backIcon_pngSize);
+  auto xf = AffineTransform::identity.rotated(M_PI);
+  icons.arrowIcon->setTransform(xf);
 }
 
 SettingsPageBluetoothComponent::~SettingsPageBluetoothComponent() {}
@@ -79,14 +93,11 @@ void SettingsPageBluetoothComponent::resized() {
   auto bounds = getLocalBounds();
   auto pageBounds = Rectangle<int>(120, 0, bounds.getWidth() - 120, bounds.getHeight());
 
-  backButton->setBounds(10, 10, 62, 62);
-
   pageStack->setBounds(pageBounds);
-  connectionButton->setBounds(90, 160, pageBounds.getWidth() - 180, 24);
-
   connectionLabel->setBounds(10, 90, pageBounds.getWidth() - 20, 24);
-
-  btIcon->setBounds(bounds.getX() + 2, bounds.getHeight() / 2.0f - 40, 80, 80);
+  connectionButton->setBounds(90, 160, pageBounds.getWidth() - 180, 50);
+  btIcon->setBounds(-10, 0, 80, 80);
+  backButton->setBounds(bounds.getX(), bounds.getY(), 60, bounds.getHeight());
 
   if (!init) { // TODO: Stupid shim to layout page correctly.
                // Should be in Constructor, or not at all.
@@ -108,7 +119,6 @@ void SettingsPageBluetoothComponent::buttonClicked(Button *button) {
       getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
     }
   }
-
 
   auto btButton = dynamic_cast<BluetoothDeviceListItem *>(button);
   if (btButton) {
