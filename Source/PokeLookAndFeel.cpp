@@ -9,7 +9,7 @@ PokeLookAndFeel::PokeLookAndFeel() {
   setColour(Slider::backgroundColourId, lightGrey);
   setColour(Slider::thumbColourId, chipPink);
   setColour(TextEditor::backgroundColourId, lightGrey);
-  setColour(ListBox::backgroundColourId, Colours::white);
+  setColour(ListBox::backgroundColourId, Colours::lightgrey);
   setColour(ListBox::textColourId, Colours::black);
   setColour(SwitchComponent::colorIdBackground, lightGrey);
   setColour(SwitchComponent::colorIdHandle, chipPink);

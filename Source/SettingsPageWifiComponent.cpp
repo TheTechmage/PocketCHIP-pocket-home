@@ -7,23 +7,29 @@ WifiAccessPointListItem::WifiAccessPointListItem(WifiAccessPoint *ap, WifiIcons 
 
 void WifiAccessPointListItem::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) {
   auto bounds = getLocalBounds();
+  auto inset = bounds.reduced(6, 4);
   auto w = bounds.getWidth(), h = bounds.getHeight();
 
-  auto iconBounds = Rectangle<float>(w - h, 0, h, h);
+  auto iconBounds = Rectangle<float>(w - h, h/8.0, h*0.8, h*0.8);
 
   if (ap->requiresAuth) {
     icons->lockIcon->drawWithin(g, iconBounds, RectanglePlacement::fillDestination, 1.0f);
   }
 
-  iconBounds.translate(-h, 0);
-
+  iconBounds.translate(-h*0.8, 0);
   icons->wifiStrength[ap->signalStrength]->drawWithin(g, iconBounds,
                                                       RectanglePlacement::fillDestination, 1.0f);
 
+  auto listOutline = Path();
+  listOutline.addRoundedRectangle(inset.toFloat(), 10.0f);
+
+  g.setColour(findColour(ListBox::ColourIds::backgroundColourId));
+  g.strokePath(listOutline, PathStrokeType(5.0f));
+
   g.setFont(Font(getLookAndFeel().getTypefaceForFont(Font())));
-  g.setFont(h);
+  g.setFont(h * 0.5);
   g.setColour(findColour(DrawableButton::textColourId));
-  g.drawText(getName(), bounds, Justification::centredLeft);
+  g.drawText(getName(), inset.reduced(h * 0.2, 0), Justification::centredLeft);
 }
 
 SettingsPageWifiComponent::SettingsPageWifiComponent() {
@@ -57,11 +63,11 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   backButton->setAlwaysOnTop(true);
   addAndMakeVisible(backButton);
 
-  // create ssid list "page"
+  // create ssid list
   accessPointListPage = new TrainComponent();
   accessPointListPage->setOrientation(TrainComponent::kOrientationVertical);
-  accessPointListPage->itemHeight = 32;
-  accessPointListPage->itemScaleMin = 0.9f;
+  accessPointListPage->itemHeight = 50;
+  accessPointListPage->itemScaleMin = accessPointListPage->itemScaleMax = 1.0;
 
   for (auto ap : getWifiStatus().accessPoints) {
     auto item = new WifiAccessPointListItem(ap, icons);
@@ -122,7 +128,6 @@ void SettingsPageWifiComponent::resized() {
 }
 
 void SettingsPageWifiComponent::buttonClicked(Button *button) {
-  passwordEditor->setVisible(false);
 
   auto &status = getWifiStatus();
 
@@ -133,6 +138,7 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
       getWifiStatus().setDisconnected();
       pageStack->popPage(PageStackComponent::kTransitionTranslateHorizontal);
     } else {
+      passwordEditor->setVisible(false);
       connectionButton->setButtonText("Disconnect");
       status.setConnectedAccessPoint(selectedAp);
     }
@@ -152,7 +158,7 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
   }
 
   if (button == backButton) {
-    if (pageStack->getDepth() > 1) {
+    if (pageStack->getDepth() > 1 && !status.connected) {
       pageStack->popPage(PageStackComponent::kTransitionTranslateHorizontal);
     } else {
       getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
