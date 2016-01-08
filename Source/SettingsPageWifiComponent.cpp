@@ -87,10 +87,12 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   connectionPage = new Component("Connection Page");
 
   connectionLabel = new Label("Connected", "Connection Label");
+  connectionLabel->setFont(26);
   connectionLabel->setJustificationType(juce::Justification::centred);
   connectionPage->addAndMakeVisible(connectionLabel);
 
   passwordEditor = new TextEditor("Password", (juce_wchar)0x2022);
+  passwordEditor->setFont(26);
   passwordEditor->setText("Password");
   connectionPage->addAndMakeVisible(passwordEditor);
 
@@ -146,6 +148,7 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
       passwordEditor->setVisible(false);
       connectionButton->setButtonText("Disconnect");
       status.setConnectedAccessPoint(selectedAp);
+      getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
     }
   }
 
