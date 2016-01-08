@@ -16,7 +16,7 @@ namespace BinaryData
     const int            appsIcon_pngSize = 2391;
 
     extern const char*   backIcon_png;
-    const int            backIcon_pngSize = 629;
+    const int            backIcon_pngSize = 436;
 
     extern const char*   bluetoothIcon_png;
     const int            bluetoothIcon_pngSize = 813;
