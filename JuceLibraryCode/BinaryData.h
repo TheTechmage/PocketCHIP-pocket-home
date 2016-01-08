@@ -34,7 +34,7 @@ namespace BinaryData
     const int            gamesIcon_pngSize = 2375;
 
     extern const char*   lock_png;
-    const int            lock_pngSize = 636;
+    const int            lock_pngSize = 810;
 
     extern const char*   RobotoRegular_ttf;
     const int            RobotoRegular_ttfSize = 145348;
@@ -52,16 +52,16 @@ namespace BinaryData
     const int            wifiIcon_pngSize = 1293;
 
     extern const char*   wifiStrength0_png;
-    const int            wifiStrength0_pngSize = 1646;
+    const int            wifiStrength0_pngSize = 1644;
 
     extern const char*   wifiStrength1_png;
-    const int            wifiStrength1_pngSize = 1695;
+    const int            wifiStrength1_pngSize = 1726;
 
     extern const char*   wifiStrength2_png;
-    const int            wifiStrength2_pngSize = 1558;
+    const int            wifiStrength2_pngSize = 1743;
 
     extern const char*   wifiStrength3_png;
-    const int            wifiStrength3_pngSize = 1305;
+    const int            wifiStrength3_pngSize = 1472;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];
