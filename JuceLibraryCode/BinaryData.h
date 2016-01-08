@@ -28,7 +28,7 @@ namespace BinaryData
     const int            brightnessIconLo_pngSize = 803;
 
     extern const char*   check_png;
-    const int            check_pngSize = 739;
+    const int            check_pngSize = 836;
 
     extern const char*   gamesIcon_png;
     const int            gamesIcon_pngSize = 2375;
