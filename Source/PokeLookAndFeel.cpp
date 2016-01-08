@@ -4,6 +4,7 @@
 
 PokeLookAndFeel::PokeLookAndFeel() {
   lightGrey = Colour(0xffe1e1e1);
+  medGrey = Colour(0xffc0c0c0);
   chipPink = Colour(0xffeb008b);
 
   setColour(TextButton::buttonColourId, chipPink);
@@ -17,6 +18,7 @@ PokeLookAndFeel::PokeLookAndFeel() {
   setColour(ListBox::textColourId, Colours::black);
   setColour(SwitchComponent::colorIdBackground, lightGrey);
   setColour(SwitchComponent::colorIdHandle, chipPink);
+  setColour(SwitchComponent::colorIdHandleOff, medGrey);
 
   _232MK =
     Typeface::createSystemTypefaceFor(BinaryData::_232MKM_TTF, BinaryData::_232MKM_TTFSize);

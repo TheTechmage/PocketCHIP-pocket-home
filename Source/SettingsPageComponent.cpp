@@ -32,6 +32,7 @@ SettingsCategoryItemComponent::SettingsCategoryItemComponent(const String &name)
   addAndMakeVisible(icon);
   addAndMakeVisible(toggle);
   addAndMakeVisible(button);
+  button->setEnabled(false); // default to disabled state
 }
 
 void SettingsCategoryItemComponent::paint(Graphics &g) {}
@@ -74,6 +75,7 @@ WifiCategoryItemComponent::WifiCategoryItemComponent() : SettingsCategoryItemCom
 
 void WifiCategoryItemComponent::enabledStateChanged(bool enabled) {
   getWifiStatus().enabled = enabled;
+  button->setEnabled(enabled);
   updateButtonText();
 }
 

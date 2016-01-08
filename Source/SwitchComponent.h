@@ -4,7 +4,7 @@
 
 class SwitchComponent : public ToggleButton {
 public:
-  enum ColorIds { colorIdBackground = 0x100f000, colorIdHandle = 0x100f001 };
+  enum ColorIds { colorIdBackground = 0x100f000, colorIdHandle = 0x100f001, colorIdHandleOff = 0x100f002 };
 
   SwitchComponent();
   ~SwitchComponent();

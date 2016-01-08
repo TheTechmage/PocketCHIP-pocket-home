@@ -16,10 +16,10 @@ namespace BinaryData
     const int            appsIcon_pngSize = 2391;
 
     extern const char*   backIcon_png;
-    const int            backIcon_pngSize = 436;
+    const int            backIcon_pngSize = 417;
 
     extern const char*   bluetoothIcon_png;
-    const int            bluetoothIcon_pngSize = 813;
+    const int            bluetoothIcon_pngSize = 938;
 
     extern const char*   brightnessIconHi_png;
     const int            brightnessIconHi_pngSize = 1094;
@@ -49,19 +49,19 @@ namespace BinaryData
     const int            volumeIconLo_pngSize = 325;
 
     extern const char*   wifiIcon_png;
-    const int            wifiIcon_pngSize = 1316;
+    const int            wifiIcon_pngSize = 1293;
 
     extern const char*   wifiStrength0_png;
-    const int            wifiStrength0_pngSize = 1716;
+    const int            wifiStrength0_pngSize = 1646;
 
     extern const char*   wifiStrength1_png;
-    const int            wifiStrength1_pngSize = 1576;
+    const int            wifiStrength1_pngSize = 1695;
 
     extern const char*   wifiStrength2_png;
-    const int            wifiStrength2_pngSize = 1538;
+    const int            wifiStrength2_pngSize = 1558;
 
     extern const char*   wifiStrength3_png;
-    const int            wifiStrength3_pngSize = 1251;
+    const int            wifiStrength3_pngSize = 1305;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];

@@ -38,7 +38,7 @@ void SwitchComponent::resized() {
     Path path;
     path.addEllipse(0, 0, d, d);
     handle->setPath(path);
-    handle->setFill(FillType(findColour(colorIdHandle)));
+    handle->setFill(FillType(findColour(getToggleState() ? colorIdHandle : colorIdHandleOff)));
 
     handleParent->setBounds(getToggleState() ? handleBoundsOn : handleBoundsOff);
   }
@@ -48,4 +48,5 @@ void SwitchComponent::clicked() {
   auto bounds = getToggleState() ? handleBoundsOn : handleBoundsOff;
   Desktop::getInstance().getAnimator().animateComponent(handleParent, bounds, 1.0f, 150, false, 0.0,
                                                         0.0);
+  handle->setFill(FillType(findColour(getToggleState() ? colorIdHandle : colorIdHandleOff)));                                                        
 }

@@ -32,6 +32,7 @@ private:
   Typeface::Ptr _232MK, roboto;
 
   Colour lightGrey;
+  Colour medGrey;
   Colour chipPink;
 
 };
