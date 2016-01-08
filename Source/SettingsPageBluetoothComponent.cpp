@@ -91,7 +91,7 @@ void SettingsPageBluetoothComponent::resized() {
   auto pageBounds = Rectangle<int>(120, 0, bounds.getWidth() - 120, bounds.getHeight());
 
   pageStack->setBounds(pageBounds);
-  connectionLabel->setBounds(10, 90, pageBounds.getWidth() - 20, 24);
+  connectionLabel->setBounds(10, 70, pageBounds.getWidth() - 20, 60);
   connectionButton->setBounds(90, 160, pageBounds.getWidth() - 180, 50);
   btIcon->setBounds(-10, 0, 80, 80);
   backButton->setBounds(bounds.getX(), bounds.getY(), 60, bounds.getHeight());
