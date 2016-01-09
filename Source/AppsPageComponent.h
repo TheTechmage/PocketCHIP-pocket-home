@@ -4,10 +4,18 @@
 
 #include "TrainComponent.h"
 
+class AppIconButton : public DrawableButton {
+public:
+  AppIconButton(const String &label, const Drawable *image);
+
+  Rectangle<float> getImageBounds() const override;
+};
+
 class AppsPageComponent : public Component, public Button::Listener {
 public:
   ScopedPointer<TrainComponent> train;
   OwnedArray<Component> trainIcons;
+  OwnedArray<DrawableImage> iconDrawableImages;
 
   AppsPageComponent();
   ~AppsPageComponent();
@@ -16,8 +24,8 @@ public:
   void resized() override;
 
   void addAndOwnIcon(const String &name, Component *icon);
-  ImageButton *createAndOwnIcon(const String &name, const String &iconPath);
-  Array<ImageButton *> createIconsFromJsonArray(const var &json);
+  DrawableButton *createAndOwnIcon(const String &name, const String &iconPath);
+  Array<DrawableButton *> createIconsFromJsonArray(const var &json);
 
   void buttonClicked(Button *) override;
 

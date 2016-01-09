@@ -1,8 +1,20 @@
 #include "AppsPageComponent.h"
+#include "PokeLookAndFeel.h"
 #include "Utils.h"
+
+AppIconButton::AppIconButton(const String &label, const Drawable *image)
+: DrawableButton(label, DrawableButton::ImageAboveTextLabel) {
+  setImages(image);
+}
+
+Rectangle<float> AppIconButton::getImageBounds() const {
+  auto bounds = getLocalBounds();
+  return bounds.withHeight(PokeLookAndFeel::getDrawableButtonImageHeightForBounds(bounds)).toFloat();
+}
 
 AppsPageComponent::AppsPageComponent() {
   train = new TrainComponent();
+  train->itemWidth = 110;
   addAndMakeVisible(train);
 }
 
@@ -12,7 +24,7 @@ void AppsPageComponent::paint(Graphics &g) {}
 
 void AppsPageComponent::resized() {
   auto bounds = getLocalBounds();
-  train->centreWithSize(bounds.getWidth(), 96);
+  train->centreWithSize(bounds.getWidth(), 120);
 }
 
 void AppsPageComponent::addAndOwnIcon(const String &name, Component *icon) {
@@ -20,18 +32,18 @@ void AppsPageComponent::addAndOwnIcon(const String &name, Component *icon) {
   train->addItem(icon);
 }
 
-ImageButton *AppsPageComponent::createAndOwnIcon(const String &name, const String &iconPath) {
-  auto imageButton = createImageButton(name, absoluteFileFromPath(iconPath));
-  if (imageButton) {
-    addAndOwnIcon(name, imageButton);
-  } else {
-    std::cerr << "Could not load icon from " << iconPath << std::endl;
-  }
-  return imageButton;
+DrawableButton *AppsPageComponent::createAndOwnIcon(const String &name, const String &iconPath) {
+  auto image = createImageFromFile(absoluteFileFromPath(iconPath));
+  auto drawable = new DrawableImage();
+  drawable->setImage(image);
+  iconDrawableImages.add(drawable);
+  auto button = new AppIconButton(name, drawable);
+  addAndOwnIcon(name, button);
+  return button;
 }
 
-Array<ImageButton *> AppsPageComponent::createIconsFromJsonArray(const var &json) {
-  Array<ImageButton *> buttons;
+Array<DrawableButton *> AppsPageComponent::createIconsFromJsonArray(const var &json) {
+  Array<DrawableButton *> buttons;
   if (json.isArray()) {
     for (const auto &item : *json.getArray()) {
       auto name = item["name"];
