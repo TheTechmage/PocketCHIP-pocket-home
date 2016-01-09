@@ -8,7 +8,7 @@ LauncherComponent::LauncherComponent(const var &configJson) {
   pageStack = new PageStackComponent();
   addAndMakeVisible(pageStack);
 
-  categoryButtons = new LauncherBarComponent(62);
+  categoryButtons = new LauncherBarComponent();
   addAndMakeVisible(categoryButtons);
 
   auto categories = configJson["categories"].getArray();
@@ -49,10 +49,12 @@ void LauncherComponent::paint(Graphics &g) {
 
 void LauncherComponent::resized() {
   auto bounds = getLocalBounds();
-  categoryButtons->setBounds(bounds.getX(), bounds.getHeight() - categoryButtons->buttonSize,
-                             bounds.getWidth(), categoryButtons->buttonSize);
-  pageStack->setBounds(bounds.getX(), bounds.getY(),
-                       bounds.getWidth(), bounds.getHeight() - categoryButtons->buttonSize);
+
+  int barSize = 80;
+  categoryButtons->setBounds(bounds.getX(), bounds.getHeight() - barSize, bounds.getWidth(),
+                             barSize);
+  pageStack->setBounds(bounds.getX(), bounds.getY(), bounds.getWidth(),
+                       bounds.getHeight() - barSize);
 
   // init
   if (!resize) {

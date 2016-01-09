@@ -2,9 +2,15 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
+class LauncherBarButton : public ImageButton {
+public:
+  LauncherBarButton(const String &name, const Image &image);
+
+  void paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) override;
+};
+
 class LauncherBarComponent : public Component, public ButtonListener {
 public:
-  int buttonSize;
   int buttonPadding = 10;
 
   OwnedArray<ImageButton> buttons;
@@ -14,7 +20,7 @@ public:
 
   ScopedPointer<Drawable> tempIcon;
 
-  LauncherBarComponent(int buttonSize);
+  LauncherBarComponent();
   ~LauncherBarComponent();
 
   void paint(Graphics &) override;
