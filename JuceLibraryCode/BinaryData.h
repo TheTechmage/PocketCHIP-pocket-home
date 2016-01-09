@@ -22,10 +22,10 @@ namespace BinaryData
     const int            bluetoothIcon_pngSize = 938;
 
     extern const char*   brightnessIconHi_png;
-    const int            brightnessIconHi_pngSize = 1320;
+    const int            brightnessIconHi_pngSize = 1130;
 
     extern const char*   brightnessIconLo_png;
-    const int            brightnessIconLo_pngSize = 1203;
+    const int            brightnessIconLo_pngSize = 870;
 
     extern const char*   check_png;
     const int            check_pngSize = 836;
