@@ -61,11 +61,9 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   auto xf = AffineTransform::identity.rotated(M_PI);
   icons->arrowIcon->setTransform(xf);
 
-
   // create back button
-  ScopedPointer<Drawable> backButtonDrawable =
-      Drawable::createFromImageData(BinaryData::backIcon_png, BinaryData::backIcon_pngSize);
-  backButton = createImageButtonFromDrawable("Back", *backButtonDrawable);
+  backButton = createImageButton(
+      "Back", ImageFileFormat::loadFrom(BinaryData::backIcon_png, BinaryData::backIcon_pngSize));
   backButton->addListener(this);
   backButton->setAlwaysOnTop(true);
   addAndMakeVisible(backButton);

@@ -139,6 +139,7 @@ SettingsPageComponent::SettingsPageComponent() {
   mainPage->addAndMakeVisible(screenBrightnessSlider);
   mainPage->addAndMakeVisible(volumeSlider);
 
+  // create back button
   backButton = createImageButton(
       "Back", ImageFileFormat::loadFrom(BinaryData::backIcon_png, BinaryData::backIcon_pngSize));
   backButton->addListener(this);
