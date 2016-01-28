@@ -20,14 +20,18 @@ Image createImageFromFile(const File &imageFile) {
 }
 
 ImageButton *createImageButton(const String &name, const File &imageFile) {
-  auto button = new ImageButton(name);
   auto image = createImageFromFile(imageFile);
-  button->setImages(true, true, true,                       //
+  return createImageButton(name, image);
+}
+
+ImageButton *createImageButton(const String &name, const Image &image) {
+  auto imageButton = new ImageButton("Back");
+  imageButton->setImages(true, true, true,                  //
                     image, 1.0f, Colours::transparentWhite, // normal
                     image, 1.0f, Colours::transparentWhite, // over
                     image, 0.7f, Colours::transparentBlack, // down
                     0);
-  return button;
+  return imageButton;
 }
 
 ImageButton *createImageButtonFromDrawable(const String &name, const Drawable &drawable) {
