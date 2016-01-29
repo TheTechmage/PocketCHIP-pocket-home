@@ -153,3 +153,11 @@ void PokeLookAndFeel::drawDrawableButton(Graphics &g, DrawableButton &button,
                      button.getWidth() - 4, textH, Justification::centred, 1);
   }
 }
+
+MouseCursor PokeLookAndFeel::getMouseCursorFor(Component &component) {
+#if JUCE_LINUX
+  return MouseCursor::NoCursor;
+#else
+  return LookAndFeel_V3::getMouseCursorFor(component);
+#endif
+}

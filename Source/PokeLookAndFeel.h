@@ -33,6 +33,8 @@ public:
   void drawDrawableButton(Graphics &g, DrawableButton &button, bool isMouseOverButton,
                           bool isButtonDown) override;
 
+  MouseCursor getMouseCursorFor(Component &component) override;
+
 private:
   Typeface::Ptr _232MK, roboto;
 
