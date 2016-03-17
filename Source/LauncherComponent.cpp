@@ -5,6 +5,7 @@
 #include "Utils.h"
 
 LauncherComponent::LauncherComponent(const var &configJson) {
+  bgColor = Colour(0xff2e8dbd);
   pageStack = new PageStackComponent();
   addAndMakeVisible(pageStack);
 
@@ -44,7 +45,7 @@ LauncherComponent::LauncherComponent(const var &configJson) {
 LauncherComponent::~LauncherComponent() {}
 
 void LauncherComponent::paint(Graphics &g) {
-  g.fillAll(Colours::white);
+  g.fillAll(bgColor);
 }
 
 void LauncherComponent::resized() {

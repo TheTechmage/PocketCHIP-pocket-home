@@ -11,7 +11,7 @@ void SettingsCategoryButton::paintButton(Graphics &g, bool isMouseOverButton, bo
   auto bounds = getLocalBounds();
 
 //  g.setColour(findColour(isButtonDown ? TextButton::textColourOnId : TextButton::textColourOffId));
-  g.setColour(Colours::black);
+  g.setColour(Colours::white);
   g.setFont(20);
   g.drawText(displayText, bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(),
              Justification::centred);

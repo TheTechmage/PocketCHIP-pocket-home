@@ -6,19 +6,19 @@
       "icon": "../../assets/appsIcon.png",
       "items": [
         {
-          "name": "Terminal",
+          "name": "terminal",
           "icon": "../../assets/Faenza/utilities-terminal.png"
         },
         {
-          "name": "Iceweasel",
+          "name": "web browser",
           "icon": "../../assets/Faenza/iceweasel.png"
         },
         {
-          "name": "MPlayer",
+          "name": "media player",
           "icon": "../../assets/Faenza/mplayer.png"
         },
         {
-          "name": "MyPaint",
+          "name": "paint",
           "icon": "../../assets/Faenza/mypaint.png"
         }
       ]

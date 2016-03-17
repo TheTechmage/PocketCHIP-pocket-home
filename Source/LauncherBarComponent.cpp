@@ -10,11 +10,11 @@ LauncherBarButton::LauncherBarButton(const String &name, const Image &image) : I
 }
 
 void LauncherBarButton::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) {
-  auto bgBounds = Rectangle<int>(0, 0, 1, 1);
-  fitRectInRect(bgBounds, getLocalBounds(), Justification::centred, false);
+  //auto bgBounds = Rectangle<int>(0, 0, 1, 1);
+  //fitRectInRect(bgBounds, getLocalBounds(), Justification::centred, false);
 
-  g.setColour(findColour(TextButton::buttonColourId));
-  g.fillEllipse(bgBounds.toFloat());
+  //g.setColour(findColour(TextButton::buttonColourId));
+  //g.fillEllipse(bgBounds.toFloat());
 
   ImageButton::paintButton(g, isMouseOverButton, isButtonDown);
 }

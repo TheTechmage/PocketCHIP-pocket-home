@@ -20,9 +20,8 @@ PokeLookAndFeel::PokeLookAndFeel() {
   setColour(SwitchComponent::colorIdHandle, chipPink);
   setColour(SwitchComponent::colorIdHandleOff, medGrey);
 
-  _232MK = Typeface::createSystemTypefaceFor(BinaryData::_232MKM_TTF, BinaryData::_232MKM_TTFSize);
-  roboto = Typeface::createSystemTypefaceFor(BinaryData::RobotoRegular_ttf,
-                                             BinaryData::RobotoRegular_ttfSize);
+  seguibl = Typeface::createSystemTypefaceFor(BinaryData::seguibl_ttf,
+                                             BinaryData::seguibl_ttfSize);
 }
 
 PokeLookAndFeel::~PokeLookAndFeel(){};
@@ -37,7 +36,7 @@ float PokeLookAndFeel::getDrawableButtonImageHeightForBounds(const Rectangle<int
 }
 
 Typeface::Ptr PokeLookAndFeel::getTypefaceForFont(const Font &font) {
-  return roboto;
+  return seguibl;
 }
 
 void PokeLookAndFeel::drawLinearSliderThumb(Graphics &g, int x, int y, int width, int height,

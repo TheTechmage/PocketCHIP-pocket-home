@@ -36,7 +36,7 @@ public:
   MouseCursor getMouseCursorFor(Component &component) override;
 
 private:
-  Typeface::Ptr _232MK, roboto;
+  Typeface::Ptr seguibl;
 
   Colour lightGrey;
   Colour medGrey;
