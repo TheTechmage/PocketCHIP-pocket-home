@@ -11,7 +11,7 @@ public:
 
 class LauncherBarComponent : public Component, public ButtonListener {
 public:
-  int buttonPadding = 10;
+  int buttonPadding = 30;
 
   OwnedArray<ImageButton> buttons;
 
