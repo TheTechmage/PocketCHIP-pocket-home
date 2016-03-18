@@ -3,9 +3,9 @@
 
 LauncherBarButton::LauncherBarButton(const String &name, const Image &image) : ImageButton(name) {
   setImages(true, true, true,                       //
-            image, 1.0f, Colours::transparentBlack, // normal
-            image, 1.0f, Colours::transparentBlack, // over
-            image, 1.0f, Colours::transparentBlack, // down
+            image, 1.0f, Colours::transparentWhite, // normal
+            image, 1.0f, Colours::transparentWhite, // over
+            image, 1.0f, Colours::transparentWhite, // down
             0);
 }
 
