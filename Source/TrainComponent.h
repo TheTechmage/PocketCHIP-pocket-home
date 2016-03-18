@@ -16,7 +16,7 @@ public:
   int itemWidth = 0;
   int itemHeight = 0;
 
-  float itemScaleMin = 0.8f;
+  float itemScaleMin = 1.0f;
   float itemScaleMax = 1.0f;
 
   Array<Component *> items;
