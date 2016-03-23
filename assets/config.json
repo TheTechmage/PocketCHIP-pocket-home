@@ -7,19 +7,23 @@
       "items": [
         {
           "name": "terminal",
-          "icon": "../../assets/Faenza/utilities-terminal.png"
+          "icon": "../../assets/Faenza/utilities-terminal.png",
+          "shell": "urxvt -bg black -fg white -cr blue -vb +sb"
         },
         {
           "name": "web browser",
-          "icon": "../../assets/Faenza/iceweasel.png"
+          "icon": "../../assets/Faenza/iceweasel.png",
+          "shell": "iceweasel"
         },
         {
           "name": "media player",
-          "icon": "../../assets/Faenza/mplayer.png"
+          "icon": "../../assets/Faenza/mplayer.png",
+          "shell": "mplayer"
         },
         {
-          "name": "paint",
-          "icon": "../../assets/Faenza/mypaint.png"
+          "name": "pico8",
+          "icon": "../../assets/Faenza/mypaint.png",
+          "shell": "/home/chip/pico-8_nobcm_v2/pico8_nobcm -renderer 3"
         }
       ]
     },
@@ -28,8 +32,9 @@
       "icon": "../../assets/gamesIcon.png",
       "items": [
         {
-          "name": "Quake",
-          "icon": "../../assets/Faenza/window.png"
+          "name": "Doom",
+          "icon": "../../assets/Faenza/window.png",
+          "shell": "chocolate-doom"
         }
       ]
     },

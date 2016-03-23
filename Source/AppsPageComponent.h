@@ -6,8 +6,10 @@
 
 class AppIconButton : public DrawableButton {
 public:
-  AppIconButton(const String &label, const Drawable *image);
-
+  AppIconButton(const String &label, const String &shell, const Drawable *image);
+  
+  const String shell;
+  
   Rectangle<float> getImageBounds() const override;
 };
 
@@ -24,7 +26,7 @@ public:
   void resized() override;
 
   void addAndOwnIcon(const String &name, Component *icon);
-  DrawableButton *createAndOwnIcon(const String &name, const String &iconPath);
+  DrawableButton *createAndOwnIcon(const String &name, const String &shell, const String &iconPath);
   Array<DrawableButton *> createIconsFromJsonArray(const var &json);
 
   void buttonClicked(Button *) override;

@@ -2,8 +2,9 @@
 #include "PokeLookAndFeel.h"
 #include "Utils.h"
 
-AppIconButton::AppIconButton(const String &label, const Drawable *image)
-: DrawableButton(label, DrawableButton::ImageAboveTextLabel) {
+AppIconButton::AppIconButton(const String &label, const String &shell, const Drawable *image)
+: DrawableButton(label, DrawableButton::ImageAboveTextLabel),
+  shell(shell) {
   setImages(image);
 }
 
@@ -30,14 +31,17 @@ void AppsPageComponent::resized() {
 void AppsPageComponent::addAndOwnIcon(const String &name, Component *icon) {
   trainIcons.add(icon);
   train->addItem(icon);
+  ((Button*)icon)->addListener(this);
 }
 
-DrawableButton *AppsPageComponent::createAndOwnIcon(const String &name, const String &iconPath) {
+DrawableButton *AppsPageComponent::createAndOwnIcon(const String &name, const String &shell, const String &iconPath) {
   auto image = createImageFromFile(absoluteFileFromPath(iconPath));
   auto drawable = new DrawableImage();
   drawable->setImage(image);
+  // FIXME: is this OwnedArray for the drawables actually necessary?
+  // won't the AppIconButton correctly own the drawable?
   iconDrawableImages.add(drawable);
-  auto button = new AppIconButton(name, drawable);
+  auto button = new AppIconButton(name, shell, drawable);
   addAndOwnIcon(name, button);
   return button;
 }
@@ -47,9 +51,10 @@ Array<DrawableButton *> AppsPageComponent::createIconsFromJsonArray(const var &j
   if (json.isArray()) {
     for (const auto &item : *json.getArray()) {
       auto name = item["name"];
+      auto shell = item["shell"];
       auto iconPath = item["icon"];
-      if (name.isString() && iconPath.isString()) {
-        auto icon = createAndOwnIcon(name, iconPath);
+      if (name.isString() && shell.isString() && iconPath.isString()) {
+        auto icon = createAndOwnIcon(name, shell, iconPath);
         if (icon) {
           buttons.add(icon);
         }
@@ -59,4 +64,9 @@ Array<DrawableButton *> AppsPageComponent::createIconsFromJsonArray(const var &j
   return buttons;
 }
 
-void AppsPageComponent::buttonClicked(Button *button) {}
+void AppsPageComponent::buttonClicked(Button *button) {
+  auto appButton = (AppIconButton*)button;
+  ChildProcess launchApp{};
+  bool started = launchApp.start(appButton->shell);
+  DBG("AppsPageComponent::buttonClicked - shell: " << appButton->shell << " started: " << started);
+}
