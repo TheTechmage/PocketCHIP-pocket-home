@@ -1,2 +1,0 @@
-build/Release/PokeLaunch /usr/bin/pocket-home
-debian/desktop/* /usr/share/xsessions

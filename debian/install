@@ -1,0 +1,2 @@
+build/Release/PokeLaunch /usr/bin
+debian/desktop/* /usr/share/xsessions
