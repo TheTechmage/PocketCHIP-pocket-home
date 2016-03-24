@@ -1,5 +1,5 @@
 all:
-	cd Builds/LinuxMakefile && CONFIG=Release make
+	cd Builds/LinuxMakefile && CONFIG=Debug make
 
 clean:
-	cd Builds/LinuxMakefile && make clean
+	cd Builds/LinuxMakefile && CONFIG=Debug make clean
