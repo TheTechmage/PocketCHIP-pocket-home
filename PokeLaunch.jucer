@@ -7,6 +7,7 @@
     <GROUP id="{A1DF3F2A-774E-D561-3D99-5D88F7D2D731}" name="assets">
       <FILE id="fXAS6U" name="appsIcon.png" compile="0" resource="1" file="assets/appsIcon.png"/>
       <FILE id="Q1mu9C" name="backIcon.png" compile="0" resource="1" file="assets/backIcon.png"/>
+      <FILE id="lJvIsl" name="bluetooth.json" compile="0" resource="1" file="assets/bluetooth.json"/>
       <FILE id="Mqbn9F" name="bluetoothIcon.png" compile="0" resource="1"
             file="assets/bluetoothIcon.png"/>
       <FILE id="UdO4Ze" name="brightnessIconHi.png" compile="0" resource="1"
@@ -14,6 +15,7 @@
       <FILE id="kiOY7j" name="brightnessIconLo.png" compile="0" resource="1"
             file="assets/brightnessIconLo.png"/>
       <FILE id="MzytiH" name="check.png" compile="0" resource="1" file="assets/check.png"/>
+      <FILE id="FHWvCu" name="config.json" compile="0" resource="1" file="assets/config.json"/>
       <FILE id="dtLXN6" name="gamesIcon.png" compile="0" resource="1" file="assets/gamesIcon.png"/>
       <FILE id="R7QzGg" name="lock.png" compile="0" resource="1" file="assets/lock.png"/>
       <FILE id="vpRBHk" name="seguibl.ttf" compile="0" resource="1" file="assets/fonts/seguibl.ttf"/>
@@ -23,6 +25,7 @@
             file="assets/volumeIconHi.png"/>
       <FILE id="w0qzKx" name="volumeIconLo.png" compile="0" resource="1"
             file="assets/volumeIconLo.png"/>
+      <FILE id="e8kBas" name="wifi.json" compile="0" resource="1" file="assets/wifi.json"/>
       <FILE id="MHXOcG" name="wifiIcon.png" compile="0" resource="1" file="assets/wifiIcon.png"/>
       <FILE id="t36Y3Q" name="wifiStrength0.png" compile="0" resource="1"
             file="assets/wifiStrength0.png"/>
@@ -105,7 +108,8 @@
         <MODULEPATH id="juce_gui_basics" path="deps/JUCE/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
-    <LINUX_MAKE targetFolder="Builds/LinuxMakefile" cppLanguageStandard="-std=c++11">
+    <LINUX_MAKE targetFolder="Builds/LinuxMakefile" cppLanguageStandard="-std=c++11"
+                extraDefs="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"
                        targetName="PokeLaunch" binaryPath="build/Debug"/>
