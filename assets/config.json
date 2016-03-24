@@ -26,6 +26,11 @@
           "shell": "/home/chip/pico-8_nobcm_v2/pico8_nobcm -renderer 3"
         },
         {
+          "name": "make games",
+          "icon": "../../assets/Faenza/pico8terminal.png",
+          "shell": "/home/chip/pico-8_nobcm_v2/pico8_nobcm -renderer 3"
+        },
+        {
           "name": "play alex 4",
           "icon": "../../assets/Faenza/alex4.png",
           "shell": "alex4"
@@ -34,6 +39,11 @@
           "name": "write",
           "icon": "../../assets/Faenza/texteditor.png",
           "shell": "leafpad"
+        },
+        {
+          "name": "system update",
+          "icon": "../../assets/Faenza/update.png",
+          "shell": "apt-get update -y"
         }
       ]
     },
