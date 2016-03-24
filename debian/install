@@ -1,0 +1,3 @@
+build/Release/PokeLaunch /usr/bin
+debian/desktop/* /usr/share/xsessions
+assets/* /usr/share/pocket-home

@@ -1,0 +1,7 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=pocket-home
+Comment=PocketCHIP home screen
+Exec=pocket-home
+Icon=
+Type=XSession
