@@ -103,7 +103,6 @@
         <MODULEPATH id="juce_graphics" path="deps/JUCE/modules"/>
         <MODULEPATH id="juce_data_structures" path="deps/JUCE/modules"/>
         <MODULEPATH id="juce_gui_basics" path="deps/JUCE/modules"/>
-        <MODULEPATH id="juce_gui_extra" path="deps/JUCE/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
     <LINUX_MAKE targetFolder="Builds/LinuxMakefile" cppLanguageStandard="-std=c++11">
@@ -119,7 +118,6 @@
         <MODULEPATH id="juce_graphics" path="deps/JUCE/modules"/>
         <MODULEPATH id="juce_data_structures" path="deps/JUCE/modules"/>
         <MODULEPATH id="juce_gui_basics" path="deps/JUCE/modules"/>
-        <MODULEPATH id="juce_gui_extra" path="deps/JUCE/modules"/>
       </MODULEPATHS>
     </LINUX_MAKE>
   </EXPORTFORMATS>
@@ -129,7 +127,6 @@
     <MODULE id="juce_events" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0"/>
-    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0"/>
   </MODULES>
   <JUCEOPTIONS/>
 </JUCERPROJECT>

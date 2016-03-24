@@ -10,7 +10,7 @@
 namespace BinaryData
 {
     extern const char*   appsIcon_png;
-    const int            appsIcon_pngSize = 945;
+    const int            appsIcon_pngSize = 14794;
 
     extern const char*   backIcon_png;
     const int            backIcon_pngSize = 417;
@@ -28,7 +28,7 @@ namespace BinaryData
     const int            check_pngSize = 836;
 
     extern const char*   gamesIcon_png;
-    const int            gamesIcon_pngSize = 1630;
+    const int            gamesIcon_pngSize = 14850;
 
     extern const char*   lock_png;
     const int            lock_pngSize = 810;
