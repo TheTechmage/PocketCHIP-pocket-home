@@ -24,6 +24,16 @@
           "name": "play pico 8",
           "icon": "../../assets/Faenza/pico8.png",
           "shell": "/home/chip/pico-8_nobcm_v2/pico8_nobcm -renderer 3"
+        },
+        {
+          "name": "play alex 4",
+          "icon": "../../assets/Faenza/alex4.png",
+          "shell": "alex4"
+        },
+        {
+          "name": "write",
+          "icon": "../../assets/Faenza/texteditor.png",
+          "shell": "leafpad"
         }
       ]
     },
