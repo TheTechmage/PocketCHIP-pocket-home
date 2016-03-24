@@ -7,34 +7,23 @@
       "items": [
         {
           "name": "terminal",
-          "icon": "../../assets/Faenza/utilities-terminal.png",
+          "icon": "../../assets/Faenza/terminal.png",
           "shell": "urxvt -bg black -fg white -cr blue -vb +sb"
         },
         {
-          "name": "web browser",
-          "icon": "../../assets/Faenza/iceweasel.png",
+          "name": "web",
+          "icon": "../../assets/Faenza/webbrowser.png",
           "shell": "iceweasel"
         },
         {
           "name": "media player",
-          "icon": "../../assets/Faenza/mplayer.png",
+          "icon": "../../assets/Faenza/mediaplayer.png",
           "shell": "mplayer"
         },
         {
-          "name": "pico8",
-          "icon": "../../assets/Faenza/mypaint.png",
+          "name": "play pico 8",
+          "icon": "../../assets/Faenza/pico8.png",
           "shell": "/home/chip/pico-8_nobcm_v2/pico8_nobcm -renderer 3"
-        }
-      ]
-    },
-    {
-      "name": "Games",
-      "icon": "../../assets/gamesIcon.png",
-      "items": [
-        {
-          "name": "Doom",
-          "icon": "../../assets/Faenza/window.png",
-          "shell": "chocolate-doom"
         }
       ]
     },
