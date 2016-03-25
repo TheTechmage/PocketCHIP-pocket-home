@@ -94,10 +94,10 @@
     <XCODE_MAC targetFolder="Builds/MacOSX">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" osxSDK="default" osxCompatibility="10.10 SDK" osxArchitecture="default"
-                       isDebug="1" optimisation="1" targetName="PokeLaunch" cppLanguageStandard="c++11"
+                       isDebug="1" optimisation="1" targetName="pocket-home" cppLanguageStandard="c++11"
                        binaryPath="build"/>
         <CONFIGURATION name="Release" osxSDK="default" osxCompatibility="10.10 SDK"
-                       osxArchitecture="default" isDebug="0" optimisation="3" targetName="PokeLaunch"
+                       osxArchitecture="default" isDebug="0" optimisation="3" targetName="pocket-home"
                        cppLanguageStandard="c++11" binaryPath="build"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
@@ -112,9 +112,9 @@
                 extraDefs="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"
-                       targetName="PokeLaunch" binaryPath="build/Debug"/>
+                       targetName="pocket-home" binaryPath="build/Debug"/>
         <CONFIGURATION name="Release" libraryPath="/usr/X11R6/lib/" isDebug="0" optimisation="3"
-                       targetName="PokeLaunch" binaryPath="build/Release"/>
+                       targetName="pocket-home" binaryPath="build/Release"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="deps/JUCE/modules"/>
