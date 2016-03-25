@@ -73,18 +73,18 @@ OBJECTS := \
 .PHONY: clean
 
 $(OUTDIR)/$(TARGET): $(OBJECTS) $(RESOURCES)
-	@echo Linking PokeLaunch
+	@echo Linking pocket-home
 	-@mkdir -p $(BINDIR)
 	-@mkdir -p $(LIBDIR)
 	-@mkdir -p $(OUTDIR)
 	@$(BLDCMD)
 
 clean:
-	@echo Cleaning PokeLaunch
+	@echo Cleaning pocket-home
 	@$(CLEANCMD)
 
 strip:
-	@echo Stripping PokeLaunch
+	@echo Stripping pocket-home
 	-@strip --strip-unneeded $(OUTDIR)/$(TARGET)
 
 $(OBJDIR)/LauncherComponent_8a29041e.o: ../../Source/LauncherComponent.cpp

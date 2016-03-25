@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="EFuQKG" name="PokeLaunch" projectType="guiapp" version="0.0.1"
+<JUCERPROJECT id="EFuQKG" name="pocket-home" projectType="guiapp" version="0.0.1"
               bundleIdentifier="co.nextthing.PokeLaunch" includeBinaryInAppConfig="1"
               jucerVersion="4.1.0" companyName="Next Thing Co." companyWebsite="http://nextthing.co">
-  <MAINGROUP id="NYF1Vz" name="PokeLaunch">
+  <MAINGROUP id="NYF1Vz" name="pocket-home">
     <GROUP id="{A1DF3F2A-774E-D561-3D99-5D88F7D2D731}" name="assets">
       <FILE id="fXAS6U" name="appsIcon.png" compile="0" resource="1" file="assets/appsIcon.png"/>
       <FILE id="Q1mu9C" name="backIcon.png" compile="0" resource="1" file="assets/backIcon.png"/>

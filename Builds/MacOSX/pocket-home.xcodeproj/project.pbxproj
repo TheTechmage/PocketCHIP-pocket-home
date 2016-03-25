@@ -733,7 +733,7 @@
 					00F169F4F344BBF6892637D1, ); name = Source; sourceTree = "<group>"; };
 		724F7C53A0798F4669298BFC = {isa = PBXGroup; children = (
 					8276413844176736FBBD93FD,
-					60F3A7B8686F8757E46AB3EA, ); name = PokeLaunch; sourceTree = "<group>"; };
+					60F3A7B8686F8757E46AB3EA, ); name = "pocket-home"; sourceTree = "<group>"; };
 		2BAB811CCD26FC0DAAD79DF1 = {isa = PBXGroup; children = (
 					FE86BEDA2BCBA88A52C871FB,
 					9915EEC8CBE50DDC0BAC5A99,
@@ -1575,7 +1575,7 @@
 		9FAEA8025C76E308506C43C6 = {isa = PBXNativeTarget; buildConfigurationList = 9CAFA7B151FD9535EE320AFD; buildPhases = (
 					0CFF112FBC621A01DB3E4BBF,
 					6461005FAE511583C17E047D,
-					5F1051E15E35AB8E04DCE878, ); buildRules = ( ); dependencies = ( ); name = PokeLaunch; productName = PokeLaunch; productReference = 11DDD20CAEDA6976FC3C8907; productInstallPath = "$(HOME)/Applications"; productType = "com.apple.product-type.application"; };
+					5F1051E15E35AB8E04DCE878, ); buildRules = ( ); dependencies = ( ); name = "pocket-home"; productName = "pocket-home"; productReference = 11DDD20CAEDA6976FC3C8907; productInstallPath = "$(HOME)/Applications"; productType = "com.apple.product-type.application"; };
 		5295717091895F279C8918D0 = {isa = PBXProject; buildConfigurationList = 71A074F23EC82ADE69B8D947; attributes = { LastUpgradeCheck = 0440; }; compatibilityVersion = "Xcode 3.2"; hasScannedForEncodings = 0; mainGroup = EAE3484DB3DCF2C91BC0EF4C; projectDirPath = ""; projectRoot = ""; targets = ( 9FAEA8025C76E308506C43C6 ); };
 	};
 	rootObject = 5295717091895F279C8918D0;

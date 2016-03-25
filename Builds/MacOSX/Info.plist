@@ -10,7 +10,7 @@
     <key>CFBundleIdentifier</key>
     <string>co.nextthing.PokeLaunch</string>
     <key>CFBundleName</key>
-    <string>PokeLaunch</string>
+    <string>pocket-home</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleSignature</key>
