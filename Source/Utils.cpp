@@ -5,6 +5,20 @@ File absoluteFileFromPath(const String &path) {
                                     : File::getCurrentWorkingDirectory().getChildFile(path);
 }
 
+// TODO: allow user overrides of asset files
+File assetFile(const String &fileName) {
+  // are we linux? look in /usr/share/
+  // FIXME: don't hardcode this, or do find it via .deb configuration
+  File assetFile = absoluteFileFromPath("/usr/share/pocket-home/" + fileName);
+  
+  // look in relative path, used in development builds
+  if (!assetFile.exists()) {
+    assetFile = absoluteFileFromPath("../../assets/" + fileName);
+  }
+
+  return assetFile;
+}
+
 Image createImageFromFile(const File &imageFile) {
   auto image = Image(Image::RGB, 128, 128, true);
   if (imageFile.getFileExtension() == ".svg") {
