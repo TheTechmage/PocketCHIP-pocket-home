@@ -7,7 +7,7 @@ Standards-Version: 3.9.5
 Homepage: opensource.nextthing.co
 
 Package: pocket-home
-Architecture: any
+Architecture: armhf
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: pocket-home is a home screen for PocketCHIP.
  pocket-home is a home screen for PocketCHIP. It can launch programs and change system settings.
