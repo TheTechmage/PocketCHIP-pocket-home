@@ -8,32 +8,12 @@
         {
           "name": "terminal",
           "icon": "Faenza/terminal.png",
-          "shell": "urxvt -bg black -fg white -cr blue -vb +sb"
-        },
-        {
-          "name": "web",
-          "icon": "Faenza/webbrowser.png",
-          "shell": "iceweasel"
-        },
-        {
-          "name": "media player",
-          "icon": "Faenza/mediaplayer.png",
-          "shell": "mplayer"
+          "shell": "xfce4-terminal"
         },
         {
           "name": "play pico 8",
           "icon": "Faenza/pico8.png",
-          "shell": "/home/chip/pico-8_nobcm_v2/pico8_nobcm -renderer 3"
-        },
-        {
-          "name": "make games",
-          "icon": "Faenza/pico8terminal.png",
-          "shell": "/home/chip/pico-8_nobcm_v2/pico8_nobcm -renderer 3"
-        },
-        {
-          "name": "play alex 4",
-          "icon": "Faenza/alex4.png",
-          "shell": "alex4"
+          "shell": "pico8"
         },
         {
           "name": "write",
@@ -43,7 +23,7 @@
         {
           "name": "system update",
           "icon": "Faenza/update.png",
-          "shell": "apt-get update -y"
+          "shell": "pocket-update"
         }
       ]
     },
