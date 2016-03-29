@@ -62,7 +62,7 @@ void LauncherBarComponent::resized() {
 void LauncherBarComponent::buttonClicked(Button *button) {}
 
 void LauncherBarComponent::addCategory(const String &name, const String &iconPath) {
-  auto iconFile = File(absoluteFileFromPath(iconPath));
+  auto iconFile = assetFile(iconPath);
   auto image = createImageFromFile(iconFile);
   auto button = new LauncherBarButton(name, image);
   button->addListener(this);

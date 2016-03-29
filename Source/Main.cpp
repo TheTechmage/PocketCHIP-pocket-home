@@ -73,27 +73,24 @@ void PokeLaunchApplication::initialise(const String &commandLine) {
   StringArray args;
   args.addTokens(commandLine, true);
 
-  auto configJson = var::null;
-
-  auto flagIndex = args.indexOf("-c");
-  if (flagIndex >= 0 && args.size() > flagIndex + 1) {
-    auto configFile = absoluteFileFromPath(args[flagIndex + 1]);
-    configJson = JSON::parse(configFile);
-    if (!configJson) {
-      std::cerr << "Could not read config file from " << configFile.getFullPathName() << std::endl;
-      quit();
-    }
-  } else {
-    std::cout << "Usage: PokeLaunch -c <config-file.json>" << std::endl;
+  auto configFile = assetFile("config.json");
+  if (!configFile.exists()) {
+    std::cerr << "Missing config file: " << configFile.getFullPathName() << std::endl;
+    quit();
+  }
+  
+  auto configJson = JSON::parse(configFile);
+  if (!configJson) {
+    std::cerr << "Could not parse config file: " << configFile.getFullPathName() << std::endl;
     quit();
   }
 
   // Populate with dummy data
   {
-    auto ssidListFile = absoluteFileFromPath("../../assets/wifi.json");
+    auto ssidListFile = assetFile("wifi.json");
     wifiStatus.populateFromJson(JSON::parse(ssidListFile));
 
-    auto deviceListFile = absoluteFileFromPath("../../assets/bluetooth.json");
+    auto deviceListFile = assetFile("bluetooth.json");
     bluetoothStatus.populateFromJson(JSON::parse(deviceListFile));
   }
 

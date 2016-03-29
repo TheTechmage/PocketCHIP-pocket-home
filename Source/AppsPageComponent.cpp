@@ -35,7 +35,7 @@ void AppsPageComponent::addAndOwnIcon(const String &name, Component *icon) {
 }
 
 DrawableButton *AppsPageComponent::createAndOwnIcon(const String &name, const String &shell, const String &iconPath) {
-  auto image = createImageFromFile(absoluteFileFromPath(iconPath));
+  auto image = createImageFromFile(assetFile(iconPath));
   auto drawable = new DrawableImage();
   drawable->setImage(image);
   // FIXME: is this OwnedArray for the drawables actually necessary?

@@ -3,53 +3,53 @@
   "categories": [
     {
       "name": "Apps",
-      "icon": "../../assets/appsIcon.png",
+      "icon": "appsIcon.png",
       "items": [
         {
           "name": "terminal",
-          "icon": "../../assets/Faenza/terminal.png",
+          "icon": "Faenza/terminal.png",
           "shell": "urxvt -bg black -fg white -cr blue -vb +sb"
         },
         {
           "name": "web",
-          "icon": "../../assets/Faenza/webbrowser.png",
+          "icon": "Faenza/webbrowser.png",
           "shell": "iceweasel"
         },
         {
           "name": "media player",
-          "icon": "../../assets/Faenza/mediaplayer.png",
+          "icon": "Faenza/mediaplayer.png",
           "shell": "mplayer"
         },
         {
           "name": "play pico 8",
-          "icon": "../../assets/Faenza/pico8.png",
+          "icon": "Faenza/pico8.png",
           "shell": "/home/chip/pico-8_nobcm_v2/pico8_nobcm -renderer 3"
         },
         {
           "name": "make games",
-          "icon": "../../assets/Faenza/pico8terminal.png",
+          "icon": "Faenza/pico8terminal.png",
           "shell": "/home/chip/pico-8_nobcm_v2/pico8_nobcm -renderer 3"
         },
         {
           "name": "play alex 4",
-          "icon": "../../assets/Faenza/alex4.png",
+          "icon": "Faenza/alex4.png",
           "shell": "alex4"
         },
         {
           "name": "write",
-          "icon": "../../assets/Faenza/texteditor.png",
+          "icon": "Faenza/texteditor.png",
           "shell": "leafpad"
         },
         {
           "name": "system update",
-          "icon": "../../assets/Faenza/update.png",
+          "icon": "Faenza/update.png",
           "shell": "apt-get update -y"
         }
       ]
     },
     {
       "name": "Settings",
-      "icon": "../../assets/settingsIcon.png"
+      "icon": "settingsIcon.png"
     }
   ]
 }
