@@ -7,15 +7,21 @@ File absoluteFileFromPath(const String &path) {
 
 // TODO: allow user overrides of asset files
 File assetFile(const String &fileName) {
-  // are we linux? look in /usr/share/
-  // FIXME: don't hardcode this, or do find it via .deb configuration
-  File assetFile = absoluteFileFromPath("/usr/share/pocket-home/" + fileName);
+  auto devPath = absoluteFileFromPath("../../assets/" + fileName);
+  File assetFile;
   
+#if JUCE_LINUX
+  // are we linux? look in /usr/share/
+  // FIXME: don't hardcode this, maybe find it via .deb configuration
+  File linuxAssetPath = absoluteFileFromPath("/usr/share/pocket-home/" + fileName);
   // look in relative path, used in development builds
-  if (!assetFile.exists()) {
-    assetFile = absoluteFileFromPath("../../assets/" + fileName);
+  if (!linuxAssetPath.exists()) {
+    assetFile = devPath;
   }
-
+#else
+  assetFile = devPath;
+#endif
+  
   return assetFile;
 }
 
