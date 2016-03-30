@@ -18,7 +18,7 @@
         {
           "name": "media player",
           "icon": "appIcons/mediaplayer.png",
-          "shell": "mplayer"
+          "shell": "gnome-mplayer"
         },
         {
           "name": "play pico 8",
