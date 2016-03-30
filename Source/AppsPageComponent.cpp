@@ -2,9 +2,18 @@
 #include "PokeLookAndFeel.h"
 #include "Utils.h"
 
+void AppCheckTimer::timerCallback() {
+  DBG("AppCheckTimer::timerCallback - check running apps");
+  if (appsPage) {
+    appsPage->checkRunningApps();
+  }
+}
+
 AppIconButton::AppIconButton(const String &label, const String &shell, const Drawable *image)
 : DrawableButton(label, DrawableButton::ImageAboveTextLabel),
   shell(shell) {
+  // FIXME: supposedly setImages will "create internal copies of its drawables"
+  // this relates to AppsPageComponent ownership of drawable icons ... docs are unclear
   setImages(image);
 }
 
@@ -13,11 +22,14 @@ Rectangle<float> AppIconButton::getImageBounds() const {
   return bounds.withHeight(PokeLookAndFeel::getDrawableButtonImageHeightForBounds(bounds)).toFloat();
 }
 
-AppsPageComponent::AppsPageComponent() {
-  train = new TrainComponent();
+AppsPageComponent::AppsPageComponent()
+  : train(new TrainComponent()),
+    runningCheckTimer() {
   train->itemWidth = 186;
   train->itemHeight = 109;
   train->orientation = TrainComponent::Orientation::kOrientationGrid;
+      
+  runningCheckTimer.appsPage = this;
   addAndMakeVisible(train);
 }
 
@@ -68,19 +80,44 @@ Array<DrawableButton *> AppsPageComponent::createIconsFromJsonArray(const var &j
 }
 
 void AppsPageComponent::startApp(AppIconButton* appButton) {
-  ChildProcess launchApp{};
-  bool started = launchApp.start(appButton->shell);
-  runningApps.set(appButton, started);
+  auto launchApp = new ChildProcess();
+  if (launchApp->start(appButton->shell)) {
+    runningApps.add(launchApp);
+    runningAppsByButton.set(appButton, runningApps.indexOf(launchApp));
+    constexpr int millis = 5 * 1000;
+    runningCheckTimer.startTimer(millis);
+  }
 };
 
 void AppsPageComponent::focusApp(AppIconButton* appButton) {
   DBG("focusApp: IMPLEMENT ME");
 };
 
+void AppsPageComponent::checkRunningApps() {
+  Array<int> needsRemove{};
+  
+  // check list to mark any needing removal
+  for (const auto& cp : runningApps) {
+    if (!cp->isRunning()) {
+      needsRemove.add(runningApps.indexOf(cp));
+    }
+  }
+  
+  // cleanup list
+  for (const auto appIdx : needsRemove) {
+    runningApps.remove(appIdx);
+    runningAppsByButton.removeValue(appIdx);
+  }
+  
+  if (!runningApps.size()) {
+    runningCheckTimer.stopTimer();
+  }
+};
+
 void AppsPageComponent::buttonClicked(Button *button) {
   auto appButton = (AppIconButton*)button;
   
-  if (runningApps[appButton]) {
+  if (runningAppsByButton[appButton]) {
     focusApp(appButton);
     DBG("AppsPageComponent::buttonClicked - switch focus: " << appButton->shell);
   }
