@@ -23,7 +23,7 @@
         {
           "name": "media player",
           "icon": "appIcons/mediaplayer.png",
-          "shell": "gnome-mplayer"
+          "shell": "gnome-mplayer /home/chip/miami.mp4 --fullscreen"
         }
       ]
     },

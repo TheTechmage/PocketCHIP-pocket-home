@@ -5,12 +5,15 @@
 #include <numeric>
 
 SettingsCategoryButton::SettingsCategoryButton(const String &name)
+    
+
 : Button(name), displayText(name) {}
 
 void SettingsCategoryButton::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) {
   auto bounds = getLocalBounds();
 
 //  g.setColour(findColour(isButtonDown ? TextButton::textColourOnId : TextButton::textColourOffId));
+
   g.setColour(Colours::white);
   g.setFont(20);
   g.drawText(displayText, bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(),
@@ -119,6 +122,7 @@ void BluetoothCategoryItemComponent::updateButtonText() {
 }
 
 SettingsPageComponent::SettingsPageComponent() {
+  bgColor = Colour(0xffeb008b);
   mainPage = new Component();
   addAndMakeVisible(mainPage);
   mainPage->toBack();
@@ -163,7 +167,9 @@ SettingsPageComponent::SettingsPageComponent() {
 
 SettingsPageComponent::~SettingsPageComponent() {}
 
-void SettingsPageComponent::paint(Graphics &g) {}
+void SettingsPageComponent::paint(Graphics &g) {
+    g.fillAll(bgColor);
+}
 
 void SettingsPageComponent::resized() {
   auto bounds = getLocalBounds();
