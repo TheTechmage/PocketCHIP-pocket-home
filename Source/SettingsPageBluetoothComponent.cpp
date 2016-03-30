@@ -45,6 +45,7 @@ SettingsPageBluetoothComponent::SettingsPageBluetoothComponent() {
   for (auto btDevice : getBluetoothStatus().devices) {
     auto item = new BluetoothDeviceListItem(btDevice, &icons);
     item->addListener(this);
+    item->setTriggeredOnMouseDown(true);
     deviceListItems.add(item);
     deviceListPage->addItem(item);
   }
@@ -58,6 +59,7 @@ SettingsPageBluetoothComponent::SettingsPageBluetoothComponent() {
   backButton = createImageButton(
       "Back", ImageFileFormat::loadFrom(BinaryData::backIcon_png, BinaryData::backIcon_pngSize));
   backButton->addListener(this);
+  backButton->setTriggeredOnMouseDown(true);
   backButton->setAlwaysOnTop(true);
   addAndMakeVisible(backButton);
 
@@ -71,6 +73,7 @@ SettingsPageBluetoothComponent::SettingsPageBluetoothComponent() {
 
   connectionButton = new TextButton("Connection Button");
   connectionButton->setButtonText("Connect");
+  connectionButton->setTriggeredOnMouseDown(true);
   connectionButton->addListener(this);
   connectionPage->addAndMakeVisible(connectionButton);
 

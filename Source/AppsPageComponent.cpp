@@ -45,6 +45,7 @@ void AppsPageComponent::resized() {
 void AppsPageComponent::addAndOwnIcon(const String &name, Component *icon) {
   trainIcons.add(icon);
   train->addItem(icon);
+  ((Button*)icon)->setTriggeredOnMouseDown(true);
   ((Button*)icon)->addListener(this);
 }
 

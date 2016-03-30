@@ -32,6 +32,7 @@ SettingsCategoryItemComponent::SettingsCategoryItemComponent(const String &name)
   toggle{ new SwitchComponent() },
   button{ new SettingsCategoryButton(name) } {
   toggle->addListener(this);
+  toggle->setTriggeredOnMouseDown(true);
   addAndMakeVisible(icon);
   addAndMakeVisible(toggle);
   addAndMakeVisible(button);
@@ -147,14 +148,17 @@ SettingsPageComponent::SettingsPageComponent() {
   backButton = createImageButton(
       "Back", ImageFileFormat::loadFrom(BinaryData::backIcon_png, BinaryData::backIcon_pngSize));
   backButton->addListener(this);
+  backButton->setTriggeredOnMouseDown(true);
   backButton->setAlwaysOnTop(true);
   addAndMakeVisible(backButton);
 
   wifiCategoryItem = new WifiCategoryItemComponent();
+  wifiCategoryItem->button->setTriggeredOnMouseDown(true);
   wifiCategoryItem->button->addListener(this);
   addAndMakeVisible(wifiCategoryItem);
 
   bluetoothCategoryItem = new BluetoothCategoryItemComponent();
+  bluetoothCategoryItem->button->setTriggeredOnMouseDown(true);
   bluetoothCategoryItem->button->addListener(this);
   addAndMakeVisible(bluetoothCategoryItem);
 

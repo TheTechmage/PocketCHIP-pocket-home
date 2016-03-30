@@ -65,6 +65,7 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   backButton = createImageButton(
       "Back", ImageFileFormat::loadFrom(BinaryData::backIcon_png, BinaryData::backIcon_pngSize));
   backButton->addListener(this);
+   backButton->setTriggeredOnMouseDown(true);
   backButton->setAlwaysOnTop(true);
   addAndMakeVisible(backButton);
 
@@ -77,6 +78,7 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   for (auto ap : getWifiStatus().accessPoints) {
     auto item = new WifiAccessPointListItem(ap, icons);
     item->addListener(this);
+    item->setTriggeredOnMouseDown(true);
     accessPointItems.add(item);
     accessPointListPage->addItem(item);
   }
@@ -97,6 +99,7 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   connectionButton = new TextButton("Connection Button");
   connectionButton->setButtonText("Connect");
   connectionButton->addListener(this);
+  connectionButton->setTriggeredOnMouseDown(true);
   connectionPage->addAndMakeVisible(connectionButton);
 }
 
