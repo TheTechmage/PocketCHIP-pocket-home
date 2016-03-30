@@ -123,7 +123,7 @@ void BluetoothCategoryItemComponent::updateButtonText() {
 }
 
 SettingsPageComponent::SettingsPageComponent() {
-  bgColor = Colour(0xffeb008b);
+  bgColor = Colour(0xffbc369a);
   mainPage = new Component();
   addAndMakeVisible(mainPage);
   mainPage->toBack();

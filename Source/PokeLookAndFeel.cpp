@@ -5,21 +5,22 @@
 PokeLookAndFeel::PokeLookAndFeel() {
   lightGrey = Colour(0xffe1e1e1);
   medGrey = Colour(0xffc0c0c0);
-  chipPink = Colour(0xffeb008b);
+  chipPink = Colour(0xffbc369a);
+  chipLightPink = Colour(0xfff799d1);
 
   setColour(DrawableButton::textColourId, Colours::white);
   setColour(TextButton::buttonColourId, Colours::white);
   setColour(TextButton::buttonOnColourId, Colours::white);
   setColour(TextButton::textColourOnId, Colours::white);
   setColour(TextButton::textColourOffId, Colours::white);
-  setColour(Slider::backgroundColourId, lightGrey);
-  setColour(Slider::thumbColourId, chipPink);
+  setColour(Slider::backgroundColourId, chipLightPink);
+  setColour(Slider::thumbColourId, Colours::white);
   setColour(TextEditor::backgroundColourId, lightGrey);
   setColour(ListBox::backgroundColourId, Colours::white);
   setColour(ListBox::textColourId, Colours::white);
-  setColour(SwitchComponent::colorIdBackground, lightGrey);
-  setColour(SwitchComponent::colorIdHandle, chipPink);
-  setColour(SwitchComponent::colorIdHandleOff, Colours::white);
+  setColour(SwitchComponent::colorIdBackground, chipLightPink);
+    setColour(SwitchComponent::colorIdHandle, Colours::white);
+  setColour(SwitchComponent::colorIdHandleOff, chipPink);
 
   seguibl = Typeface::createSystemTypefaceFor(BinaryData::seguibl_ttf,
                                              BinaryData::seguibl_ttfSize);
