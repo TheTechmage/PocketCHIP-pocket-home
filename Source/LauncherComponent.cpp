@@ -50,11 +50,11 @@ void LauncherComponent::paint(Graphics &g) {
 
 void LauncherComponent::resized() {
   auto bounds = getLocalBounds();
-
-  int barSize = 80;
+  int barSize = 54;
+  
   categoryButtons->setBounds(bounds.getX(), bounds.getHeight() - barSize, bounds.getWidth(),
                              barSize);
-  pageStack->setBounds(bounds.getX(), bounds.getY(), bounds.getWidth(),
+  pageStack->setBounds(bounds.getX() + barSize, bounds.getY() + barSize/2, bounds.getWidth() - 2*barSize,
                        bounds.getHeight() - barSize);
 
   // init

@@ -15,8 +15,8 @@ Rectangle<float> AppIconButton::getImageBounds() const {
 
 AppsPageComponent::AppsPageComponent() {
   train = new TrainComponent();
-  train->itemWidth = 240;
-  train->itemHeight = 95;
+  train->itemWidth = 186;
+  train->itemHeight = 109;
   train->orientation = TrainComponent::Orientation::kOrientationGrid;
   addAndMakeVisible(train);
 }
