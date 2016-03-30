@@ -25,6 +25,10 @@
             file="assets/volumeIconHi.png"/>
       <FILE id="w0qzKx" name="volumeIconLo.png" compile="0" resource="1"
             file="assets/volumeIconLo.png"/>
+      <FILE id="kRiVMY" name="wait1.png" compile="0" resource="1" file="assets/wait1.png"/>
+      <FILE id="DHpT2v" name="wait2.png" compile="0" resource="1" file="assets/wait2.png"/>
+      <FILE id="DywBel" name="wait3.png" compile="0" resource="1" file="assets/wait3.png"/>
+      <FILE id="sbqoc4" name="wait4.png" compile="0" resource="1" file="assets/wait4.png"/>
       <FILE id="e8kBas" name="wifi.json" compile="0" resource="1" file="assets/wifi.json"/>
       <FILE id="MHXOcG" name="wifiIcon.png" compile="0" resource="1" file="assets/wifiIcon.png"/>
       <FILE id="t36Y3Q" name="wifiStrength0.png" compile="0" resource="1"
