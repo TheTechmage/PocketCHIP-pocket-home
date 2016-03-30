@@ -11,19 +11,19 @@
           "shell": "xfce4-terminal"
         },
         {
+          "name": "play alex 4",
+          "icon": "Faenza/alex4.png",
+          "shell": "alex4"
+        },
+        {
           "name": "play pico 8",
           "icon": "Faenza/pico8.png",
           "shell": "pico8"
         },
         {
-          "name": "write",
-          "icon": "Faenza/texteditor.png",
-          "shell": "leafpad"
-        },
-        {
-          "name": "system update",
-          "icon": "Faenza/update.png",
-          "shell": "pocket-update"
+          "name": "media player",
+          "icon": "Faenza/mediaplayer.png",
+          "shell": "mplayer"
         }
       ]
     },

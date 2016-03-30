@@ -27,12 +27,17 @@ void TrainComponent::resized() {
 
 void TrainComponent::childrenChanged() {}
 
+
 void TrainComponent::mouseDown(const MouseEvent &e) {
+  if (orientation == kOrientationGrid) return;
+  
   updateItemSpacing();
   position.beginDrag();
 }
 
 void TrainComponent::mouseDrag(const MouseEvent &e) {
+  if (orientation == kOrientationGrid) return;
+  
   if (!dragModal->isVisible() && e.getDistanceFromDragStart() > 5) {
     dragModal->setVisible(true);
   }
@@ -44,6 +49,8 @@ void TrainComponent::mouseDrag(const MouseEvent &e) {
 }
 
 void TrainComponent::mouseUp(const MouseEvent &e) {
+  if (orientation == kOrientationGrid) return;
+  
   position.endDrag();
   dragModal->setVisible(false);
 }
@@ -68,13 +75,13 @@ void TrainComponent::setItemBoundsToFit() {
   auto b = getLocalBounds();
   for (auto item : items) {
     item->setBounds(itemBounds);
-    item->setBoundsToFit(b.getX(), b.getY(), b.getWidth(), b.getHeight(), Justification::centred,
-                         false);
   }
 }
 
 void TrainComponent::updateItemTransforms() {
   float p = position.getPosition();
+  int row = 0;
+  int col = 0;
 
   for (auto item : items) {
     auto s = mix(itemScaleMax, itemScaleMin, smoothstep(0.0f, 1.0f, std::abs(p)));
@@ -83,6 +90,16 @@ void TrainComponent::updateItemTransforms() {
     auto xf = AffineTransform::identity.scaled(s, s, c.getX(), c.getY());
 
     switch (orientation) {
+      case kOrientationGrid: {
+        xf = xf.translated(std::floor(itemBounds.getWidth() * col), std::floor(itemBounds.getHeight() * row));
+
+        // TODO: multiple pages
+        col += 1;
+        if (col == gridCols) {
+          col = 0;
+          row += 1;
+        }
+      } break;
       case kOrientationHorizontal: {
         xf = xf.translated(std::floor(itemSpacing * p), 0);
       } break;

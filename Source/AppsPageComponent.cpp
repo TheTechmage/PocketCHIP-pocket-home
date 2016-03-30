@@ -15,7 +15,9 @@ Rectangle<float> AppIconButton::getImageBounds() const {
 
 AppsPageComponent::AppsPageComponent() {
   train = new TrainComponent();
-  train->itemWidth = 110;
+  train->itemWidth = 240;
+  train->itemHeight = 95;
+  train->orientation = TrainComponent::Orientation::kOrientationGrid;
   addAndMakeVisible(train);
 }
 
@@ -25,7 +27,7 @@ void AppsPageComponent::paint(Graphics &g) {}
 
 void AppsPageComponent::resized() {
   auto bounds = getLocalBounds();
-  train->centreWithSize(bounds.getWidth(), 120);
+  train->centreWithSize(bounds.getWidth(), bounds.getHeight());
 }
 
 void AppsPageComponent::addAndOwnIcon(const String &name, Component *icon) {
@@ -40,6 +42,7 @@ DrawableButton *AppsPageComponent::createAndOwnIcon(const String &name, const St
   drawable->setImage(image);
   // FIXME: is this OwnedArray for the drawables actually necessary?
   // won't the AppIconButton correctly own the drawable?
+  // Further we don't actually use this list anywhere.
   iconDrawableImages.add(drawable);
   auto button = new AppIconButton(name, shell, drawable);
   addAndOwnIcon(name, button);
@@ -66,7 +69,7 @@ Array<DrawableButton *> AppsPageComponent::createIconsFromJsonArray(const var &j
 
 void AppsPageComponent::buttonClicked(Button *button) {
   auto appButton = (AppIconButton*)button;
+  DBG("AppsPageComponent::buttonClicked - shell: " << appButton->shell);
   ChildProcess launchApp{};
-  bool started = launchApp.start(appButton->shell);
-  DBG("AppsPageComponent::buttonClicked - shell: " << appButton->shell << " started: " << started);
+  launchApp.start(appButton->shell);
 }
