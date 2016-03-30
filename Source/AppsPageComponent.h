@@ -32,5 +32,9 @@ public:
   void buttonClicked(Button *) override;
 
 private:
+  HashMap<AppIconButton*, bool> runningApps;
+  void startApp(AppIconButton* appButton);
+  void focusApp(AppIconButton* appButton);
+  
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AppsPageComponent)
 };

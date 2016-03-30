@@ -67,9 +67,25 @@ Array<DrawableButton *> AppsPageComponent::createIconsFromJsonArray(const var &j
   return buttons;
 }
 
+void AppsPageComponent::startApp(AppIconButton* appButton) {
+  ChildProcess launchApp{};
+  bool started = launchApp.start(appButton->shell);
+  runningApps.set(appButton, started);
+};
+
+void AppsPageComponent::focusApp(AppIconButton* appButton) {
+  DBG("focusApp: IMPLEMENT ME");
+};
+
 void AppsPageComponent::buttonClicked(Button *button) {
   auto appButton = (AppIconButton*)button;
-  DBG("AppsPageComponent::buttonClicked - shell: " << appButton->shell);
-  ChildProcess launchApp{};
-  launchApp.start(appButton->shell);
+  
+  if (runningApps[appButton]) {
+    focusApp(appButton);
+    DBG("AppsPageComponent::buttonClicked - switch focus: " << appButton->shell);
+  }
+  else {
+    startApp(appButton);
+    DBG("AppsPageComponent::buttonClicked - shell: " << appButton->shell);
+  }
 }
