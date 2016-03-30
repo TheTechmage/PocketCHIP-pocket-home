@@ -7,42 +7,42 @@
       "items": [
         {
           "name": "terminal",
-          "icon": "Faenza/terminal.png",
+          "icon": "appIcons/terminal.png",
           "shell": "urxvt -bg black -fg white -cr blue -vb +sb"
         },
         {
           "name": "web",
-          "icon": "Faenza/webbrowser.png",
+          "icon": "appIcons/webbrowser.png",
           "shell": "iceweasel"
         },
         {
           "name": "media player",
-          "icon": "Faenza/mediaplayer.png",
+          "icon": "appIcons/mediaplayer.png",
           "shell": "mplayer"
         },
         {
           "name": "play pico 8",
-          "icon": "Faenza/pico8.png",
+          "icon": "appIcons/pico8.png",
           "shell": "pico8"
         },
         {
           "name": "make games",
-          "icon": "Faenza/pico8terminal.png",
+          "icon": "appIcons/pico8terminal.png",
           "shell": "pico8"
         },
         {
           "name": "play alex 4",
-          "icon": "Faenza/alex4.png",
+          "icon": "appIcons/alex4.png",
           "shell": "alex4"
         },
         {
           "name": "write",
-          "icon": "Faenza/texteditor.png",
+          "icon": "appIcons/texteditor.png",
           "shell": "leafpad"
         },
         {
           "name": "system update",
-          "icon": "Faenza/update.png",
+          "icon": "appIcons/update.png",
           "shell": "apt-get update -y"
         }
       ]
