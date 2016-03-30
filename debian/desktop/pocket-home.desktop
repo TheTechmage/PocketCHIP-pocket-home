@@ -4,4 +4,4 @@ Name=pocket-home
 Comment=PocketCHIP home screen
 Exec=pocket-home
 Icon=
-Type=XSession
+Type=Application
