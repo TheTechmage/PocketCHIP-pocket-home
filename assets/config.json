@@ -7,43 +7,23 @@
       "items": [
         {
           "name": "terminal",
-          "icon": "appIcons/terminal.png",
+          "icon": "Faenza/terminal.png",
           "shell": "xfce4-terminal"
         },
         {
-          "name": "web",
-          "icon": "appIcons/webbrowser.png",
-          "shell": "iceweasel"
-        },
-        {
-          "name": "media player",
-          "icon": "appIcons/mediaplayer.png",
-          "shell": "gnome-mplayer"
-        },
-        {
-          "name": "play pico 8",
-          "icon": "appIcons/pico8.png",
-          "shell": "pico8"
-        },
-        {
-          "name": "make games",
-          "icon": "appIcons/pico8terminal.png",
-          "shell": "pico8"
-        },
-        {
           "name": "play alex 4",
-          "icon": "appIcons/alex4.png",
+          "icon": "Faenza/alex4.png",
           "shell": "alex4"
         },
         {
-          "name": "write",
-          "icon": "appIcons/texteditor.png",
-          "shell": "leafpad"
+          "name": "play pico 8",
+          "icon": "Faenza/pico8.png",
+          "shell": "pico8"
         },
         {
-          "name": "system update",
-          "icon": "appIcons/update.png",
-          "shell": "apt-get update -y"
+          "name": "media player",
+          "icon": "Faenza/mediaplayer.png",
+          "shell": "gnome-mplayer"
         }
       ]
     },

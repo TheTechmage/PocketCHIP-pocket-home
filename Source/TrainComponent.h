@@ -6,9 +6,12 @@ class TrainComponent
     : public Component,
       public AnimatedPosition<AnimatedPositionBehaviours::SnapToPageBoundaries>::Listener {
 public:
+  // TODO: grid orientation is very poorly shoehorned into the Train.
+  // come up with a cleaner implementation
   enum Orientation {
     kOrientationHorizontal,
-    kOrientationVertical
+    kOrientationVertical,
+    kOrientationGrid
   };
 
   Orientation orientation = kOrientationHorizontal;
@@ -46,6 +49,8 @@ private:
   Rectangle<int> itemBounds;
 
   int itemSpacing;
+  int gridCols = 2;
+  int gridRows = 2;
 
   void setItemBoundsToFit();
   void updateItemTransforms();
