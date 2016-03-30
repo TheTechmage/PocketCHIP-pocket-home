@@ -8,7 +8,7 @@
         {
           "name": "terminal",
           "icon": "Faenza/terminal.png",
-          "shell": "urxvt -bg black -fg white -cr blue -vb +sb"
+          "shell": "xfce4-terminal"
         },
         {
           "name": "web",
