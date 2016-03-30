@@ -7,22 +7,22 @@
       "items": [
         {
           "name": "terminal",
-          "icon": "Faenza/terminal.png",
+          "icon": "appIcons/terminal.png",
           "shell": "xfce4-terminal"
         },
         {
           "name": "play alex 4",
-          "icon": "Faenza/alex4.png",
+          "icon": "appIcons/alex4.png",
           "shell": "alex4"
         },
         {
           "name": "play pico 8",
-          "icon": "Faenza/pico8.png",
+          "icon": "appIcons/pico8.png",
           "shell": "pico8"
         },
         {
           "name": "media player",
-          "icon": "Faenza/mediaplayer.png",
+          "icon": "appIcons/mediaplayer.png",
           "shell": "gnome-mplayer"
         }
       ]
