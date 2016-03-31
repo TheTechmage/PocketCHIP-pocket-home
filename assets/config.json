@@ -10,9 +10,9 @@
           "shell": "xfce4-terminal"
         },
         {
-          "name": "play alex 4",
-          "icon": "appIcons/alex4.png",
-          "shell": "alex4"
+          "name": "make music",
+          "icon": "appIcons/musicsequencer.png",
+          "shell": "sunvox"
         },
         {
           "name": "play pico 8",
@@ -22,7 +22,7 @@
         {
           "name": "media player",
           "icon": "appIcons/mediaplayer.png",
-          "shell": "gnome-mplayer /home/chip/miami.mp4 --fullscreen"
+          "shell": "gnome-mplayer -w 470 -h 272 /home/chip/miami.mp4"
         }
       ],
       "cornerButtons": [
