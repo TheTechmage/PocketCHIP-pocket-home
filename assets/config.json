@@ -29,7 +29,7 @@
         {
           "location": "TopLeft",
           "name": "WiFi",
-          "icon": "wifiIcon.png"
+          "icon": "wifiStrength3.png"
         },
         {
           "location": "TopRight",
@@ -39,7 +39,7 @@
         {
           "location": "BottomLeft",
           "name": "Volume",
-          "icon": "volumeIconHi.png"
+          "icon": "spacer.png"
         },
         {
           "location": "BottomRight",
