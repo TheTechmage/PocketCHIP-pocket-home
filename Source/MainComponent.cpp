@@ -28,3 +28,7 @@ void MainContentComponent::resized() {
   auto bounds = getLocalBounds();
   pageStack->setBounds(bounds);
 }
+
+void MainContentComponent::handleMainWindowInactive() {
+  launcher->hideLaunchSpinner();
+}

@@ -1,4 +1,5 @@
 #include "AppsPageComponent.h"
+#include "LauncherComponent.h"
 #include "PokeLookAndFeel.h"
 #include "Utils.h"
 
@@ -22,8 +23,9 @@ Rectangle<float> AppIconButton::getImageBounds() const {
   return bounds.withHeight(PokeLookAndFeel::getDrawableButtonImageHeightForBounds(bounds)).toFloat();
 }
 
-AppsPageComponent::AppsPageComponent()
-  : train(new TrainComponent()),
+AppsPageComponent::AppsPageComponent(LauncherComponent* launcherComponent)
+  : launcherComponent(launcherComponent),
+    train(new TrainComponent()),
     runningCheckTimer() {
   train->itemWidth = 186;
   train->itemHeight = 109;
@@ -87,6 +89,10 @@ void AppsPageComponent::startApp(AppIconButton* appButton) {
     runningAppsByButton.set(appButton, runningApps.indexOf(launchApp));
     constexpr int millis = 5 * 1000;
     runningCheckTimer.startTimer(millis);
+    
+    // TODO: should probably put app button clicking logic up into LauncherComponent
+    // correct level for event handling needs more thought
+    launcherComponent->showLaunchSpinner();
   }
 };
 
@@ -112,6 +118,7 @@ void AppsPageComponent::checkRunningApps() {
   
   if (!runningApps.size()) {
     runningCheckTimer.stopTimer();
+    launcherComponent->hideLaunchSpinner();
   }
 };
 

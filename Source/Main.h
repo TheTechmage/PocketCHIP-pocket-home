@@ -67,6 +67,7 @@ public:
   public:
     MainWindow(String name, const var &configJson);
 
+    void activeWindowStatusChanged() override;
     void closeButtonPressed() override;
   };
 
