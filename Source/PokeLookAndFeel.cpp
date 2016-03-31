@@ -5,8 +5,8 @@
 PokeLookAndFeel::PokeLookAndFeel() {
   lightGrey = Colour(0xffe1e1e1);
   medGrey = Colour(0xffc0c0c0);
-  chipPink = Colour(0xffbc369a);
-  chipLightPink = Colour(0xfff799d1);
+  chipPink = Colour(0xffbc3662);
+  chipLightPink = Colour(0xfff799aa);
 
   setColour(DrawableButton::textColourId, Colours::white);
   setColour(TextButton::buttonColourId, Colours::white);
