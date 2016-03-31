@@ -7,7 +7,8 @@
 
 class LauncherComponent : public Component, private Button::Listener {
 public:
-  ScopedPointer<LauncherBarComponent> categoryButtons;
+  ScopedPointer<LauncherBarComponent> botButtons;
+  ScopedPointer<LauncherBarComponent> topButtons;
   Component* defaultPage;
 
   OwnedArray<Component> pages;

@@ -1,9 +1,8 @@
 {
-  "defaultCategory" : "Apps",
-  "categories": [
+  "defaultPage" : "Apps",
+  "pages": [
     {
       "name": "Apps",
-      "icon": "appsIcon.png",
       "items": [
         {
           "name": "terminal",
@@ -25,11 +24,33 @@
           "icon": "appIcons/mediaplayer.png",
           "shell": "gnome-mplayer /home/chip/miami.mp4 --fullscreen"
         }
+      ],
+      "cornerButtons": [
+        {
+          "location": "TopLeft",
+          "name": "WiFi",
+          "icon": "wifiIcon.png"
+        },
+        {
+          "location": "TopRight",
+          "name": "Battery",
+          "icon": "battery_2.png"
+        },
+        {
+          "location": "BottomLeft",
+          "name": "Volume",
+          "icon": "volumeIconHi.png"
+        },
+        {
+          "location": "BottomRight",
+          "name": "Settings",
+          "icon": "settingsIcon.png"
+        }
       ]
     },
+
     {
-      "name": "Settings",
-      "icon": "settingsIcon.png"
+      "name": "Settings"
     }
   ]
 }
