@@ -10,6 +10,14 @@ void AppCheckTimer::timerCallback() {
   }
 }
 
+void AppDebounceTimer::timerCallback() {
+  DBG("AppDebounceTimer::timerCallback - check launch debounce");
+  if (appsPage) {
+    appsPage->debounce = false;
+  }
+  stopTimer();
+}
+
 AppIconButton::AppIconButton(const String &label, const String &shell, const Drawable *image)
 : DrawableButton(label, DrawableButton::ImageAboveTextLabel),
   shell(shell) {
@@ -23,15 +31,18 @@ Rectangle<float> AppIconButton::getImageBounds() const {
   return bounds.withHeight(PokeLookAndFeel::getDrawableButtonImageHeightForBounds(bounds)).toFloat();
 }
 
-AppsPageComponent::AppsPageComponent(LauncherComponent* launcherComponent)
-  : launcherComponent(launcherComponent),
-    train(new TrainComponent()),
-    runningCheckTimer() {
+AppsPageComponent::AppsPageComponent(LauncherComponent* launcherComponent) :
+  train(new TrainComponent()),
+  launcherComponent(launcherComponent),
+  runningCheckTimer(),
+  debounceTimer()
+{
   train->itemWidth = 186;
   train->itemHeight = 109;
   train->orientation = TrainComponent::Orientation::kOrientationGrid;
       
   runningCheckTimer.appsPage = this;
+  debounceTimer.appsPage = this;
   addAndMakeVisible(train);
 }
 
@@ -87,8 +98,10 @@ void AppsPageComponent::startApp(AppIconButton* appButton) {
   if (launchApp->start(appButton->shell)) {
     runningApps.add(launchApp);
     runningAppsByButton.set(appButton, runningApps.indexOf(launchApp));
-    constexpr int millis = 5 * 1000;
-    runningCheckTimer.startTimer(millis);
+    runningCheckTimer.startTimer(5 * 1000);
+    
+    debounce = true;
+    debounceTimer.startTimer(2 * 1000);
     
     // TODO: should probably put app button clicking logic up into LauncherComponent
     // correct level for event handling needs more thought
@@ -125,7 +138,8 @@ void AppsPageComponent::checkRunningApps() {
 void AppsPageComponent::buttonClicked(Button *button) {
   auto appButton = (AppIconButton*)button;
   
-  if (runningAppsByButton[appButton]) {
+  // FIXME: debounce and running apps need to integrate, once running check works
+  if (debounce) {
     focusApp(appButton);
     DBG("AppsPageComponent::buttonClicked - switch focus: " << appButton->shell);
   }

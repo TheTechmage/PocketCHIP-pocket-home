@@ -15,6 +15,14 @@ public:
   AppsPageComponent* appsPage;
 };
 
+class AppDebounceTimer : public Timer {
+public:
+  AppDebounceTimer() {};
+  virtual void timerCallback() override;
+  // TODO: better pointer usage, weakref for cycle relationship?
+  AppsPageComponent* appsPage;
+};
+
 class AppIconButton : public DrawableButton {
 public:
   AppIconButton(const String &label, const String &shell, const Drawable *image);
@@ -34,6 +42,8 @@ public:
   OwnedArray<DrawableImage> iconDrawableImages;
   OwnedArray<ChildProcess> runningApps;
   
+  bool debounce = false;
+  
   using AppRunningMap = HashMap<AppIconButton*, int>;
 
   void paint(Graphics &) override;
@@ -51,6 +61,7 @@ private:
   
   AppRunningMap runningAppsByButton;
   AppCheckTimer runningCheckTimer;
+  AppDebounceTimer debounceTimer;
   
   void startApp(AppIconButton* appButton);
   void focusApp(AppIconButton* appButton);
