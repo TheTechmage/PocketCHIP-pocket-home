@@ -73,6 +73,7 @@ LauncherComponent::LauncherComponent(const var &configJson) {
     // buttons manually.
     for (auto button : topButtons->buttons) {
       button->addListener(this);
+      button->setTriggeredOnMouseDown(true);
     }
     for (auto button : botButtons->buttons) {
       button->addListener(this);
