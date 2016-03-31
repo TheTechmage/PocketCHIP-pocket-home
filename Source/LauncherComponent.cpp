@@ -9,37 +9,55 @@ LauncherComponent::LauncherComponent(const var &configJson) {
   pageStack = new PageStackComponent();
   addAndMakeVisible(pageStack);
 
-  categoryButtons = new LauncherBarComponent();
-  addAndMakeVisible(categoryButtons);
+  topButtons = new LauncherBarComponent();
+  botButtons = new LauncherBarComponent();
+  addAndMakeVisible(botButtons);
+  addAndMakeVisible(topButtons);
 
-  auto categories = configJson["categories"].getArray();
-  if (categories) {
-    for (const auto &category : *categories) {
-      auto name = category["name"].toString();
-      Component *page = nullptr;
+  auto pagesData = configJson["pages"].getArray();
+  if (pagesData) {
+    for (const auto &page : *pagesData) {
+      auto name = page["name"].toString();
+      Component *pageComponent = nullptr;
       if (name == "Settings") {
-        page = new SettingsPageComponent();
+        pageComponent = new SettingsPageComponent();
       } else {
         auto appsPage = new AppsPageComponent();
-        appsPage->createIconsFromJsonArray(category["items"]);
-        page = appsPage;
+        appsPage->createIconsFromJsonArray(page["items"]);
+        auto buttonsData = *(page["cornerButtons"].getArray());
+        
+        // FIXME: is there a better way to slice juce Array<var> ?
+        Array<var> topData{};
+        Array<var> botData{};
+        topData.add(buttonsData[0]);
+        topData.add(buttonsData[1]);
+        botData.add(buttonsData[2]);
+        botData.add(buttonsData[3]);
+        
+        topButtons->addButtonsFromJsonArray(topData);
+        botButtons->addButtonsFromJsonArray(botData);
+
+        pageComponent = appsPage;
       }
-      page->setName(name);
-      pages.add(page);
-      pagesByName.set(name, page);
+      pageComponent->setName(name);
+      pages.add(pageComponent);
+      pagesByName.set(name, pageComponent);
     }
 
-    categoryButtons->addCategoriesFromJsonArray(*categories);
-    categoryButtons->setInterceptsMouseClicks(false, true);
+    topButtons->setInterceptsMouseClicks(false, true);
+    botButtons->setInterceptsMouseClicks(false, true);
 
     // NOTE(ryan): Maybe do something with a custom event later.. For now we just listen to all the
     // buttons manually.
-    for (auto button : categoryButtons->buttons) {
+    for (auto button : topButtons->buttons) {
+      button->addListener(this);
+    }
+    for (auto button : botButtons->buttons) {
       button->addListener(this);
     }
   }
 
-  defaultPage = pagesByName[configJson["defaultCategory"]];
+  defaultPage = pagesByName[configJson["defaultPage"]];
 }
 
 LauncherComponent::~LauncherComponent() {}
@@ -52,8 +70,10 @@ void LauncherComponent::resized() {
   auto bounds = getLocalBounds();
   int barSize = 54;
   
-  categoryButtons->setBounds(bounds.getX(), bounds.getHeight() - barSize, bounds.getWidth(),
+  botButtons->setBounds(bounds.getX(), bounds.getHeight() - barSize, bounds.getWidth(),
                              barSize);
+  topButtons->setBounds(bounds.getX(), bounds.getY(), bounds.getWidth(),
+                        barSize);
   pageStack->setBounds(bounds.getX() + barSize, bounds.getY() + barSize/2, bounds.getWidth() - 2*barSize,
                        bounds.getHeight() - barSize);
 

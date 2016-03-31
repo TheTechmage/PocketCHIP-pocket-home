@@ -19,6 +19,7 @@ void LauncherBarButton::paintButton(Graphics &g, bool isMouseOverButton, bool is
   ImageButton::paintButton(g, isMouseOverButton, isButtonDown);
 }
 
+// FIXME: this should be renamed e.g. CornerButtonsComponent
 LauncherBarComponent::LauncherBarComponent() {
   tempIcon = Drawable::createFromImageData(BinaryData::appsIcon_png, BinaryData::appsIcon_pngSize);
 }
@@ -28,29 +29,29 @@ LauncherBarComponent::~LauncherBarComponent() {}
 void LauncherBarComponent::paint(Graphics &g) {}
 
 void LauncherBarComponent::resized() {
+  // +1 to add room for spacer
   int nitems = buttons.size() + 1;
   Component *items[nitems];
-  items[nitems - 2] = nullptr; // second to last item is spacer
 
-  int i = 0;
-  for (auto button : buttons) {
-    if (button->getName() == "Settings") {
-      items[nitems - 1] = button; // set last button to be settings
-      continue;
+  {
+    int i = 0;
+    for (auto button : buttons) {
+      items[i++] = button;
     }
-    items[i++] = button;
   }
+  
+  // insert the spacer second to last
+  items[nitems-1] = items[nitems-2];
+  items[nitems-2] = nullptr;
 
   auto bounds = getLocalBounds();
   bounds.reduce(buttonPadding / 2, buttonPadding);
-
   int buttonSize = bounds.getHeight();
 
   if (layoutDirty) {
     int itemWidth = buttonSize + buttonPadding;
-    int i = 0;
-    for (int j = 0; j < nitems; ++j) {
-      layout.setItemLayout(i++, itemWidth, itemWidth, buttonSize);
+    for (int i = 0; i < nitems; i++) {
+      layout.setItemLayout(i, itemWidth, itemWidth, buttonSize);
     }
     layout.setItemLayout(nitems - 2, 0, -1.0, -1.0); // set second to last item (spacer) to be 100%
   }
@@ -61,7 +62,7 @@ void LauncherBarComponent::resized() {
 
 void LauncherBarComponent::buttonClicked(Button *button) {}
 
-void LauncherBarComponent::addCategory(const String &name, const String &iconPath) {
+void LauncherBarComponent::addButton(const String &name, const String &iconPath) {
   auto iconFile = assetFile(iconPath);
   auto image = createImageFromFile(iconFile);
   auto button = new LauncherBarButton(name, image);
@@ -71,10 +72,13 @@ void LauncherBarComponent::addCategory(const String &name, const String &iconPat
   layoutDirty = true;
 }
 
-void LauncherBarComponent::addCategoriesFromJsonArray(const Array<var> &categories) {
-  for (const auto &category : categories) {
-    auto name = category["name"].toString();
-    auto icon = category["icon"].toString();
-    addCategory(name, icon);
+// FIXME: this component now only accepts two corner buttons.
+// should have an add function which explicitly accepts each.
+// even better would be to modify this object to fill the background and accept four corners.
+void LauncherBarComponent::addButtonsFromJsonArray(const Array<var> &buttons) {
+  for (const auto &button : buttons) {
+    auto name = button["name"].toString();
+    auto icon = button["icon"].toString();
+    addButton(name, icon);
   }
 }

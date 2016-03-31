@@ -27,8 +27,8 @@ public:
   void resized() override;
   void buttonClicked(Button *button) override;
 
-  void addCategory(const String &name, const String &iconPath);
-  void addCategoriesFromJsonArray(const Array<var> &categories);
+  void addButton(const String &name, const String &iconPath);
+  void addButtonsFromJsonArray(const Array<var> &buttons);
 
 private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LauncherBarComponent)
