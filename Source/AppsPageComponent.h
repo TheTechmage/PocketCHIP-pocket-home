@@ -5,12 +5,13 @@
 #include "TrainComponent.h"
 
 class AppsPageComponent;
+class LauncherComponent;
 
 class AppCheckTimer : public Timer {
 public:
   AppCheckTimer() {};
   virtual void timerCallback() override;
-  // FIXME: better pointer usage, weakref for cycle relationship?
+  // TODO: better pointer usage, weakref for cycle relationship?
   AppsPageComponent* appsPage;
 };
 
@@ -25,15 +26,15 @@ public:
 
 class AppsPageComponent : public Component, public Button::Listener {
 public:
+  AppsPageComponent(LauncherComponent* launcherComponent);
+  ~AppsPageComponent();
+  
   ScopedPointer<TrainComponent> train;
   OwnedArray<Component> trainIcons;
   OwnedArray<DrawableImage> iconDrawableImages;
   OwnedArray<ChildProcess> runningApps;
   
   using AppRunningMap = HashMap<AppIconButton*, int>;
-
-  AppsPageComponent();
-  ~AppsPageComponent();
 
   void paint(Graphics &) override;
   void resized() override;
@@ -46,11 +47,13 @@ public:
   void buttonClicked(Button *) override;
 
 private:
-  void startApp(AppIconButton* appButton);
-  void focusApp(AppIconButton* appButton);
+  LauncherComponent* launcherComponent;
   
   AppRunningMap runningAppsByButton;
   AppCheckTimer runningCheckTimer;
+  
+  void startApp(AppIconButton* appButton);
+  void focusApp(AppIconButton* appButton);
   
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AppsPageComponent)
 };

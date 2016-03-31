@@ -132,6 +132,15 @@ PokeLaunchApplication::MainWindow::MainWindow(String name, const var &configJson
 #endif
 }
 
+void PokeLaunchApplication::MainWindow::activeWindowStatusChanged() {
+  if (!isActiveWindow()) {
+    auto contentComponent = getContentComponent();
+    if (contentComponent) {
+      ((MainContentComponent*)contentComponent)->handleMainWindowInactive();
+    }
+  }
+}
+
 void PokeLaunchApplication::MainWindow::closeButtonPressed() {
   // This is called when the user tries to close this window. Here, we'll just
   // ask the app to quit when this happens, but you can change this to do
