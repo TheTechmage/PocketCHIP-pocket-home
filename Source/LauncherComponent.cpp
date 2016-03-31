@@ -69,7 +69,7 @@ void LauncherComponent::paint(Graphics &g) {
 
 void LauncherComponent::resized() {
   auto bounds = getLocalBounds();
-  int barSize = 54;
+  int barSize = 50;
   
   botButtons->setBounds(bounds.getX(), bounds.getHeight() - barSize, bounds.getWidth(),
                              barSize);
