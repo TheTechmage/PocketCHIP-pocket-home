@@ -1230,15 +1230,10 @@
 				E10CCF27E71FCD846DAC0AB3 /* Main.h */,
 				00F169F4F344BBF6892637D1 /* Main.cpp */,
 			);
-<<<<<<< HEAD
-			name = Source;
-			sourceTree = "<group>";
-=======
 			indentWidth = 2;
 			name = Source;
 			sourceTree = "<group>";
 			tabWidth = 2;
->>>>>>> launcher_spinner
 		};
 		69289AB55C9A35D94C277E23 /* image_formats */ = {
 			isa = PBXGroup;
