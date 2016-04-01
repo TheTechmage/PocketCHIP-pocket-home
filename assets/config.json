@@ -20,9 +20,9 @@
           "shell": "pico8"
         },
         {
-          "name": "media player",
-          "icon": "appIcons/mediaplayer.png",
-          "shell": "gnome-mplayer -w 470 -h 272 /home/chip/miami.mp4"
+          "name": "virtual reality",
+          "icon": "appIcons/virtualboy.png",
+          "shell": "mednarun"
         }
       ],
       "cornerButtons": [
