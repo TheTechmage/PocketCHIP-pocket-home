@@ -49,6 +49,7 @@ ifeq ($(CONFIG),Release)
 endif
 
 OBJECTS := \
+  $(OBJDIR)/WifiStatus_30949170.o \
   $(OBJDIR)/LauncherComponent_8a29041e.o \
   $(OBJDIR)/PageStackComponent_8da9db4d.o \
   $(OBJDIR)/SwitchComponent_a904080a.o \
@@ -86,6 +87,11 @@ clean:
 strip:
 	@echo Stripping pocket-home
 	-@strip --strip-unneeded $(OUTDIR)/$(TARGET)
+
+$(OBJDIR)/WifiStatus_30949170.o: ../../Source/WifiStatus.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling WifiStatus.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/LauncherComponent_8a29041e.o: ../../Source/LauncherComponent.cpp
 	-@mkdir -p $(OBJDIR)
