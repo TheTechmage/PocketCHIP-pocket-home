@@ -31,13 +31,13 @@
       <FILE id="sbqoc4" name="wait4.png" compile="0" resource="1" file="assets/wait4.png"/>
       <FILE id="e8kBas" name="wifi.json" compile="0" resource="1" file="assets/wifi.json"/>
       <FILE id="MHXOcG" name="wifiIcon.png" compile="0" resource="1" file="assets/wifiIcon.png"/>
-      <FILE id="t36Y3Q" name="wifiStrength0.png" compile="0" resource="1"
+      <FILE id="rl2Dqu" name="wifiStrength0.png" compile="0" resource="1"
             file="assets/wifiStrength0.png"/>
-      <FILE id="O15Fzb" name="wifiStrength1.png" compile="0" resource="1"
+      <FILE id="CDRTFm" name="wifiStrength1.png" compile="0" resource="1"
             file="assets/wifiStrength1.png"/>
-      <FILE id="pOIVZ9" name="wifiStrength2.png" compile="0" resource="1"
+      <FILE id="sYeliS" name="wifiStrength2.png" compile="0" resource="1"
             file="assets/wifiStrength2.png"/>
-      <FILE id="khsgPd" name="wifiStrength3.png" compile="0" resource="1"
+      <FILE id="urWfDy" name="wifiStrength3.png" compile="0" resource="1"
             file="assets/wifiStrength3.png"/>
     </GROUP>
     <GROUP id="{4593A345-C350-960A-058D-B48F8240AA1D}" name="Source">

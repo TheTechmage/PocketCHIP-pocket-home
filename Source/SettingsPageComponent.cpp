@@ -203,16 +203,12 @@ void SettingsPageComponent::buttonClicked(Button *button) {
   if (button == backButton) {
     getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
   } else if (button == wifiCategoryItem->button) {
-    // FIXME: crashes, disabled for demo
-    return;
     const auto &wifistatus = getWifiStatus();
     if (wifistatus.connected) {
       wifiPage->pageStack->swapPage(wifiPage->connectionPage, PageStackComponent::kTransitionNone);
     }
     getMainStack().pushPage(wifiPage, PageStackComponent::kTransitionTranslateHorizontal);
   } else if (button == bluetoothCategoryItem->button) {
-    // FIXME: crashes, disabled for demo
-    return;
     getMainStack().pushPage(bluetoothPage, PageStackComponent::kTransitionTranslateHorizontal);
   }
 }
