@@ -34,12 +34,13 @@ public:
                           bool isButtonDown) override;
 
   MouseCursor getMouseCursorFor(Component &component) override;
+  
+  static Colour lightGrey;
+  static Colour medGrey;
+  static Colour chipPink;
+  static Colour chipLightPink;
+  static Colour chipPurple;
 
 private:
   Typeface::Ptr seguibl;
-
-  Colour lightGrey;
-  Colour medGrey;
-  Colour chipPink;
-  Colour chipLightPink;
 };

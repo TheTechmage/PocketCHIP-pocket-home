@@ -1264,8 +1264,10 @@
 				8276413844176736FBBD93FD /* assets */,
 				60F3A7B8686F8757E46AB3EA /* Source */,
 			);
+			indentWidth = 2;
 			name = "pocket-home";
 			sourceTree = "<group>";
+			tabWidth = 2;
 		};
 		763A91A4C2B6D472EE11BA7B /* layout */ = {
 			isa = PBXGroup;
