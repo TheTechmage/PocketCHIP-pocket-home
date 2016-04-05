@@ -1,4 +1,5 @@
 #include "SettingsPageWifiComponent.h"
+#include "PokeLookAndFeel.h"
 #include "Main.h"
 #include "Utils.h"
 
@@ -35,7 +36,7 @@ void WifiAccessPointListItem::paintButton(Graphics &g, bool isMouseOverButton, b
 }
 
 SettingsPageWifiComponent::SettingsPageWifiComponent() {
-  bgColor = Colour(0xffd23c6d);
+  bgColor = Colour(PokeLookAndFeel::chipPurple);
   
   pageStack = new PageStackComponent();
   addAndMakeVisible(pageStack);
