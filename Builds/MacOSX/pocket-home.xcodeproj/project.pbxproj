@@ -1913,7 +1913,7 @@
 		5295717091895F279C8918D0 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0440;
+				LastUpgradeCheck = 0730;
 			};
 			buildConfigurationList = 71A074F23EC82ADE69B8D947 /* Build configuration list for PBXProject "pocket-home" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1979,6 +1979,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_MODEL_TUNING = G5;
@@ -2022,6 +2023,7 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MACOSX_DEPLOYMENT_TARGET_ppc = 10.4;
+				PRODUCT_BUNDLE_IDENTIFIER = "co.nextthing.pocket-home";
 				SDKROOT_ppc = macosx10.5;
 				SYMROOT = ../../build;
 			};
@@ -2055,6 +2057,7 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MACOSX_DEPLOYMENT_TARGET_ppc = 10.4;
+				PRODUCT_BUNDLE_IDENTIFIER = "co.nextthing.pocket-home";
 				SDKROOT_ppc = macosx10.5;
 				SYMROOT = ../../build;
 			};
