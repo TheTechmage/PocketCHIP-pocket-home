@@ -42,4 +42,5 @@ private:
   Colour medGrey;
   Colour chipPink;
   Colour chipLightPink;
+  Colour chipPurple;
 };

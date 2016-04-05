@@ -86,9 +86,7 @@ void WifiCategoryItemComponent::enabledStateChanged(bool enabled) {
 void WifiCategoryItemComponent::updateButtonText() {
   const auto &status = getWifiStatus();
   if (status.enabled) {
-    // FIXME: demo units will be pre-connected to this network
-    button->setText("NTC 2461");
-//    button->setText(status.connected ? status.connectedAccessPoint->ssid : "Not Connected");
+    button->setText(status.connected ? status.connectedAccessPoint->ssid : "Not Connected");
   } else {
     button->setText("WiFi Off");
   }

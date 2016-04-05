@@ -35,6 +35,8 @@ void WifiAccessPointListItem::paintButton(Graphics &g, bool isMouseOverButton, b
 }
 
 SettingsPageWifiComponent::SettingsPageWifiComponent() {
+  bgColor = Colour(0xffd23c6d);
+  
   pageStack = new PageStackComponent();
   addAndMakeVisible(pageStack);
 
@@ -78,7 +80,6 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   for (auto ap : getWifiStatus().accessPoints) {
     auto item = new WifiAccessPointListItem(ap, icons);
     item->addListener(this);
-    item->setTriggeredOnMouseDown(true);
     accessPointItems.add(item);
     accessPointListPage->addItem(item);
   }
@@ -105,7 +106,9 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
 
 SettingsPageWifiComponent::~SettingsPageWifiComponent() {}
 
-void SettingsPageWifiComponent::paint(Graphics &g) {}
+void SettingsPageWifiComponent::paint(Graphics &g) {
+  g.fillAll(bgColor);
+}
 
 void SettingsPageWifiComponent::setWifiEnabled(bool enabled) {
   pageStack->setVisible(enabled);
