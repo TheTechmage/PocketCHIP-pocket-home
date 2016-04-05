@@ -41,6 +41,8 @@
             file="assets/wifiStrength3.png"/>
     </GROUP>
     <GROUP id="{4593A345-C350-960A-058D-B48F8240AA1D}" name="Source">
+      <FILE id="lKUWj5" name="WifiStatus.cpp" compile="1" resource="0" file="Source/WifiStatus.cpp"/>
+      <FILE id="TvdjJE" name="WifiStatus.h" compile="0" resource="0" file="Source/WifiStatus.h"/>
       <FILE id="SsaxMA" name="LauncherComponent.cpp" compile="1" resource="0"
             file="Source/LauncherComponent.cpp"/>
       <FILE id="EmBY30" name="LauncherComponent.h" compile="0" resource="0"
