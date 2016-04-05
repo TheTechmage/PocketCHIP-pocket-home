@@ -1,5 +1,6 @@
 #include "Main.h"
 #include "MainComponent.h"
+#include "WifiStatus.h"
 #include "Utils.h"
 
 void BluetoothStatus::populateFromJson(const var &json) {
@@ -27,7 +28,9 @@ BluetoothStatus &getBluetoothStatus() {
   return PokeLaunchApplication::get()->bluetoothStatus;
 }
 
-PokeLaunchApplication::PokeLaunchApplication() {}
+PokeLaunchApplication::PokeLaunchApplication() :
+  wifiStatus(WifiStatus())
+{}
 
 PokeLaunchApplication *PokeLaunchApplication::get() {
   return dynamic_cast<PokeLaunchApplication *>(JUCEApplication::getInstance());
