@@ -4,6 +4,13 @@
 
 #include <numeric>
 
+void SettingsTimer::timerCallback() {
+  DBG("SettingsTimer::timerCallback - check settings");
+  //if (settingsPage) {
+  //  settingsPage->checkRunningApps();
+  //}
+}
+
 SettingsCategoryButton::SettingsCategoryButton(const String &name)
     
 
@@ -100,6 +107,7 @@ BluetoothCategoryItemComponent::BluetoothCategoryItemComponent()
   updateButtonText();
 }
 
+
 void BluetoothCategoryItemComponent::enabledStateChanged(bool enabled) {
   getBluetoothStatus().enabled = enabled;
   button->setEnabled(enabled);
@@ -122,6 +130,19 @@ void BluetoothCategoryItemComponent::updateButtonText() {
   }
 }
 
+void SettingsPageComponent::sliderValueChanged(Slider* slider) {
+
+}
+
+void SettingsPageComponent::sliderDragStarted(Slider* slider) {
+  
+}
+
+void SettingsPageComponent::sliderDragEnded(Slider* slider) {
+  //
+}
+
+
 SettingsPageComponent::SettingsPageComponent() {
   bgColor = Colour(0xffd23c6d);
   mainPage = new Component();
@@ -140,6 +161,8 @@ SettingsPageComponent::SettingsPageComponent() {
   ScopedPointer<Drawable> volHi =
       Drawable::createFromImageData(BinaryData::volumeIconHi_png, BinaryData::volumeIconHi_pngSize);
   volumeSlider = ScopedPointer<IconSliderComponent>(new IconSliderComponent(*volLo, *volHi));
+  
+  
 
   mainPage->addAndMakeVisible(screenBrightnessSlider);
   mainPage->addAndMakeVisible(volumeSlider);
@@ -167,6 +190,8 @@ SettingsPageComponent::SettingsPageComponent() {
 
   wifiPage = new SettingsPageWifiComponent();
   bluetoothPage = new SettingsPageBluetoothComponent();
+  
+  
 }
 
 SettingsPageComponent::~SettingsPageComponent() {}
@@ -176,6 +201,7 @@ void SettingsPageComponent::paint(Graphics &g) {
 }
 
 void SettingsPageComponent::resized() {
+  //runningSettingsTimer.startTimer(200);
   auto bounds = getLocalBounds();
 
   {

@@ -9,6 +9,16 @@
 #include "SettingsPageWifiComponent.h"
 #include "SettingsPageBluetoothComponent.h"
 
+class SettingsPageComponent;
+
+class SettingsTimer : public Timer {
+public:
+  SettingsTimer() {};
+  virtual void timerCallback() override;
+  // TODO: better pointer usage, weakref for cycle relationship?
+  SettingsPageComponent* mainPage;
+};
+
 class SettingsCategoryButton : public Button {
 public:
   String displayText;
@@ -95,8 +105,16 @@ public:
   void resized() override;
 
   void buttonClicked(Button *b) override;
+  
+  void sliderValueChanged(Slider* slider);
+  void sliderDragStarted(Slider* slider);
+  void sliderDragEnded(Slider* slider);
 
+  void checkSliders();
+  
 private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsPageComponent)
   Colour bgColor;
+  SettingsTimer runningSettingsTimer;
 };
+

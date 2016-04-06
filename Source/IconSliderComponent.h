@@ -2,7 +2,9 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
-class IconSliderComponent : public Component {
+class SettingsPageComponent;
+
+class IconSliderComponent : public Component, public Slider::Listener {
 public:
   ScopedPointer<Slider> slider;
   ScopedPointer<DrawableButton> iconLow, iconHi;
@@ -14,7 +16,14 @@ public:
 
   void paint(Graphics &);
   void resized();
+  virtual void sliderValueChanged(Slider*) override;
+  virtual void sliderDragStarted(Slider*) override;
+  virtual void sliderDragEnded(Slider*) override;
+  
+  void addListener(SettingsPageComponent*);
 
 private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(IconSliderComponent)
+  
+  SettingsPageComponent* listener;
 };

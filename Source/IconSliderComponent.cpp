@@ -1,5 +1,6 @@
 #include "IconSliderComponent.h"
 #include "Utils.h"
+#include "SettingsPageComponent.h"
 
 IconSliderComponent::IconSliderComponent(const Drawable &iconLoDrawable,
                                          const Drawable &iconHiDrawable) {
@@ -21,11 +22,30 @@ IconSliderComponent::IconSliderComponent(const Drawable &iconLoDrawable,
 
   slider = createSlider();
   addAndMakeVisible(slider);
+  slider->setRange(0,100);
+  slider->addListener(this);
 }
 
 IconSliderComponent::~IconSliderComponent() {}
 
 void IconSliderComponent::paint(Graphics &g) {
+}
+
+void IconSliderComponent::addListener(SettingsPageComponent *page) {
+  listener = page;
+}
+
+
+void IconSliderComponent::sliderDragStarted(Slider* slider) {
+  listener->sliderDragStarted(slider);
+}
+
+void IconSliderComponent::sliderDragEnded(Slider* slider) {
+  listener->sliderDragEnded(slider);
+}
+
+void IconSliderComponent::sliderValueChanged(Slider* slider) {
+  listener->sliderValueChanged(slider);
 }
 
 void IconSliderComponent::resized() {
