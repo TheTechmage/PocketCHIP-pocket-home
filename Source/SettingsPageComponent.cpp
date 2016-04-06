@@ -1,6 +1,7 @@
 #include "SettingsPageComponent.h"
 #include "Main.h"
 #include "Utils.h"
+#include "WifiStatus.h"
 
 #include <numeric>
 
@@ -78,7 +79,7 @@ WifiCategoryItemComponent::WifiCategoryItemComponent() : SettingsCategoryItemCom
 }
 
 void WifiCategoryItemComponent::enabledStateChanged(bool enabled) {
-  getWifiStatus().enabled = enabled;
+  enabled ? getWifiStatus().setEnabled() : getWifiStatus().setDisabled();
   button->setEnabled(enabled);
   updateButtonText();
 }

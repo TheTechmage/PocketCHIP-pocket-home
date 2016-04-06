@@ -26,6 +26,8 @@ public:
   void test_enabled();
   void test_connected();
   WifiAccessPoint * test_find_ap(String *ssid);
+  void test_set_disabled();
+  void test_set_enabled();
   void test_set_connected(WifiAccessPoint *ap);
   void test_set_disconnected();
 };
@@ -65,6 +67,16 @@ WifiAccessPoint * TestWifiStatus::test_find_ap(String *ssid) {
   return NULL;
 }
 
+void TestWifiStatus::test_set_enabled() {
+  std::cout << "Enabling wifiStatus ..." << std::endl;
+  wifiStatus.setEnabled();
+}
+
+void TestWifiStatus::test_set_disabled() {
+  std::cout << "Disabling wifiStatus ..." << std::endl;
+  wifiStatus.setDisabled();
+}
+
 void TestWifiStatus::test_set_connected(WifiAccessPoint *ap) {
   std::cout << "Connecting wifiStatus to " << ap->ssid << std::endl;
   wifiStatus.setConnectedAccessPoint(ap);
@@ -80,6 +92,10 @@ int main() {
   WifiAccessPoint *ap;
   String ssid = "NTC";
 
+  wifi.test_set_enabled();
+  wifi.test_enabled();
+  wifi.test_connected();
+
   wifi.test_populate();
   wifi.test_ap_list();
   wifi.test_enabled();
@@ -91,6 +107,10 @@ int main() {
   wifi.test_connected();
 
   wifi.test_set_disconnected();
+  wifi.test_enabled();
+  wifi.test_connected();
+
+  wifi.test_set_disabled();
   wifi.test_enabled();
   wifi.test_connected();
 }

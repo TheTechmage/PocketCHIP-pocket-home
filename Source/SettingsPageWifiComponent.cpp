@@ -152,7 +152,15 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
     } else {
       passwordEditor->setVisible(false);
       connectionButton->setButtonText("Disconnect");
-      status.setConnectedAccessPoint(selectedAp);
+      
+      if (selectedAp->requiresAuth) {
+        const auto& psk = passwordEditor->getTextValue().toString();
+        status.setConnectedAccessPoint(selectedAp, psk);
+      }
+      else {
+        status.setConnectedAccessPoint(selectedAp);
+      }
+      
       getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
     }
   }

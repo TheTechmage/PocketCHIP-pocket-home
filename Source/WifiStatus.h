@@ -14,7 +14,9 @@ struct WifiStatus {
   bool enabled = false;
   bool connected = false;
 
-  void setConnectedAccessPoint(WifiAccessPoint *ap);
+  void setEnabled();
+  void setDisabled();
+  void setConnectedAccessPoint(WifiAccessPoint *ap, String psk = String());
   void setDisconnected();
 
   void populateFromJson(const var &json);
