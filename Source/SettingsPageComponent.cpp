@@ -4,11 +4,16 @@
 
 #include <numeric>
 
-void SettingsTimer::timerCallback() {
-  DBG("SettingsTimer::timerCallback - check settings");
-  //if (settingsPage) {
-  //  settingsPage->checkRunningApps();
-  //}
+void SettingsBrightnessTimer::timerCallback() {
+  if (settingsPage) {
+    settingsPage->setScreenBrightness();
+  }
+}
+
+void SettingsVolumeTimer::timerCallback() {
+  if (settingsPage) {
+    settingsPage->setSoundVolume();
+  }
 }
 
 SettingsCategoryButton::SettingsCategoryButton(const String &name)
@@ -187,7 +192,6 @@ void SettingsPageComponent::paint(Graphics &g) {
 
 void SettingsPageComponent::resized() {
   
-  //runningSettingsTimer.startTimer(200);
   auto bounds = getLocalBounds();
 
   {
@@ -223,20 +227,37 @@ void SettingsPageComponent::buttonClicked(Button *button) {
   }
 }
 
+void SettingsPageComponent::setSoundVolume() {
+  DBG("set vol");
+  DBG(volumeSlider->slider->getValue());
+}
+
+void SettingsPageComponent::setScreenBrightness() {
+  DBG("set bright");
+  DBG(screenBrightnessSlider->slider->getValue());
+}
+
 
 void SettingsPageComponent::sliderValueChanged(IconSliderComponent* slider) {
-  //if( slider == volumeSlider) {
-  //  DBG( "VOLUME");
-  //} else if( slider == screenBrightnessSlider ) {
-  //  DBG( "BRIGHTNESS" );
-  //}
-}
-
-void SettingsPageComponent::sliderDragStarted(IconSliderComponent* slider) {
-
-}
-
-void SettingsPageComponent::sliderDragEnded(IconSliderComponent* slider) {
   //
 }
 
+void SettingsPageComponent::sliderDragStarted(IconSliderComponent* slider) {
+  if( slider == screenBrightnessSlider && !brightnessSliderTimer.isTimerRunning()) {
+    brightnessSliderTimer.startTimer(200);
+    brightnessSliderTimer.settingsPage = this;
+  } else if( slider == volumeSlider&& !volumeSliderTimer.isTimerRunning()) {
+    volumeSliderTimer.startTimer(200);
+    volumeSliderTimer.settingsPage = this;
+  }
+}
+
+void SettingsPageComponent::sliderDragEnded(IconSliderComponent* slider) {
+  if( slider == screenBrightnessSlider && brightnessSliderTimer.isTimerRunning()) {
+    brightnessSliderTimer.stopTimer();
+    setScreenBrightness();
+  } else if( slider == volumeSlider&& volumeSliderTimer.isTimerRunning()) {
+    volumeSliderTimer.stopTimer();
+    setSoundVolume();
+  }
+}

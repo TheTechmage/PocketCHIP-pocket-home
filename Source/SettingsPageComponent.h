@@ -11,12 +11,18 @@
 
 class SettingsPageComponent;
 
-class SettingsTimer : public Timer {
+class SettingsBrightnessTimer : public Timer {
 public:
-  SettingsTimer() {};
+  SettingsBrightnessTimer() {};
   virtual void timerCallback() override;
-  // TODO: better pointer usage, weakref for cycle relationship?
-  SettingsPageComponent* mainPage;
+  SettingsPageComponent* settingsPage;
+};
+
+class SettingsVolumeTimer : public Timer {
+public:
+  SettingsVolumeTimer() {};
+  virtual void timerCallback() override;
+  SettingsPageComponent* settingsPage;
 };
 
 class SettingsCategoryButton : public Button {
@@ -106,6 +112,9 @@ public:
 
   void buttonClicked(Button *b) override;
   
+  void setSoundVolume();
+  void setScreenBrightness();
+  
   void sliderValueChanged(IconSliderComponent* slider);
   void sliderDragStarted(IconSliderComponent* slider);
   void sliderDragEnded(IconSliderComponent* slider);
@@ -115,6 +124,7 @@ public:
 private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsPageComponent)
   Colour bgColor;
-  SettingsTimer runningSettingsTimer;
+  SettingsBrightnessTimer brightnessSliderTimer;
+  SettingsVolumeTimer volumeSliderTimer;
 };
 
