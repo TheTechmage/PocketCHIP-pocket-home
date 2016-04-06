@@ -144,15 +144,15 @@ SettingsPageComponent::SettingsPageComponent() {
   ChildProcess child;
 
   // Set initial brightness value
-  #if JUCE_LINUX
+#if JUCE_LINUX
   if(child.start("cat /sys/class/backlight/backlight/brightness")) {
-    const String result (child.readAllProcessOutput());
+    String result{child.readAllProcessOutput()};
     child.waitForProcessToFinish (5 * 1000);
-    brightness = atoi(result);
+    brightness = atoi(result.toRawUTF8());
   }
-  #else
-    brightness = 8;
-  #endif
+#else
+  brightness = 8;
+#endif
 
   // Set initial volume value
   volume = 90;
@@ -256,19 +256,17 @@ void SettingsPageComponent::buttonClicked(Button *button) {
 void SettingsPageComponent::setSoundVolume() {
   DBG("set vol");
   volume = volumeSlider->slider->getValue();
-  #if JUCE_LINUX
-    child.start("amixer cset numid=1 100%");
-  }
-  #endif
+#if JUCE_LINUX
+  child.start("amixer cset numid=1 100%");
+#endif
 }
 
 void SettingsPageComponent::setScreenBrightness() {
   DBG("set bright");
   brightness = 1+(screenBrightnessSlider->slider->getValue()*0.09);
-  #if JUCE_LINUX
-    child.start("echo 8 > /sys/class/backlight/backlight/brightness");
-  }
-  #endif
+#if JUCE_LINUX
+  child.start("echo 8 > /sys/class/backlight/backlight/brightness");
+#endif
 }
 
 
