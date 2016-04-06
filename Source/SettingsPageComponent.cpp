@@ -130,18 +130,6 @@ void BluetoothCategoryItemComponent::updateButtonText() {
   }
 }
 
-void SettingsPageComponent::sliderValueChanged(Slider* slider) {
-
-}
-
-void SettingsPageComponent::sliderDragStarted(Slider* slider) {
-  
-}
-
-void SettingsPageComponent::sliderDragEnded(Slider* slider) {
-  //
-}
-
 
 SettingsPageComponent::SettingsPageComponent() {
   bgColor = Colour(0xffd23c6d);
@@ -155,17 +143,14 @@ SettingsPageComponent::SettingsPageComponent() {
       BinaryData::brightnessIconHi_png, BinaryData::brightnessIconHi_pngSize);
   screenBrightnessSlider =
       ScopedPointer<IconSliderComponent>(new IconSliderComponent(*brightLo, *brightHi));
+  screenBrightnessSlider->addListener(this);
 
   ScopedPointer<Drawable> volLo =
       Drawable::createFromImageData(BinaryData::volumeIconLo_png, BinaryData::volumeIconLo_pngSize);
   ScopedPointer<Drawable> volHi =
       Drawable::createFromImageData(BinaryData::volumeIconHi_png, BinaryData::volumeIconHi_pngSize);
   volumeSlider = ScopedPointer<IconSliderComponent>(new IconSliderComponent(*volLo, *volHi));
-  
-  
-
-  mainPage->addAndMakeVisible(screenBrightnessSlider);
-  mainPage->addAndMakeVisible(volumeSlider);
+  volumeSlider->addListener(this);
 
   // create back button
   backButton = createImageButton(
@@ -201,6 +186,7 @@ void SettingsPageComponent::paint(Graphics &g) {
 }
 
 void SettingsPageComponent::resized() {
+  
   //runningSettingsTimer.startTimer(200);
   auto bounds = getLocalBounds();
 
@@ -236,3 +222,21 @@ void SettingsPageComponent::buttonClicked(Button *button) {
     getMainStack().pushPage(bluetoothPage, PageStackComponent::kTransitionTranslateHorizontal);
   }
 }
+
+
+void SettingsPageComponent::sliderValueChanged(IconSliderComponent* slider) {
+  //if( slider == volumeSlider) {
+  //  DBG( "VOLUME");
+  //} else if( slider == screenBrightnessSlider ) {
+  //  DBG( "BRIGHTNESS" );
+  //}
+}
+
+void SettingsPageComponent::sliderDragStarted(IconSliderComponent* slider) {
+
+}
+
+void SettingsPageComponent::sliderDragEnded(IconSliderComponent* slider) {
+  //
+}
+

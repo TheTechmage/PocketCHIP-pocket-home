@@ -106,9 +106,9 @@ public:
 
   void buttonClicked(Button *b) override;
   
-  void sliderValueChanged(Slider* slider);
-  void sliderDragStarted(Slider* slider);
-  void sliderDragEnded(Slider* slider);
+  void sliderValueChanged(IconSliderComponent* slider);
+  void sliderDragStarted(IconSliderComponent* slider);
+  void sliderDragEnded(IconSliderComponent* slider);
 
   void checkSliders();
   

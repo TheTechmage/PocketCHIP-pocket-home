@@ -37,15 +37,15 @@ void IconSliderComponent::addListener(SettingsPageComponent *page) {
 
 
 void IconSliderComponent::sliderDragStarted(Slider* slider) {
-  listener->sliderDragStarted(slider);
+  listener->sliderDragStarted(this);
 }
 
 void IconSliderComponent::sliderDragEnded(Slider* slider) {
-  listener->sliderDragEnded(slider);
+  listener->sliderDragEnded(this);
 }
 
 void IconSliderComponent::sliderValueChanged(Slider* slider) {
-  listener->sliderValueChanged(slider);
+  listener->sliderValueChanged(this);
 }
 
 void IconSliderComponent::resized() {
