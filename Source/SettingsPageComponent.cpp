@@ -141,6 +141,31 @@ SettingsPageComponent::SettingsPageComponent() {
   mainPage = new Component();
   addAndMakeVisible(mainPage);
   mainPage->toBack();
+  ChildProcess child;
+
+  // Set initial brightness value
+  #if JUCE_LINUX
+  if(child.start("cat /sys/class/backlight/backlight/brightness")) {
+    const String result (child.readAllProcessOutput());
+    child.waitForProcessToFinish (5 * 1000);
+    brightness = atoi(result);
+  }
+  #else
+    brightness = 8;
+  #endif
+
+  // Set initial volume value
+  volume = 90;
+  //#if JUCE_LINUX
+  //if(child.start("amixer get Master")) {
+    //const String result (child.readAllProcessOutput());
+    //child.waitForProcessToFinish (5 * 1000);
+    //volume = atoi(result);
+ // }
+//#else
+//  brightness = 8;
+//#endif
+//  volume = 100;
 
   ScopedPointer<Drawable> brightLo = Drawable::createFromImageData(
       BinaryData::brightnessIconLo_png, BinaryData::brightnessIconLo_pngSize);
@@ -149,6 +174,7 @@ SettingsPageComponent::SettingsPageComponent() {
   screenBrightnessSlider =
       ScopedPointer<IconSliderComponent>(new IconSliderComponent(*brightLo, *brightHi));
   screenBrightnessSlider->addListener(this);
+  screenBrightnessSlider->slider->setValue((brightness-0.1)*10);
 
   ScopedPointer<Drawable> volLo =
       Drawable::createFromImageData(BinaryData::volumeIconLo_png, BinaryData::volumeIconLo_pngSize);
@@ -156,6 +182,7 @@ SettingsPageComponent::SettingsPageComponent() {
       Drawable::createFromImageData(BinaryData::volumeIconHi_png, BinaryData::volumeIconHi_pngSize);
   volumeSlider = ScopedPointer<IconSliderComponent>(new IconSliderComponent(*volLo, *volHi));
   volumeSlider->addListener(this);
+  volumeSlider->slider->setValue(volume);
 
   // create back button
   backButton = createImageButton(
@@ -180,7 +207,6 @@ SettingsPageComponent::SettingsPageComponent() {
 
   wifiPage = new SettingsPageWifiComponent();
   bluetoothPage = new SettingsPageBluetoothComponent();
-  
   
 }
 
@@ -229,12 +255,20 @@ void SettingsPageComponent::buttonClicked(Button *button) {
 
 void SettingsPageComponent::setSoundVolume() {
   DBG("set vol");
-  DBG(volumeSlider->slider->getValue());
+  volume = volumeSlider->slider->getValue();
+  #if JUCE_LINUX
+    child.start("amixer cset numid=1 100%");
+  }
+  #endif
 }
 
 void SettingsPageComponent::setScreenBrightness() {
   DBG("set bright");
-  DBG(screenBrightnessSlider->slider->getValue());
+  brightness = 1+(screenBrightnessSlider->slider->getValue()*0.09);
+  #if JUCE_LINUX
+    child.start("echo 8 > /sys/class/backlight/backlight/brightness");
+  }
+  #endif
 }
 
 

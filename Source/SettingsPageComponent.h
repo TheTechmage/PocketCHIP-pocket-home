@@ -126,5 +126,8 @@ private:
   Colour bgColor;
   SettingsBrightnessTimer brightnessSliderTimer;
   SettingsVolumeTimer volumeSliderTimer;
+  ChildProcess child;
+  unsigned int brightness;
+  unsigned int volume;
 };
 
