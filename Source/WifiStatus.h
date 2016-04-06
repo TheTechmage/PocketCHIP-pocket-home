@@ -8,28 +8,19 @@ struct WifiAccessPoint {
   bool requiresAuth;
 };
 
-class WifiStatusListener {
-public:
-  WifiStatusListener();
-  virtual ~WifiStatusListener();
-
-  virtual void handleWifiEnabled() {};
-  virtual void handleWifiDisabled() {};
-  virtual void handleWifiConnected() {};
-  virtual void handleWifiDisconnected() {};
-};
-
 class WifiStatus {
 public:
   WifiStatus();
   ~WifiStatus();
+  
+  class Listener;
   
   OwnedArray<WifiAccessPoint> accessPoints;
   WifiAccessPoint *connectedAccessPoint = nullptr;
   bool enabled = false;
   bool connected = false;
 
-  void addListener(WifiStatusListener* listener);
+  void addListener(Listener* listener);
   void setEnabled();
   void setDisabled();
   void setConnectedAccessPoint(WifiAccessPoint *ap, String psk = String());
@@ -37,5 +28,16 @@ public:
 
   void populateFromJson(const var &json);
 private:
-  WifiStatusListener* listener = nullptr;
+  Listener* listener = nullptr;
+};
+
+class WifiStatus::Listener {
+public:
+  Listener();
+  virtual ~Listener();
+  
+  virtual void handleWifiEnabled() {};
+  virtual void handleWifiDisabled() {};
+  virtual void handleWifiConnected() {};
+  virtual void handleWifiDisconnected() {};
 };

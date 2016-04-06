@@ -27,7 +27,7 @@ private:
   WifiIcons *icons;
 };
 
-class SettingsPageWifiComponent : public Component, public WifiStatusListener, private Button::Listener {
+class SettingsPageWifiComponent : public Component, public WifiStatus::Listener, private Button::Listener {
 public:
   SettingsPageWifiComponent();
   ~SettingsPageWifiComponent();

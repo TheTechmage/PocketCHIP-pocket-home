@@ -1,13 +1,10 @@
 #include "WifiStatus.h"
 #include "../JuceLibraryCode/JuceHeader.h"
 
-WifiStatusListener::WifiStatusListener() {}
-WifiStatusListener::~WifiStatusListener() {}
-
 WifiStatus::WifiStatus() {}
 WifiStatus::~WifiStatus() {}
 
-void WifiStatus::addListener(WifiStatusListener* listener) {
+void WifiStatus::addListener(Listener* listener) {
   this->listener = listener;
 }
 
@@ -72,4 +69,7 @@ void WifiStatus::populateFromJson(const var &json) {
     accessPoints.add(ap);
   }
 }
+
+WifiStatus::Listener::Listener() {}
+WifiStatus::Listener::~Listener() {}
 
