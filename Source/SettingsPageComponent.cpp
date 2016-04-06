@@ -143,12 +143,13 @@ SettingsPageComponent::SettingsPageComponent() {
   mainPage->toBack();
   ChildProcess child;
 
-  // Set initial brightness value
+  // Get initial brightness value
 #if JUCE_LINUX
+  // TODO: perform this check without blocking against a shell command
+  DBG("Set initial brightness via shell");
   if(child.start("cat /sys/class/backlight/backlight/brightness")) {
     String result{child.readAllProcessOutput()};
-    child.waitForProcessToFinish (5 * 1000);
-    brightness = atoi(result.toRawUTF8());
+    brightness = result.getIntValue();
   }
 #else
   brightness = 8;
