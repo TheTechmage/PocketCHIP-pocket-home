@@ -56,7 +56,6 @@ void WifiStatus::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
     for(const auto& listener : listeners) {
       listener->handleWifiConnected();
     }
-    
   }
   DBG("wifi cmd: " << cmd);
   ChildProcess().start(cmd);
