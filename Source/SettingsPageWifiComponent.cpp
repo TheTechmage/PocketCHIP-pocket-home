@@ -84,6 +84,9 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
     accessPointItems.add(item);
     accessPointListPage->addItem(item);
   }
+  
+  // register for wifi status events
+  getWifiStatus().addListener(this);
 
   // create connection "page"
   connectionPage = new Component("Connection Page");
@@ -147,7 +150,7 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
     if (status.connected && selectedAp == status.connectedAccessPoint) {
       connectionButton->setButtonText("Connect");
       passwordEditor->setVisible(status.connectedAccessPoint->requiresAuth);
-      getWifiStatus().setDisconnected();
+      status.setDisconnected();
       pageStack->popPage(PageStackComponent::kTransitionTranslateHorizontal);
     } else {
       passwordEditor->setVisible(false);

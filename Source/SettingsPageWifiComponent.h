@@ -27,7 +27,7 @@ private:
   WifiIcons *icons;
 };
 
-class SettingsPageWifiComponent : public Component, private Button::Listener {
+class SettingsPageWifiComponent : public Component, public WifiStatusListener, private Button::Listener {
 public:
   SettingsPageWifiComponent();
   ~SettingsPageWifiComponent();
@@ -56,6 +56,10 @@ public:
   void setWifiEnabled(bool enabled);
   void paint(Graphics &g) override;
   void resized() override;
+  void handleWifiEnabled() override {};
+  void handleWifiDisabled() override {};
+  void handleWifiConnected() override {};
+  void handleWifiDisconnected() override {};
 
 private:
   Colour bgColor;

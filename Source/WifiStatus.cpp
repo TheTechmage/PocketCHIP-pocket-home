@@ -1,14 +1,25 @@
 #include "WifiStatus.h"
 #include "../JuceLibraryCode/JuceHeader.h"
 
+WifiStatusListener::WifiStatusListener() {}
+WifiStatusListener::~WifiStatusListener() {}
+
+WifiStatus::WifiStatus() {}
+WifiStatus::~WifiStatus() {}
+
+void WifiStatus::addListener(WifiStatusListener* listener) {
+  this->listener = listener;
+}
+
 // TODO: direct action should not be named set, e.g. enable/disable/disconnect
-// otherwise easily confused with setters that wrap members, which are slightly different idiom
+// otherwise easily confused with setters thats wrap members, which are slightly different idiom
 void WifiStatus::setEnabled() {
   if (!enabled) {
     enabled = true;
     auto cmd = "nmcli radio wifi on";
     DBG("wifi cmd: " << cmd);
     ChildProcess().start(cmd);
+    listener->handleWifiEnabled();
   }
 }
 
@@ -18,6 +29,7 @@ void WifiStatus::setDisabled() {
     auto cmd = "nmcli radio wifi off";
     DBG("wifi cmd: " << cmd);
     ChildProcess().start(cmd);
+    listener->handleWifiDisabled();
   }
 }
 
@@ -28,12 +40,15 @@ void WifiStatus::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
   char* cmd;
   if (ap == nullptr) {
     asprintf(&cmd, "nmcli dev disconnect iface wlan0");
+    listener->handleWifiDisconnected();
   }
   else if (psk.isEmpty()) {
     asprintf(&cmd, "nmcli dev wifi con \"%s\"", ap->ssid.toRawUTF8());
+    listener->handleWifiConnected();
   }
   else {
     asprintf(&cmd, "nmcli dev wifi con \"%s\" password \"%s\"", ap->ssid.toRawUTF8(), psk.toRawUTF8());
+    listener->handleWifiConnected();
   }
   DBG("wifi cmd: " << cmd);
   ChildProcess().start(cmd);
