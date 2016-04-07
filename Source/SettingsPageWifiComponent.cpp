@@ -11,12 +11,13 @@ void WifiAccessPointListItem::paintButton(Graphics &g, bool isMouseOverButton, b
   auto inset = bounds.reduced(6, 4);
   auto w = bounds.getWidth(), h = bounds.getHeight();
   auto iconBounds = Rectangle<float>(w - h, h/5.0, h*0.6, h*0.6);
-//  auto contentHeight = h * 0.7f;
+  auto borderThick = 4.0;
+  float radius = float(bounds.getHeight()) / 2.0f;
 
-  auto listOutline = Path();
-  listOutline.addRoundedRectangle(inset.toFloat(), 20.0f);
   g.setColour(findColour(ListBox::ColourIds::backgroundColourId));
-  g.fillPath(listOutline);
+  g.drawRoundedRectangle(bounds.getX() + borderThick, bounds.getY() + borderThick,
+                         bounds.getWidth() - 2*borderThick, bounds.getHeight()  - 2*borderThick,
+                         radius, borderThick);
 
   icons->wifiStrength[ap->signalStrength]->drawWithin(g, iconBounds,
                                                       RectanglePlacement::fillDestination, 1.0f);
@@ -24,10 +25,6 @@ void WifiAccessPointListItem::paintButton(Graphics &g, bool isMouseOverButton, b
     iconBounds.translate(-h * 0.75, 0);
     icons->lockIcon->drawWithin(g, iconBounds, RectanglePlacement::fillDestination, 1.0f);
   }
-
-//  icons->arrowIcon->setSize(h, h);
-//  icons->arrowIcon->drawWithin(g, Rectangle<float>(w - (h/8), contentHeight + 8, contentHeight, contentHeight),
-//                               RectanglePlacement::fillDestination, 1.0f);
 
   g.setFont(Font(getLookAndFeel().getTypefaceForFont(Font())));
   g.setFont(h * 0.5);

@@ -1,6 +1,7 @@
 #include "SettingsPageComponent.h"
 #include "Main.h"
 #include "Utils.h"
+#include "PokeLookAndFeel.h"
 
 #include <numeric>
 
@@ -17,18 +18,26 @@ void SettingsVolumeTimer::timerCallback() {
 }
 
 SettingsCategoryButton::SettingsCategoryButton(const String &name)
-    
-
-: Button(name), displayText(name) {}
+: Button(name),
+  displayText(name)
+{ }
 
 void SettingsCategoryButton::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) {
-  auto bounds = getLocalBounds();
-
-//  g.setColour(findColour(isButtonDown ? TextButton::textColourOnId : TextButton::textColourOffId));
-
+  const auto& bounds = getLocalBounds();
+  float borderThick = 4.0f;
+  float radius = float(bounds.getHeight()) / 2.0f;
+  
   g.setColour(Colours::white);
+  if (isEnabled()) {
+    g.drawRoundedRectangle(bounds.getX() + borderThick, bounds.getY() + borderThick,
+                           bounds.getWidth() - 2*borderThick, bounds.getHeight()  - 2*borderThick,
+                           radius, borderThick);
+  }
+  
+  // TODO: write button text as grey if choice is completely unset?
   g.setFont(20);
-  g.drawText(displayText, bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(),
+  g.drawText(displayText, bounds.getX(), bounds.getY(),
+             bounds.getWidth(), bounds.getHeight(),
              Justification::centred);
 }
 
