@@ -8,6 +8,7 @@
 #include "SwitchComponent.h"
 #include "SettingsPageWifiComponent.h"
 #include "SettingsPageBluetoothComponent.h"
+#include "WifiStatus.h"
 
 class SettingsCategoryButton : public Button {
 public:
@@ -51,12 +52,17 @@ private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsCategoryItemComponent)
 };
 
-class WifiCategoryItemComponent : public SettingsCategoryItemComponent {
+class WifiCategoryItemComponent : public SettingsCategoryItemComponent, public WifiStatus::Listener {
 public:
   WifiCategoryItemComponent();
 
   void enabledStateChanged(bool enabled) override;
   void updateButtonText() override;
+  
+  void handleWifiEnabled() override;
+  void handleWifiDisabled() override;
+  void handleWifiConnected() override;
+  void handleWifiDisconnected() override;
 
 private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WifiCategoryItemComponent)

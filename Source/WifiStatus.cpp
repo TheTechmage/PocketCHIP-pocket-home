@@ -1,11 +1,11 @@
 #include "WifiStatus.h"
 #include "../JuceLibraryCode/JuceHeader.h"
 
-WifiStatus::WifiStatus() {}
+WifiStatus::WifiStatus() : listeners() {}
 WifiStatus::~WifiStatus() {}
 
 void WifiStatus::addListener(Listener* listener) {
-  this->listener = listener;
+  listeners.add(listener);
 }
 
 // TODO: direct action should not be named set, e.g. enable/disable/disconnect
@@ -16,7 +16,9 @@ void WifiStatus::setEnabled() {
     auto cmd = "nmcli radio wifi on";
     DBG("wifi cmd: " << cmd);
     ChildProcess().start(cmd);
-    listener->handleWifiEnabled();
+    for(const auto& listener : listeners) {
+      listener->handleWifiEnabled();
+    }
   }
 }
 
@@ -26,7 +28,9 @@ void WifiStatus::setDisabled() {
     auto cmd = "nmcli radio wifi off";
     DBG("wifi cmd: " << cmd);
     ChildProcess().start(cmd);
-    listener->handleWifiDisabled();
+    for(const auto& listener : listeners) {
+      listener->handleWifiDisabled();
+    }
   }
 }
 
@@ -37,15 +41,22 @@ void WifiStatus::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
   char* cmd;
   if (ap == nullptr) {
     asprintf(&cmd, "nmcli dev disconnect iface wlan0");
-    listener->handleWifiDisconnected();
+    for(const auto& listener : listeners) {
+      listener->handleWifiDisconnected();
+    }
   }
   else if (psk.isEmpty()) {
     asprintf(&cmd, "nmcli dev wifi con \"%s\"", ap->ssid.toRawUTF8());
-    listener->handleWifiConnected();
+    for(const auto& listener : listeners) {
+      listener->handleWifiConnected();
+    }
   }
   else {
     asprintf(&cmd, "nmcli dev wifi con \"%s\" password \"%s\"", ap->ssid.toRawUTF8(), psk.toRawUTF8());
-    listener->handleWifiConnected();
+    for(const auto& listener : listeners) {
+      listener->handleWifiConnected();
+    }
+    
   }
   DBG("wifi cmd: " << cmd);
   ChildProcess().start(cmd);

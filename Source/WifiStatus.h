@@ -28,7 +28,7 @@ public:
 
   void populateFromJson(const var &json);
 private:
-  Listener* listener = nullptr;
+  Array<Listener*> listeners;
 };
 
 class WifiStatus::Listener {

@@ -114,15 +114,6 @@ void SettingsPageWifiComponent::paint(Graphics &g) {
   g.fillAll(bgColor);
 }
 
-void SettingsPageWifiComponent::setWifiEnabled(bool enabled) {
-  pageStack->setVisible(enabled);
-  if (enabled && pageStack->getCurrentPage() != connectionPage) {
-    pageStack->clear(PageStackComponent::kTransitionNone);
-    Component *nextPage = getWifiStatus().connected ? connectionPage : accessPointListPage;
-    pageStack->pushPage(nextPage, PageStackComponent::kTransitionNone);
-  }
-}
-
 void SettingsPageWifiComponent::resized() {
   auto bounds = getLocalBounds();
   auto pageBounds = Rectangle<int>(120, 0, bounds.getWidth() - 120, bounds.getHeight());
@@ -142,20 +133,35 @@ void SettingsPageWifiComponent::resized() {
   }
 }
 
-void SettingsPageWifiComponent::buttonClicked(Button *button) {
+void SettingsPageWifiComponent::handleWifiDisabled() {
+  DBG("SettingsPageWifiComponent::disable");
+  // TODO: this event should probably kick you out of this page entirely
+  // though how did you get here (parent should block entry)? should only deliver here if we're on screen
+  // and WiFi dies out of band
+}
 
+// FIXME: these handlers should double check what page we're on,
+// in case these occur transiently. We don't want global page stack popping.
+// Really there should be a lightweight statemachine somewhere around this class.
+void SettingsPageWifiComponent::handleWifiConnected() {
+  DBG("SettingsPageWifiComponent::connect");
+  getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
+  passwordEditor->setVisible(false);
+  connectionButton->setButtonText("Disconnect");
+}
+void SettingsPageWifiComponent::handleWifiDisconnected() {
+  DBG("SettingsPageWifiComponent::disconnect");
+  connectionButton->setButtonText("Connect");
+  pageStack->popPage(PageStackComponent::kTransitionTranslateHorizontal);
+}
+
+void SettingsPageWifiComponent::buttonClicked(Button *button) {
   auto &status = getWifiStatus();
 
   if (button == connectionButton) {
     if (status.connected && selectedAp == status.connectedAccessPoint) {
-      connectionButton->setButtonText("Connect");
-      passwordEditor->setVisible(status.connectedAccessPoint->requiresAuth);
       status.setDisconnected();
-      pageStack->popPage(PageStackComponent::kTransitionTranslateHorizontal);
     } else {
-      passwordEditor->setVisible(false);
-      connectionButton->setButtonText("Disconnect");
-      
       if (selectedAp->requiresAuth) {
         const auto& psk = passwordEditor->getTextValue().toString();
         status.setConnectedAccessPoint(selectedAp, psk);
@@ -163,29 +169,29 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
       else {
         status.setConnectedAccessPoint(selectedAp);
       }
-      
-      getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
     }
   }
-
-  auto apButton = dynamic_cast<WifiAccessPointListItem *>(button);
-  if (apButton) {
-    selectedAp = apButton->ap;
-    connectionLabel->setText(apButton->ap->ssid, juce::NotificationType::dontSendNotification);
-    if (selectedAp == status.connectedAccessPoint) {
-      connectionButton->setButtonText("Disconnect");
-    } else {
-      passwordEditor->setVisible(apButton->ap->requiresAuth);
-      connectionButton->setButtonText("Connect");
+  else {
+    auto apButton = dynamic_cast<WifiAccessPointListItem *>(button);
+    if (apButton) {
+      selectedAp = apButton->ap;
+      connectionLabel->setText(apButton->ap->ssid, juce::NotificationType::dontSendNotification);
+      if (selectedAp == status.connectedAccessPoint) {
+        passwordEditor->setVisible(false);
+        connectionButton->setButtonText("Disconnect");
+      } else {
+        passwordEditor->setVisible(apButton->ap->requiresAuth);
+        connectionButton->setButtonText("Connect");
+      }
+      pageStack->pushPage(connectionPage, PageStackComponent::kTransitionTranslateHorizontal);
     }
-    pageStack->pushPage(connectionPage, PageStackComponent::kTransitionTranslateHorizontal);
-  }
-
-  if (button == backButton) {
-    if (pageStack->getDepth() > 1 && !status.connected) {
-      pageStack->popPage(PageStackComponent::kTransitionTranslateHorizontal);
-    } else {
-      getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
+    
+    if (button == backButton) {
+      if (pageStack->getDepth() > 1 && !status.connected) {
+        pageStack->popPage(PageStackComponent::kTransitionTranslateHorizontal);
+      } else {
+        getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
+      }
     }
   }
 }

@@ -1,7 +1,6 @@
 #include "SettingsPageComponent.h"
 #include "Main.h"
 #include "Utils.h"
-#include "WifiStatus.h"
 
 #include <numeric>
 
@@ -84,6 +83,11 @@ void WifiCategoryItemComponent::enabledStateChanged(bool enabled) {
   updateButtonText();
 }
 
+void WifiCategoryItemComponent::handleWifiEnabled() {}
+void WifiCategoryItemComponent::handleWifiDisabled() {}
+void WifiCategoryItemComponent::handleWifiConnected() {}
+void WifiCategoryItemComponent::handleWifiDisconnected() {}
+
 void WifiCategoryItemComponent::updateButtonText() {
   const auto &status = getWifiStatus();
   if (status.enabled) {
@@ -157,6 +161,7 @@ SettingsPageComponent::SettingsPageComponent() {
   wifiCategoryItem->button->setTriggeredOnMouseDown(true);
   wifiCategoryItem->button->addListener(this);
   addAndMakeVisible(wifiCategoryItem);
+  getWifiStatus().addListener(wifiCategoryItem);
 
   bluetoothCategoryItem = new BluetoothCategoryItemComponent();
   bluetoothCategoryItem->button->setTriggeredOnMouseDown(true);
@@ -167,6 +172,7 @@ SettingsPageComponent::SettingsPageComponent() {
   addAndMakeVisible(volumeSlider);
 
   wifiPage = new SettingsPageWifiComponent();
+  
   bluetoothPage = new SettingsPageBluetoothComponent();
 }
 
