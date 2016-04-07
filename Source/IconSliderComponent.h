@@ -14,8 +14,8 @@ public:
   IconSliderComponent(const Drawable &lo, const Drawable &hi);
   ~IconSliderComponent();
 
-  void paint(Graphics &);
-  void resized();
+  void paint(Graphics &) override;
+  void resized() override;
   virtual void sliderValueChanged(Slider*) override;
   virtual void sliderDragStarted(Slider*) override;
   virtual void sliderDragEnded(Slider*) override;
