@@ -4,6 +4,7 @@
 
 #include "LauncherBarComponent.h"
 #include "PageStackComponent.h"
+#include "BatteryMonitor.h"
 
 class LauncherComponent;
 
@@ -15,13 +16,25 @@ public:
   int i = 0;
 };
 
+class BatteryIconTimer : public Timer {
+public:
+  BatteryIconTimer() {};
+  void timerCallback();
+  LauncherComponent* launcherComponent;
+};
+
 class LauncherComponent : public Component, private Button::Listener {
 public:
+  BatteryMonitor batteryMonitor;
   ScopedPointer<LauncherBarComponent> botButtons;
   ScopedPointer<LauncherBarComponent> topButtons;
   ScopedPointer<ImageComponent> launchSpinner;
+  
   Array<Image> launchSpinnerImages;
+  Array<Image> batteryIconImages;
+  
   LaunchSpinnerTimer launchSpinnerTimer;
+  BatteryIconTimer batteryIconTimer;
   Component* defaultPage;
  
 
