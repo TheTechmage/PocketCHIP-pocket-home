@@ -99,10 +99,23 @@ WifiCategoryItemComponent::WifiCategoryItemComponent() : SettingsCategoryItemCom
 }
 
 void WifiCategoryItemComponent::enabledStateChanged(bool enabled) {
-  getWifiStatus().enabled = enabled;
-  button->setEnabled(enabled);
+  enabled ? getWifiStatus().setEnabled() : getWifiStatus().setDisabled();
   updateButtonText();
 }
+
+void WifiCategoryItemComponent::handleWifiEnabled() {
+  toggle->setToggleState(true, NotificationType::dontSendNotification);
+  button->setEnabled(true);
+  updateButtonText();
+}
+
+void WifiCategoryItemComponent::handleWifiDisabled() {
+  toggle->setToggleState(false, NotificationType::dontSendNotification);
+  button->setEnabled(false);
+  updateButtonText();
+}
+void WifiCategoryItemComponent::handleWifiConnected() { updateButtonText(); }
+void WifiCategoryItemComponent::handleWifiDisconnected() { updateButtonText(); }
 
 void WifiCategoryItemComponent::updateButtonText() {
   const auto &status = getWifiStatus();
@@ -206,6 +219,7 @@ SettingsPageComponent::SettingsPageComponent() {
   wifiCategoryItem->button->setTriggeredOnMouseDown(true);
   wifiCategoryItem->button->addListener(this);
   addAndMakeVisible(wifiCategoryItem);
+  getWifiStatus().addListener(wifiCategoryItem);
 
   bluetoothCategoryItem = new BluetoothCategoryItemComponent();
   bluetoothCategoryItem->button->setTriggeredOnMouseDown(true);
@@ -216,6 +230,7 @@ SettingsPageComponent::SettingsPageComponent() {
   addAndMakeVisible(volumeSlider);
 
   wifiPage = new SettingsPageWifiComponent();
+  
   bluetoothPage = new SettingsPageBluetoothComponent();
   
 }

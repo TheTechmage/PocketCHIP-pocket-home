@@ -29,7 +29,7 @@ BluetoothStatus &getBluetoothStatus() {
 }
 
 PokeLaunchApplication::PokeLaunchApplication() :
-  wifiStatus(WifiStatus())
+  wifiStatus()
 {}
 
 PokeLaunchApplication *PokeLaunchApplication::get() {
