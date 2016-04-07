@@ -35,31 +35,51 @@ void WifiStatus::setDisabled() {
 }
 
 void WifiStatus::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
-  connected = ap != nullptr;
-  connectedAccessPoint = ap;
-  
   char* cmd;
+  
+  // disconnect if no ap provided
   if (ap == nullptr) {
     asprintf(&cmd, "nmcli dev disconnect iface wlan0");
+    connected = false;
+    connectedAccessPoint = nullptr;
     for(const auto& listener : listeners) {
       listener->handleWifiDisconnected();
     }
   }
-  else if (psk.isEmpty()) {
-    asprintf(&cmd, "nmcli dev wifi con \"%s\"", ap->ssid.toRawUTF8());
-    for(const auto& listener : listeners) {
-      listener->handleWifiConnected();
-    }
-  }
+  // try to connect to ap, dispatch events on success and failure
   else {
-    asprintf(&cmd, "nmcli dev wifi con \"%s\" password \"%s\"", ap->ssid.toRawUTF8(), psk.toRawUTF8());
-    for(const auto& listener : listeners) {
-      listener->handleWifiConnected();
+    // FIXME: only until we get reading success over stdout hooked up
+    bool isTestCred = ap->ssid == "NTC 2461";
+    if (!isTestCred) {
+      DBG("WifiStatus::setConnectedAccessPoint - failed ");
+      for(const auto& listener : listeners) {
+        listener->handleWifiFailedConnect();
+      }
+      return;
     }
     
+    if (!ap->requiresAuth) {
+      asprintf(&cmd, "nmcli dev wifi con \"%s\"", ap->ssid.toRawUTF8());
+      connected = true;
+      connectedAccessPoint = ap;
+      for(const auto& listener : listeners) {
+        listener->handleWifiConnected();
+      }
+    }
+    else {
+      connected = true;
+      connectedAccessPoint = ap;
+      asprintf(&cmd, "nmcli dev wifi con \"%s\" password \"%s\"", ap->ssid.toRawUTF8(), psk.toRawUTF8());
+      for(const auto& listener : listeners) {
+        listener->handleWifiConnected();
+      }
+    }
   }
-  DBG("wifi cmd: " << cmd);
-  ChildProcess().start(cmd);
+  
+  if (cmd) {
+    DBG("WifiStatus cmd: " << cmd);
+    ChildProcess().start(cmd);
+  }
 }
 
 void WifiStatus::setDisconnected() {

@@ -98,7 +98,7 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
 
   passwordEditor = new TextEditor("Password", (juce_wchar)0x2022);
   passwordEditor->setFont(26);
-  passwordEditor->setText("Password");
+  passwordEditor->setTextToShowWhenEmpty("password", findColour(TextEditor::ColourIds::textColourId));
   connectionPage->addAndMakeVisible(passwordEditor);
 
   connectionButton = new TextButton("Connection Button");
@@ -149,6 +149,11 @@ void SettingsPageWifiComponent::handleWifiConnected() {
   passwordEditor->setVisible(false);
   connectionButton->setButtonText("Disconnect");
 }
+
+void SettingsPageWifiComponent::handleWifiFailedConnect() {
+  passwordEditor->setText("");
+}
+
 void SettingsPageWifiComponent::handleWifiDisconnected() {
   DBG("SettingsPageWifiComponent::disconnect");
   connectionButton->setButtonText("Connect");

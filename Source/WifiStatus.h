@@ -36,8 +36,9 @@ public:
   Listener();
   virtual ~Listener();
   
-  virtual void handleWifiEnabled() {};
-  virtual void handleWifiDisabled() {};
-  virtual void handleWifiConnected() {};
-  virtual void handleWifiDisconnected() {};
+  virtual void handleWifiEnabled() {}
+  virtual void handleWifiDisabled() {}
+  virtual void handleWifiConnected() {}
+  virtual void handleWifiDisconnected() {}
+  virtual void handleWifiFailedConnect() {}
 };

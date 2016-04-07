@@ -59,6 +59,7 @@ public:
   void handleWifiDisabled() override;
   void handleWifiConnected() override;
   void handleWifiDisconnected() override;
+  void handleWifiFailedConnect() override;
 
 private:
   Colour bgColor;
