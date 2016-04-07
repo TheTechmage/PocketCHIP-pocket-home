@@ -15,9 +15,14 @@ void WifiStatus::addListener(Listener* listener) {
 void WifiStatus::setEnabled() {
   if (!enabled) {
     enabled = true;
+    /* FIXME Without launching scans, the results of a disable/enable are confusing
+     * so ignore the enable/disable events for now
     auto cmd = "nmcli radio wifi on";
     DBG("wifi cmd: " << cmd);
-    ChildProcess().start(cmd);
+    ChildProcess nmproc;
+    nmproc.start(cmd);
+    nmproc.waitForProcessToFinish(500);
+    */
     for(const auto& listener : listeners) {
       listener->handleWifiEnabled();
     }
@@ -27,9 +32,14 @@ void WifiStatus::setEnabled() {
 void WifiStatus::setDisabled() {
   if (enabled) {
     enabled = false;
+    /* FIXME Without launching scans, the results of a disable/enable are confusing
+     * so ignore the enable/disable events for now
     auto cmd = "nmcli radio wifi off";
     DBG("wifi cmd: " << cmd);
-    ChildProcess().start(cmd);
+    ChildProcess nmproc;
+    nmproc.start(cmd);
+    nmproc.waitForProcessToFinish(500);
+    */
     for(const auto& listener : listeners) {
       listener->handleWifiDisabled();
     }
@@ -40,27 +50,29 @@ void WifiStatus::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
   connected = ap != nullptr;
   connectedAccessPoint = ap;
   
-  char* cmd;
+  StringArray *cmd;
   if (ap == nullptr) {
-    asprintf(&cmd, "nmcli dev disconnect iface wlan0");
+    cmd = new StringArray({"nmcli","dev","disconnect","iface","wlan0"});
     for(const auto& listener : listeners) {
       listener->handleWifiDisconnected();
     }
   }
   else if (psk.isEmpty()) {
-    asprintf(&cmd, "nmcli dev wifi con \"%s\"", ap->ssid.toRawUTF8());
+    cmd = new StringArray({"nmcli","dev","wifi","connect",ap->ssid.toRawUTF8(),"iface","wlan0"});
     for(const auto& listener : listeners) {
       listener->handleWifiConnected();
     }
   }
   else {
-    asprintf(&cmd, "nmcli dev wifi con \"%s\" password \"%s\"", ap->ssid.toRawUTF8(), psk.toRawUTF8());
+    cmd = new StringArray({"nmcli","dev","wifi","connect",ap->ssid.toRawUTF8(),"password",psk.toRawUTF8(),"iface","wlan0"});
     for(const auto& listener : listeners) {
       listener->handleWifiConnected();
     }
   }
-  DBG("wifi cmd: " << cmd);
-  ChildProcess().start(cmd);
+  DBG("wifi cmd: " << cmd->joinIntoString(" "));
+  ChildProcess nmproc;
+  nmproc.start(*cmd);
+  nmproc.waitForProcessToFinish(30000);
 }
 
 void WifiStatus::setDisconnected() {
@@ -79,12 +91,13 @@ void WifiStatus::populateFromJson(const var &json) {
   auto cmd = "nmcli -m multiline -f SSID,SECURITY,SIGNAL d wifi list ifname wlan0";
   DBG("wifi cmd: " << cmd);
   nmproc.start(cmd);
+  nmproc.waitForProcessToFinish(500);
   ssidList = nmproc.readAllProcessOutput();
 
   auto addAccessPoint = [](std::map<String, String> &keyvals, OwnedArray<WifiAccessPoint> &aps) {
     aps.add( new WifiAccessPoint {
       keyvals["SSID"] == "--" ? "HiddenSSID" : keyvals["SSID"],
-      keyvals["SIGNAL"].getIntValue(),
+      1, // keyvals["SIGNAL"].getIntValue()
       keyvals["SECURITY"].isNotEmpty(), //FIXME: Assumes all security types equal
     });
   };
