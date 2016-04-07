@@ -3,6 +3,7 @@
 #include "SettingsPageComponent.h"
 #include "Main.h"
 #include "Utils.h"
+#include <math.h>
 
 void LaunchSpinnerTimer::timerCallback() {
   if (launcherComponent) {
@@ -15,6 +16,39 @@ void LaunchSpinnerTimer::timerCallback() {
   }
 }
 
+void BatteryIconTimer::timerCallback() {
+  
+  // get current battery status from the battery monitor thread
+  auto batteryStatus = launcherComponent->batteryMonitor.getCurrentStatus();
+  
+  // we can't change anything if we don't have a LauncherComponent
+  if(launcherComponent) {
+    
+    // we want to modify the "Battery" icon
+    for( auto button : launcherComponent->topButtons->buttons ) {
+      if (button->getName() == "Battery") {
+        
+        int status = round( ((float)batteryStatus.percentage)/100.0f * 3.0f );
+        
+        // limit status range to [0:3]
+        if(status < 0) status = 0;
+        if(status > 3) status = 3;
+        
+        const auto& batteryIcons = launcherComponent->batteryIconImages;
+        button->setImages(true, true, true,                       //
+                       batteryIcons[status], 1.0f, Colours::transparentWhite, // normal
+                       batteryIcons[status], 1.0f, Colours::transparentWhite, // over
+                       batteryIcons[status], 1.0f, Colours::transparentWhite, // down
+                       0);
+      }
+    }
+  }
+  
+  //DBG( "Charging: "  << batteryStatus.isCharging );
+  //DBG( "Voltage: " << batteryStatus.percentage );
+  
+}
+
 LauncherComponent::LauncherComponent(const var &configJson) {
   bgColor = Colour(0xff2e8dbd);
   pageStack = new PageStackComponent();
@@ -24,6 +58,17 @@ LauncherComponent::LauncherComponent(const var &configJson) {
   botButtons = new LauncherBarComponent();
   addAndMakeVisible(topButtons);
   addAndMakeVisible(botButtons);
+  
+  batteryMonitor.startThread();
+  
+  batteryIconTimer.launcherComponent = this;
+  batteryIconTimer.startTimer(1000);
+  
+  Array<String> batteryImgPaths{"battery_0.png","battery_1.png","battery_2.png","battery_3.png"};
+  for(auto& path : batteryImgPaths) {
+    auto image = createImageFromFile(assetFile(path));
+    batteryIconImages.add(image);
+  }
   
   launchSpinnerTimer.launcherComponent = this;
   Array<String> spinnerImgPaths{"wait1.png","wait2.png","wait3.png","wait4.png"};
@@ -84,7 +129,10 @@ LauncherComponent::LauncherComponent(const var &configJson) {
   defaultPage = pagesByName[configJson["defaultPage"]];
 }
 
-LauncherComponent::~LauncherComponent() {}
+LauncherComponent::~LauncherComponent() {
+  batteryIconTimer.stopTimer();
+  batteryMonitor.stopThread(2000);
+}
 
 void LauncherComponent::paint(Graphics &g) {
   g.fillAll(bgColor);
