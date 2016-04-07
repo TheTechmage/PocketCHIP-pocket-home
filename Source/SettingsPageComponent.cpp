@@ -79,14 +79,22 @@ WifiCategoryItemComponent::WifiCategoryItemComponent() : SettingsCategoryItemCom
 
 void WifiCategoryItemComponent::enabledStateChanged(bool enabled) {
   enabled ? getWifiStatus().setEnabled() : getWifiStatus().setDisabled();
-  button->setEnabled(enabled);
   updateButtonText();
 }
 
-void WifiCategoryItemComponent::handleWifiEnabled() {}
-void WifiCategoryItemComponent::handleWifiDisabled() {}
-void WifiCategoryItemComponent::handleWifiConnected() {}
-void WifiCategoryItemComponent::handleWifiDisconnected() {}
+void WifiCategoryItemComponent::handleWifiEnabled() {
+  toggle->setToggleState(true, NotificationType::dontSendNotification);
+  button->setEnabled(true);
+  updateButtonText();
+}
+
+void WifiCategoryItemComponent::handleWifiDisabled() {
+  toggle->setToggleState(false, NotificationType::dontSendNotification);
+  button->setEnabled(false);
+  updateButtonText();
+}
+void WifiCategoryItemComponent::handleWifiConnected() { updateButtonText(); }
+void WifiCategoryItemComponent::handleWifiDisconnected() { updateButtonText(); }
 
 void WifiCategoryItemComponent::updateButtonText() {
   const auto &status = getWifiStatus();
