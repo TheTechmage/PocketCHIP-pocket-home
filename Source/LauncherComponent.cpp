@@ -85,8 +85,15 @@ LauncherComponent::LauncherComponent(const var &configJson) {
     for (const auto &page : *pagesData) {
       auto name = page["name"].toString();
       Component *pageComponent = nullptr;
+        DBG(name);
       if (name == "Settings") {
         pageComponent = new SettingsPageComponent();
+      } else if( name == "Power") {
+          pageComponent = new SettingsPageComponent();
+      } else if( name == "WiFi") {
+          pageComponent = new SettingsPageComponent();
+      } else if( name == "Battery") {
+          pageComponent = new SettingsPageComponent();
       } else {
         auto appsPage = new AppsPageComponent(this);
         appsPage->createIconsFromJsonArray(page["items"]);
@@ -173,9 +180,14 @@ void LauncherComponent::buttonClicked(Button *button) {
   auto currentPage = pageStack->getCurrentPage();
   if ((!currentPage || currentPage->getName() != button->getName()) &&
       pagesByName.contains(button->getName())) {
+      DBG( button->getName());
     auto page = pagesByName[button->getName()];
-    if (button->getName() == "Settings") {
+    if (button->getName() == "Settings" || button->getName() == "WiFi" ) {
       getMainStack().pushPage(page, PageStackComponent::kTransitionTranslateHorizontal);
+    } else if (button->getName() == "Power" || button->getName() == "Battery" ) {
+        DBG("LauncherComponent::buttonClicked - power");
+        ChildProcess child{};
+        child.start("chip-exit");
     } else {
       pageStack->swapPage(page, PageStackComponent::kTransitionTranslateHorizontal);
     }

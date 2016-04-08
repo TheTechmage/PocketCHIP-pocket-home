@@ -38,8 +38,8 @@
         },
         {
           "location": "BottomLeft",
-          "name": "Volume",
-          "icon": "spacer.png"
+          "name": "Power",
+          "icon": "powerIcon.png"
         },
         {
           "location": "BottomRight",
@@ -48,9 +48,17 @@
         }
       ]
     },
-
     {
       "name": "Settings"
+    },
+    {
+      "name": "Power"
+    },
+    {
+      "name": "WiFi"
+    },
+    {
+      "name": "Battery"
     }
   ]
 }

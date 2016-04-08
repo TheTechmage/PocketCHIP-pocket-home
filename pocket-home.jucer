@@ -18,6 +18,7 @@
       <FILE id="FHWvCu" name="config.json" compile="0" resource="1" file="assets/config.json"/>
       <FILE id="dtLXN6" name="gamesIcon.png" compile="0" resource="1" file="assets/gamesIcon.png"/>
       <FILE id="R7QzGg" name="lock.png" compile="0" resource="1" file="assets/lock.png"/>
+      <FILE id="J6hJt7" name="powerIcon.png" compile="0" resource="1" file="assets/powerIcon.png"/>
       <FILE id="vpRBHk" name="seguibl.ttf" compile="0" resource="1" file="assets/fonts/seguibl.ttf"/>
       <FILE id="sInlJA" name="settingsIcon.png" compile="0" resource="1"
             file="assets/settingsIcon.png"/>
@@ -41,6 +42,10 @@
             file="assets/wifiStrength3.png"/>
     </GROUP>
     <GROUP id="{4593A345-C350-960A-058D-B48F8240AA1D}" name="Source">
+      <FILE id="rgiomN" name="BatteryMonitor.cpp" compile="1" resource="0"
+            file="Source/BatteryMonitor.cpp"/>
+      <FILE id="xKXfqH" name="BatteryMonitor.h" compile="0" resource="0"
+            file="Source/BatteryMonitor.h"/>
       <FILE id="lKUWj5" name="WifiStatus.cpp" compile="1" resource="0" file="Source/WifiStatus.cpp"/>
       <FILE id="TvdjJE" name="WifiStatus.h" compile="0" resource="0" file="Source/WifiStatus.h"/>
       <FILE id="SsaxMA" name="LauncherComponent.cpp" compile="1" resource="0"

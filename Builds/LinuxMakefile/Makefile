@@ -49,8 +49,8 @@ ifeq ($(CONFIG),Release)
 endif
 
 OBJECTS := \
+  $(OBJDIR)/BatteryMonitor_37302b96.o \
   $(OBJDIR)/WifiStatus_30949170.o \
-  $(OBJDIR)/BatteryMonitor_3f152960.o \
   $(OBJDIR)/LauncherComponent_8a29041e.o \
   $(OBJDIR)/PageStackComponent_8da9db4d.o \
   $(OBJDIR)/SwitchComponent_a904080a.o \
@@ -89,14 +89,14 @@ strip:
 	@echo Stripping pocket-home
 	-@strip --strip-unneeded $(OUTDIR)/$(TARGET)
 
+$(OBJDIR)/BatteryMonitor_37302b96.o: ../../Source/BatteryMonitor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling BatteryMonitor.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
 $(OBJDIR)/WifiStatus_30949170.o: ../../Source/WifiStatus.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling WifiStatus.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/BatteryMonitor_3f152960.o: ../../Source/BatteryMonitor.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling BatteryMonitor.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/LauncherComponent_8a29041e.o: ../../Source/LauncherComponent.cpp
