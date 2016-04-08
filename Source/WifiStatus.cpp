@@ -47,7 +47,7 @@ void WifiStatus::setDisabled() {
 }
 
 void WifiStatus::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
-  StringArray *cmd;
+  ScopedPointer<StringArray> cmd;
   
   // disconnect if no ap provided
   if (ap == nullptr) {
@@ -59,34 +59,15 @@ void WifiStatus::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
     for(const auto& listener : listeners) {
       listener->handleWifiDisconnected();
     }
+    return;
   }
   // try to connect to ap, dispatch events on success and failure
   else {
-    // FIXME: only until we get reading success over stdout hooked up
-    bool isTestCred = ap->ssid == "NTC 2461";
-    if (!isTestCred) {
-      DBG("WifiStatus::setConnectedAccessPoint - failed ");
-      for(const auto& listener : listeners) {
-        listener->handleWifiFailedConnect();
-      }
-      return;
-    }
-    
     if (psk.isEmpty()) {
       cmd = new StringArray({"nmcli","dev","wifi","connect",ap->ssid.toRawUTF8(),"iface","wlan0"});
-      connected = true;
-      connectedAccessPoint = ap;
-      for(const auto& listener : listeners) {
-        listener->handleWifiConnected();
-      }
     }
     else {
       cmd = new StringArray({"nmcli","dev","wifi","connect",ap->ssid.toRawUTF8(),"password",psk.toRawUTF8(),"iface","wlan0"});
-      connected = true;
-      connectedAccessPoint = ap;
-      for(const auto& listener : listeners) {
-        listener->handleWifiConnected();
-      }
     }
   }
   
@@ -95,7 +76,24 @@ void WifiStatus::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
     ChildProcess nmproc;
     nmproc.start(*cmd);
     nmproc.waitForProcessToFinish(30000);
-    // TODO: add result reading here to send correct callbacks to UI
+    
+    auto exitCode = nmproc.getExitCode();
+    DBG("WifiStatus exitCode: " << String(exitCode));
+    bool success = exitCode == 0;
+    if (success) {
+      connected = true;
+      connectedAccessPoint = ap;
+      DBG("WifiStatus::setConnectedAccessPoint - success");
+      for(const auto& listener : listeners) {
+        listener->handleWifiConnected();
+      }
+    }
+    else {
+      DBG("WifiStatus::setConnectedAccessPoint - failed");
+      for(const auto& listener : listeners) {
+        listener->handleWifiFailedConnect();
+      }
+    }
   }
 }
 
