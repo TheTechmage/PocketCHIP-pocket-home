@@ -39,7 +39,9 @@ void WifiStatus::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
   
   // disconnect if no ap provided
   if (ap == nullptr) {
-    asprintf(&cmd, "nmcli dev disconnect iface wlan0");
+    // FIXME: doesn't work because it requires root. It puts NM into 'manual' mode
+    // so reconnection doesn't occur until reboot or explicit reconnection.
+    asprintf(&cmd, "nmcli dev disconnect wlan0");
     connected = false;
     connectedAccessPoint = nullptr;
     for(const auto& listener : listeners) {
