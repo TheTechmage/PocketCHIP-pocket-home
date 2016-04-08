@@ -15,12 +15,14 @@
 		472B631819976A277ABFE0BA /* WifiStatus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0188A0B8FF41167D1466335 /* WifiStatus.cpp */; };
 		47687B32524C6393DAEC9852 /* SwitchComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F11288D7785BA83E3B439E47 /* SwitchComponent.cpp */; };
 		4CF3D4EAAAF96CF22764CA4B /* TrainComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 517E09C527C2998A966B4B44 /* TrainComponent.cpp */; };
+		4DADDBFE70FF8C7CFA9B1023 /* WifiStatusNM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD1CDB89368B424D2F5326E6 /* WifiStatusNM.cpp */; };
 		4F00CF7559C7E75E17B6892B /* juce_core.mm in Sources */ = {isa = PBXBuildFile; fileRef = 71F042B6FC24894483D41F3E /* juce_core.mm */; };
 		58208E04154DCF66933C9106 /* LauncherComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9641275F75101080F459BA54 /* LauncherComponent.cpp */; };
 		5F8401450DFB81519C50498B /* SettingsPageBluetoothComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2326826A62F3AE94354DA381 /* SettingsPageBluetoothComponent.cpp */; };
 		601D6C61F5EBE42DDCD27A25 /* juce_data_structures.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1615317730675428D9077A69 /* juce_data_structures.mm */; };
 		68102C31E7669424C762ADDA /* IconSliderComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BC81EB8DF586D5F85B2877CF /* IconSliderComponent.cpp */; };
 		6D481A8A8906959E488C2E70 /* juce_gui_basics.mm in Sources */ = {isa = PBXBuildFile; fileRef = DCCDEB2BEBD462D3E0747032 /* juce_gui_basics.mm */; };
+		738C970B8778705F5D3B24A5 /* WifiStatusJson.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92AF68F856ACB0F82FAEA0B4 /* WifiStatusJson.cpp */; };
 		7FF75E28BA5CA892192A3B8F /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 793D45A4A9D717F9F0133903 /* IOKit.framework */; };
 		813E6F1B168BD6C5DC62E6A9 /* juce_graphics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 59519BD0C567AA9E08F75932 /* juce_graphics.mm */; };
 		83D0C462E1778219B4E547B8 /* MainComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52A081DA6CF9C7769D41ABF9 /* MainComponent.cpp */; };
@@ -28,8 +30,8 @@
 		9687DBB19940289F9A650F7F /* LauncherBarComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D25D6DE752792416F183AC0 /* LauncherBarComponent.cpp */; };
 		B60DD03FE5B471BE4AFBF56B /* RecentFilesMenuTemplate.nib in Resources */ = {isa = PBXBuildFile; fileRef = 81D682238B383EB3D7010236 /* RecentFilesMenuTemplate.nib */; };
 		B97B8F50999FAC525F837AEC /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5DCAF01E0490D7413E9E85F /* QuartzCore.framework */; };
-		CBA8F5021CB5DA6A007AB1FE /* BatteryMonitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CBA8F5011CB5DA6A007AB1FE /* BatteryMonitor.cpp */; };
 		D02AD5C23CB79DF8134D22CB /* PageStackComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 412DA300D2CD7235934E362F /* PageStackComponent.cpp */; };
+		D8396FFA204979DD8D3FD657 /* BatteryMonitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2FA4414DDB2E41341AA75BA5 /* BatteryMonitor.cpp */; };
 		EBAA8A562D391B5A05C9CA17 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64CDB83B7CD434FF78AD3B16 /* Cocoa.framework */; };
 		F3BD01E8B7DDAE942CAF6612 /* PokeLookAndFeel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 884315C5A1EC8DB03C7B543B /* PokeLookAndFeel.cpp */; };
 		F64DEA2D8C5CCF23A79B7462 /* BinaryData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE2AD97F03F339F27E32A12D /* BinaryData.cpp */; };
@@ -158,6 +160,7 @@
 		2E97F2578819749E131D1C9E /* juce_GlowEffect.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_GlowEffect.cpp; path = ../../deps/JUCE/modules/juce_graphics/effects/juce_GlowEffect.cpp; sourceTree = SOURCE_ROOT; };
 		2F36213AA72AD079D3FBC105 /* wait2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = wait2.png; path = ../../assets/wait2.png; sourceTree = SOURCE_ROOT; };
 		2F41EC0937929E2D2E7306A3 /* juce_ConcertinaPanel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_ConcertinaPanel.cpp; path = ../../deps/JUCE/modules/juce_gui_basics/layout/juce_ConcertinaPanel.cpp; sourceTree = SOURCE_ROOT; };
+		2FA4414DDB2E41341AA75BA5 /* BatteryMonitor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BatteryMonitor.cpp; path = ../../Source/BatteryMonitor.cpp; sourceTree = SOURCE_ROOT; };
 		2FF27C45752B3242B9994897 /* juce_BufferedInputStream.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_BufferedInputStream.cpp; path = ../../deps/JUCE/modules/juce_core/streams/juce_BufferedInputStream.cpp; sourceTree = SOURCE_ROOT; };
 		30B9954A82C809746CEFF5A2 /* wait3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = wait3.png; path = ../../assets/wait3.png; sourceTree = SOURCE_ROOT; };
 		313EA3894200084C5AD2A5A6 /* juce_ByteOrder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_ByteOrder.h; path = ../../deps/JUCE/modules/juce_core/memory/juce_ByteOrder.h; sourceTree = SOURCE_ROOT; };
@@ -169,7 +172,7 @@
 		34C30798DBAB6E1E64621F18 /* volumeIconLo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = volumeIconLo.png; path = ../../assets/volumeIconLo.png; sourceTree = SOURCE_ROOT; };
 		356B69D7FFACF37010CB8527 /* juce_ModalComponentManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_ModalComponentManager.cpp; path = ../../deps/JUCE/modules/juce_gui_basics/components/juce_ModalComponentManager.cpp; sourceTree = SOURCE_ROOT; };
 		3572DDB7BA3C5A3F0FAE2B9D /* juce_InterprocessConnection.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_InterprocessConnection.cpp; path = ../../deps/JUCE/modules/juce_events/interprocess/juce_InterprocessConnection.cpp; sourceTree = SOURCE_ROOT; };
-		35746BBC95BA81195F42FC71 /* WifiStatus.h */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.c.h; name = WifiStatus.h; path = ../../Source/WifiStatus.h; sourceTree = SOURCE_ROOT; tabWidth = 2; };
+		35746BBC95BA81195F42FC71 /* WifiStatus.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WifiStatus.h; path = ../../Source/WifiStatus.h; sourceTree = SOURCE_ROOT; };
 		35B6C1C7DF9897ABA9650F67 /* juce_ColourGradient.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_ColourGradient.cpp; path = ../../deps/JUCE/modules/juce_graphics/colour/juce_ColourGradient.cpp; sourceTree = SOURCE_ROOT; };
 		3600C2D0914BD87AA4A48D17 /* juce_ArrowButton.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_ArrowButton.cpp; path = ../../deps/JUCE/modules/juce_gui_basics/buttons/juce_ArrowButton.cpp; sourceTree = SOURCE_ROOT; };
 		36DDDB020FDFF37D655679A5 /* juce_ScopedValueSetter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_ScopedValueSetter.h; path = ../../deps/JUCE/modules/juce_core/containers/juce_ScopedValueSetter.h; sourceTree = SOURCE_ROOT; };
@@ -218,6 +221,7 @@
 		464C0AD1EBD860B26E796DF4 /* juce_ButtonPropertyComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_ButtonPropertyComponent.cpp; path = ../../deps/JUCE/modules/juce_gui_basics/properties/juce_ButtonPropertyComponent.cpp; sourceTree = SOURCE_ROOT; };
 		4694A979C710DA0DEE92B637 /* juce_mac_FileChooser.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = juce_mac_FileChooser.mm; path = ../../deps/JUCE/modules/juce_gui_basics/native/juce_mac_FileChooser.mm; sourceTree = SOURCE_ROOT; };
 		46A074DA50D72FADA25024B2 /* juce_MultiTimer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_MultiTimer.cpp; path = ../../deps/JUCE/modules/juce_events/timers/juce_MultiTimer.cpp; sourceTree = SOURCE_ROOT; };
+		4740A7708D76891072C87A5F /* BatteryMonitor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BatteryMonitor.h; path = ../../Source/BatteryMonitor.h; sourceTree = SOURCE_ROOT; };
 		47518E9F05E7506395052A90 /* juce_PropertyPanel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_PropertyPanel.cpp; path = ../../deps/JUCE/modules/juce_gui_basics/properties/juce_PropertyPanel.cpp; sourceTree = SOURCE_ROOT; };
 		47875C2AE6D11DD130D6C25A /* juce_DirectoryContentsDisplayComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_DirectoryContentsDisplayComponent.h; path = ../../deps/JUCE/modules/juce_gui_basics/filebrowser/juce_DirectoryContentsDisplayComponent.h; sourceTree = SOURCE_ROOT; };
 		4796343A2CFD9BE23D92FC37 /* juce_win32_ComSmartPtr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_win32_ComSmartPtr.h; path = ../../deps/JUCE/modules/juce_core/native/juce_win32_ComSmartPtr.h; sourceTree = SOURCE_ROOT; };
@@ -225,6 +229,7 @@
 		47E88F8683FBB7A9876FA877 /* juce_LowLevelGraphicsPostScriptRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_LowLevelGraphicsPostScriptRenderer.h; path = ../../deps/JUCE/modules/juce_graphics/contexts/juce_LowLevelGraphicsPostScriptRenderer.h; sourceTree = SOURCE_ROOT; };
 		4818B261AA2F0551F9B9B220 /* juce_PropertiesFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_PropertiesFile.h; path = ../../deps/JUCE/modules/juce_data_structures/app_properties/juce_PropertiesFile.h; sourceTree = SOURCE_ROOT; };
 		4826484C3F4F12126FC7FF3E /* juce_LowLevelGraphicsSoftwareRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_LowLevelGraphicsSoftwareRenderer.h; path = ../../deps/JUCE/modules/juce_graphics/contexts/juce_LowLevelGraphicsSoftwareRenderer.h; sourceTree = SOURCE_ROOT; };
+		4839CD35883C8F18CEBA5D69 /* WifiStatusJson.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WifiStatusJson.h; path = ../../Source/WifiStatusJson.h; sourceTree = SOURCE_ROOT; };
 		4948A19C9D8F76D07C73C81A /* juce_DrawablePath.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_DrawablePath.h; path = ../../deps/JUCE/modules/juce_gui_basics/drawables/juce_DrawablePath.h; sourceTree = SOURCE_ROOT; };
 		49D0DC921117AE13875C1577 /* juce_KeyboardFocusTraverser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_KeyboardFocusTraverser.h; path = ../../deps/JUCE/modules/juce_gui_basics/keyboard/juce_KeyboardFocusTraverser.h; sourceTree = SOURCE_ROOT; };
 		4A2FCE7AF2D7BBA6EF24CC7A /* juce_UndoManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_UndoManager.h; path = ../../deps/JUCE/modules/juce_data_structures/undomanager/juce_UndoManager.h; sourceTree = SOURCE_ROOT; };
@@ -412,6 +417,7 @@
 		916665751AE636043B67ACB9 /* juce_ComponentListener.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_ComponentListener.cpp; path = ../../deps/JUCE/modules/juce_gui_basics/components/juce_ComponentListener.cpp; sourceTree = SOURCE_ROOT; };
 		91B0D69D8E38CEB847BC6145 /* juce_FileLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_FileLogger.h; path = ../../deps/JUCE/modules/juce_core/logging/juce_FileLogger.h; sourceTree = SOURCE_ROOT; };
 		9240EB2B7E40019564FF3BD5 /* juce_MemoryBlock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_MemoryBlock.h; path = ../../deps/JUCE/modules/juce_core/memory/juce_MemoryBlock.h; sourceTree = SOURCE_ROOT; };
+		92AF68F856ACB0F82FAEA0B4 /* WifiStatusJson.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = WifiStatusJson.cpp; path = ../../Source/WifiStatusJson.cpp; sourceTree = SOURCE_ROOT; };
 		936E6561989377CDBEC765F0 /* juce_NormalisableRange.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_NormalisableRange.h; path = ../../deps/JUCE/modules/juce_core/maths/juce_NormalisableRange.h; sourceTree = SOURCE_ROOT; };
 		939A11D6F9873E8080D872BE /* juce_android_Windowing.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_android_Windowing.cpp; path = ../../deps/JUCE/modules/juce_gui_basics/native/juce_android_Windowing.cpp; sourceTree = SOURCE_ROOT; };
 		9457D81CA0A18C8F75178298 /* PokeLookAndFeel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PokeLookAndFeel.h; path = ../../Source/PokeLookAndFeel.h; sourceTree = SOURCE_ROOT; };
@@ -465,6 +471,7 @@
 		A3E492E8C1643AF98DEC93AD /* juce_ChoicePropertyComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_ChoicePropertyComponent.h; path = ../../deps/JUCE/modules/juce_gui_basics/properties/juce_ChoicePropertyComponent.h; sourceTree = SOURCE_ROOT; };
 		A3FB802F68E315539729E39F /* juce_DeletedAtShutdown.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_DeletedAtShutdown.cpp; path = ../../deps/JUCE/modules/juce_events/messages/juce_DeletedAtShutdown.cpp; sourceTree = SOURCE_ROOT; };
 		A42B8B8E7D0A64AB1ED7A9AA /* PageStackComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PageStackComponent.h; path = ../../Source/PageStackComponent.h; sourceTree = SOURCE_ROOT; };
+		A46FECC68BA6768296F5F18D /* WifiStatusNM.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WifiStatusNM.h; path = ../../Source/WifiStatusNM.h; sourceTree = SOURCE_ROOT; };
 		A477ECCA45CB37BB93FD316D /* juce_mac_CoreGraphicsContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_mac_CoreGraphicsContext.h; path = ../../deps/JUCE/modules/juce_graphics/native/juce_mac_CoreGraphicsContext.h; sourceTree = SOURCE_ROOT; };
 		A4DB0D013F6380D4FB59A040 /* juce_mac_Network.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = juce_mac_Network.mm; path = ../../deps/JUCE/modules/juce_core/native/juce_mac_Network.mm; sourceTree = SOURCE_ROOT; };
 		A4E93404CF42D64EC31022A0 /* juce_RelativePoint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_RelativePoint.h; path = ../../deps/JUCE/modules/juce_gui_basics/positioning/juce_RelativePoint.h; sourceTree = SOURCE_ROOT; };
@@ -570,8 +577,6 @@
 		C9D7B7E6B810F2C595B13BA2 /* juce_WildcardFileFilter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_WildcardFileFilter.cpp; path = ../../deps/JUCE/modules/juce_core/files/juce_WildcardFileFilter.cpp; sourceTree = SOURCE_ROOT; };
 		CAE1E71DDD0CC0A4152D2030 /* juce_PopupMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_PopupMenu.h; path = ../../deps/JUCE/modules/juce_gui_basics/menus/juce_PopupMenu.h; sourceTree = SOURCE_ROOT; };
 		CB0F9647DC7AEAD7243BC7E9 /* juce_MountedVolumeListChangeDetector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_MountedVolumeListChangeDetector.h; path = ../../deps/JUCE/modules/juce_events/messages/juce_MountedVolumeListChangeDetector.h; sourceTree = SOURCE_ROOT; };
-		CBA8F5001CB5DA53007AB1FE /* BatteryMonitor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BatteryMonitor.h; path = ../../Source/BatteryMonitor.h; sourceTree = "<group>"; };
-		CBA8F5011CB5DA6A007AB1FE /* BatteryMonitor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BatteryMonitor.cpp; path = ../../Source/BatteryMonitor.cpp; sourceTree = "<group>"; };
 		CC378C0984F0BEB51D29A076 /* juce_CharacterFunctions.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_CharacterFunctions.cpp; path = ../../deps/JUCE/modules/juce_core/text/juce_CharacterFunctions.cpp; sourceTree = SOURCE_ROOT; };
 		CE18DF07392C942907995F10 /* juce_Result.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_Result.h; path = ../../deps/JUCE/modules/juce_core/misc/juce_Result.h; sourceTree = SOURCE_ROOT; };
 		CE740F157C67DFC0EF39C506 /* SettingsPageComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SettingsPageComponent.h; path = ../../Source/SettingsPageComponent.h; sourceTree = SOURCE_ROOT; };
@@ -687,6 +692,7 @@
 		FBDB40C92D1E062829E7FB8D /* juce_Random.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_Random.h; path = ../../deps/JUCE/modules/juce_core/maths/juce_Random.h; sourceTree = SOURCE_ROOT; };
 		FC7F3D81D6D750F7A44D5E9B /* juce_Logger.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_Logger.cpp; path = ../../deps/JUCE/modules/juce_core/logging/juce_Logger.cpp; sourceTree = SOURCE_ROOT; };
 		FC93F244355D1F8EA55306D4 /* juce_AbstractFifo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_AbstractFifo.cpp; path = ../../deps/JUCE/modules/juce_core/containers/juce_AbstractFifo.cpp; sourceTree = SOURCE_ROOT; };
+		FD1CDB89368B424D2F5326E6 /* WifiStatusNM.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = WifiStatusNM.cpp; path = ../../Source/WifiStatusNM.cpp; sourceTree = SOURCE_ROOT; };
 		FD58FEE31A2C1D7A433B4561 /* juce_MessageManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_MessageManager.cpp; path = ../../deps/JUCE/modules/juce_events/messages/juce_MessageManager.cpp; sourceTree = SOURCE_ROOT; };
 		FD954E9FD3C3EEE97DF8D23A /* juce_TemporaryFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_TemporaryFile.h; path = ../../deps/JUCE/modules/juce_core/files/juce_TemporaryFile.h; sourceTree = SOURCE_ROOT; };
 		FE2AD97F03F339F27E32A12D /* BinaryData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BinaryData.cpp; path = ../../JuceLibraryCode/BinaryData.cpp; sourceTree = SOURCE_ROOT; };
@@ -1207,6 +1213,12 @@
 		60F3A7B8686F8757E46AB3EA /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				2FA4414DDB2E41341AA75BA5 /* BatteryMonitor.cpp */,
+				4740A7708D76891072C87A5F /* BatteryMonitor.h */,
+				92AF68F856ACB0F82FAEA0B4 /* WifiStatusJson.cpp */,
+				4839CD35883C8F18CEBA5D69 /* WifiStatusJson.h */,
+				FD1CDB89368B424D2F5326E6 /* WifiStatusNM.cpp */,
+				A46FECC68BA6768296F5F18D /* WifiStatusNM.h */,
 				C0188A0B8FF41167D1466335 /* WifiStatus.cpp */,
 				35746BBC95BA81195F42FC71 /* WifiStatus.h */,
 				9641275F75101080F459BA54 /* LauncherComponent.cpp */,
@@ -1237,8 +1249,6 @@
 				77F808DF88171C9887A0AC6C /* IconSliderComponent.h */,
 				E10CCF27E71FCD846DAC0AB3 /* Main.h */,
 				00F169F4F344BBF6892637D1 /* Main.cpp */,
-				CBA8F5001CB5DA53007AB1FE /* BatteryMonitor.h */,
-				CBA8F5011CB5DA6A007AB1FE /* BatteryMonitor.cpp */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -1952,6 +1962,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D8396FFA204979DD8D3FD657 /* BatteryMonitor.cpp in Sources */,
+				738C970B8778705F5D3B24A5 /* WifiStatusJson.cpp in Sources */,
+				4DADDBFE70FF8C7CFA9B1023 /* WifiStatusNM.cpp in Sources */,
 				472B631819976A277ABFE0BA /* WifiStatus.cpp in Sources */,
 				58208E04154DCF66933C9106 /* LauncherComponent.cpp in Sources */,
 				D02AD5C23CB79DF8134D22CB /* PageStackComponent.cpp in Sources */,
@@ -1972,7 +1985,6 @@
 				601D6C61F5EBE42DDCD27A25 /* juce_data_structures.mm in Sources */,
 				1219B897CF2E433A524A806F /* juce_events.mm in Sources */,
 				813E6F1B168BD6C5DC62E6A9 /* juce_graphics.mm in Sources */,
-				CBA8F5021CB5DA6A007AB1FE /* BatteryMonitor.cpp in Sources */,
 				6D481A8A8906959E488C2E70 /* juce_gui_basics.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

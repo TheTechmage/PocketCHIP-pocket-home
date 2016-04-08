@@ -41,6 +41,17 @@
             file="assets/wifiStrength3.png"/>
     </GROUP>
     <GROUP id="{4593A345-C350-960A-058D-B48F8240AA1D}" name="Source">
+      <FILE id="PvOyzY" name="BatteryMonitor.cpp" compile="1" resource="0"
+            file="Source/BatteryMonitor.cpp"/>
+      <FILE id="XWBNHn" name="BatteryMonitor.h" compile="0" resource="0"
+            file="Source/BatteryMonitor.h"/>
+      <FILE id="s5uSOy" name="WifiStatusJson.cpp" compile="1" resource="0"
+            file="Source/WifiStatusJson.cpp"/>
+      <FILE id="sRZyEf" name="WifiStatusJson.h" compile="0" resource="0"
+            file="Source/WifiStatusJson.h"/>
+      <FILE id="Y1sYzG" name="WifiStatusNM.cpp" compile="1" resource="0"
+            file="Source/WifiStatusNM.cpp"/>
+      <FILE id="Lq0SiZ" name="WifiStatusNM.h" compile="0" resource="0" file="Source/WifiStatusNM.h"/>
       <FILE id="lKUWj5" name="WifiStatus.cpp" compile="1" resource="0" file="Source/WifiStatus.cpp"/>
       <FILE id="TvdjJE" name="WifiStatus.h" compile="0" resource="0" file="Source/WifiStatus.h"/>
       <FILE id="SsaxMA" name="LauncherComponent.cpp" compile="1" resource="0"
