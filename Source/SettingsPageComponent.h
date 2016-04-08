@@ -39,6 +39,8 @@ public:
   void setText(const String &text);
 
 private:
+  Rectangle<int> pillBounds;
+  
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsCategoryButton)
 };
 

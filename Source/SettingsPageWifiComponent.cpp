@@ -6,6 +6,10 @@
 WifiAccessPointListItem::WifiAccessPointListItem(WifiAccessPoint *ap, WifiIcons *icons)
 : Button{ ap->ssid }, ap{ ap }, icons{ icons } {}
 
+void WifiAccessPointListItem::resized() {
+  setSize(getLocalBounds().getWidth(), 42);
+}
+
 void WifiAccessPointListItem::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) {
   auto bounds = getLocalBounds();
   auto inset = bounds.reduced(6, 4);

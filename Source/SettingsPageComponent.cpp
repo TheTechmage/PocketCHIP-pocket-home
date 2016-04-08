@@ -20,10 +20,10 @@ void SettingsVolumeTimer::timerCallback() {
 SettingsCategoryButton::SettingsCategoryButton(const String &name)
 : Button(name),
   displayText(name)
-{ }
+{}
 
 void SettingsCategoryButton::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) {
-  const auto& bounds = getLocalBounds();
+  const auto& bounds = pillBounds;
   float borderThick = 4.0f;
   float radius = float(bounds.getHeight()) / 2.0f;
   
@@ -41,7 +41,10 @@ void SettingsCategoryButton::paintButton(Graphics &g, bool isMouseOverButton, bo
              Justification::centred);
 }
 
-void SettingsCategoryButton::resized() {}
+void SettingsCategoryButton::resized() {
+  pillBounds.setSize(getLocalBounds().getWidth(), 42);
+  fitRectInRect(pillBounds, getLocalBounds(), Justification::centred, false);
+}
 
 void SettingsCategoryButton::setText(const String &text) {
   displayText = text;

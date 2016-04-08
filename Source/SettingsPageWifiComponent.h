@@ -20,11 +20,12 @@ public:
   WifiAccessPointListItem(WifiAccessPoint *ap, WifiIcons *icons);
 
   void paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) override;
+  void resized() override;
 
 private:
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WifiAccessPointListItem)
-
   WifiIcons *icons;
+  
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WifiAccessPointListItem)
 };
 
 class SettingsPageWifiComponent : public Component, public WifiStatus::Listener, private Button::Listener {
