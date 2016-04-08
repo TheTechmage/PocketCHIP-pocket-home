@@ -3,7 +3,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 
 #include "MainComponent.h"
-#include "WifiStatusNM.h"
+#include "WifiStatus.h"
 #include "Utils.h"
 
 struct BluetoothDevice {
@@ -25,7 +25,10 @@ BluetoothStatus &getBluetoothStatus();
 
 class PokeLaunchApplication : public JUCEApplication {
 public:
-  WifiStatusNM wifiStatus;
+  WifiStatusNM wifiStatusNM;
+  WifiStatusJson wifiStatusJson;
+  WifiStatus *wifiStatus;
+
   BluetoothStatus bluetoothStatus;
 
   PokeLaunchApplication();

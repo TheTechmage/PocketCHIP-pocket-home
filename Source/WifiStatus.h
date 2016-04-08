@@ -38,3 +38,6 @@ public:
   virtual void handleWifiDisconnected() {}
   virtual void handleWifiFailedConnect() {}
 };
+
+#include "WifiStatusJson.h"
+#include "WifiStatusNM.h"

@@ -1,6 +1,8 @@
 #include <map>
 
-#include "WifiStatusJson.h"
+#include "Utils.h"
+
+#include "WifiStatus.h"
 #include "../JuceLibraryCode/JuceHeader.h"
 
 WifiStatusJson::WifiStatusJson() : listeners() {}
@@ -93,6 +95,7 @@ void WifiStatusJson::setDisconnected() {
 }
 
 void WifiStatusJson::initializeStatus() {
+  auto json = JSON::parse(assetFile("wifi.json"));
   connectedAP = nullptr;
   connected = false;
 

@@ -21,7 +21,7 @@ PageStackComponent &getMainStack() {
 }
 
 WifiStatus &getWifiStatus() {
-  return PokeLaunchApplication::get()->wifiStatus;
+  return *PokeLaunchApplication::get()->wifiStatus;
 }
 
 BluetoothStatus &getBluetoothStatus() {
@@ -64,8 +64,8 @@ void PokeLaunchApplication::initialise(const String &commandLine) {
 
   // Populate with dummy data
   {
-    auto ssidListFile = assetFile("wifi.json");
-    wifiStatus.initializeStatus();
+    wifiStatus = &wifiStatusJson;
+    wifiStatus->initializeStatus();
 
     auto deviceListFile = assetFile("bluetooth.json");
     bluetoothStatus.populateFromJson(JSON::parse(deviceListFile));

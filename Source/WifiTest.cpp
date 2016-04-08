@@ -1,4 +1,4 @@
-#include "WifiStatusNM.h"
+#include "WifiStatus.h"
 
 File absoluteFileFromPath(const String &path) {
   return File::isAbsolutePath(path) ? File(path)
@@ -17,7 +17,9 @@ File assetFile(const String &fileName) {
 
 class TestWifiStatus {
 public:
-  WifiStatusNM wifiStatus;
+  WifiStatusNM wifiStatusNM;
+  WifiStatusJson wifiStatusJson;
+  WifiStatus *wifiStatus;
 
   WifiStatus &getWifiStatus();
 
@@ -33,13 +35,12 @@ public:
 };
 
 WifiStatus &TestWifiStatus::getWifiStatus() {
-  return this->wifiStatus;
+  return *this->wifiStatus;
 }
 
 void TestWifiStatus::test_populate() {
   // Populate with dummy data
-  std::cout << "Populating wifiStatus from wifi.json ..." << std::endl;
-  auto ssidListFile = assetFile("wifi.json");
+  std::cout << "Initializing wifiStatus ..." << std::endl;
   getWifiStatus().initializeStatus();
 }
 
@@ -96,6 +97,8 @@ int main() {
   WifiAccessPoint *ap;
   String ssid = "BOGUS_SSID";
   String psk = "BOGUS_PSK";
+
+  wifi.wifiStatus = &wifi.wifiStatusNM;
 
   wifi.test_set_enabled();
   wifi.test_enabled();

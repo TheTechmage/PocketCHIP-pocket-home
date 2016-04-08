@@ -1,6 +1,6 @@
 #include <map>
 
-#include "WifiStatusNM.h"
+#include "WifiStatus.h"
 #include "../JuceLibraryCode/JuceHeader.h"
 
 WifiStatusNM::WifiStatusNM() : listeners() {}
