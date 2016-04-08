@@ -50,6 +50,13 @@ void PokeLaunchApplication::initialise(const String &commandLine) {
   StringArray args;
   args.addTokens(commandLine, true);
 
+  if (args.contains("--help")) {
+    std::cerr << "arguments:" << std::endl;
+    std::cerr << "  --help:	Print usage help" << std::endl;
+    std::cerr << "  --fakewifi:	Use fake WifiStatus" << std::endl;
+    quit();
+  }
+
   auto configFile = assetFile("config.json");
   if (!configFile.exists()) {
     std::cerr << "Missing config file: " << configFile.getFullPathName() << std::endl;
@@ -64,7 +71,11 @@ void PokeLaunchApplication::initialise(const String &commandLine) {
 
   // Populate with dummy data
   {
-    wifiStatus = &wifiStatusJson;
+    if (args.contains("--fakewifi"))
+      wifiStatus = &wifiStatusJson;
+    else
+      wifiStatus = &wifiStatusNM;
+
     wifiStatus->initializeStatus();
 
     auto deviceListFile = assetFile("bluetooth.json");
