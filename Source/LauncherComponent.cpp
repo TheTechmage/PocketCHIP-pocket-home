@@ -85,7 +85,6 @@ LauncherComponent::LauncherComponent(const var &configJson) {
     for (const auto &page : *pagesData) {
       auto name = page["name"].toString();
       Component *pageComponent = nullptr;
-        DBG(name);
       if (name == "Settings") {
         pageComponent = new SettingsPageComponent();
       } else if( name == "Power") {
@@ -180,7 +179,6 @@ void LauncherComponent::buttonClicked(Button *button) {
   auto currentPage = pageStack->getCurrentPage();
   if ((!currentPage || currentPage->getName() != button->getName()) &&
       pagesByName.contains(button->getName())) {
-      DBG( button->getName());
     auto page = pagesByName[button->getName()];
     if (button->getName() == "Settings" || button->getName() == "WiFi" ) {
       getMainStack().pushPage(page, PageStackComponent::kTransitionTranslateHorizontal);

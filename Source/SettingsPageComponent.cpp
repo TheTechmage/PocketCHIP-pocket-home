@@ -303,13 +303,16 @@ void SettingsPageComponent::setSoundVolume() {
 }
 
 void SettingsPageComponent::setScreenBrightness() {
-  brightness = 1+(screenBrightnessSlider->slider->getValue()*0.09);
-  #if JUCE_LINUX
-     if(child.start("echo " + String(brightness) + " > /sys/class/backlight/backlight/brightness")) {
-       String result{child.readAllProcessOutput()};
-     }
-  #endif
+    brightness = 1+(screenBrightnessSlider->slider->getValue()*0.09);
+    #if JUCE_LINUX
+      StringArray cmd{ "sh","-c",(String("echo ") + String(brightness) + String(" > /sys/class/backlight/backlight/brightness")).toRawUTF8() };
+      if( child.start(cmd) ) {
+          String result{child.readAllProcessOutput()};
+          DBG(result);
+      }
+    #endif
 }
+
 
 
 void SettingsPageComponent::sliderValueChanged(IconSliderComponent* slider) {
