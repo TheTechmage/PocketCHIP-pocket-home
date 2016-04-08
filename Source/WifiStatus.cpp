@@ -103,7 +103,7 @@ void WifiStatus::setDisconnected() {
   setConnectedAccessPoint(nullptr);
 }
 
-void WifiStatus::populateFromJson(const var &json) {
+void WifiStatus::initializeStatus() {
   connectedAccessPoint = nullptr;
   connected = false;
   String ssidList;

@@ -36,7 +36,7 @@ void TestWifiStatus::test_populate() {
   // Populate with dummy data
   std::cout << "Populating wifiStatus from wifi.json ..." << std::endl;
   auto ssidListFile = assetFile("wifi.json");
-  wifiStatus.populateFromJson(JSON::parse(ssidListFile));
+  wifiStatus.initializeStatus();
 }
 
 void TestWifiStatus::test_ap_list() {

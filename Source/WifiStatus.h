@@ -26,7 +26,7 @@ public:
   void setConnectedAccessPoint(WifiAccessPoint *ap, String psk = String::empty);
   void setDisconnected();
 
-  void populateFromJson(const var &json);
+  void initializeStatus();
 private:
   Array<Listener*> listeners;
 };

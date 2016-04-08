@@ -67,7 +67,7 @@ void PokeLaunchApplication::initialise(const String &commandLine) {
   // Populate with dummy data
   {
     auto ssidListFile = assetFile("wifi.json");
-    wifiStatus.populateFromJson(JSON::parse(ssidListFile));
+    wifiStatus.initializeStatus();
 
     auto deviceListFile = assetFile("bluetooth.json");
     bluetoothStatus.populateFromJson(JSON::parse(deviceListFile));
