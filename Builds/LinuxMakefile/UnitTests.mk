@@ -1,12 +1,8 @@
 include Makefile
 
-ifeq ($(CONFIG),Release)
-  WifiTest_TARGET := wifitest
-  WifiTest_BLDCMD = $(CXX) -o $(OUTDIR)/$(WifiTest_TARGET) $(WifiTest_OBJECTS) $(LDFLAGS) $(RESOURCES) $(TARGET_ARCH)
-  WifiTest_CLEANCMD = rm -rf $(OUTDIR)/$(WifiTest_TARGET)
-else
-  $(error CONFIG is not set for Release)
-endif
+WifiTest_TARGET := wifitest
+WifiTest_BLDCMD = $(CXX) -o $(OUTDIR)/$(WifiTest_TARGET) $(WifiTest_OBJECTS) $(LDFLAGS) $(RESOURCES) $(TARGET_ARCH)
+WifiTest_CLEANCMD = rm -rf $(OUTDIR)/$(WifiTest_TARGET)
 
 WifiTest_OBJECTS := \
   $(OBJDIR)/WifiStatus_30949170.o \
