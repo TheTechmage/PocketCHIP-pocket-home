@@ -28,9 +28,7 @@ BluetoothStatus &getBluetoothStatus() {
   return PokeLaunchApplication::get()->bluetoothStatus;
 }
 
-PokeLaunchApplication::PokeLaunchApplication() :
-  wifiStatus()
-{}
+PokeLaunchApplication::PokeLaunchApplication() {}
 
 PokeLaunchApplication *PokeLaunchApplication::get() {
   return dynamic_cast<PokeLaunchApplication *>(JUCEApplication::getInstance());

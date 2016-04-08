@@ -12,7 +12,7 @@ class WifiStatus {
 public:
   WifiStatus();
   ~WifiStatus();
-  
+
   class Listener;
   
   OwnedArray<WifiAccessPoint> accessPoints;
@@ -20,15 +20,14 @@ public:
   bool enabled = false;
   bool connected = false;
 
-  void addListener(Listener* listener);
-  void setEnabled();
-  void setDisabled();
-  void setConnectedAccessPoint(WifiAccessPoint *ap, String psk = String::empty);
-  void setDisconnected();
+  virtual void addListener(Listener* listener) = 0;
 
-  void initializeStatus();
-private:
-  Array<Listener*> listeners;
+  virtual void setEnabled() = 0;
+  virtual void setDisabled() = 0;
+  virtual void setConnectedAccessPoint(WifiAccessPoint *ap, String psk = String::empty) = 0;
+  virtual void setDisconnected() = 0;
+
+  virtual void initializeStatus() = 0;
 };
 
 class WifiStatus::Listener {

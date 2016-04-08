@@ -1,18 +1,18 @@
 #include <map>
 
-#include "WifiStatus.h"
+#include "WifiStatusNM.h"
 #include "../JuceLibraryCode/JuceHeader.h"
 
-WifiStatus::WifiStatus() : listeners() {}
-WifiStatus::~WifiStatus() {}
+WifiStatusNM::WifiStatusNM() : listeners() {}
+WifiStatusNM::~WifiStatusNM() {}
 
-void WifiStatus::addListener(Listener* listener) {
+void WifiStatusNM::addListener(Listener* listener) {
   listeners.add(listener);
 }
 
 // TODO: direct action should not be named set, e.g. enable/disable/disconnect
 // otherwise easily confused with setters thats wrap members, which are slightly different idiom
-void WifiStatus::setEnabled() {
+void WifiStatusNM::setEnabled() {
   if (!enabled) {
     enabled = true;
     /* FIXME Without launching scans, the results of a disable/enable are confusing
@@ -29,7 +29,7 @@ void WifiStatus::setEnabled() {
   }
 }
 
-void WifiStatus::setDisabled() {
+void WifiStatusNM::setDisabled() {
   if (enabled) {
     enabled = false;
     /* FIXME Without launching scans, the results of a disable/enable are confusing
@@ -46,7 +46,7 @@ void WifiStatus::setDisabled() {
   }
 }
 
-void WifiStatus::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
+void WifiStatusNM::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
   StringArray *cmd;
   
   // disconnect if no ap provided
@@ -65,7 +65,7 @@ void WifiStatus::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
     // FIXME: only until we get reading success over stdout hooked up
     bool isTestCred = ap->ssid == "NTC 2461";
     if (!isTestCred) {
-      DBG("WifiStatus::setConnectedAccessPoint - failed ");
+      DBG("WifiStatusNM::setConnectedAccessPoint - failed ");
       for(const auto& listener : listeners) {
         listener->handleWifiFailedConnect();
       }
@@ -91,7 +91,7 @@ void WifiStatus::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
   }
   
   if (cmd) {
-    DBG("WifiStatus cmd: " << cmd->joinIntoString(" "));
+    DBG("WifiStatusNM cmd: " << cmd->joinIntoString(" "));
     ChildProcess nmproc;
     nmproc.start(*cmd);
     nmproc.waitForProcessToFinish(30000);
@@ -99,11 +99,11 @@ void WifiStatus::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
   }
 }
 
-void WifiStatus::setDisconnected() {
+void WifiStatusNM::setDisconnected() {
   setConnectedAccessPoint(nullptr);
 }
 
-void WifiStatus::initializeManager() {
+void WifiStatusNM::initializeStatus() {
   connectedAccessPoint = nullptr;
   connected = false;
   String ssidList;
@@ -113,7 +113,7 @@ void WifiStatus::initializeManager() {
   accessPoints.clear();
 
   auto cmd = "nmcli -m multiline -f SSID,SECURITY,SIGNAL d wifi list ifname wlan0";
-  DBG("WifiStatus cmd: " << cmd);
+  DBG("WifiStatusNM cmd: " << cmd);
   nmproc.start(cmd);
   nmproc.waitForProcessToFinish(500);
   ssidList = nmproc.readAllProcessOutput();
@@ -154,7 +154,3 @@ void WifiStatus::initializeManager() {
   addAccessPoint(tag_map, accessPoints);
   tag_map.clear();
 }
-
-WifiStatus::Listener::Listener() {}
-WifiStatus::Listener::~Listener() {}
-
