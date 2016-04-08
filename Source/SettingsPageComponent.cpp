@@ -176,26 +176,27 @@ SettingsPageComponent::SettingsPageComponent() {
 
 
   volume = 90;
-  // Set initial volume value
+  
   #if JUCE_LINUX
-  if(child.start("cat /var/lib/alsa/asound.state")) {
-    const String result (child.readAllProcessOutput());
-    int resultIndex = result.indexOfWholeWord("'Power Amplifier Volume'");
-    child.waitForProcessToFinish (5 * 1000);
-    resultIndex = result.indexOf( resultIndex, "value " )+6;
-    char buff[4];
-    for (int i = 0; i<4; i++) {
-	char c = result[resultIndex+i];
-	if( c >= '0' && c <= '9' ) {
-		buff[i]=c;
-	} else {
-		buff[i]=(char)0;
-	}
+    // Get initial volume value
+    if(child.start("cat /var/lib/alsa/asound.state")) {
+      const String result (child.readAllProcessOutput());
+      int resultIndex = result.indexOfWholeWord("'Power Amplifier Volume'");
+      child.waitForProcessToFinish (5 * 1000);
+      resultIndex = result.indexOf(resultIndex, "value ")+6;
+      char buff[4];
+      for (int i = 0; i<4; i++) {
+	      char c = result[resultIndex+i];
+	      if( c >= '0' && c <= '9' ) {
+		       buff[i]=c;
+      	} else {
+		     buff[i]=(char)0;
+      	}
+      }
+      String newVol = String(buff);
+      volume = newVol.getIntValue();
     }
-    String newVol = String(buff);
-    volume = newVol.getIntValue();
-  }
-#endif
+  #endif
 
   ScopedPointer<Drawable> brightLo = Drawable::createFromImageData(
   +BinaryData::brightnessIconLo_png, BinaryData::brightnessIconLo_pngSize);
@@ -299,10 +300,9 @@ void SettingsPageComponent::setSoundVolume() {
 }
 
 void SettingsPageComponent::setScreenBrightness() {
-  DBG("set");
   brightness = 1+(screenBrightnessSlider->slider->getValue()*0.09);
   #if JUCE_LINUX
-     if(child.start("brightness " + String(brightness))) {
+     if(child.start("echo " + String(brightness) + " > /sys/class/backlight/backlight/brightness")) {
        String result{child.readAllProcessOutput()};
      }
   #endif
