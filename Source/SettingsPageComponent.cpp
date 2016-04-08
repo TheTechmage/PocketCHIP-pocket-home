@@ -163,41 +163,48 @@ SettingsPageComponent::SettingsPageComponent() {
   mainPage = new Component();
   addAndMakeVisible(mainPage);
   mainPage->toBack();
-  ChildProcess child;
+  ChildProcess child{};
 
-  // Get initial brightness value
-#if JUCE_LINUX
-  // TODO: perform this check without blocking against a shell command
-  DBG("Set initial brightness via shell");
-  if(child.start("cat /sys/class/backlight/backlight/brightness")) {
-    String result{child.readAllProcessOutput()};
-    brightness = result.getIntValue();
-  }
-#else
   brightness = 8;
+  #if JUCE_LINUX
+     // Get initial brightness value
+     if(child.start("cat /sys/class/backlight/backlight/brightness")) {
+    	String result{child.readAllProcessOutput()};
+	brightness = result.getIntValue();
+     };
+  #endif
+
+
+  volume = 90;
+  // Set initial volume value
+  #if JUCE_LINUX
+  if(child.start("cat /var/lib/alsa/asound.state")) {
+    const String result (child.readAllProcessOutput());
+    int resultIndex = result.indexOfWholeWord("'Power Amplifier Volume'");
+    child.waitForProcessToFinish (5 * 1000);
+    resultIndex = result.indexOf( resultIndex, "value " )+6;
+    char buff[4];
+    for (int i = 0; i<4; i++) {
+	char c = result[resultIndex+i];
+	if( c >= '0' && c <= '9' ) {
+		buff[i]=c;
+	} else {
+		buff[i]=(char)0;
+	}
+    }
+    String newVol = String(buff);
+    volume = newVol.getIntValue();
+  }
 #endif
 
-  // Set initial volume value
-  volume = 90;
-  //#if JUCE_LINUX
-  //if(child.start("amixer get Master")) {
-    //const String result (child.readAllProcessOutput());
-    //child.waitForProcessToFinish (5 * 1000);
-    //volume = atoi(result);
- // }
-//#else
-//  brightness = 8;
-//#endif
-//  volume = 100;
-
   ScopedPointer<Drawable> brightLo = Drawable::createFromImageData(
-      BinaryData::brightnessIconLo_png, BinaryData::brightnessIconLo_pngSize);
+  +BinaryData::brightnessIconLo_png, BinaryData::brightnessIconLo_pngSize);
   ScopedPointer<Drawable> brightHi = Drawable::createFromImageData(
       BinaryData::brightnessIconHi_png, BinaryData::brightnessIconHi_pngSize);
   screenBrightnessSlider =
       ScopedPointer<IconSliderComponent>(new IconSliderComponent(*brightLo, *brightHi));
   screenBrightnessSlider->addListener(this);
-  screenBrightnessSlider->slider->setValue((brightness-0.1)*10);
+  screenBrightnessSlider->slider->setValue(1+(brightness-0.09)*10);
 
   ScopedPointer<Drawable> volLo =
       Drawable::createFromImageData(BinaryData::volumeIconLo_png, BinaryData::volumeIconLo_pngSize);
@@ -245,6 +252,8 @@ void SettingsPageComponent::resized() {
   
   auto bounds = getLocalBounds();
 
+
+
   {
     for (int i = 0, j = 0; i < 4; ++i) {
       if (i > 0) verticalLayout.setItemLayout(j++, 0, -1, -1);
@@ -279,19 +288,24 @@ void SettingsPageComponent::buttonClicked(Button *button) {
 }
 
 void SettingsPageComponent::setSoundVolume() {
-  DBG("set vol");
   volume = volumeSlider->slider->getValue();
-#if JUCE_LINUX
-  child.start("amixer cset numid=1 100%");
-#endif
+  #if JUCE_LINUX
+     StringArray cmd{ "amixer","sset","Power Amplifier",(String(volume)+"%").toRawUTF8()};
+     if( child.start(cmd ) ) {
+       String result{child.readAllProcessOutput()};
+     }
+
+  #endif
 }
 
 void SettingsPageComponent::setScreenBrightness() {
-  DBG("set bright");
+  DBG("set");
   brightness = 1+(screenBrightnessSlider->slider->getValue()*0.09);
-#if JUCE_LINUX
-  child.start("echo 8 > /sys/class/backlight/backlight/brightness");
-#endif
+  #if JUCE_LINUX
+     if(child.start("brightness " + String(brightness))) {
+       String result{child.readAllProcessOutput()};
+     }
+  #endif
 }
 
 
@@ -318,3 +332,4 @@ void SettingsPageComponent::sliderDragEnded(IconSliderComponent* slider) {
     setSoundVolume();
   }
 }
+
