@@ -32,33 +32,37 @@ public:
   void test_set_disconnected();
 };
 
+WifiStatus &TestWifiStatus::getWifiStatus() {
+  return this->wifiStatus;
+}
+
 void TestWifiStatus::test_populate() {
   // Populate with dummy data
   std::cout << "Populating wifiStatus from wifi.json ..." << std::endl;
   auto ssidListFile = assetFile("wifi.json");
-  wifiStatus.initializeStatus();
+  getWifiStatus().initializeStatus();
 }
 
 void TestWifiStatus::test_ap_list() {
   std::cout << "Printing known AP's from wifiStatus ..." << std::endl;
-  for (auto ap : wifiStatus.accessPoints) {
+  for (auto ap : *getWifiStatus().nearbyAccessPoints()) {
 	  std::cout << ap->ssid << std::endl;
   }
 }
 
 void TestWifiStatus::test_enabled() {
   std::cout << "Is wifiStatus enabled?" << std::endl;
-  std::cout << wifiStatus.enabled << std::endl;
+  std::cout << getWifiStatus().isEnabled() << std::endl;
 }
 
 void TestWifiStatus::test_connected() {
   std::cout << "Is wifiStatus connected?" << std::endl;
-  std::cout << wifiStatus.connected << std::endl;
+  std::cout << getWifiStatus().isConnected() << std::endl;
 }
 
 WifiAccessPoint * TestWifiStatus::test_find_ap(String *ssid) {
   std::cout << "Finding " << *ssid << " within wifiStatus..." << std::endl;
-  for (auto ap : wifiStatus.accessPoints) {
+  for (auto ap : *getWifiStatus().nearbyAccessPoints()) {
     if (ap->ssid == *ssid) {
       return ap;
     }
@@ -69,22 +73,22 @@ WifiAccessPoint * TestWifiStatus::test_find_ap(String *ssid) {
 
 void TestWifiStatus::test_set_enabled() {
   std::cout << "Enabling wifiStatus ..." << std::endl;
-  wifiStatus.setEnabled();
+  getWifiStatus().setEnabled();
 }
 
 void TestWifiStatus::test_set_disabled() {
   std::cout << "Disabling wifiStatus ..." << std::endl;
-  wifiStatus.setDisabled();
+  getWifiStatus().setDisabled();
 }
 
 void TestWifiStatus::test_set_connected(WifiAccessPoint *ap, const String psk) {
   std::cout << "Connecting wifiStatus to " << ap->ssid << std::endl;
-  wifiStatus.setConnectedAccessPoint(ap, psk);
+  getWifiStatus().setConnectedAccessPoint(ap, psk);
 }
 
 void TestWifiStatus::test_set_disconnected() {
   std::cout << "Disconnecting wifiStatus ..." << std::endl;
-  wifiStatus.setDisconnected();
+  getWifiStatus().setDisconnected();
 }
 
 int main() {

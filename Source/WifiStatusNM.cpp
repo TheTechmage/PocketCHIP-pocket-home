@@ -6,6 +6,22 @@
 WifiStatusNM::WifiStatusNM() : listeners() {}
 WifiStatusNM::~WifiStatusNM() {}
 
+OwnedArray<WifiAccessPoint> *WifiStatusNM::nearbyAccessPoints() {
+  return &accessPoints;
+}
+
+WifiAccessPoint *WifiStatusNM::connectedAccessPoint() const {
+  return connectedAP;
+}
+
+bool WifiStatusNM::isEnabled() const {
+  return enabled;
+}
+
+bool WifiStatusNM::isConnected() const {
+  return connected;
+}
+
 void WifiStatusNM::addListener(Listener* listener) {
   listeners.add(listener);
 }
@@ -55,7 +71,7 @@ void WifiStatusNM::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
     // so reconnection doesn't occur until reboot or explicit reconnection.
     cmd = new StringArray({"nmcli","dev","disconnect","wlan0"});
     connected = false;
-    connectedAccessPoint = nullptr;
+    connectedAP = nullptr;
     for(const auto& listener : listeners) {
       listener->handleWifiDisconnected();
     }
@@ -75,7 +91,7 @@ void WifiStatusNM::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
     if (psk.isEmpty()) {
       cmd = new StringArray({"nmcli","dev","wifi","connect",ap->ssid.toRawUTF8(),"iface","wlan0"});
       connected = true;
-      connectedAccessPoint = ap;
+      connectedAP = ap;
       for(const auto& listener : listeners) {
         listener->handleWifiConnected();
       }
@@ -83,7 +99,7 @@ void WifiStatusNM::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
     else {
       cmd = new StringArray({"nmcli","dev","wifi","connect",ap->ssid.toRawUTF8(),"password",psk.toRawUTF8(),"iface","wlan0"});
       connected = true;
-      connectedAccessPoint = ap;
+      connectedAP = ap;
       for(const auto& listener : listeners) {
         listener->handleWifiConnected();
       }
@@ -104,7 +120,7 @@ void WifiStatusNM::setDisconnected() {
 }
 
 void WifiStatusNM::initializeStatus() {
-  connectedAccessPoint = nullptr;
+  connectedAP = nullptr;
   connected = false;
   String ssidList;
   std::map<String, String> tag_map;

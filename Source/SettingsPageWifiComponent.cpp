@@ -79,7 +79,7 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   accessPointListPage->itemHeight = 50;
   accessPointListPage->itemScaleMin = accessPointListPage->itemScaleMax = 1.0;
 
-  for (auto ap : getWifiStatus().accessPoints) {
+  for (auto ap : *getWifiStatus().nearbyAccessPoints()) {
     auto item = new WifiAccessPointListItem(ap, icons);
     item->addListener(this);
     accessPointItems.add(item);
@@ -165,7 +165,7 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
   auto &status = getWifiStatus();
 
   if (button == connectionButton) {
-    if (status.connected && selectedAp == status.connectedAccessPoint) {
+    if (status.isConnected() && selectedAp == status.connectedAccessPoint()) {
       status.setDisconnected();
     } else {
       if (selectedAp->requiresAuth) {
@@ -182,7 +182,7 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
     if (apButton) {
       selectedAp = apButton->ap;
       connectionLabel->setText(apButton->ap->ssid, juce::NotificationType::dontSendNotification);
-      if (selectedAp == status.connectedAccessPoint) {
+      if (selectedAp == status.connectedAccessPoint()) {
         passwordEditor->setVisible(false);
         connectionButton->setButtonText("Disconnect");
       } else {
@@ -193,7 +193,7 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
     }
     
     if (button == backButton) {
-      if (pageStack->getDepth() > 1 && !status.connected) {
+      if (pageStack->getDepth() > 1 && !status.isConnected()) {
         pageStack->popPage(PageStackComponent::kTransitionTranslateHorizontal);
       } else {
         getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);

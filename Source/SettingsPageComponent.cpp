@@ -122,8 +122,8 @@ void WifiCategoryItemComponent::handleWifiDisconnected() { updateButtonText(); }
 
 void WifiCategoryItemComponent::updateButtonText() {
   const auto &status = getWifiStatus();
-  if (status.enabled) {
-    button->setText(status.connected ? status.connectedAccessPoint->ssid : "Not Connected");
+  if (status.isEnabled()) {
+    button->setText(status.isConnected() ? status.connectedAccessPoint()->ssid : "Not Connected");
   } else {
     button->setText("WiFi Off");
   }
@@ -282,7 +282,7 @@ void SettingsPageComponent::buttonClicked(Button *button) {
     getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
   } else if (button == wifiCategoryItem->button) {
     const auto &wifistatus = getWifiStatus();
-    if (wifistatus.connected) {
+    if (wifistatus.isConnected()) {
       wifiPage->pageStack->swapPage(wifiPage->connectionPage, PageStackComponent::kTransitionNone);
     }
     getMainStack().pushPage(wifiPage, PageStackComponent::kTransitionTranslateHorizontal);

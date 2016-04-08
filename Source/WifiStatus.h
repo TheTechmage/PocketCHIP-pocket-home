@@ -10,15 +10,12 @@ struct WifiAccessPoint {
 
 class WifiStatus {
 public:
-  WifiStatus();
-  ~WifiStatus();
-
   class Listener;
   
-  OwnedArray<WifiAccessPoint> accessPoints;
-  WifiAccessPoint *connectedAccessPoint = nullptr;
-  bool enabled = false;
-  bool connected = false;
+  virtual OwnedArray<WifiAccessPoint> *nearbyAccessPoints() = 0;
+  virtual WifiAccessPoint *connectedAccessPoint() const = 0;
+  virtual bool isEnabled() const = 0;
+  virtual bool isConnected() const = 0;
 
   virtual void addListener(Listener* listener) = 0;
 
