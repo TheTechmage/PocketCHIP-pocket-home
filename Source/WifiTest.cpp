@@ -1,4 +1,4 @@
-#include "WifiStatus.h"
+#include "WifiStatusNM.h"
 
 File absoluteFileFromPath(const String &path) {
   return File::isAbsolutePath(path) ? File(path)
@@ -17,7 +17,7 @@ File assetFile(const String &fileName) {
 
 class TestWifiStatus {
 public:
-  WifiStatus wifiStatus;
+  WifiStatusNM wifiStatus;
 
   WifiStatus &getWifiStatus();
 
