@@ -23,7 +23,7 @@ public:
   void addListener(Listener* listener);
   void setEnabled();
   void setDisabled();
-  void setConnectedAccessPoint(WifiAccessPoint *ap, String psk = String());
+  void setConnectedAccessPoint(WifiAccessPoint *ap, String psk = String::empty);
   void setDisconnected();
 
   void populateFromJson(const var &json);

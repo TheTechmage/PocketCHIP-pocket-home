@@ -28,7 +28,7 @@ public:
   WifiAccessPoint * test_find_ap(String *ssid);
   void test_set_disabled();
   void test_set_enabled();
-  void test_set_connected(WifiAccessPoint *ap);
+  void test_set_connected(WifiAccessPoint *ap, const String psk);
   void test_set_disconnected();
 };
 
@@ -77,9 +77,9 @@ void TestWifiStatus::test_set_disabled() {
   wifiStatus.setDisabled();
 }
 
-void TestWifiStatus::test_set_connected(WifiAccessPoint *ap) {
+void TestWifiStatus::test_set_connected(WifiAccessPoint *ap, const String psk) {
   std::cout << "Connecting wifiStatus to " << ap->ssid << std::endl;
-  wifiStatus.setConnectedAccessPoint(ap);
+  wifiStatus.setConnectedAccessPoint(ap, psk);
 }
 
 void TestWifiStatus::test_set_disconnected() {
@@ -90,7 +90,16 @@ void TestWifiStatus::test_set_disconnected() {
 int main() {
   TestWifiStatus wifi;
   WifiAccessPoint *ap;
-  String ssid = "NTC";
+  String ssid = "BOGUS_SSID";
+  String psk = "BOGUS_PSK";
+
+  wifi.test_set_enabled();
+  wifi.test_enabled();
+  wifi.test_connected();
+
+  wifi.test_set_disabled();
+  wifi.test_enabled();
+  wifi.test_connected();
 
   wifi.test_set_enabled();
   wifi.test_enabled();
@@ -102,15 +111,12 @@ int main() {
   wifi.test_connected();
 
   ap = wifi.test_find_ap(&ssid);
-  wifi.test_set_connected(ap);
+  wifi.test_set_connected(ap, psk);
   wifi.test_enabled();
   wifi.test_connected();
 
-  wifi.test_set_disconnected();
+  //wifi.test_set_disconnected();
   wifi.test_enabled();
   wifi.test_connected();
 
-  wifi.test_set_disabled();
-  wifi.test_enabled();
-  wifi.test_connected();
 }
