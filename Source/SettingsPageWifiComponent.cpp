@@ -38,8 +38,7 @@ void WifiAccessPointListItem::paintButton(Graphics &g, bool isMouseOverButton, b
 
 SettingsPageWifiComponent::SettingsPageWifiComponent() {
   bgColor = Colour(PokeLookAndFeel::chipPurple);
-    bgImage = String("settingsBackground.png");
-    DBG("FILL!!!!");
+  bgImage = String("settingsBackground.png");
   
   pageStack = new PageStackComponent();
   addAndMakeVisible(pageStack);
@@ -115,8 +114,8 @@ SettingsPageWifiComponent::~SettingsPageWifiComponent() {}
 
 void SettingsPageWifiComponent::paint(Graphics &g) {
     g.fillAll(bgColor);
-    auto image = createImageFromFile(assetFile(bgImage));
-    g.drawImageAt(image,0,0,false);
+    //auto image = createImageFromFile(assetFile(bgImage));
+    //g.drawImageAt(image,0,0,false);
 }
 
 void SettingsPageWifiComponent::resized() {
