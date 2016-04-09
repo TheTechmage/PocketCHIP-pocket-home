@@ -10,55 +10,55 @@ class LauncherComponent;
 
 class LaunchSpinnerTimer : public Timer {
 public:
-  LaunchSpinnerTimer() {};
-  void timerCallback();
-  LauncherComponent* launcherComponent;
-  int i = 0;
+    LaunchSpinnerTimer() {};
+    void timerCallback();
+    LauncherComponent* launcherComponent;
+    int i = 0;
 };
 
 class BatteryIconTimer : public Timer {
 public:
-  BatteryIconTimer() {};
-  void timerCallback();
-  LauncherComponent* launcherComponent;
+    BatteryIconTimer() {};
+    void timerCallback();
+    LauncherComponent* launcherComponent;
 };
 
 class LauncherComponent : public Component, private Button::Listener {
 public:
-  BatteryMonitor batteryMonitor;
-  ScopedPointer<LauncherBarComponent> botButtons;
-  ScopedPointer<LauncherBarComponent> topButtons;
-  ScopedPointer<ImageComponent> launchSpinner;
-  
-  Array<Image> launchSpinnerImages;
-  Array<Image> batteryIconImages;
-  
-  LaunchSpinnerTimer launchSpinnerTimer;
-  BatteryIconTimer batteryIconTimer;
-  Component* defaultPage;
- 
-
-  OwnedArray<Component> pages;
-  ScopedPointer<PageStackComponent> pageStack;
-  HashMap<String, Component *> pagesByName;
-
-  bool resize = false;
-
-  StretchableLayoutManager categoryButtonLayout;
-
-  LauncherComponent(const var &configJson);
-  ~LauncherComponent();
-
-  void paint(Graphics &) override;
-  void resized() override;
-  
-  void showLaunchSpinner();
-  void hideLaunchSpinner();
-
+    BatteryMonitor batteryMonitor;
+    ScopedPointer<LauncherBarComponent> botButtons;
+    ScopedPointer<LauncherBarComponent> topButtons;
+    ScopedPointer<ImageComponent> launchSpinner;
+    
+    Array<Image> launchSpinnerImages;
+    Array<Image> batteryIconImages;
+    
+    LaunchSpinnerTimer launchSpinnerTimer;
+    BatteryIconTimer batteryIconTimer;
+    Component* defaultPage;
+    
+    
+    OwnedArray<Component> pages;
+    ScopedPointer<PageStackComponent> pageStack;
+    HashMap<String, Component *> pagesByName;
+    
+    bool resize = false;
+    
+    StretchableLayoutManager categoryButtonLayout;
+    
+    LauncherComponent(const var &configJson);
+    ~LauncherComponent();
+    
+    void paint(Graphics &) override;
+    void resized() override;
+    
+    void showLaunchSpinner();
+    void hideLaunchSpinner();
+    
 private:
-  Colour bgColor;
-
-  void buttonClicked(Button *) override;
-  
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LauncherComponent)
+    Colour bgColor;
+    
+    void buttonClicked(Button *) override;
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LauncherComponent)
 };

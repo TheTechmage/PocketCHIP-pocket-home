@@ -31,7 +31,7 @@ namespace BinaryData
     const int            check_pngSize = 550;
 
     extern const char*   config_json;
-    const int            config_jsonSize = 1226;
+    const int            config_jsonSize = 1339;
 
     extern const char*   gamesIcon_png;
     const int            gamesIcon_pngSize = 310;

@@ -42,6 +42,10 @@
             file="assets/wifiStrength3.png"/>
     </GROUP>
     <GROUP id="{4593A345-C350-960A-058D-B48F8240AA1D}" name="Source">
+      <FILE id="HQ7qZ3" name="PowerPageComponent.cpp" compile="1" resource="0"
+            file="Source/PowerPageComponent.cpp"/>
+      <FILE id="fTCnyT" name="PowerPageComponent.h" compile="0" resource="0"
+            file="Source/PowerPageComponent.h"/>
       <FILE id="rgiomN" name="BatteryMonitor.cpp" compile="1" resource="0"
             file="Source/BatteryMonitor.cpp"/>
       <FILE id="xKXfqH" name="BatteryMonitor.h" compile="0" resource="0"

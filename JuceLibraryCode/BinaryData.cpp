@@ -191,9 +191,17 @@ static const unsigned char temp_binary_data_7[] =
 "        }\r\n"
 "      ]\r\n"
 "    },\r\n"
-"\r\n"
 "    {\r\n"
 "      \"name\": \"Settings\"\r\n"
+"    },\r\n"
+"    {\r\n"
+"      \"name\": \"Power\"\r\n"
+"    },\r\n"
+"    {\r\n"
+"      \"name\": \"WiFi\"\r\n"
+"    },\r\n"
+"    {\r\n"
+"      \"name\": \"Battery\"\r\n"
 "    }\r\n"
 "  ]\r\n"
 "}\r\n";
@@ -4395,7 +4403,7 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes) throw
         case 0x750146f5:  numBytes = 654; return brightnessIconHi_png;
         case 0x7c293677:  numBytes = 512; return brightnessIconLo_png;
         case 0x17c70272:  numBytes = 550; return check_png;
-        case 0x0106dbc5:  numBytes = 1226; return config_json;
+        case 0x0106dbc5:  numBytes = 1339; return config_json;
         case 0x1a027f44:  numBytes = 310; return gamesIcon_png;
         case 0x71d31915:  numBytes = 427; return lock_png;
         case 0x24ff5188:  numBytes = 448; return powerIcon_png;

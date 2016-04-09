@@ -1,6 +1,7 @@
 #include "LauncherComponent.h"
 #include "AppsPageComponent.h"
 #include "SettingsPageComponent.h"
+#include "PowerPageComponent.h"
 #include "Main.h"
 #include "Utils.h"
 #include <math.h>
@@ -88,11 +89,11 @@ LauncherComponent::LauncherComponent(const var &configJson) {
       if (name == "Settings") {
         pageComponent = new SettingsPageComponent();
       } else if( name == "Power") {
-          pageComponent = new SettingsPageComponent();
+          pageComponent = new PowerPageComponent();
       } else if( name == "WiFi") {
           pageComponent = new SettingsPageComponent();
       } else if( name == "Battery") {
-          pageComponent = new SettingsPageComponent();
+          pageComponent = new PowerPageComponent();
       } else {
         auto appsPage = new AppsPageComponent(this);
         appsPage->createIconsFromJsonArray(page["items"]);
@@ -183,9 +184,7 @@ void LauncherComponent::buttonClicked(Button *button) {
     if (button->getName() == "Settings" || button->getName() == "WiFi" ) {
       getMainStack().pushPage(page, PageStackComponent::kTransitionTranslateHorizontal);
     } else if (button->getName() == "Power" || button->getName() == "Battery" ) {
-        DBG("LauncherComponent::buttonClicked - power");
-        ChildProcess child{};
-        child.start("chip-exit");
+        getMainStack().pushPage(page, PageStackComponent::kTransitionTranslateHorizontal);
     } else {
       pageStack->swapPage(page, PageStackComponent::kTransitionTranslateHorizontal);
     }

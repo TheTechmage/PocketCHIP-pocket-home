@@ -49,6 +49,7 @@ ifeq ($(CONFIG),Release)
 endif
 
 OBJECTS := \
+  $(OBJDIR)/PowerPageComponent_4a26c732.o \
   $(OBJDIR)/BatteryMonitor_37302b96.o \
   $(OBJDIR)/WifiStatus_30949170.o \
   $(OBJDIR)/LauncherComponent_8a29041e.o \
@@ -88,6 +89,11 @@ clean:
 strip:
 	@echo Stripping pocket-home
 	-@strip --strip-unneeded $(OUTDIR)/$(TARGET)
+
+$(OBJDIR)/PowerPageComponent_4a26c732.o: ../../Source/PowerPageComponent.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling PowerPageComponent.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/BatteryMonitor_37302b96.o: ../../Source/BatteryMonitor.cpp
 	-@mkdir -p $(OBJDIR)
