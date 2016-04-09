@@ -163,6 +163,7 @@ void BluetoothCategoryItemComponent::updateButtonText() {
 
 SettingsPageComponent::SettingsPageComponent() {
   bgColor = Colour(0xffd23c6d);
+  bgImage = "settingsBackground.png";
   mainPage = new Component();
   addAndMakeVisible(mainPage);
   mainPage->toBack();
@@ -250,6 +251,8 @@ SettingsPageComponent::~SettingsPageComponent() {}
 
 void SettingsPageComponent::paint(Graphics &g) {
     g.fillAll(bgColor);
+    auto image = createImageFromFile(assetFile(bgImage));
+    g.drawImageAt(image,0,0,false);
 }
 
 void SettingsPageComponent::resized() {

@@ -52,6 +52,7 @@ void BatteryIconTimer::timerCallback() {
 
 LauncherComponent::LauncherComponent(const var &configJson) {
   bgColor = Colour(0xff2e8dbd);
+  bgImage = "mainBackground.png";
   pageStack = new PageStackComponent();
   addAndMakeVisible(pageStack);
 
@@ -143,6 +144,8 @@ LauncherComponent::~LauncherComponent() {
 
 void LauncherComponent::paint(Graphics &g) {
   g.fillAll(bgColor);
+  auto image = createImageFromFile(assetFile(bgImage));
+  g.drawImageAt(image,0,0,false);
 }
 
 void LauncherComponent::resized() {

@@ -64,6 +64,7 @@ public:
 
 private:
   Colour bgColor;
+  String bgImage;
 
   void buttonClicked(Button *) override;
   
