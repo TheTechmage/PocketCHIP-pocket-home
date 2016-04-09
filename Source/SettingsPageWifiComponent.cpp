@@ -39,6 +39,7 @@ void WifiAccessPointListItem::paintButton(Graphics &g, bool isMouseOverButton, b
 SettingsPageWifiComponent::SettingsPageWifiComponent() {
   bgColor = Colour(PokeLookAndFeel::chipPurple);
     bgImage = String("settingsBackground.png");
+    DBG("FILL!!!!");
   
   pageStack = new PageStackComponent();
   addAndMakeVisible(pageStack);
