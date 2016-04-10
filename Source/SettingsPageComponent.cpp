@@ -183,11 +183,11 @@ SettingsPageComponent::SettingsPageComponent() {
   
   #if JUCE_LINUX
     // Get initial volume value
-    if(child.start("cat /var/lib/alsa/asound.state")) {
+    StringArray cmd{ "amixer","sget","Power Amplifier" };
+    if(child.start(cmd)) {
       const String result (child.readAllProcessOutput());
-      int resultIndex = result.indexOfWholeWord("'Power Amplifier Volume'");
+      int resultIndex = result.indexOf("[")+1;
       child.waitForProcessToFinish (5 * 1000);
-      resultIndex = result.indexOf(resultIndex, "value ")+6;
       char buff[4];
       for (int i = 0; i<4; i++) {
 	      char c = result[resultIndex+i];
