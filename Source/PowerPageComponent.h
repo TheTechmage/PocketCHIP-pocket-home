@@ -7,6 +7,13 @@
 
 class PowerPageComponent;
 
+class PowerDebounceTimer : public Timer {
+public:
+    PowerDebounceTimer() {};
+    virtual void timerCallback() override;
+    PowerPageComponent* powerComponent;
+};
+
 class PowerSpinnerTimer : public Timer {
 public:
     PowerSpinnerTimer() {};
@@ -50,7 +57,7 @@ public:
   void buttonClicked(Button *b) override;
   void buttonStateChanged(Button *b) override;
   void enablementChanged() override;
-
+ 
   
 
   virtual void enabledStateChanged(bool enabled) = 0;
@@ -73,16 +80,18 @@ public:
     ScopedPointer<Component> mainPage;
     ScopedPointer<ImageComponent> powerSpinner;
     PowerSpinnerTimer powerSpinnerTimer;
+    PowerDebounceTimer powerDebounceTimer;
     Array<Image> launchSpinnerImages;
 
   PowerPageComponent();
   ~PowerPageComponent();
     
-  bool buttonsDisabled;
+  bool debounce;
   void paint(Graphics &g) override;
   void resized() override;
   void showPowerSpinner();
   void buttonClicked(Button *b) override;
+  void setSleep();
   
 private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PowerPageComponent)

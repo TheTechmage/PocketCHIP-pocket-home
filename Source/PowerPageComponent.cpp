@@ -5,6 +5,14 @@
 
 #include <numeric>
 
+void PowerDebounceTimer::timerCallback() {
+    DBG("APowerDebounceTimer::timerCallback - check power debounce");
+    if (powerComponent) {
+        powerComponent->debounce = false;
+    }
+    stopTimer();
+}
+
 void PowerSpinnerTimer::timerCallback() {
     if (powerComponent) {
         auto lsp = powerComponent->powerSpinner.get();
@@ -91,7 +99,6 @@ PowerPageComponent::PowerPageComponent() {
   bgColor = Colour(0xff000000);
   bgImage = "powerMenuBackground.png";
   mainPage = new Component();
-    buttonsDisabled = false;
   addAndMakeVisible(mainPage);
   mainPage->toBack();
   ChildProcess child{};
@@ -128,6 +135,8 @@ PowerPageComponent::PowerPageComponent() {
     felButton->addListener(this);
     felButton->setTriggeredOnMouseDown(true);
     addAndMakeVisible(felButton);
+
+    powerDebounceTimer.powerComponent = this;
     
     powerSpinnerTimer.powerComponent = this;
     Array<String> spinnerImgPaths{"wait1.png","wait2.png","wait3.png","wait4.png"};
@@ -175,8 +184,20 @@ void PowerPageComponent::resized() {
   backButton->setBounds(bounds.getX(), bounds.getY(), 60, bounds.getHeight());
 }
 
+void PowerPageComponent::setSleep() {
+    #if JUCE_LINUX
+    StringArray cmd{ "xset","q","|","grep","is O" };
+    if(child.start(cmd)) {
+        const String result (child.readAllProcessOutput());
+        if( result == "Monitor is Off") {
+            child.start("xset dpms force on");
+        } else {
+            child.start("xset dpms force off" );
+        }
+  #endif
+}
+
 void PowerPageComponent::showPowerSpinner() {
-    DBG("Show power spinner");
     backButton->setVisible(false);
     powerOffButton->setVisible(false);
     sleepButton->setVisible(false);
@@ -187,19 +208,19 @@ void PowerPageComponent::showPowerSpinner() {
 }
 
 void PowerPageComponent::buttonClicked(Button *button) {
-  if( !buttonsDisabled ) {
+  if( !debounce ) {
+    debounce = true;
+    powerDebounceTimer.startTimer(2 * 1000);
     if (button == backButton) {
       getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
     } else if (button == powerOffButton) {
-      buttonsDisabled = true;
       showPowerSpinner();
       child.start("systemctl poweroff");
     } else if (button == rebootButton) {
-      buttonsDisabled = true;
       showPowerSpinner();
       child.start("systemctl reboot");
     } else if (button == sleepButton) {
-      child.start("xset dpms force off");
+      setSleep();
     } else if (button == felButton) {
       //buttonsDisabled = true;
       child.start("felmode");
