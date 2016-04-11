@@ -25,7 +25,10 @@ BluetoothStatus &getBluetoothStatus();
 
 class PokeLaunchApplication : public JUCEApplication {
 public:
-  WifiStatus wifiStatus;
+  WifiStatusNM wifiStatusNM;
+  WifiStatusJson wifiStatusJson;
+  WifiStatus *wifiStatus;
+
   BluetoothStatus bluetoothStatus;
 
   PokeLaunchApplication();

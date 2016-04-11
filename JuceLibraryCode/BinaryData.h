@@ -42,6 +42,9 @@ namespace BinaryData
     extern const char*   powerIcon_png;
     const int            powerIcon_pngSize = 448;
 
+    extern const char*   powerMenuBackground_png;
+    const int            powerMenuBackground_pngSize = 1641;
+
     extern const char*   seguibl_ttf;
     const int            seguibl_ttfSize = 323400;
 
@@ -67,7 +70,7 @@ namespace BinaryData
     const int            wait4_pngSize = 2399;
 
     extern const char*   wifi_json;
-    const int            wifi_jsonSize = 1160;
+    const int            wifi_jsonSize = 1156;
 
     extern const char*   wifiIcon_png;
     const int            wifiIcon_pngSize = 749;
@@ -88,7 +91,7 @@ namespace BinaryData
     extern const char* namedResourceList[];
 
     // Number of elements in the namedResourceList array.
-    const int namedResourceListSize = 25;
+    const int namedResourceListSize = 26;
 
     // If you provide the name of one of the binary resource variables above, this function will
     // return the corresponding data and its size (or a null pointer if the name isn't found).

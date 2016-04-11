@@ -10,25 +10,21 @@ struct WifiAccessPoint {
 
 class WifiStatus {
 public:
-  WifiStatus();
-  ~WifiStatus();
-  
   class Listener;
   
-  OwnedArray<WifiAccessPoint> accessPoints;
-  WifiAccessPoint *connectedAccessPoint = nullptr;
-  bool enabled = false;
-  bool connected = false;
+  virtual OwnedArray<WifiAccessPoint> *nearbyAccessPoints() = 0;
+  virtual WifiAccessPoint *connectedAccessPoint() const = 0;
+  virtual bool isEnabled() const = 0;
+  virtual bool isConnected() const = 0;
 
-  void addListener(Listener* listener);
-  void setEnabled();
-  void setDisabled();
-  void setConnectedAccessPoint(WifiAccessPoint *ap, String psk = String::empty);
-  void setDisconnected();
+  virtual void addListener(Listener* listener) = 0;
 
-  void populateFromJson(const var &json);
-private:
-  Array<Listener*> listeners;
+  virtual void setEnabled() = 0;
+  virtual void setDisabled() = 0;
+  virtual void setConnectedAccessPoint(WifiAccessPoint *ap, String psk = String::empty) = 0;
+  virtual void setDisconnected() = 0;
+
+  virtual void initializeStatus() = 0;
 };
 
 class WifiStatus::Listener {
@@ -42,3 +38,6 @@ public:
   virtual void handleWifiDisconnected() {}
   virtual void handleWifiFailedConnect() {}
 };
+
+#include "WifiStatusJson.h"
+#include "WifiStatusNM.h"

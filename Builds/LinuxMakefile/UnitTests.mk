@@ -1,14 +1,12 @@
 include Makefile
 
-ifeq ($(CONFIG),Release)
-  WifiTest_TARGET := wifitest
-  WifiTest_BLDCMD = $(CXX) -o $(OUTDIR)/$(WifiTest_TARGET) $(WifiTest_OBJECTS) $(LDFLAGS) $(RESOURCES) $(TARGET_ARCH)
-  WifiTest_CLEANCMD = rm -rf $(OUTDIR)/$(WifiTest_TARGET)
-else
-  $(error CONFIG is not set for Release)
-endif
+WifiTest_TARGET := wifitest
+WifiTest_BLDCMD = $(CXX) -o $(OUTDIR)/$(WifiTest_TARGET) $(WifiTest_OBJECTS) $(LDFLAGS) $(RESOURCES) $(TARGET_ARCH)
+WifiTest_CLEANCMD = rm -rf $(OUTDIR)/$(WifiTest_TARGET)
 
 WifiTest_OBJECTS := \
+  $(OBJDIR)/WifiStatusNM_1460096913.o \
+  $(OBJDIR)/WifiStatusJson_1460106599.o \
   $(OBJDIR)/WifiStatus_30949170.o \
   $(OBJDIR)/juce_core_e13be5a9.o \
   $(OBJDIR)/juce_data_structures_b87144a5.o \

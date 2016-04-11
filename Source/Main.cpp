@@ -21,16 +21,14 @@ PageStackComponent &getMainStack() {
 }
 
 WifiStatus &getWifiStatus() {
-  return PokeLaunchApplication::get()->wifiStatus;
+  return *PokeLaunchApplication::get()->wifiStatus;
 }
 
 BluetoothStatus &getBluetoothStatus() {
   return PokeLaunchApplication::get()->bluetoothStatus;
 }
 
-PokeLaunchApplication::PokeLaunchApplication() :
-  wifiStatus()
-{}
+PokeLaunchApplication::PokeLaunchApplication() {}
 
 PokeLaunchApplication *PokeLaunchApplication::get() {
   return dynamic_cast<PokeLaunchApplication *>(JUCEApplication::getInstance());
@@ -52,6 +50,13 @@ void PokeLaunchApplication::initialise(const String &commandLine) {
   StringArray args;
   args.addTokens(commandLine, true);
 
+  if (args.contains("--help")) {
+    std::cerr << "arguments:" << std::endl;
+    std::cerr << "  --help:	Print usage help" << std::endl;
+    std::cerr << "  --fakewifi:	Use fake WifiStatus" << std::endl;
+    quit();
+  }
+
   auto configFile = assetFile("config.json");
   if (!configFile.exists()) {
     std::cerr << "Missing config file: " << configFile.getFullPathName() << std::endl;
@@ -66,8 +71,12 @@ void PokeLaunchApplication::initialise(const String &commandLine) {
 
   // Populate with dummy data
   {
-    auto ssidListFile = assetFile("wifi.json");
-    wifiStatus.populateFromJson(JSON::parse(ssidListFile));
+    if (args.contains("--fakewifi"))
+      wifiStatus = &wifiStatusJson;
+    else
+      wifiStatus = &wifiStatusNM;
+
+    wifiStatus->initializeStatus();
 
     auto deviceListFile = assetFile("bluetooth.json");
     bluetoothStatus.populateFromJson(JSON::parse(deviceListFile));

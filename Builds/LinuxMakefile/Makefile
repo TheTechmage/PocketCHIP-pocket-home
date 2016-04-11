@@ -51,6 +51,8 @@ endif
 OBJECTS := \
   $(OBJDIR)/PowerPageComponent_4a26c732.o \
   $(OBJDIR)/BatteryMonitor_37302b96.o \
+  $(OBJDIR)/WifiStatusJson_715858f8.o \
+  $(OBJDIR)/WifiStatusNM_92fce0ef.o \
   $(OBJDIR)/WifiStatus_30949170.o \
   $(OBJDIR)/LauncherComponent_8a29041e.o \
   $(OBJDIR)/PageStackComponent_8da9db4d.o \
@@ -98,6 +100,16 @@ $(OBJDIR)/PowerPageComponent_4a26c732.o: ../../Source/PowerPageComponent.cpp
 $(OBJDIR)/BatteryMonitor_37302b96.o: ../../Source/BatteryMonitor.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling BatteryMonitor.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/WifiStatusJson_715858f8.o: ../../Source/WifiStatusJson.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling WifiStatusJson.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/WifiStatusNM_92fce0ef.o: ../../Source/WifiStatusNM.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling WifiStatusNM.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/WifiStatus_30949170.o: ../../Source/WifiStatus.cpp
