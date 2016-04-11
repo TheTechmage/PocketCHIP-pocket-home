@@ -194,6 +194,7 @@ void PowerPageComponent::setSleep() {
         } else {
             child.start("xset dpms force off" );
         }
+    }
   #endif
 }
 
