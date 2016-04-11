@@ -9,6 +9,11 @@ TrainComponent::TrainComponent() {
   dragModal->setAlwaysOnTop(true);
   dragModal->setInterceptsMouseClicks(true, false);
   addChildComponent(dragModal);
+  
+  gridRow1 = new Component();
+  addAndMakeVisible(gridRow1);
+  gridRow2 = new Component();
+  addAndMakeVisible(gridRow2);
 
   addMouseListener(this, true);
 }
@@ -61,9 +66,47 @@ void TrainComponent::positionChanged(
   updateItemTransforms();
 }
 
-void TrainComponent::addItem(Component *item) {
+void TrainComponent::addGridItem(Component* item) {
   items.add(item);
-  addAndMakeVisible(item);
+    
+  // build row lists for use in stretch layout
+  for (int i = 0; i < gridRows; i++) {
+    for (int j = 0; j < gridCols; j++) {
+      auto item = items[j + (i*gridCols)];
+      if (i == 0)
+        itemsRow1[j] = item;
+      else
+        itemsRow2[j] = item;
+    }
+  }
+  
+  // set grid items layout constraints
+  double rowProp = (1.0f/gridRows);
+  double colProp = (1.0f/gridCols);
+  for (int i = 0; i < gridRows; i++) {
+    rowLayout.setItemLayout(i, -rowProp/4, -rowProp, -rowProp);
+  }
+  for (int i = 0; i < gridCols; i++) {
+    colLayout.setItemLayout(i, -rowProp/4, -colProp, -colProp);
+  }
+  
+  // add to view tree
+  if (items.size() <= gridCols) {
+    gridRow1->addAndMakeVisible(item);
+  }
+  else {
+    gridRow2->addAndMakeVisible(item);
+  }
+}
+
+void TrainComponent::addItem(Component *item) {
+  if (kOrientationGrid) {
+    addGridItem(item);
+  }
+  else {
+    items.add(item);
+    addAndMakeVisible(item);
+  }
   position.setLimits(Range<double>(1 - items.size(), 0.0));
 }
 
@@ -80,36 +123,41 @@ void TrainComponent::setItemBoundsToFit() {
 
 void TrainComponent::updateItemTransforms() {
   float p = position.getPosition();
-  int row = 0;
-  int col = 0;
-
-  for (auto item : items) {
-    auto s = mix(itemScaleMax, itemScaleMin, smoothstep(0.0f, 1.0f, std::abs(p)));
-    auto c = item->getBounds().getCentre();
-
-    auto xf = AffineTransform::identity.scaled(s, s, c.getX(), c.getY());
-
-    switch (orientation) {
-      case kOrientationGrid: {
-        xf = xf.translated(std::floor(itemBounds.getWidth() * col), std::floor(itemBounds.getHeight() * row));
-
-        // TODO: multiple pages
-        col += 1;
-        if (col == gridCols) {
-          col = 0;
-          row += 1;
-        }
-      } break;
-      case kOrientationHorizontal: {
+  
+  if (orientation == kOrientationGrid) {
+    const auto& bounds = getLocalBounds();
+    auto rowHeight = bounds.getHeight() / 2.0f;
+    
+    Component* rowComps[] = {gridRow1.get(), gridRow2.get()};
+    // lay out components, size the rows first
+    rowLayout.layOutComponents(rowComps, gridRows, bounds.getX(), bounds.getY(),
+                               bounds.getWidth(), bounds.getHeight(),
+                               true, true);
+    // columns are laid out within rows, using the elements of the row
+    colLayout.layOutComponents(itemsRow1, gridCols, bounds.getX(), bounds.getY(),
+                               bounds.getWidth(), rowHeight,
+                               false, true);
+    colLayout.layOutComponents(itemsRow2, gridCols, bounds.getX(), bounds.getY(),
+                               bounds.getWidth(), rowHeight,
+                               false, true);
+  }
+  else {
+    for (auto item : items) {
+      auto s = mix(itemScaleMax, itemScaleMin, smoothstep(0.0f, 1.0f, std::abs(p)));
+      auto c = item->getBounds().getCentre();
+      
+      auto xf = AffineTransform::identity.scaled(s, s, c.getX(), c.getY());
+      
+      if (orientation == kOrientationHorizontal) {
         xf = xf.translated(std::floor(itemSpacing * p), 0);
-      } break;
-      case kOrientationVertical: {
+      }
+      else if (orientation == kOrientationVertical) {
         xf = xf.translated(0, std::floor(itemSpacing * p));
-      } break;
+      }
+      
+      item->setTransform(xf);
+      p += 1.0f;
     }
-
-    item->setTransform(xf);
-    p += 1.0f;
   }
 }
 

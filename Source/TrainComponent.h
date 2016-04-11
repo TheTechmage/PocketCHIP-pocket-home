@@ -38,19 +38,27 @@ public:
   void positionChanged(AnimatedPosition<AnimatedPositionBehaviours::SnapToPageBoundaries> &position,
                        double newPosition) override;
 
+  void addGridItem(Component* item);
   void addItem(Component *item);
 
   void setOrientation(Orientation orientation_);
 
 private:
+  int itemSpacing;
+  static constexpr int gridCols = 3;
+  static constexpr int gridRows = 2;
+        
   ScopedPointer<Component> dragModal;
+        
+  StretchableLayoutManager rowLayout;
+  StretchableLayoutManager colLayout;
+  ScopedPointer<Component> gridRow1;
+  ScopedPointer<Component> gridRow2;
+  Component* itemsRow1[gridCols];
+  Component* itemsRow2[gridCols];
 
   AnimatedPosition<AnimatedPositionBehaviours::SnapToPageBoundaries> position;
   Rectangle<int> itemBounds;
-
-  int itemSpacing;
-  int gridCols = 2;
-  int gridRows = 2;
 
   void setItemBoundsToFit();
   void updateItemTransforms();
