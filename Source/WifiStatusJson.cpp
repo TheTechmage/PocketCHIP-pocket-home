@@ -49,8 +49,6 @@ void WifiStatusJson::setDisabled() {
 }
 
 void WifiStatusJson::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
-  StringArray *cmd;
-  
   // disconnect if no ap provided
   if (ap == nullptr) {
     connected = false;
