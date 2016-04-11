@@ -5,8 +5,8 @@ WifiTest_BLDCMD = $(CXX) -o $(OUTDIR)/$(WifiTest_TARGET) $(WifiTest_OBJECTS) $(L
 WifiTest_CLEANCMD = rm -rf $(OUTDIR)/$(WifiTest_TARGET)
 
 WifiTest_OBJECTS := \
-  $(OBJDIR)/WifiStatusNM_1460096913.o \
-  $(OBJDIR)/WifiStatusJson_1460106599.o \
+  $(OBJDIR)/WifiStatusNM_92fce0ef.o \
+  $(OBJDIR)/WifiStatusJson_715858f8.o \
   $(OBJDIR)/WifiStatus_30949170.o \
   $(OBJDIR)/juce_core_e13be5a9.o \
   $(OBJDIR)/juce_data_structures_b87144a5.o \
