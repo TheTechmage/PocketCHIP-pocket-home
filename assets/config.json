@@ -10,11 +10,6 @@
           "shell": "xfce4-terminal"
         },
         {
-          "name": "make music",
-          "icon": "appIcons/musicsequencer.png",
-          "shell": "sunvox"
-        },
-        {
           "name": "play pico 8",
           "icon": "appIcons/pico8.png",
           "shell": "pico8-splore"
@@ -29,6 +24,11 @@
           "icon": "appIcons/mediaplayer.png",
           "shell": "gnome-mplayer"
         },
+        {
+                "name": "make music",
+                "icon": "appIcons/musicsequencer.png",
+                "shell": "sunvox"
+                },
         {
           "name": "watch youtube",
           "icon": "appIcons/youtube.png",
