@@ -75,8 +75,7 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   addAndMakeVisible(backButton);
 
   // create ssid list
-  accessPointListPage = new TrainComponent();
-  accessPointListPage->setOrientation(TrainComponent::kOrientationVertical);
+  accessPointListPage = new TrainComponent(TrainComponent::kOrientationVertical);
   accessPointListPage->itemHeight = 50;
   accessPointListPage->itemScaleMin = accessPointListPage->itemScaleMax = 1.0;
 

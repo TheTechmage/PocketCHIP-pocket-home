@@ -131,7 +131,14 @@ void Grid::showNextPage() {
   };
 }
 
-TrainComponent::TrainComponent() {
+TrainComponent::TrainComponent(Orientation orientation_) {
+  orientation = orientation_;
+  
+  if (kOrientationGrid == orientation) {
+    grid = new Grid();
+    addAndMakeVisible(grid);
+  }
+
   position.setPosition(0.0);
   position.addListener(this);
 
@@ -139,10 +146,7 @@ TrainComponent::TrainComponent() {
   dragModal->setAlwaysOnTop(true);
   dragModal->setInterceptsMouseClicks(true, false);
   addChildComponent(dragModal);
-
-  grid = new Grid();
-  addAndMakeVisible(grid);
-
+  
   addMouseListener(this, true);
 }
 
@@ -225,7 +229,7 @@ void TrainComponent::showNextPage() {
 }
 
 void TrainComponent::addItem(Component *item) {
-  if (kOrientationGrid) {
+  if (kOrientationGrid == orientation) {
     grid->addItem(item);
   }
   else {
@@ -233,10 +237,6 @@ void TrainComponent::addItem(Component *item) {
     addAndMakeVisible(item);
     position.setLimits(Range<double>(1 - items.size(), 0.0));
   }
-}
-
-void TrainComponent::setOrientation(Orientation orientation_) {
-  orientation = orientation_;
 }
 
 void TrainComponent::setItemBoundsToFit() {

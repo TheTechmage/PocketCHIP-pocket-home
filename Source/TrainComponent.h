@@ -73,7 +73,7 @@ public:
 
   Array<Component *> items;
 
-  TrainComponent();
+  TrainComponent(Orientation orientation_);
   ~TrainComponent();
 
   void paint(Graphics &) override;
@@ -93,8 +93,6 @@ public:
   void showNextPage();
 
   void addItem(Component *item);
-
-  void setOrientation(Orientation orientation_);
 
 private:
   int itemSpacing;

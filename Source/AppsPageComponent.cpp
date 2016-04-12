@@ -32,7 +32,7 @@ Rectangle<float> AppIconButton::getImageBounds() const {
 }
 
 AppsPageComponent::AppsPageComponent(LauncherComponent* launcherComponent) :
-  train(new TrainComponent()),
+  train(new TrainComponent(TrainComponent::Orientation::kOrientationGrid)),
   nextPageBtn(createImageButton("NextAppsPage",
                                 ImageFileFormat::loadFrom(BinaryData::backIcon_png, BinaryData::backIcon_pngSize))),
   prevPageBtn(createImageButton("PrevAppsPage",
@@ -46,10 +46,6 @@ AppsPageComponent::AppsPageComponent(LauncherComponent* launcherComponent) :
   nextPageBtn->addListener(this);
   prevPageBtn->addListener(this);
   
-  // WIP: rip em, these don't matter for grid
-  train->itemWidth = 186;
-  train->itemHeight = 109;
-  train->orientation = TrainComponent::Orientation::kOrientationGrid;
   addAndMakeVisible(train);
   
   runningCheckTimer.appsPage = this;
