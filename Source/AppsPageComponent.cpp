@@ -67,7 +67,7 @@ void AppsPageComponent::resized() {
   nextPageBtn->setBoundsToFit(b.getX(), b.getY(), b.getWidth(), b.getHeight(), Justification::centredBottom, true);
   
   // drop the page buttons from our available layout size
-  auto trainHeight = b.getHeight() - (2*nextPageBtn->getHeight());
+  auto trainHeight = b.getHeight() - (2.1*nextPageBtn->getHeight());
   train->setSize(b.getWidth(), trainHeight);
   train->setBoundsToFit(b.getX(), b.getY(), b.getWidth(), b.getHeight(), Justification::centred, false);
 }

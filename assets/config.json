@@ -28,17 +28,18 @@
                 "name": "make music",
                 "icon": "appIcons/musicsequencer.png",
                 "shell": "sunvox"
-                },
+         },
+         {
+          "name": "web browser",
+          "icon": "appIcons/webbrowser.png",
+          "shell": "netsurf"
+        },
         {
           "name": "watch youtube",
           "icon": "appIcons/youtube.png",
           "shell": "smtube"
         },
-        {
-          "name": "web browser",
-          "icon": "appIcons/webbrowser.png",
-          "shell": "netsurf"
-        },
+        
         {
           "name": "alex 4",
           "icon": "appIcons/alex4.png",
