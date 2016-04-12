@@ -16,7 +16,6 @@
             file="assets/brightnessIconLo.png"/>
       <FILE id="MzytiH" name="check.png" compile="0" resource="1" file="assets/check.png"/>
       <FILE id="FHWvCu" name="config.json" compile="0" resource="1" file="assets/config.json"/>
-      <FILE id="dtLXN6" name="gamesIcon.png" compile="0" resource="1" file="assets/gamesIcon.png"/>
       <FILE id="R7QzGg" name="lock.png" compile="0" resource="1" file="assets/lock.png"/>
       <FILE id="urZ3tM" name="pageDownIcon.png" compile="0" resource="1"
             file="assets/pageDownIcon.png"/>

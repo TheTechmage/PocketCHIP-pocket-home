@@ -210,20 +210,24 @@ void PowerPageComponent::showPowerSpinner() {
 
 void PowerPageComponent::buttonClicked(Button *button) {
   if( !debounce ) {
-    debounce = true;
-    powerDebounceTimer.startTimer(2 * 1000);
+    
     if (button == backButton) {
       getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
     } else if (button == powerOffButton) {
+      debounce = true;
       showPowerSpinner();
       child.start("systemctl poweroff");
     } else if (button == rebootButton) {
+      debounce = true;
       showPowerSpinner();
       child.start("systemctl reboot");
     } else if (button == sleepButton) {
+      debounce = true;
+      powerDebounceTimer.startTimer(2 * 1000);
       setSleep();
     } else if (button == felButton) {
-      //buttonsDisabled = true;
+      debounce = true;
+      powerDebounceTimer.startTimer(2 * 1000);
       child.start("felmode");
     }
   }

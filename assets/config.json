@@ -12,7 +12,7 @@
         {
           "name": "play pico 8",
           "icon": "appIcons/pico8.png",
-          "shell": "pico8-splore"
+          "shell": "pico8"
         },
         {
           "name": "make games",
