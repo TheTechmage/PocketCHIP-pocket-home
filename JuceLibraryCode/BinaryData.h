@@ -31,13 +31,19 @@ namespace BinaryData
     const int            check_pngSize = 550;
 
     extern const char*   config_json;
-    const int            config_jsonSize = 1339;
+    const int            config_jsonSize = 2036;
 
     extern const char*   gamesIcon_png;
     const int            gamesIcon_pngSize = 310;
 
     extern const char*   lock_png;
     const int            lock_pngSize = 427;
+
+    extern const char*   pageDownIcon_png;
+    const int            pageDownIcon_pngSize = 16133;
+
+    extern const char*   pageUpIcon_png;
+    const int            pageUpIcon_pngSize = 544;
 
     extern const char*   powerIcon_png;
     const int            powerIcon_pngSize = 448;
@@ -91,7 +97,7 @@ namespace BinaryData
     extern const char* namedResourceList[];
 
     // Number of elements in the namedResourceList array.
-    const int namedResourceListSize = 26;
+    const int namedResourceListSize = 28;
 
     // If you provide the name of one of the binary resource variables above, this function will
     // return the corresponding data and its size (or a null pointer if the name isn't found).

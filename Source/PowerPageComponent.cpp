@@ -131,7 +131,7 @@ PowerPageComponent::PowerPageComponent() {
    addAndMakeVisible(sleepButton);
     
     felButton = new TextButton("Fel");
-    felButton->setButtonText("FEL mode");
+    felButton->setButtonText("flash software");
     felButton->addListener(this);
     felButton->setTriggeredOnMouseDown(true);
     addAndMakeVisible(felButton);

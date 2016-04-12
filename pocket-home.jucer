@@ -18,6 +18,9 @@
       <FILE id="FHWvCu" name="config.json" compile="0" resource="1" file="assets/config.json"/>
       <FILE id="dtLXN6" name="gamesIcon.png" compile="0" resource="1" file="assets/gamesIcon.png"/>
       <FILE id="R7QzGg" name="lock.png" compile="0" resource="1" file="assets/lock.png"/>
+      <FILE id="urZ3tM" name="pageDownIcon.png" compile="0" resource="1"
+            file="assets/pageDownIcon.png"/>
+      <FILE id="FekQw3" name="pageUpIcon.png" compile="0" resource="1" file="assets/pageUpIcon.png"/>
       <FILE id="pKg9ms" name="powerIcon.png" compile="0" resource="1" file="assets/powerIcon.png"/>
       <FILE id="wDpH4Z" name="powerMenuBackground.png" compile="0" resource="1"
             file="assets/powerMenuBackground.png"/>

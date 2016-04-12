@@ -34,9 +34,9 @@ Rectangle<float> AppIconButton::getImageBounds() const {
 AppsPageComponent::AppsPageComponent(LauncherComponent* launcherComponent) :
   train(new TrainComponent(TrainComponent::Orientation::kOrientationGrid)),
   nextPageBtn(createImageButton("NextAppsPage",
-                                ImageFileFormat::loadFrom(BinaryData::backIcon_png, BinaryData::backIcon_pngSize))),
+                                ImageFileFormat::loadFrom(BinaryData::pageDownIcon_png, BinaryData::pageDownIcon_pngSize))),
   prevPageBtn(createImageButton("PrevAppsPage",
-                                ImageFileFormat::loadFrom(BinaryData::backIcon_png, BinaryData::backIcon_pngSize))),
+                                ImageFileFormat::loadFrom(BinaryData::pageUpIcon_png, BinaryData::pageUpIcon_pngSize))),
   launcherComponent(launcherComponent),
   runningCheckTimer(),
   debounceTimer()

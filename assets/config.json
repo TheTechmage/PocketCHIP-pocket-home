@@ -40,6 +40,12 @@
           "shell": "netsurf"
         },
         {
+          "name": "alex 4",
+          "icon": "appIcons/alex4.png",
+          "shell": "alex4"
+        },
+        
+        {
           "name": "file browser",
           "icon": "appIcons/filebrowser.png",
           "shell": "thunar"
