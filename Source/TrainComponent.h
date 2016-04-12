@@ -2,6 +2,55 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
+class GridPage : public Component {
+public:
+  GridPage();
+  ~GridPage() override;
+  
+  // WIP: move up
+  static constexpr int gridCols = 3;
+  static constexpr int gridRows = 2;
+  
+  bool addItem(Component *item);
+  void resized() override;
+  // TODO: make these private, expose with generic container interfaces
+  // TODO: number of rows should be controlled by the gridRows var
+  ScopedPointer<Component> gridRow1;
+  ScopedPointer<Component> gridRow2;
+  Component* itemsRow1[gridCols];
+  Component* itemsRow2[gridCols];
+  
+private:
+  Array<Component *> items;
+
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GridPage)
+};
+
+class Grid : public Component {
+public:
+  Grid();
+  ~Grid() override;
+  
+  Array<Component *> items;
+  
+  OwnedArray<GridPage> pages;
+  GridPage* page = nullptr;
+  
+  void createPage();
+  void addItem(Component *item);
+  bool hasPrevPage();
+  bool hasNextPage();
+  void showPageAtIndex(int idx);
+  void showPrevPage();
+  void showNextPage();
+  void resized() override;
+private:
+  StretchableLayoutManager rowLayout;
+  StretchableLayoutManager colLayout;
+  
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Grid)
+};
+
 class TrainComponent
     : public Component,
       public AnimatedPosition<AnimatedPositionBehaviours::SnapToPageBoundaries>::Listener {
@@ -37,20 +86,25 @@ public:
 
   void positionChanged(AnimatedPosition<AnimatedPositionBehaviours::SnapToPageBoundaries> &position,
                        double newPosition) override;
+  
+  bool hasPrevPage();
+  bool hasNextPage();
+  void showPrevPage();
+  void showNextPage();
 
   void addItem(Component *item);
 
   void setOrientation(Orientation orientation_);
 
 private:
+  int itemSpacing;
+        
   ScopedPointer<Component> dragModal;
+        
+  ScopedPointer<Grid> grid = nullptr;
 
   AnimatedPosition<AnimatedPositionBehaviours::SnapToPageBoundaries> position;
   Rectangle<int> itemBounds;
-
-  int itemSpacing;
-  int gridCols = 2;
-  int gridRows = 2;
 
   void setItemBoundsToFit();
   void updateItemTransforms();

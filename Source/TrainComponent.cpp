@@ -1,6 +1,136 @@
 #include "TrainComponent.h"
 #include "Utils.h"
 
+GridPage::GridPage() :
+  gridRow1(new Component()),
+  gridRow2(new Component())
+{
+  addAndMakeVisible(gridRow1);
+  addAndMakeVisible(gridRow2);
+}
+GridPage::~GridPage() {}
+
+bool GridPage::addItem(Component *item) {
+  if (items.size() == gridRows * gridCols) return false;
+  
+  items.add(item);
+  
+  // build row lists for use in stretch layout
+  for (int i = 0; i < gridRows; i++) {
+    for (int j = 0; j < gridCols; j++) {
+      auto item = items[j + (i*gridCols)];
+      if (i == 0)
+        itemsRow1[j] = item;
+      else
+        itemsRow2[j] = item;
+    }
+  }
+  
+  // add to view tree
+  if (items.size() <= gridCols) {
+    gridRow1->addAndMakeVisible(item);
+  }
+  else {
+    gridRow2->addAndMakeVisible(item);
+  }
+  
+  return true;
+}
+
+void GridPage::resized() {}
+
+Grid::Grid() {
+  page = new GridPage();
+  pages.add(page);
+  addAndMakeVisible(page);
+  
+  // WIP: these should be static on this class, not child
+  const auto gridRows = page->gridRows;
+  const auto gridCols = page->gridCols;
+  
+  double rowProp = (1.0f/gridRows);
+  double colProp = (1.0f/gridCols);
+  for (int i = 0; i < gridRows; i++) {
+    rowLayout.setItemLayout(i, -rowProp/4, -rowProp, -rowProp);
+  }
+  for (int i = 0; i < gridCols; i++) {
+    colLayout.setItemLayout(i, -rowProp/4, -colProp, -colProp);
+  }
+}
+Grid::~Grid() {}
+
+void Grid::createPage() {
+  pages.add(new GridPage());
+}
+
+void Grid::addItem(Component *item) {
+  items.add(item);
+  bool wasAdded = pages.getLast()->addItem(item);
+  if (!wasAdded) {
+    createPage();
+    pages.getLast()->addItem(item);
+  }
+}
+
+void Grid::resized() {
+  const auto gridRows = page->gridRows;
+  const auto gridCols = page->gridCols;
+  
+  const auto& bounds = getLocalBounds();
+  auto rowHeight = bounds.getHeight() / gridRows;
+  
+  Component* rowComps[] = {page->gridRow1.get(), page->gridRow2.get()};
+  
+  // size from largest to smallest, stretchable
+  // set page size to grid size
+  page->setBounds(bounds);
+  // lay out components, size the rows first
+  rowLayout.layOutComponents(rowComps, gridRows, bounds.getX(), bounds.getY(),
+                             bounds.getWidth(), bounds.getHeight(),
+                             true, true);
+  // columns are laid out within rows, using the elements of the row
+  colLayout.layOutComponents(page->itemsRow1, gridCols, bounds.getX(), bounds.getY(),
+                             bounds.getWidth(), rowHeight,
+                             false, true);
+  colLayout.layOutComponents(page->itemsRow2, gridCols, bounds.getX(), bounds.getY(),
+                             bounds.getWidth(), rowHeight,
+                             false, true);
+}
+
+bool Grid::hasPrevPage() {
+  return page != pages.getFirst();
+}
+bool Grid::hasNextPage() {
+  return page != pages.getLast();
+}
+
+void Grid::showPageAtIndex(int idx) {
+  removeChildComponent(page);
+  page->setEnabled(false);
+  page->setVisible(false);
+  
+  page = pages[idx];
+  
+  addAndMakeVisible(page);
+  page->setVisible(true);
+  page->setEnabled(true);
+  resized();
+}
+
+void Grid::showPrevPage() {
+  if (hasPrevPage()) {
+    int i = pages.indexOf(page);
+    showPageAtIndex(i-1);
+  };
+}
+
+void Grid::showNextPage() {
+  if (hasNextPage()) {
+    int i = pages.indexOf(page);
+    showPageAtIndex(i+1);
+  };
+}
+
 TrainComponent::TrainComponent() {
   position.setPosition(0.0);
   position.addListener(this);
@@ -10,6 +140,9 @@ TrainComponent::TrainComponent() {
   dragModal->setInterceptsMouseClicks(true, false);
   addChildComponent(dragModal);
 
+  grid = new Grid();
+  addAndMakeVisible(grid);
+
   addMouseListener(this, true);
 }
 
@@ -18,15 +151,21 @@ TrainComponent::~TrainComponent() {}
 void TrainComponent::paint(Graphics &g) {}
 
 void TrainComponent::resized() {
-  dragModal->setBounds(getLocalBounds());
-
-  updateItemSpacing();
-  setItemBoundsToFit();
-  updateItemTransforms();
+  const auto& bounds = getLocalBounds();
+  
+  if (kOrientationGrid == orientation) {
+    grid->setBounds(bounds);
+  }
+  else {
+    dragModal->setBounds(bounds);
+    
+    updateItemSpacing();
+    setItemBoundsToFit();
+    updateItemTransforms();
+  }
 }
 
 void TrainComponent::childrenChanged() {}
-
 
 void TrainComponent::mouseDown(const MouseEvent &e) {
   if (orientation == kOrientationGrid) return;
@@ -61,10 +200,39 @@ void TrainComponent::positionChanged(
   updateItemTransforms();
 }
 
+bool TrainComponent::hasPrevPage() {
+  if (kOrientationGrid == orientation)
+    return grid->hasPrevPage();
+  else
+    return false;
+}
+
+bool TrainComponent::hasNextPage() {
+  if (kOrientationGrid == orientation)
+    return grid->hasNextPage();
+  else
+    return false;
+}
+
+void TrainComponent::showPrevPage() {
+  if (hasPrevPage())
+    grid->showPrevPage();
+}
+
+void TrainComponent::showNextPage() {
+  if (hasNextPage())
+    grid->showNextPage();
+}
+
 void TrainComponent::addItem(Component *item) {
-  items.add(item);
-  addAndMakeVisible(item);
-  position.setLimits(Range<double>(1 - items.size(), 0.0));
+  if (kOrientationGrid) {
+    grid->addItem(item);
+  }
+  else {
+    items.add(item);
+    addAndMakeVisible(item);
+    position.setLimits(Range<double>(1 - items.size(), 0.0));
+  }
 }
 
 void TrainComponent::setOrientation(Orientation orientation_) {
@@ -80,34 +248,20 @@ void TrainComponent::setItemBoundsToFit() {
 
 void TrainComponent::updateItemTransforms() {
   float p = position.getPosition();
-  int row = 0;
-  int col = 0;
 
   for (auto item : items) {
     auto s = mix(itemScaleMax, itemScaleMin, smoothstep(0.0f, 1.0f, std::abs(p)));
     auto c = item->getBounds().getCentre();
-
+    
     auto xf = AffineTransform::identity.scaled(s, s, c.getX(), c.getY());
-
-    switch (orientation) {
-      case kOrientationGrid: {
-        xf = xf.translated(std::floor(itemBounds.getWidth() * col), std::floor(itemBounds.getHeight() * row));
-
-        // TODO: multiple pages
-        col += 1;
-        if (col == gridCols) {
-          col = 0;
-          row += 1;
-        }
-      } break;
-      case kOrientationHorizontal: {
-        xf = xf.translated(std::floor(itemSpacing * p), 0);
-      } break;
-      case kOrientationVertical: {
-        xf = xf.translated(0, std::floor(itemSpacing * p));
-      } break;
+    
+    if (orientation == kOrientationHorizontal) {
+      xf = xf.translated(std::floor(itemSpacing * p), 0);
     }
-
+    else if (orientation == kOrientationVertical) {
+      xf = xf.translated(0, std::floor(itemSpacing * p));
+    }
+    
     item->setTransform(xf);
     p += 1.0f;
   }

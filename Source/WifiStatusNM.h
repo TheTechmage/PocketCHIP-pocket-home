@@ -6,7 +6,7 @@
 class WifiStatusNM : public WifiStatus {
 public:
   WifiStatusNM();
-  ~WifiStatusNM();
+  ~WifiStatusNM() override;
   
   OwnedArray<WifiAccessPoint> *nearbyAccessPoints() override;
   WifiAccessPoint *connectedAccessPoint() const override;

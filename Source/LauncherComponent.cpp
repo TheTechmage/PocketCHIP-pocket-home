@@ -161,8 +161,8 @@ void LauncherComponent::resized() {
                         barSize);
   botButtons->setBounds(bounds.getX(), bounds.getHeight() - barSize, bounds.getWidth(),
                              barSize);
-  pageStack->setBounds(bounds.getX() + barSize, bounds.getY() + barSize/2, bounds.getWidth() - 2*barSize,
-                       bounds.getHeight() - barSize);
+  pageStack->setBounds(bounds.getX() + barSize, bounds.getY(), bounds.getWidth() - 2*barSize,
+                       bounds.getHeight());
   launchSpinner->setBounds(bounds.getWidth()/3., 0, bounds.getWidth()/3., bounds.getHeight());
 
   // init

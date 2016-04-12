@@ -6,7 +6,7 @@
 class WifiStatusJson : public WifiStatus {
 public:
   WifiStatusJson();
-  ~WifiStatusJson();
+  ~WifiStatusJson() override;
   
   OwnedArray<WifiAccessPoint> *nearbyAccessPoints() override;
   WifiAccessPoint *connectedAccessPoint() const override;

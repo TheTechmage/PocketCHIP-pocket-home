@@ -33,17 +33,27 @@ Rectangle<float> AppIconButton::getImageBounds() const {
 
 AppsPageComponent::AppsPageComponent(LauncherComponent* launcherComponent) :
   train(new TrainComponent()),
+  nextPageBtn(createImageButton("NextAppsPage",
+                                ImageFileFormat::loadFrom(BinaryData::backIcon_png, BinaryData::backIcon_pngSize))),
+  prevPageBtn(createImageButton("PrevAppsPage",
+                                ImageFileFormat::loadFrom(BinaryData::backIcon_png, BinaryData::backIcon_pngSize))),
   launcherComponent(launcherComponent),
   runningCheckTimer(),
   debounceTimer()
 {
+  addChildComponent(nextPageBtn);
+  addChildComponent(prevPageBtn);
+  nextPageBtn->addListener(this);
+  prevPageBtn->addListener(this);
+  
+  // WIP: rip em, these don't matter for grid
   train->itemWidth = 186;
   train->itemHeight = 109;
   train->orientation = TrainComponent::Orientation::kOrientationGrid;
-      
+  addAndMakeVisible(train);
+  
   runningCheckTimer.appsPage = this;
   debounceTimer.appsPage = this;
-  addAndMakeVisible(train);
 }
 
 AppsPageComponent::~AppsPageComponent() {}
@@ -51,8 +61,35 @@ AppsPageComponent::~AppsPageComponent() {}
 void AppsPageComponent::paint(Graphics &g) {}
 
 void AppsPageComponent::resized() {
-  auto bounds = getLocalBounds();
-  train->centreWithSize(bounds.getWidth(), bounds.getHeight());
+  auto b = getLocalBounds();
+  
+  // FIXME: this is barsize from launcher component
+  double btnHeight = 50;
+  prevPageBtn->setSize(btnHeight, btnHeight);
+  nextPageBtn->setSize(btnHeight, btnHeight);
+  prevPageBtn->setBoundsToFit(b.getX(), b.getY(), b.getWidth(), b.getHeight(), Justification::centredTop, true);
+  nextPageBtn->setBoundsToFit(b.getX(), b.getY(), b.getWidth(), b.getHeight(), Justification::centredBottom, true);
+  
+  // drop the page buttons from our available layout size
+  auto trainHeight = b.getHeight() - (2*nextPageBtn->getHeight());
+  train->setSize(b.getWidth(), trainHeight);
+  train->setBoundsToFit(b.getX(), b.getY(), b.getWidth(), b.getHeight(), Justification::centred, false);
+}
+
+void AppsPageComponent::checkShowPageNav() {
+  if (train->hasNextPage()) {
+    nextPageBtn->setVisible(true); nextPageBtn->setEnabled(true);
+  }
+  else {
+    nextPageBtn->setVisible(false); nextPageBtn->setEnabled(false);
+  }
+  
+  if (train->hasPrevPage()) {
+    prevPageBtn->setVisible(true); prevPageBtn->setEnabled(true);
+  }
+  else {
+    prevPageBtn->setVisible(false); prevPageBtn->setEnabled(false);
+  }
 }
 
 void AppsPageComponent::addAndOwnIcon(const String &name, Component *icon) {
@@ -90,6 +127,7 @@ Array<DrawableButton *> AppsPageComponent::createIconsFromJsonArray(const var &j
       }
     }
   }
+  checkShowPageNav();
   return buttons;
 }
 
@@ -136,15 +174,25 @@ void AppsPageComponent::checkRunningApps() {
 };
 
 void AppsPageComponent::buttonClicked(Button *button) {
-  auto appButton = (AppIconButton*)button;
-  
-  // FIXME: debounce and running apps need to integrate, once running check works
-  if (debounce) {
-    focusApp(appButton);
-    DBG("AppsPageComponent::buttonClicked - switch focus: " << appButton->shell);
+  if (button == prevPageBtn) {
+    train->showPrevPage();
+    checkShowPageNav();
+  }
+  else if (button == nextPageBtn) {
+    train->showNextPage();
+    checkShowPageNav();
   }
   else {
-    startApp(appButton);
-    DBG("AppsPageComponent::buttonClicked - shell: " << appButton->shell);
+    auto appButton = (AppIconButton*)button;
+    
+    // FIXME: debounce and running apps need to integrate, once running check works
+    if (debounce) {
+      focusApp(appButton);
+      DBG("AppsPageComponent::buttonClicked - switch focus: " << appButton->shell);
+    }
+    else {
+      startApp(appButton);
+      DBG("AppsPageComponent::buttonClicked - shell: " << appButton->shell);
+    }
   }
 }

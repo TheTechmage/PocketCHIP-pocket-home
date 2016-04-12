@@ -49,10 +49,9 @@ void WifiStatusJson::setDisabled() {
 }
 
 void WifiStatusJson::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
-  StringArray *cmd;
-  
   // disconnect if no ap provided
   if (ap == nullptr) {
+    DBG("WifiStatusJson::setConnectedAccessPoint - disconnect");
     connected = false;
     connectedAP = nullptr;
     for(const auto& listener : listeners) {
@@ -74,6 +73,7 @@ void WifiStatusJson::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
     }
     
     if (psk.isEmpty()) {
+      DBG("WifiStatusJson::setConnectedAccessPoint - connect with psk");
       connected = true;
       connectedAP = ap;
       for(const auto& listener : listeners) {
@@ -81,6 +81,7 @@ void WifiStatusJson::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
       }
     }
     else {
+      DBG("WifiStatusJson::setConnectedAccessPoint - connect");
       connected = true;
       connectedAP = ap;
       for(const auto& listener : listeners) {

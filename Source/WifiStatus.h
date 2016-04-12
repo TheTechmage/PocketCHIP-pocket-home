@@ -10,6 +10,9 @@ struct WifiAccessPoint {
 
 class WifiStatus {
 public:
+  WifiStatus();
+  virtual ~WifiStatus();
+  
   class Listener;
   
   virtual OwnedArray<WifiAccessPoint> *nearbyAccessPoints() = 0;
