@@ -7,6 +7,10 @@
     <GROUP id="{A1DF3F2A-774E-D561-3D99-5D88F7D2D731}" name="assets">
       <FILE id="fXAS6U" name="appsIcon.png" compile="0" resource="1" file="assets/appsIcon.png"/>
       <FILE id="Q1mu9C" name="backIcon.png" compile="0" resource="1" file="assets/backIcon.png"/>
+      <FILE id="EwvxWC" name="battery_0.png" compile="0" resource="1" file="assets/battery_0.png"/>
+      <FILE id="dM4LMa" name="battery_1.png" compile="0" resource="1" file="assets/battery_1.png"/>
+      <FILE id="rqV36A" name="battery_2.png" compile="0" resource="1" file="assets/battery_2.png"/>
+      <FILE id="hqpKLD" name="battery_3.png" compile="0" resource="1" file="assets/battery_3.png"/>
       <FILE id="lJvIsl" name="bluetooth.json" compile="0" resource="1" file="assets/bluetooth.json"/>
       <FILE id="Mqbn9F" name="bluetoothIcon.png" compile="0" resource="1"
             file="assets/bluetoothIcon.png"/>
@@ -36,13 +40,13 @@
       <FILE id="sbqoc4" name="wait4.png" compile="0" resource="1" file="assets/wait4.png"/>
       <FILE id="e8kBas" name="wifi.json" compile="0" resource="1" file="assets/wifi.json"/>
       <FILE id="MHXOcG" name="wifiIcon.png" compile="0" resource="1" file="assets/wifiIcon.png"/>
-      <FILE id="rl2Dqu" name="wifiStrength0.png" compile="0" resource="1"
+      <FILE id="Pt48nn" name="wifiStrength0.png" compile="0" resource="1"
             file="assets/wifiStrength0.png"/>
-      <FILE id="CDRTFm" name="wifiStrength1.png" compile="0" resource="1"
+      <FILE id="CWnHJt" name="wifiStrength1.png" compile="0" resource="1"
             file="assets/wifiStrength1.png"/>
-      <FILE id="sYeliS" name="wifiStrength2.png" compile="0" resource="1"
+      <FILE id="hdKIsT" name="wifiStrength2.png" compile="0" resource="1"
             file="assets/wifiStrength2.png"/>
-      <FILE id="urWfDy" name="wifiStrength3.png" compile="0" resource="1"
+      <FILE id="HhEIzd" name="wifiStrength3.png" compile="0" resource="1"
             file="assets/wifiStrength3.png"/>
     </GROUP>
     <GROUP id="{4593A345-C350-960A-058D-B48F8240AA1D}" name="Source">

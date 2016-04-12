@@ -15,6 +15,18 @@ namespace BinaryData
     extern const char*   backIcon_png;
     const int            backIcon_pngSize = 266;
 
+    extern const char*   battery_0_png;
+    const int            battery_0_pngSize = 148;
+
+    extern const char*   battery_1_png;
+    const int            battery_1_pngSize = 15353;
+
+    extern const char*   battery_2_png;
+    const int            battery_2_pngSize = 15354;
+
+    extern const char*   battery_3_png;
+    const int            battery_3_pngSize = 152;
+
     extern const char*   bluetooth_json;
     const int            bluetooth_jsonSize = 1119;
 
@@ -82,19 +94,19 @@ namespace BinaryData
     const int            wifiStrength0_pngSize = 341;
 
     extern const char*   wifiStrength1_png;
-    const int            wifiStrength1_pngSize = 227;
+    const int            wifiStrength1_pngSize = 15316;
 
     extern const char*   wifiStrength2_png;
-    const int            wifiStrength2_pngSize = 307;
+    const int            wifiStrength2_pngSize = 15316;
 
     extern const char*   wifiStrength3_png;
-    const int            wifiStrength3_pngSize = 391;
+    const int            wifiStrength3_pngSize = 15473;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];
 
     // Number of elements in the namedResourceList array.
-    const int namedResourceListSize = 27;
+    const int namedResourceListSize = 31;
 
     // If you provide the name of one of the binary resource variables above, this function will
     // return the corresponding data and its size (or a null pointer if the name isn't found).
