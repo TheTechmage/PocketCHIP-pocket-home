@@ -26,21 +26,29 @@ void BatteryIconTimer::timerCallback() {
   if(launcherComponent) {
     
     // we want to modify the "Battery" icon
+      const auto& batteryIcons = launcherComponent->batteryIconImages;
+      const auto& batteryIconsCharging = launcherComponent->batteryIconChargingImages;
+      
+
     for( auto button : launcherComponent->topButtons->buttons ) {
-      Image batteryImg = launcherComponent->lowBatteryImg;
+      Image batteryImg = batteryIcons[3];
       if (button->getName() == "Battery") {
-          if( batteryStatus.percentage > 3.5) {
-              int status = round( ((float)batteryStatus.percentage)/100.0f * 3.0f );
-              
+          int status = round( ((float)batteryStatus.percentage)/100.0f * 3.0f );
+          if( batteryStatus.percentage <= 5 ) {
+              status = 3;
+          } else {
               // limit status range to [0:3]
               if(status < 0) status = 0;
               if(status > 2) status = 2;
-              
-              const auto& batteryIcons = launcherComponent->batteryIconImages;
+          }
+          if( !batteryStatus.isCharging ) {
               batteryImg = batteryIcons[status];
-        }
+          } else {
+              batteryImg = batteryIconsCharging[status];
+
+          }
           
-        button->setImages(true, true, true,                       //
+          button->setImages(true, true, true,                       //
                        batteryImg, 1.0f, Colours::transparentWhite, // normal
                        batteryImg, 1.0f, Colours::transparentWhite, // over
                        batteryImg, 1.0f, Colours::transparentWhite, // down
@@ -70,12 +78,17 @@ LauncherComponent::LauncherComponent(const var &configJson) {
   batteryIconTimer.launcherComponent = this;
   batteryIconTimer.startTimer(1000);
   
-  Array<String> batteryImgPaths{"battery_1.png","battery_2.png","battery_3.png"};
+  Array<String> batteryImgPaths{"battery_1.png","battery_2.png","battery_3.png","battery_0.png"};
   for(auto& path : batteryImgPaths) {
     auto image = createImageFromFile(assetFile(path));
     batteryIconImages.add(image);
   }
-  lowBatteryImg = createImageFromFile(assetFile("battery_0.png"));
+    
+    Array<String> batteryImgChargingPaths{"batteryCharging_1.png","batteryCharging_2.png","batteryCharging_3.png","batteryCharging_0.png"};
+    for(auto& path : batteryImgChargingPaths) {
+        auto image = createImageFromFile(assetFile(path));
+        batteryIconChargingImages.add(image);
+    }
   
   launchSpinnerTimer.launcherComponent = this;
   Array<String> spinnerImgPaths{"wait1.png","wait2.png","wait3.png","wait4.png"};

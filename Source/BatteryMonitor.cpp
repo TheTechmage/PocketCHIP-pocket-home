@@ -26,7 +26,7 @@ void BatteryMonitor::run( ) {
     if( chargingFile.exists() ) {
       auto chargingValue = chargingFile.loadFileAsString();
       status.isCharging = chargingValue.getIntValue();
-      if(status.isCharging != 0) status.isCharging = 1;
+      //if(status.isCharging != 0) status.isCharging = 1;
     }
     
     if( voltageFile.exists() ) {

@@ -32,7 +32,7 @@ public:
     
     Array<Image> launchSpinnerImages;
     Array<Image> batteryIconImages;
-    Image lowBatteryImg;
+    Array<Image> batteryIconChargingImages;
     
     LaunchSpinnerTimer launchSpinnerTimer;
     BatteryIconTimer batteryIconTimer;

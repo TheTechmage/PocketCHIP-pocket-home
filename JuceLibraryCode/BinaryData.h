@@ -10,97 +10,97 @@
 namespace BinaryData
 {
     extern const char*   appsIcon_png;
-    const int            appsIcon_pngSize = 288;
+    const int            appsIcon_pngSize = 236;
 
     extern const char*   backIcon_png;
-    const int            backIcon_pngSize = 266;
+    const int            backIcon_pngSize = 226;
 
     extern const char*   battery_0_png;
-    const int            battery_0_pngSize = 148;
+    const int            battery_0_pngSize = 118;
 
     extern const char*   battery_1_png;
-    const int            battery_1_pngSize = 15353;
+    const int            battery_1_pngSize = 122;
 
     extern const char*   battery_2_png;
-    const int            battery_2_pngSize = 15354;
+    const int            battery_2_pngSize = 122;
 
     extern const char*   battery_3_png;
-    const int            battery_3_pngSize = 152;
+    const int            battery_3_pngSize = 122;
 
     extern const char*   bluetooth_json;
     const int            bluetooth_jsonSize = 1119;
 
     extern const char*   bluetoothIcon_png;
-    const int            bluetoothIcon_pngSize = 612;
+    const int            bluetoothIcon_pngSize = 528;
 
     extern const char*   brightnessIconHi_png;
-    const int            brightnessIconHi_pngSize = 654;
+    const int            brightnessIconHi_pngSize = 596;
 
     extern const char*   brightnessIconLo_png;
-    const int            brightnessIconLo_pngSize = 512;
+    const int            brightnessIconLo_pngSize = 466;
 
     extern const char*   check_png;
-    const int            check_pngSize = 550;
+    const int            check_pngSize = 475;
 
     extern const char*   config_json;
-    const int            config_jsonSize = 2160;
+    const int            config_jsonSize = 2164;
 
     extern const char*   lock_png;
     const int            lock_pngSize = 427;
 
     extern const char*   pageDownIcon_png;
-    const int            pageDownIcon_pngSize = 16133;
+    const int            pageDownIcon_pngSize = 546;
 
     extern const char*   pageUpIcon_png;
-    const int            pageUpIcon_pngSize = 544;
+    const int            pageUpIcon_pngSize = 523;
 
     extern const char*   powerIcon_png;
-    const int            powerIcon_pngSize = 448;
+    const int            powerIcon_pngSize = 379;
 
     extern const char*   powerMenuBackground_png;
-    const int            powerMenuBackground_pngSize = 1641;
+    const int            powerMenuBackground_pngSize = 1591;
 
     extern const char*   seguibl_ttf;
     const int            seguibl_ttfSize = 323400;
 
     extern const char*   settingsIcon_png;
-    const int            settingsIcon_pngSize = 367;
+    const int            settingsIcon_pngSize = 314;
 
     extern const char*   volumeIconHi_png;
-    const int            volumeIconHi_pngSize = 631;
+    const int            volumeIconHi_pngSize = 569;
 
     extern const char*   volumeIconLo_png;
-    const int            volumeIconLo_pngSize = 239;
+    const int            volumeIconLo_pngSize = 203;
 
     extern const char*   wait1_png;
-    const int            wait1_pngSize = 2503;
+    const int            wait1_pngSize = 2328;
 
     extern const char*   wait2_png;
-    const int            wait2_pngSize = 2398;
+    const int            wait2_pngSize = 2246;
 
     extern const char*   wait3_png;
-    const int            wait3_pngSize = 2406;
+    const int            wait3_pngSize = 2248;
 
     extern const char*   wait4_png;
-    const int            wait4_pngSize = 2399;
+    const int            wait4_pngSize = 2249;
 
     extern const char*   wifi_json;
     const int            wifi_jsonSize = 1156;
 
     extern const char*   wifiIcon_png;
-    const int            wifiIcon_pngSize = 749;
+    const int            wifiIcon_pngSize = 699;
 
     extern const char*   wifiStrength0_png;
-    const int            wifiStrength0_pngSize = 341;
+    const int            wifiStrength0_pngSize = 313;
 
     extern const char*   wifiStrength1_png;
-    const int            wifiStrength1_pngSize = 15316;
+    const int            wifiStrength1_pngSize = 399;
 
     extern const char*   wifiStrength2_png;
-    const int            wifiStrength2_pngSize = 15316;
+    const int            wifiStrength2_pngSize = 399;
 
     extern const char*   wifiStrength3_png;
-    const int            wifiStrength3_pngSize = 15473;
+    const int            wifiStrength3_pngSize = 505;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];

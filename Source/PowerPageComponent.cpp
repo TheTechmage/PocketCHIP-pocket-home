@@ -102,7 +102,7 @@ PowerPageComponent::PowerPageComponent() {
   addAndMakeVisible(mainPage);
   mainPage->toBack();
   ChildProcess child{};
-    
+  debounce = 0;
 
   // create back button
   backButton = createImageButton(
@@ -210,7 +210,6 @@ void PowerPageComponent::showPowerSpinner() {
 
 void PowerPageComponent::buttonClicked(Button *button) {
   if( !debounce ) {
-    
     if (button == backButton) {
       getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
     } else if (button == powerOffButton) {
