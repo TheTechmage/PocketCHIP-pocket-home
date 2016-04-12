@@ -17,7 +17,7 @@
         {
           "name": "play pico 8",
           "icon": "appIcons/pico8.png",
-          "shell": "pico8"
+          "shell": "pico8-splore"
         },
         {
           "name": "make games",
@@ -37,7 +37,7 @@
         {
           "name": "web browser",
           "icon": "appIcons/webbrowser.png",
-          "shell": "iceweasel"
+          "shell": "netsurf"
         },
         {
           "name": "file browser",
