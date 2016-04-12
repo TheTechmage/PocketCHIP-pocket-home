@@ -11,6 +11,8 @@ struct BatteryStatus {
 class BatteryMonitor: public juce::Thread {
 private:
   BatteryStatus status;
+  float maxVoltage = 4.17;
+  float minVoltage = 3.275;
 public:
   BatteryMonitor();
   ~BatteryMonitor();

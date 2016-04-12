@@ -32,8 +32,16 @@ void BatteryMonitor::run( ) {
     if( voltageFile.exists() ) {
       auto voltageValue = voltageFile.loadFileAsString();
       
+      float voltageOffset = voltageValue.getFloatValue() - minVoltage;
+      float maxOffset = maxVoltage - minVoltage;
+      
       // turn voltage into a percentage we can use
-      status.percentage = (voltageValue.getIntValue() - 3000)/12;
+      status.percentage = (voltageOffset * 100)/maxOffset;
+      
+      // only show lowest percentage graphic if battery is at least 10%
+      if ( status.percentage < 15 && status.percentage > 10) {
+          status.percentage = 25;
+      }
       
       // limit range to [0:100]
       if(status.percentage>100) status.percentage = 100;
