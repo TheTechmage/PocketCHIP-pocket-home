@@ -7,15 +7,13 @@ public:
   GridPage();
   ~GridPage() override;
   
-  Array<Component *> items;
-  
   // WIP: move up
   static constexpr int gridCols = 3;
   static constexpr int gridRows = 2;
   
-  void addItem(Component *item);
+  bool addItem(Component *item);
   void resized() override;
-  // WIP: make these private once the rest gets pulled in
+  // TODO: make these private, expose with generic container interfaces
   // TODO: number of rows should be controlled by the gridRows var
   ScopedPointer<Component> gridRow1;
   ScopedPointer<Component> gridRow2;
@@ -23,6 +21,8 @@ public:
   Component* itemsRow2[gridCols];
   
 private:
+  Array<Component *> items;
+
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GridPage)
 };
 
@@ -36,7 +36,12 @@ public:
   OwnedArray<GridPage> pages;
   GridPage* page = nullptr;
   
+  void createPage();
   void addItem(Component *item);
+  bool hasNextPage();
+  bool hasPrevPage();
+  void showPageAtIndex(int idx);
+  void showPrevPage();
   void showNextPage();
   void resized() override;
 private:

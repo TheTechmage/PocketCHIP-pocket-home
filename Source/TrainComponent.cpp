@@ -10,7 +10,9 @@ GridPage::GridPage() :
 }
 GridPage::~GridPage() {}
 
-void GridPage::addItem(Component *item) {
+bool GridPage::addItem(Component *item) {
+  if (items.size() == gridRows * gridCols) return false;
+  
   items.add(item);
   
   // build row lists for use in stretch layout
@@ -31,14 +33,15 @@ void GridPage::addItem(Component *item) {
   else {
     gridRow2->addAndMakeVisible(item);
   }
+  
+  return true;
 }
 
 void GridPage::resized() {}
 
 Grid::Grid() {
-  pages.add(new GridPage());
-  pages.add(new GridPage());
-  page = pages.getFirst();
+  page = new GridPage();
+  pages.add(page);
   addAndMakeVisible(page);
   
   // WIP: these should be static on this class, not child
@@ -56,13 +59,15 @@ Grid::Grid() {
 }
 Grid::~Grid() {}
 
+void Grid::createPage() {
+  pages.add(new GridPage());
+}
+
 void Grid::addItem(Component *item) {
   items.add(item);
-  
-  if (items.size() % 2) {
-    pages.getFirst()->addItem(item);
-  }
-  else {
+  bool wasAdded = pages.getLast()->addItem(item);
+  if (!wasAdded) {
+    createPage();
     pages.getLast()->addItem(item);
   }
 }
@@ -92,19 +97,38 @@ void Grid::resized() {
                              false, true);
 }
 
-void Grid::showNextPage() {
-  // WIP: test grid paging
+bool Grid::hasPrevPage() {
+  return page != pages.getFirst();
+}
+bool Grid::hasNextPage() {
+  return page != pages.getLast();
+}
+
+void Grid::showPageAtIndex(int idx) {
   removeChildComponent(page);
   page->setEnabled(false);
   page->setVisible(false);
   
-  page = (page == pages.getLast()) ?
-    pages.getFirst() : pages.getLast();
+  page = pages[idx];
   
   addAndMakeVisible(page);
   page->setVisible(true);
   page->setEnabled(true);
   resized();
+}
+
+void Grid::showPrevPage() {
+  if (hasPrevPage()) {
+    int i = pages.indexOf(page);
+    showPageAtIndex(i-1);
+  };
+}
+
+void Grid::showNextPage() {
+  if (hasNextPage()) {
+    int i = pages.indexOf(page);
+    showPageAtIndex(i+1);
+  };
 }
 
 TrainComponent::TrainComponent() {
