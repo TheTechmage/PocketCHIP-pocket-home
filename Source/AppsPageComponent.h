@@ -49,6 +49,7 @@ public:
   void paint(Graphics &) override;
   void resized() override;
   void checkRunningApps();
+  void checkShowPageNav();
 
   void addAndOwnIcon(const String &name, Component *icon);
   DrawableButton *createAndOwnIcon(const String &name, const String &shell, const String &iconPath);
@@ -57,6 +58,8 @@ public:
   void buttonClicked(Button *) override;
 
 private:
+  ScopedPointer<ImageButton> nextPageBtn;
+  ScopedPointer<ImageButton> prevPageBtn;
   LauncherComponent* launcherComponent;
   
   AppRunningMap runningAppsByButton;

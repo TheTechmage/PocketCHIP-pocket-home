@@ -188,11 +188,7 @@ void TrainComponent::mouseDrag(const MouseEvent &e) {
 }
 
 void TrainComponent::mouseUp(const MouseEvent &e) {
-  if (orientation == kOrientationGrid) {
-    // WIP: testing event
-    grid->showNextPage();
-    return;
-  };
+  if (orientation == kOrientationGrid) return;
   
   position.endDrag();
   dragModal->setVisible(false);
@@ -202,6 +198,30 @@ void TrainComponent::positionChanged(
     AnimatedPosition<AnimatedPositionBehaviours::SnapToPageBoundaries> &position,
     double newPosition) {
   updateItemTransforms();
+}
+
+bool TrainComponent::hasPrevPage() {
+  if (kOrientationGrid == orientation)
+    return grid->hasPrevPage();
+  else
+    return false;
+}
+
+bool TrainComponent::hasNextPage() {
+  if (kOrientationGrid == orientation)
+    return grid->hasNextPage();
+  else
+    return false;
+}
+
+void TrainComponent::showPrevPage() {
+  if (hasPrevPage())
+    grid->showPrevPage();
+}
+
+void TrainComponent::showNextPage() {
+  if (hasNextPage())
+    grid->showNextPage();
 }
 
 void TrainComponent::addItem(Component *item) {

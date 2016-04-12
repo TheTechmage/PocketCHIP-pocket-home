@@ -38,8 +38,8 @@ public:
   
   void createPage();
   void addItem(Component *item);
-  bool hasNextPage();
   bool hasPrevPage();
+  bool hasNextPage();
   void showPageAtIndex(int idx);
   void showPrevPage();
   void showNextPage();
@@ -86,6 +86,11 @@ public:
 
   void positionChanged(AnimatedPosition<AnimatedPositionBehaviours::SnapToPageBoundaries> &position,
                        double newPosition) override;
+  
+  bool hasPrevPage();
+  bool hasNextPage();
+  void showPrevPage();
+  void showNextPage();
 
   void addItem(Component *item);
 
