@@ -37,13 +37,14 @@ AppsPageComponent::AppsPageComponent(LauncherComponent* launcherComponent) :
   runningCheckTimer(),
   debounceTimer()
 {
+  // WIP: rip em, these don't matter for grid
   train->itemWidth = 186;
   train->itemHeight = 109;
   train->orientation = TrainComponent::Orientation::kOrientationGrid;
-      
+  addAndMakeVisible(train);
+  
   runningCheckTimer.appsPage = this;
   debounceTimer.appsPage = this;
-  addAndMakeVisible(train);
 }
 
 AppsPageComponent::~AppsPageComponent() {}

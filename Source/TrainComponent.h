@@ -2,6 +2,50 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
+class GridPage : public Component {
+public:
+  GridPage();
+  ~GridPage() override;
+  
+  Array<Component *> items;
+  
+  // WIP: move up
+  static constexpr int gridCols = 3;
+  static constexpr int gridRows = 2;
+  
+  void addItem(Component *item);
+  void resized() override;
+  // WIP: make these private once the rest gets pulled in
+  // TODO: number of rows should be controlled by the gridRows var
+  ScopedPointer<Component> gridRow1;
+  ScopedPointer<Component> gridRow2;
+  Component* itemsRow1[gridCols];
+  Component* itemsRow2[gridCols];
+  
+private:
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GridPage)
+};
+
+class Grid : public Component {
+public:
+  Grid();
+  ~Grid() override;
+  
+  Array<Component *> items;
+  
+  OwnedArray<GridPage> pages;
+  GridPage* page = nullptr;
+  
+  void addItem(Component *item);
+  void showNextPage();
+  void resized() override;
+private:
+  StretchableLayoutManager rowLayout;
+  StretchableLayoutManager colLayout;
+  
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Grid)
+};
+
 class TrainComponent
     : public Component,
       public AnimatedPosition<AnimatedPositionBehaviours::SnapToPageBoundaries>::Listener {
@@ -38,24 +82,16 @@ public:
   void positionChanged(AnimatedPosition<AnimatedPositionBehaviours::SnapToPageBoundaries> &position,
                        double newPosition) override;
 
-  void addGridItem(Component* item);
   void addItem(Component *item);
 
   void setOrientation(Orientation orientation_);
 
 private:
   int itemSpacing;
-  static constexpr int gridCols = 3;
-  static constexpr int gridRows = 2;
         
   ScopedPointer<Component> dragModal;
         
-  StretchableLayoutManager rowLayout;
-  StretchableLayoutManager colLayout;
-  ScopedPointer<Component> gridRow1;
-  ScopedPointer<Component> gridRow2;
-  Component* itemsRow1[gridCols];
-  Component* itemsRow2[gridCols];
+  ScopedPointer<Grid> grid = nullptr;
 
   AnimatedPosition<AnimatedPositionBehaviours::SnapToPageBoundaries> position;
   Rectangle<int> itemBounds;
