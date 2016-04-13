@@ -47,9 +47,14 @@
         },
         
         {
-          "name": "file browser",
+          "name": "browse files",
           "icon": "appIcons/filebrowser.png",
           "shell": "thunar"
+        },
+        {
+          "name": "view images",
+          "icon": "appIcons/imageviewer.png",
+          "shell": "viewnior"
         },
         {
           "name": "install apps",
