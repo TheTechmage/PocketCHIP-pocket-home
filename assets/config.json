@@ -60,6 +60,11 @@
           "name": "install apps",
           "icon": "appIcons/install.png",
           "shell": "echo 0"
+        },
+        {
+          "name": "update software",
+          "icon": "appIcons/update.png",
+          "shell": "xfce4-terminal -e 'sudo apt-get update'"
         }
       ],
       "cornerButtons": [
