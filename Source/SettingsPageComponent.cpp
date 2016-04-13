@@ -98,6 +98,9 @@ WifiCategoryItemComponent::WifiCategoryItemComponent() : SettingsCategoryItemCom
   iconDrawable =
       Drawable::createFromImageFile(assetFile("wifiStrength3.png"));
   icon->setImages(iconDrawable);
+  bool isEnabled = getWifiStatus().isEnabled();
+  toggle->setToggleState(isEnabled, NotificationType::dontSendNotification);
+  button->setEnabled(isEnabled);
   updateButtonText();
 }
 
