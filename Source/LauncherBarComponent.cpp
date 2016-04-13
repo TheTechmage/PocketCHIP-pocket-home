@@ -21,7 +21,7 @@ void LauncherBarButton::paintButton(Graphics &g, bool isMouseOverButton, bool is
 
 // FIXME: this should be renamed e.g. CornerButtonsComponent
 LauncherBarComponent::LauncherBarComponent() {
-  tempIcon = Drawable::createFromImageData(BinaryData::appsIcon_png, BinaryData::appsIcon_pngSize);
+  //tempIcon = Drawable::createFromImageData(BinaryData::appsIcon_png, BinaryData::appsIcon_pngSize);
 }
 
 LauncherBarComponent::~LauncherBarComponent() {}

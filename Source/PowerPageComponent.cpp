@@ -106,7 +106,7 @@ PowerPageComponent::PowerPageComponent() {
 
   // create back button
   backButton = createImageButton(
-      "Back", ImageFileFormat::loadFrom(BinaryData::backIcon_png, BinaryData::backIcon_pngSize));
+      "Back", createImageFromFile(assetFile("backIcon.png")));
   backButton->addListener(this);
   backButton->setTriggeredOnMouseDown(true);
   backButton->setAlwaysOnTop(true);

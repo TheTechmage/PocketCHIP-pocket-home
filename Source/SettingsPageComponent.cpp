@@ -96,7 +96,7 @@ void SettingsCategoryItemComponent::enablementChanged() {
 
 WifiCategoryItemComponent::WifiCategoryItemComponent() : SettingsCategoryItemComponent("wifi") {
   iconDrawable =
-      Drawable::createFromImageData(BinaryData::wifiIcon_png, BinaryData::wifiIcon_pngSize);
+      Drawable::createFromImageFile(assetFile("wifiStrength3.png"));
   icon->setImages(iconDrawable);
   updateButtonText();
 }
@@ -131,33 +131,33 @@ void WifiCategoryItemComponent::updateButtonText() {
 
 BluetoothCategoryItemComponent::BluetoothCategoryItemComponent()
 : SettingsCategoryItemComponent("bluetooth") {
-  iconDrawable = Drawable::createFromImageData(BinaryData::bluetoothIcon_png,
-                                               BinaryData::bluetoothIcon_pngSize);
-  icon->setImages(iconDrawable);
-  updateButtonText();
+  //iconDrawable = Drawable::createFromImageData(BinaryData::bluetoothIcon_png,
+  //                                             BinaryData::bluetoothIcon_pngSize);
+  //icon->setImages(iconDrawable);
+  //updateButtonText();
 }
 
 
 void BluetoothCategoryItemComponent::enabledStateChanged(bool enabled) {
-  getBluetoothStatus().enabled = enabled;
-  button->setEnabled(enabled);
-  updateButtonText();
+  //getBluetoothStatus().enabled = enabled;
+  //button->setEnabled(enabled);
+  //updateButtonText();
 }
 
 void BluetoothCategoryItemComponent::updateButtonText() {
-  const auto &status = getBluetoothStatus();
-  if (status.enabled) {
-    int connectedDeviceCount =
-        std::accumulate(status.devices.begin(), status.devices.end(), 0,
-                        [](int n, BluetoothDevice *d) { return n + d->connected; });
-    if (connectedDeviceCount > 0) {
-      button->setText(std::to_string(connectedDeviceCount) + " Devices Connected");
-    } else {
-      button->setText("No Devices Connected");
-    }
-  } else {
-    button->setText("Bluetooth Off");
-  }
+  //const auto &status = getBluetoothStatus();
+  //if (status.enabled) {
+  //  int connectedDeviceCount =
+  //      std::accumulate(status.devices.begin(), status.devices.end(), 0,
+  //                      [](int n, BluetoothDevice *d) { return n + d->connected; });
+  //  if (connectedDeviceCount > 0) {
+  //    button->setText(std::to_string(connectedDeviceCount) + " Devices Connected");
+  //  } else {
+   //   button->setText("No Devices Connected");
+   // }
+  //} else {
+  //  button->setText("Bluetooth Off");
+  //}
 }
 
 
@@ -202,26 +202,24 @@ SettingsPageComponent::SettingsPageComponent() {
     }
   #endif
 
-  ScopedPointer<Drawable> brightLo = Drawable::createFromImageData(
-  +BinaryData::brightnessIconLo_png, BinaryData::brightnessIconLo_pngSize);
-  ScopedPointer<Drawable> brightHi = Drawable::createFromImageData(
-      BinaryData::brightnessIconHi_png, BinaryData::brightnessIconHi_pngSize);
+  ScopedPointer<Drawable> brightLo = Drawable::createFromImageFile(assetFile("brightnessIconLo.png"));
+  ScopedPointer<Drawable> brightHi = Drawable::createFromImageFile(assetFile("brightnessIconHi.png"));
   screenBrightnessSlider =
       ScopedPointer<IconSliderComponent>(new IconSliderComponent(*brightLo, *brightHi));
   screenBrightnessSlider->addListener(this);
   screenBrightnessSlider->slider->setValue(1+(brightness-0.09)*10);
 
   ScopedPointer<Drawable> volLo =
-      Drawable::createFromImageData(BinaryData::volumeIconLo_png, BinaryData::volumeIconLo_pngSize);
+      Drawable::createFromImageFile(assetFile("volumeIconLo.png"));
   ScopedPointer<Drawable> volHi =
-      Drawable::createFromImageData(BinaryData::volumeIconHi_png, BinaryData::volumeIconHi_pngSize);
+      Drawable::createFromImageFile(assetFile("volumeIconHi.png"));
   volumeSlider = ScopedPointer<IconSliderComponent>(new IconSliderComponent(*volLo, *volHi));
   volumeSlider->addListener(this);
   volumeSlider->slider->setValue(volume);
 
   // create back button
   backButton = createImageButton(
-      "Back", ImageFileFormat::loadFrom(BinaryData::backIcon_png, BinaryData::backIcon_pngSize));
+                                 "Back", createImageFromFile(assetFile("backIcon.png")));
   backButton->addListener(this);
   backButton->setTriggeredOnMouseDown(true);
   backButton->setAlwaysOnTop(true);
@@ -233,10 +231,10 @@ SettingsPageComponent::SettingsPageComponent() {
   addAndMakeVisible(wifiCategoryItem);
   getWifiStatus().addListener(wifiCategoryItem);
 
-  bluetoothCategoryItem = new BluetoothCategoryItemComponent();
-  bluetoothCategoryItem->button->setTriggeredOnMouseDown(true);
-  bluetoothCategoryItem->button->addListener(this);
-  addAndMakeVisible(bluetoothCategoryItem);
+  //bluetoothCategoryItem = new BluetoothCategoryItemComponent();
+  //bluetoothCategoryItem->button->setTriggeredOnMouseDown(true);
+  //bluetoothCategoryItem->button->addListener(this);
+  //addAndMakeVisible(bluetoothCategoryItem);
 
   addAndMakeVisible(screenBrightnessSlider);
   addAndMakeVisible(volumeSlider);

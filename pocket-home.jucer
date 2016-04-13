@@ -5,49 +5,10 @@
               jucerVersion="4.1.0" companyName="Next Thing Co." companyWebsite="http://nextthing.co">
   <MAINGROUP id="NYF1Vz" name="pocket-home">
     <GROUP id="{A1DF3F2A-774E-D561-3D99-5D88F7D2D731}" name="assets">
-      <FILE id="fXAS6U" name="appsIcon.png" compile="0" resource="1" file="assets/appsIcon.png"/>
-      <FILE id="Q1mu9C" name="backIcon.png" compile="0" resource="1" file="assets/backIcon.png"/>
-      <FILE id="EwvxWC" name="battery_0.png" compile="0" resource="1" file="assets/battery_0.png"/>
-      <FILE id="dM4LMa" name="battery_1.png" compile="0" resource="1" file="assets/battery_1.png"/>
-      <FILE id="rqV36A" name="battery_2.png" compile="0" resource="1" file="assets/battery_2.png"/>
-      <FILE id="hqpKLD" name="battery_3.png" compile="0" resource="1" file="assets/battery_3.png"/>
       <FILE id="lJvIsl" name="bluetooth.json" compile="0" resource="1" file="assets/bluetooth.json"/>
-      <FILE id="Mqbn9F" name="bluetoothIcon.png" compile="0" resource="1"
-            file="assets/bluetoothIcon.png"/>
-      <FILE id="UdO4Ze" name="brightnessIconHi.png" compile="0" resource="1"
-            file="assets/brightnessIconHi.png"/>
-      <FILE id="kiOY7j" name="brightnessIconLo.png" compile="0" resource="1"
-            file="assets/brightnessIconLo.png"/>
-      <FILE id="MzytiH" name="check.png" compile="0" resource="1" file="assets/check.png"/>
       <FILE id="FHWvCu" name="config.json" compile="0" resource="1" file="assets/config.json"/>
-      <FILE id="R7QzGg" name="lock.png" compile="0" resource="1" file="assets/lock.png"/>
-      <FILE id="urZ3tM" name="pageDownIcon.png" compile="0" resource="1"
-            file="assets/pageDownIcon.png"/>
-      <FILE id="FekQw3" name="pageUpIcon.png" compile="0" resource="1" file="assets/pageUpIcon.png"/>
-      <FILE id="pKg9ms" name="powerIcon.png" compile="0" resource="1" file="assets/powerIcon.png"/>
-      <FILE id="wDpH4Z" name="powerMenuBackground.png" compile="0" resource="1"
-            file="assets/powerMenuBackground.png"/>
       <FILE id="vpRBHk" name="seguibl.ttf" compile="0" resource="1" file="assets/fonts/seguibl.ttf"/>
-      <FILE id="sInlJA" name="settingsIcon.png" compile="0" resource="1"
-            file="assets/settingsIcon.png"/>
-      <FILE id="WLBzbC" name="volumeIconHi.png" compile="0" resource="1"
-            file="assets/volumeIconHi.png"/>
-      <FILE id="w0qzKx" name="volumeIconLo.png" compile="0" resource="1"
-            file="assets/volumeIconLo.png"/>
-      <FILE id="kRiVMY" name="wait1.png" compile="0" resource="1" file="assets/wait1.png"/>
-      <FILE id="DHpT2v" name="wait2.png" compile="0" resource="1" file="assets/wait2.png"/>
-      <FILE id="DywBel" name="wait3.png" compile="0" resource="1" file="assets/wait3.png"/>
-      <FILE id="sbqoc4" name="wait4.png" compile="0" resource="1" file="assets/wait4.png"/>
       <FILE id="e8kBas" name="wifi.json" compile="0" resource="1" file="assets/wifi.json"/>
-      <FILE id="MHXOcG" name="wifiIcon.png" compile="0" resource="1" file="assets/wifiIcon.png"/>
-      <FILE id="Pt48nn" name="wifiStrength0.png" compile="0" resource="1"
-            file="assets/wifiStrength0.png"/>
-      <FILE id="CWnHJt" name="wifiStrength1.png" compile="0" resource="1"
-            file="assets/wifiStrength1.png"/>
-      <FILE id="hdKIsT" name="wifiStrength2.png" compile="0" resource="1"
-            file="assets/wifiStrength2.png"/>
-      <FILE id="HhEIzd" name="wifiStrength3.png" compile="0" resource="1"
-            file="assets/wifiStrength3.png"/>
     </GROUP>
     <GROUP id="{4593A345-C350-960A-058D-B48F8240AA1D}" name="Source">
       <FILE id="Bc6FLL" name="PowerPageComponent.cpp" compile="1" resource="0"

@@ -49,14 +49,14 @@ SettingsPageBluetoothComponent::SettingsPageBluetoothComponent() {
     deviceListPage->addItem(item);
   }
 
-  btIcon = new ImageComponent("BT Icon");
-  btIcon->setImage(
-      ImageFileFormat::loadFrom(BinaryData::bluetoothIcon_png, BinaryData::bluetoothIcon_pngSize));
-  addAndMakeVisible(btIcon);
+  //btIcon = new ImageComponent("BT Icon");
+  //btIcon->setImage(
+  //    ImageFileFormat::loadFrom(BinaryData::bluetoothIcon_png, BinaryData::bluetoothIcon_pngSize));
+  //addAndMakeVisible(btIcon);
 
   // create back button
   backButton = createImageButton(
-      "Back", ImageFileFormat::loadFrom(BinaryData::backIcon_png, BinaryData::backIcon_pngSize));
+                                 "Back", createImageFromFile(assetFile("backIcon.png")));
   backButton->addListener(this);
   backButton->setTriggeredOnMouseDown(true);
   backButton->setAlwaysOnTop(true);
@@ -76,8 +76,8 @@ SettingsPageBluetoothComponent::SettingsPageBluetoothComponent() {
   connectionButton->addListener(this);
   connectionPage->addAndMakeVisible(connectionButton);
 
-  icons.checkIcon = Drawable::createFromImageData(BinaryData::check_png, BinaryData::check_pngSize);
-  icons.arrowIcon = Drawable::createFromImageData(BinaryData::backIcon_png, BinaryData::backIcon_pngSize);
+  //icons.checkIcon = Drawable::createFromImageData(BinaryData::check_png, BinaryData::check_pngSize);
+  icons.arrowIcon = Drawable::createFromImageFile(assetFile("backIcon.png"));
   auto xf = AffineTransform::identity.rotated(M_PI);
   icons.arrowIcon->setTransform(xf);
 }

@@ -45,30 +45,26 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
 
   wifiIconComponent = new ImageComponent("WiFi Icon");
   wifiIconComponent->setImage(
-      ImageFileFormat::loadFrom(BinaryData::wifiIcon_png, BinaryData::wifiIcon_pngSize));
+      ImageFileFormat::loadFrom(assetFile("wifiStrength3,png")));
   addAndMakeVisible(wifiIconComponent);
 
   icons = new WifiIcons();
 
-  icons->lockIcon = Drawable::createFromImageData(BinaryData::lock_png, BinaryData::lock_pngSize);
+  icons->lockIcon = Drawable::createFromImageFile(assetFile("lock.png"));
 
   icons->wifiStrength = OwnedArray<Drawable>();
-  icons->wifiStrength.set(0, Drawable::createFromImageData(BinaryData::wifiStrength0_png,
-                                                           BinaryData::wifiStrength0_pngSize));
-  icons->wifiStrength.set(1, Drawable::createFromImageData(BinaryData::wifiStrength1_png,
-                                                           BinaryData::wifiStrength1_pngSize));
-  icons->wifiStrength.set(2, Drawable::createFromImageData(BinaryData::wifiStrength2_png,
-                                                           BinaryData::wifiStrength2_pngSize));
-  icons->wifiStrength.set(3, Drawable::createFromImageData(BinaryData::wifiStrength3_png,
-                                                           BinaryData::wifiStrength3_pngSize));
+  icons->wifiStrength.set(0, Drawable::createFromImageFile(assetFile("wifiStrength0.png")));
+  icons->wifiStrength.set(1, Drawable::createFromImageFile(assetFile("wifiStrength1.png")));
+  icons->wifiStrength.set(2, Drawable::createFromImageFile(assetFile("wifiStrength2.png")));
+  icons->wifiStrength.set(3, Drawable::createFromImageFile(assetFile("wifiStrength3.png")));
 
-  icons->arrowIcon = Drawable::createFromImageData(BinaryData::backIcon_png, BinaryData::backIcon_pngSize);
+  icons->arrowIcon = Drawable::createFromImageFile(assetFile("backIcon.png"));
   auto xf = AffineTransform::identity.rotated(M_PI);
   icons->arrowIcon->setTransform(xf);
 
   // create back button
   backButton = createImageButton(
-      "Back", ImageFileFormat::loadFrom(BinaryData::backIcon_png, BinaryData::backIcon_pngSize));
+                                 "Back", createImageFromFile(assetFile("backIcon.png")));
   backButton->addListener(this);
    backButton->setTriggeredOnMouseDown(true);
   backButton->setAlwaysOnTop(true);
