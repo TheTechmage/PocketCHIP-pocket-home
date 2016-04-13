@@ -32,7 +32,7 @@ void BatteryMonitor::run( ) {
     if( voltageFile.exists() ) {
       auto voltageValue = voltageFile.loadFileAsString();
       
-      float voltageOffset = voltageValue.getFloatValue() - minVoltage;
+      float voltageOffset = (voltageValue.getFloatValue()*.001) - minVoltage;
       float maxOffset = maxVoltage - minVoltage;
       
       // turn voltage into a percentage we can use
