@@ -1264,6 +1264,7 @@
 				8276413844176736FBBD93FD /* assets */,
 				60F3A7B8686F8757E46AB3EA /* Source */,
 			);
+			indentWidth = 2;
 			name = "pocket-home";
 			sourceTree = "<group>";
 		};

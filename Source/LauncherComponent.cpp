@@ -62,6 +62,33 @@ void BatteryIconTimer::timerCallback() {
   
 }
 
+void WifiIconTimer::timerCallback() {
+  if(!launcherComponent) { return; }
+    
+  for( auto button : launcherComponent->topButtons->buttons ) {
+    if (button->getName() == "WiFi") {
+      Image wifiIcon;
+      if (const auto& conAp = getWifiStatus().connectedAccessPoint()) {
+        // -120f to 0
+        float sigStrength = conAp->signalStrength;
+        // 0.0 - 1.0
+        int status = round( (sigStrength+120.0f)/120.0f );
+        int idx = status * 3.0;
+        wifiIcon = launcherComponent->wifiIconImages[idx];
+      }
+      else {
+        wifiIcon = launcherComponent->wifiIconImages[0];
+      }
+      button->setImages(true, true, true,                       //
+                        wifiIcon, 1.0f, Colours::transparentWhite, // normal
+                        wifiIcon, 1.0f, Colours::transparentWhite, // over
+                        wifiIcon, 0.3f, Colours::transparentWhite, // down
+                        0);
+
+    }
+  }
+}
+
 LauncherComponent::LauncherComponent(const var &configJson) {
   bgColor = Colour(0xff2e8dbd);
   bgImage = "mainBackground.png";
@@ -77,6 +104,15 @@ LauncherComponent::LauncherComponent(const var &configJson) {
   
   batteryIconTimer.launcherComponent = this;
   batteryIconTimer.startTimer(1000);
+    
+  wifiIconTimer.launcherComponent = this;
+  wifiIconTimer.startTimer(5000);
+    
+  Array<String> wifiImgPaths{"wifiStrength0.png","wifiStrength1.png","wifiStrength2.png","wifiStrength3.png"};
+  for(auto& path : wifiImgPaths) {
+    auto image = createImageFromFile(assetFile(path));
+    wifiIconImages.add(image);
+  }
   
   Array<String> batteryImgPaths{"battery_1.png","battery_2.png","battery_3.png","battery_0.png"};
   for(auto& path : batteryImgPaths) {
@@ -84,12 +120,12 @@ LauncherComponent::LauncherComponent(const var &configJson) {
     batteryIconImages.add(image);
   }
     
-    Array<String> batteryImgChargingPaths{"batteryCharging_1.png","batteryCharging_2.png","batteryCharging_3.png","batteryCharging_0.png"};
-    for(auto& path : batteryImgChargingPaths) {
-        auto image = createImageFromFile(assetFile(path));
-        batteryIconChargingImages.add(image);
-    }
-  
+  Array<String> batteryImgChargingPaths{"batteryCharging_1.png","batteryCharging_2.png","batteryCharging_3.png","batteryCharging_0.png"};
+  for(auto& path : batteryImgChargingPaths) {
+    auto image = createImageFromFile(assetFile(path));
+    batteryIconChargingImages.add(image);
+  }
+
   launchSpinnerTimer.launcherComponent = this;
   Array<String> spinnerImgPaths{"wait1.png","wait2.png","wait3.png","wait4.png"};
   for(auto& path : spinnerImgPaths) {

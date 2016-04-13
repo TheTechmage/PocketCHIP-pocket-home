@@ -23,6 +23,13 @@ public:
     LauncherComponent* launcherComponent;
 };
 
+class WifiIconTimer : public Timer {
+public:
+  WifiIconTimer() {};
+  void timerCallback();
+  LauncherComponent* launcherComponent;
+};
+
 class LauncherComponent : public Component, private Button::Listener {
 public:
     BatteryMonitor batteryMonitor;
@@ -33,9 +40,11 @@ public:
     Array<Image> launchSpinnerImages;
     Array<Image> batteryIconImages;
     Array<Image> batteryIconChargingImages;
-    
+    Array<Image> wifiIconImages;
+  
     LaunchSpinnerTimer launchSpinnerTimer;
     BatteryIconTimer batteryIconTimer;
+    WifiIconTimer wifiIconTimer;
     Component* defaultPage;
     
     
