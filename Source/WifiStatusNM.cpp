@@ -22,6 +22,23 @@ std::vector<String> split(const String &orig, const String &delim) {
   return elems;
 };
 
+bool isNMWifiRadioEnabled() {
+  ChildProcess nmproc;
+  String state;
+  auto cmd = new StringArray({"nmcli","r","wifi"});
+
+  DBG("WifiStatusNM cmd: " << cmd->joinIntoString(" "));
+  nmproc.start(*cmd);
+  nmproc.waitForProcessToFinish(1000);
+  state = nmproc.readAllProcessOutput();
+  DBG("Output: \n" << state);
+
+  if (state.trim() == "enabled")
+    return true;
+  else
+    return false;
+}
+
 OwnedArray<WifiAccessPoint> *WifiStatusNM::nearbyAccessPoints() {
   return &accessPoints;
 }
@@ -46,15 +63,15 @@ void WifiStatusNM::addListener(Listener* listener) {
 // otherwise easily confused with setters thats wrap members, which are slightly different idiom
 void WifiStatusNM::setEnabled() {
   if (!enabled) {
-    enabled = true;
     /* FIXME Without launching scans, the results of a disable/enable are confusing
      * so ignore the enable/disable events for now
+    */
     auto cmd = "nmcli radio wifi on";
     DBG("wifi cmd: " << cmd);
     ChildProcess nmproc;
     nmproc.start(cmd);
     nmproc.waitForProcessToFinish(500);
-    */
+    enabled = isNMWifiRadioEnabled();
     for(const auto& listener : listeners) {
       listener->handleWifiEnabled();
     }
@@ -63,15 +80,15 @@ void WifiStatusNM::setEnabled() {
 
 void WifiStatusNM::setDisabled() {
   if (enabled) {
-    enabled = false;
     /* FIXME Without launching scans, the results of a disable/enable are confusing
      * so ignore the enable/disable events for now
+    */
     auto cmd = "nmcli radio wifi off";
     DBG("wifi cmd: " << cmd);
     ChildProcess nmproc;
     nmproc.start(cmd);
     nmproc.waitForProcessToFinish(500);
-    */
+    enabled = isNMWifiRadioEnabled();
     for(const auto& listener : listeners) {
       listener->handleWifiDisabled();
     }
@@ -167,6 +184,8 @@ void WifiStatusNM::initializeStatus() {
   String ssidList;
   std::map<String, String> tag_map;
   ChildProcess nmproc;
+
+  enabled = isNMWifiRadioEnabled();
 
   accessPoints.clear();
 
