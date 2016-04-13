@@ -6,6 +6,22 @@
 WifiStatusNM::WifiStatusNM() : listeners() {}
 WifiStatusNM::~WifiStatusNM() {}
 
+std::vector<String> split(const String &orig, const String &delim) {
+  std::vector<String> elems;
+  int index = 0;
+  auto remainder = orig.substring(index);
+  while (remainder.length()) {
+    index = remainder.indexOf(delim);
+    if (index < 0) {
+      elems.push_back(remainder);
+      break;
+    }
+    elems.push_back(remainder.substring(0,index));
+    remainder = remainder.substring(index+1);
+  }
+  return elems;
+};
+
 OwnedArray<WifiAccessPoint> *WifiStatusNM::nearbyAccessPoints() {
   return &accessPoints;
 }
@@ -67,11 +83,39 @@ void WifiStatusNM::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
   
   // disconnect if no ap provided
   if (ap == nullptr) {
-    // FIXME: doesn't work because it requires root. It puts NM into 'manual' mode
-    // so reconnection doesn't occur until reboot or explicit reconnection.
-    cmd = new StringArray({"nmcli","dev","disconnect","wlan0"});
+    ChildProcess nmproc;
+    String profileList;
+    String profileName;
+    bool name_on_next_line = false;
+
+    cmd = new StringArray({"nmcli","-m","multiline","-f","DEVICE,NAME","c","show","--active"});
+
+    DBG("WifiStatusNM cmd: " << cmd->joinIntoString(" "));
+    nmproc.start(*cmd);
+    nmproc.waitForProcessToFinish(1000);
+    profileList = nmproc.readAllProcessOutput();
+    DBG("Output: \n" << profileList);
+
+    for (const String& tag : split(profileList, "\n")) {
+      auto key_val = split(tag, ":");
+      if (name_on_next_line) {
+        profileName = key_val[1].trimStart();
+	DBG("Found profile name: " << profileName);
+      }
+
+      if (key_val[0] == "DEVICE" && key_val[1].trimStart() == "wlan0")
+        name_on_next_line = true;
+      else
+	name_on_next_line = false;
+    }
+
+    cmd = new StringArray({"nmcli","c","delete","id",profileName.toRawUTF8()});
     connected = false;
     connectedAP = nullptr;
+    DBG("WifiStatusNM cmd: " << cmd->joinIntoString(" "));
+    nmproc.start(*cmd);
+    nmproc.waitForProcessToFinish(1000);
+    DBG("Output: \n" << profileList);
     for(const auto& listener : listeners) {
       listener->handleWifiDisconnected();
     }
@@ -138,22 +182,6 @@ void WifiStatusNM::initializeStatus() {
       1, // keyvals["SIGNAL"].getIntValue()
       keyvals["SECURITY"].isNotEmpty(), //FIXME: Assumes all security types equal
     });
-  };
-
-  auto split = [](const String &orig, const String &delim) {
-    std::vector<String> elems;
-    int index = 0;
-    auto remainder = orig.substring(index);
-    while (remainder.length()) {
-      index = remainder.indexOf(delim);
-      if (index < 0) {
-        elems.push_back(remainder);
-        break;
-      }
-      elems.push_back(remainder.substring(0,index));
-      remainder = remainder.substring(index+1);
-    }
-    return elems;
   };
 
   for (const String& tag : split(ssidList, "\n")) {
