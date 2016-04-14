@@ -59,13 +59,12 @@ bool isNMWifiRadioEnabled() {
 bool getNMWifiConnectionProperty(const String propName, const String connName, String &val) {
   ChildProcess nmproc;
   String propertyOutput;
-  auto cmd = new StringArray({"nmcli","-f",propName.toRawUTF8(),"c","show","id",connName.toRawUTF8()});
+  StringArray cmd{"nmcli","-f",propName.toRawUTF8(),"c","show","id",connName.toRawUTF8()};
 
-  DBG("WifiStatusNM cmd: " << cmd->joinIntoString(" "));
-  nmproc.start(*cmd);
+  DBG("WifiStatusNM cmd: " << cmd.joinIntoString(" "));
+  nmproc.start(cmd);
   nmproc.waitForProcessToFinish(1000);
   propertyOutput = nmproc.readAllProcessOutput();
-  DBG("Output: \n" << propertyOutput);
 
   auto key_val = split(propertyOutput, ":");
   if (key_val[0] == propName) {
@@ -79,13 +78,12 @@ bool getNMWifiConnectionProperty(const String propName, const String connName, S
 bool getNMWifiDeviceProperty(const String propName, String &val) {
   ChildProcess nmproc;
   String propertyOutput;
-  auto cmd = new StringArray({"nmcli","-f",propName.toRawUTF8(),"d","show","wlan0"});
+  StringArray cmd{"nmcli","-f",propName.toRawUTF8(),"d","show","wlan0"};
 
-  DBG("WifiStatusNM cmd: " << cmd->joinIntoString(" "));
-  nmproc.start(*cmd);
+  DBG("WifiStatusNM cmd: " << cmd.joinIntoString(" "));
+  nmproc.start(cmd);
   nmproc.waitForProcessToFinish(1000);
   propertyOutput = nmproc.readAllProcessOutput();
-  DBG("Output: \n" << propertyOutput);
 
   auto key_val = split(propertyOutput, ":");
   if (key_val[0] == propName) {
@@ -216,9 +214,6 @@ void WifiStatusNM::addListener(Listener* listener) {
 // otherwise easily confused with setters thats wrap members, which are slightly different idiom
 void WifiStatusNM::setEnabled() {
   if (!enabled) {
-    /* FIXME Without launching scans, the results of a disable/enable are confusing
-     * so ignore the enable/disable events for now
-    */
     auto cmd = "nmcli radio wifi on";
     DBG("wifi cmd: " << cmd);
     ChildProcess nmproc;
@@ -233,9 +228,6 @@ void WifiStatusNM::setEnabled() {
 
 void WifiStatusNM::setDisabled() {
   if (enabled) {
-    /* FIXME Without launching scans, the results of a disable/enable are confusing
-     * so ignore the enable/disable events for now
-    */
     auto cmd = "nmcli radio wifi off";
     DBG("wifi cmd: " << cmd);
     ChildProcess nmproc;
@@ -264,7 +256,6 @@ void WifiStatusNM::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
     nmproc.start(*cmd);
     nmproc.waitForProcessToFinish(1000);
     profileList = nmproc.readAllProcessOutput();
-    DBG("Output: \n" << profileList);
 
     for (const String& tag : split(profileList, "\n")) {
       auto key_val = split(tag, ":");
@@ -285,7 +276,6 @@ void WifiStatusNM::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
     DBG("WifiStatusNM cmd: " << cmd->joinIntoString(" "));
     nmproc.start(*cmd);
     nmproc.waitForProcessToFinish(1000);
-    DBG("Output: \n" << profileList);
     for(const auto& listener : listeners) {
       listener->handleWifiDisconnected();
     }
