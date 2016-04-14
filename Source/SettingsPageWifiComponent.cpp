@@ -109,8 +109,8 @@ SettingsPageWifiComponent::~SettingsPageWifiComponent() {}
 
 void SettingsPageWifiComponent::paint(Graphics &g) {
     g.fillAll(bgColor);
-    //auto image = createImageFromFile(assetFile(bgImage));
-    //g.drawImageAt(image,0,0,false);
+    auto image = createImageFromFile(assetFile(bgImage));
+    g.drawImageAt(image,0,0,false);
 }
 
 void SettingsPageWifiComponent::resized() {

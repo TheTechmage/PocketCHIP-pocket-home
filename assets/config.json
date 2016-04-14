@@ -12,7 +12,7 @@
         {
           "name": "play pico 8",
           "icon": "appIcons/pico8.png",
-          "shell": "pico8"
+          "shell": "pico8-splore"
         },
         {
           "name": "make games",
@@ -25,9 +25,9 @@
           "shell": "gnome-mplayer"
         },
         {
-                "name": "make music",
-                "icon": "appIcons/musicsequencer.png",
-                "shell": "sunvox"
+          "name": "make music",
+          "icon": "appIcons/musicsequencer.png",
+          "shell": "sunvox"
          },
          {
           "name": "web browser",
@@ -41,9 +41,9 @@
         },
         
         {
-          "name": "alex 4",
-          "icon": "appIcons/alex4.png",
-          "shell": "alex4"
+          "name": "write",
+          "icon": "appIcons/texteditor.png",
+          "shell": "leafpad"
         },
         
         {
@@ -57,9 +57,9 @@
           "shell": "viewnior"
         },
         {
-          "name": "install apps",
-          "icon": "appIcons/install.png",
-          "shell": "echo 0"
+          "name": "alex4",
+          "icon": "appIcons/alex4.png",
+          "shell": "alex4"
         },
         {
           "name": "update software",
