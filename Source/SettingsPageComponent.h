@@ -60,7 +60,6 @@ public:
   void resized() override;
 
   void buttonClicked(Button *b) override;
-  void buttonStateChanged(Button *b) override;
   void enablementChanged() override;
 
   virtual void enabledStateChanged(bool enabled) = 0;

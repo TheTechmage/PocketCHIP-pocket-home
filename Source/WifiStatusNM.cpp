@@ -126,6 +126,8 @@ bool isNMWifiConnected() {
     case NM_DEVICE_STATE_DEACTIVATING:
     case NM_DEVICE_STATE_FAILED:
       return true;
+    default:
+      return false;
   }
 }
 
@@ -150,8 +152,8 @@ String getNMWifiConnectedSSID() {
   }
 }
 
-void getNMConnectedAP(WifiAccessPoint *ap) {
-  ap = new WifiAccessPoint {
+WifiAccessPoint* getNMConnectedAP() {
+  return new WifiAccessPoint {
       getNMWifiConnectedSSID(),
       1, //FIXME: Clearly wrong assumption
       false, //FIXME: Clearly wrong assumption
@@ -269,13 +271,13 @@ void WifiStatusNM::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
       auto key_val = split(tag, ":");
       if (name_on_next_line) {
         profileName = key_val[1].trimStart();
-	DBG("Found profile name: " << profileName);
+        DBG("Found profile name: " << profileName);
       }
 
       if (key_val[0] == "DEVICE" && key_val[1].trimStart() == "wlan0")
         name_on_next_line = true;
       else
-	name_on_next_line = false;
+        name_on_next_line = false;
     }
 
     cmd = new StringArray({"nmcli","c","delete","id",profileName.toRawUTF8()});
@@ -311,7 +313,7 @@ void WifiStatusNM::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
     bool success = exitCode == 0;
     if (success) {
       connected = true;
-      getNMConnectedAP(connectedAP);
+      connectedAP = getNMConnectedAP();
       DBG("WifiStatus::setConnectedAccessPoint - success");
       for(const auto& listener : listeners) {
         listener->handleWifiConnected();
@@ -342,7 +344,7 @@ void WifiStatusNM::initializeStatus() {
   connected = isNMWifiConnected();
 
   if (connected)
-    getNMConnectedAP(connectedAP);
+    connectedAP = getNMConnectedAP();
 
   accessPoints.clear();
 

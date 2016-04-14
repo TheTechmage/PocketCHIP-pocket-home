@@ -82,9 +82,7 @@ void SettingsCategoryItemComponent::resized() {
   layout.layOutComponents(comps, 5, b.getX(), b.getY(), b.getWidth(), b.getHeight(), false, true);
 }
 
-void SettingsCategoryItemComponent::buttonClicked(Button *b) {}
-
-void SettingsCategoryItemComponent::buttonStateChanged(Button *b) {
+void SettingsCategoryItemComponent::buttonClicked(Button *b) {
   if (b == toggle) {
     enabledStateChanged(toggle->getToggleState());
   }
