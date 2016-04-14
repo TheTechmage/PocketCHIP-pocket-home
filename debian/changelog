@@ -1,3 +1,9 @@
+pocket-home (0.0.2) unstable; urgency=low
+
+  * Pull in testing changes.
+
+ -- Ben Young <software@nextthing.co>  Thur, 14 Apr 2016 19:13:16 +0000
+
 pocket-home (0.0.1) unstable; urgency=low
 
   * Initial Release.
