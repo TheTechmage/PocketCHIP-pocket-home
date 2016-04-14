@@ -3,6 +3,24 @@
 #include "WifiStatus.h"
 #include "../JuceLibraryCode/JuceHeader.h"
 
+// From libnm-util/NetworkManager.h
+typedef enum {
+        NM_DEVICE_STATE_UNKNOWN      = 0,
+        NM_DEVICE_STATE_UNMANAGED    = 10,
+        NM_DEVICE_STATE_UNAVAILABLE  = 20,
+        NM_DEVICE_STATE_DISCONNECTED = 30,
+        NM_DEVICE_STATE_PREPARE      = 40,
+        NM_DEVICE_STATE_CONFIG       = 50,
+        NM_DEVICE_STATE_NEED_AUTH    = 60,
+        NM_DEVICE_STATE_IP_CONFIG    = 70,
+        NM_DEVICE_STATE_IP_CHECK     = 80,
+        NM_DEVICE_STATE_SECONDARIES  = 90,
+        NM_DEVICE_STATE_ACTIVATED    = 100,
+        NM_DEVICE_STATE_DEACTIVATING = 110,
+        NM_DEVICE_STATE_FAILED       = 120
+} NMDeviceState;
+
+
 WifiStatusNM::WifiStatusNM() : listeners() {}
 WifiStatusNM::~WifiStatusNM() {}
 
@@ -37,6 +55,107 @@ bool isNMWifiRadioEnabled() {
     return true;
   else
     return false;
+}
+
+bool getNMWifiConnectionProperty(const String propName, const String connName, String &val) {
+  ChildProcess nmproc;
+  String propertyOutput;
+  auto cmd = new StringArray({"nmcli","-f",propName.toRawUTF8(),"c","show","id",connName.toRawUTF8()});
+
+  DBG("WifiStatusNM cmd: " << cmd->joinIntoString(" "));
+  nmproc.start(*cmd);
+  nmproc.waitForProcessToFinish(1000);
+  propertyOutput = nmproc.readAllProcessOutput();
+  DBG("Output: \n" << propertyOutput);
+
+  auto key_val = split(propertyOutput, ":");
+  if (key_val[0] == propName) {
+    val = key_val[1].trim();
+    return true;
+  } else {
+    return false;
+  }
+}
+
+bool getNMWifiDeviceProperty(const String propName, String &val) {
+  ChildProcess nmproc;
+  String propertyOutput;
+  auto cmd = new StringArray({"nmcli","-f",propName.toRawUTF8(),"d","show","wlan0"});
+
+  DBG("WifiStatusNM cmd: " << cmd->joinIntoString(" "));
+  nmproc.start(*cmd);
+  nmproc.waitForProcessToFinish(1000);
+  propertyOutput = nmproc.readAllProcessOutput();
+  DBG("Output: \n" << propertyOutput);
+
+  auto key_val = split(propertyOutput, ":");
+  if (key_val[0] == propName) {
+    val = key_val[1].trim();
+    return true;
+  } else {
+    return false;
+  }
+}
+
+int getNMWifiConnectionState() {
+  String stateString;
+
+  if (getNMWifiDeviceProperty("GENERAL.STATE", stateString)) {
+    auto state = split(stateString.trim()," ")[0];
+    return state.getIntValue();
+  } else {
+    return NM_DEVICE_STATE_UNKNOWN;
+  }
+}
+
+bool isNMWifiConnected() {
+  switch (getNMWifiConnectionState()) {
+    case NM_DEVICE_STATE_UNKNOWN:
+    case NM_DEVICE_STATE_UNMANAGED:
+    case NM_DEVICE_STATE_UNAVAILABLE:
+    case NM_DEVICE_STATE_DISCONNECTED:
+      return false;
+    case NM_DEVICE_STATE_PREPARE:
+    case NM_DEVICE_STATE_CONFIG:
+    case NM_DEVICE_STATE_NEED_AUTH:
+    case NM_DEVICE_STATE_IP_CONFIG:
+    case NM_DEVICE_STATE_IP_CHECK:
+    case NM_DEVICE_STATE_SECONDARIES:
+      return false;
+    case NM_DEVICE_STATE_ACTIVATED:
+    case NM_DEVICE_STATE_DEACTIVATING:
+    case NM_DEVICE_STATE_FAILED:
+      return true;
+  }
+}
+
+String getNMWifiConnectionName() {
+  String name;
+
+  if (getNMWifiDeviceProperty("GENERAL.CONNECTION", name)) {
+    return name;
+  } else {
+    return "";
+  }
+}
+
+String getNMWifiConnectedSSID() {
+  String connName = getNMWifiConnectionName();
+  String ssid;
+
+  if (getNMWifiConnectionProperty("802-11-wireless.ssid", connName, ssid)) {
+    return ssid;
+  } else {
+    return "";
+  }
+}
+
+void getNMConnectedAP(WifiAccessPoint *ap) {
+  ap = new WifiAccessPoint {
+      getNMWifiConnectedSSID(),
+      1, //FIXME: Clearly wrong assumption
+      false, //FIXME: Clearly wrong assumption
+    };
 }
 
 OwnedArray<WifiAccessPoint> *WifiStatusNM::nearbyAccessPoints() {
@@ -159,7 +278,7 @@ void WifiStatusNM::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
     bool success = exitCode == 0;
     if (success) {
       connected = true;
-      connectedAP = ap;
+      getNMConnectedAP(connectedAP);
       DBG("WifiStatus::setConnectedAccessPoint - success");
       for(const auto& listener : listeners) {
         listener->handleWifiConnected();
@@ -186,6 +305,14 @@ void WifiStatusNM::initializeStatus() {
   ChildProcess nmproc;
 
   enabled = isNMWifiRadioEnabled();
+
+  if (!enabled)
+    return;
+
+  connected = isNMWifiConnected();
+
+  if (connected)
+    getNMConnectedAP(connectedAP);
 
   accessPoints.clear();
 
