@@ -42,14 +42,13 @@ std::vector<String> split(const String &orig, const String &delim) {
 
 bool isNMWifiRadioEnabled() {
   ChildProcess nmproc;
+  StringArray cmd{"nmcli","r","wifi"};
   String state;
-  auto cmd = new StringArray({"nmcli","r","wifi"});
 
-  DBG("WifiStatusNM cmd: " << cmd->joinIntoString(" "));
-  nmproc.start(*cmd);
+  DBG("WifiStatusNM cmd: " << cmd.joinIntoString(" "));
+  nmproc.start(cmd);
   nmproc.waitForProcessToFinish(1000);
   state = nmproc.readAllProcessOutput();
-  DBG("Output: \n" << state);
 
   if (state.trim() == "enabled")
     return true;
