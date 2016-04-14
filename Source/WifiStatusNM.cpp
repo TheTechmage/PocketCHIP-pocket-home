@@ -158,7 +158,40 @@ void getNMConnectedAP(WifiAccessPoint *ap) {
     };
 }
 
+void getNMAvailableAccessPoints(OwnedArray<WifiAccessPoint> &aps) {
+  String ssidList;
+  std::map<String, String> tag_map;
+  ChildProcess nmproc;
+
+  auto cmd = "nmcli -m multiline -f SSID,SECURITY,SIGNAL d wifi list ifname wlan0";
+  DBG("WifiStatusNM cmd: " << cmd);
+  nmproc.start(cmd);
+  nmproc.waitForProcessToFinish(500);
+  ssidList = nmproc.readAllProcessOutput();
+
+  auto addAccessPoint = [](std::map<String, String> &keyvals, OwnedArray<WifiAccessPoint> &aps) {
+    aps.add( new WifiAccessPoint {
+      keyvals["SSID"] == "--" ? "HiddenSSID" : keyvals["SSID"],
+      1, // keyvals["SIGNAL"].getIntValue()
+      keyvals["SECURITY"].isNotEmpty(), //FIXME: Assumes all security types equal
+    });
+  };
+
+  for (const String& tag : split(ssidList, "\n")) {
+    auto key_val = split(tag, ":");
+    if (key_val[0] == "SSID" && !tag_map.empty()) {
+      DBG("Adding non-empty tagmap to accessPoints");
+      addAccessPoint(tag_map, aps);
+      tag_map.clear();
+    }
+    tag_map.insert(std::make_pair(key_val[0], key_val[1].trimStart()));
+  }
+  addAccessPoint(tag_map, aps);
+  tag_map.clear();
+}
+
 OwnedArray<WifiAccessPoint> *WifiStatusNM::nearbyAccessPoints() {
+  getNMAvailableAccessPoints(accessPoints);
   return &accessPoints;
 }
 
@@ -300,9 +333,6 @@ void WifiStatusNM::setDisconnected() {
 void WifiStatusNM::initializeStatus() {
   connectedAP = nullptr;
   connected = false;
-  String ssidList;
-  std::map<String, String> tag_map;
-  ChildProcess nmproc;
 
   enabled = isNMWifiRadioEnabled();
 
@@ -316,29 +346,5 @@ void WifiStatusNM::initializeStatus() {
 
   accessPoints.clear();
 
-  auto cmd = "nmcli -m multiline -f SSID,SECURITY,SIGNAL d wifi list ifname wlan0";
-  DBG("WifiStatusNM cmd: " << cmd);
-  nmproc.start(cmd);
-  nmproc.waitForProcessToFinish(500);
-  ssidList = nmproc.readAllProcessOutput();
-
-  auto addAccessPoint = [](std::map<String, String> &keyvals, OwnedArray<WifiAccessPoint> &aps) {
-    aps.add( new WifiAccessPoint {
-      keyvals["SSID"] == "--" ? "HiddenSSID" : keyvals["SSID"],
-      1, // keyvals["SIGNAL"].getIntValue()
-      keyvals["SECURITY"].isNotEmpty(), //FIXME: Assumes all security types equal
-    });
-  };
-
-  for (const String& tag : split(ssidList, "\n")) {
-    auto key_val = split(tag, ":");
-    if (key_val[0] == "SSID" && !tag_map.empty()) {
-      DBG("Adding non-empty tagmap to accessPoints");
-      addAccessPoint(tag_map, accessPoints);
-      tag_map.clear();
-    }
-    tag_map.insert(std::make_pair(key_val[0], key_val[1].trimStart()));
-  }
-  addAccessPoint(tag_map, accessPoints);
-  tag_map.clear();
+  getNMAvailableAccessPoints(accessPoints);
 }
