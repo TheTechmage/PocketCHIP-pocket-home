@@ -33,8 +33,6 @@ public:
   SettingsPageWifiComponent();
   ~SettingsPageWifiComponent();
 
-  bool init = false;
-
   WifiAccessPoint *selectedAp;
 
   ScopedPointer<PageStackComponent> pageStack;
@@ -65,6 +63,8 @@ public:
 private:
   Colour bgColor;
   String bgImage;
+  
+  bool init = false;
 
   void buttonClicked(Button *) override;
   

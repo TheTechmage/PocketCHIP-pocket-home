@@ -45,7 +45,7 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
 
   wifiIconComponent = new ImageComponent("WiFi Icon");
   wifiIconComponent->setImage(
-      ImageFileFormat::loadFrom(assetFile("wifiStrength3,png")));
+      ImageFileFormat::loadFrom(assetFile("wifiStrength3.png")));
   addAndMakeVisible(wifiIconComponent);
 
   icons = new WifiIcons();
@@ -66,7 +66,7 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   backButton = createImageButton(
                                  "Back", createImageFromFile(assetFile("backIcon.png")));
   backButton->addListener(this);
-   backButton->setTriggeredOnMouseDown(true);
+  backButton->setTriggeredOnMouseDown(true);
   backButton->setAlwaysOnTop(true);
   addAndMakeVisible(backButton);
 
@@ -81,9 +81,6 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
     accessPointItems.add(item);
     accessPointListPage->addItem(item);
   }
-  
-  // register for wifi status events
-  getWifiStatus().addListener(this);
 
   // create connection "page"
   connectionPage = new Component("Connection Page");
@@ -103,6 +100,9 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   connectionButton->addListener(this);
   connectionButton->setTriggeredOnMouseDown(true);
   connectionPage->addAndMakeVisible(connectionButton);
+  
+  // register for wifi status events
+  getWifiStatus().addListener(this);
 }
 
 SettingsPageWifiComponent::~SettingsPageWifiComponent() {}
@@ -124,16 +124,28 @@ void SettingsPageWifiComponent::resized() {
   connectionButton->setBounds(90, 160, pageBounds.getWidth() - 180, 50);
   wifiIconComponent->setBounds(10, 10, 60, 60);
   backButton->setBounds(bounds.getX(), bounds.getY(), 60, bounds.getHeight());
-
-  if (!init) { // TODO: cruft to resize page correctly on init? arrg. Should be in constructor,
-               //  or not at all
+  
+  // FIXME: this logic belongs in constructor, but sizing info shows wrong on resize.
+  if (!init) {
     init = true;
-    pageStack->pushPage(accessPointListPage, PageStackComponent::kTransitionNone);
+
+    // check wifi status to pick correct initial page
+    auto& wifiStatus = getWifiStatus();
+    if (wifiStatus.isConnected()) {
+      selectedAp = wifiStatus.connectedAccessPoint();
+      connectionLabel->setText(selectedAp->ssid, juce::NotificationType::dontSendNotification);
+      passwordEditor->setVisible(false);
+      connectionButton->setButtonText("Disconnect");
+      pageStack->pushPage(connectionPage, PageStackComponent::kTransitionNone);
+    }
+    else {
+      pageStack->pushPage(accessPointListPage, PageStackComponent::kTransitionNone);
+    }
   }
 }
 
 void SettingsPageWifiComponent::handleWifiDisabled() {
-  DBG("SettingsPageWifiComponent::disable");
+  DBG("SettingsPageWifiComponent::wifiDisabled");
   // TODO: this event should probably kick you out of this page entirely
   // though how did you get here (parent should block entry)? should only deliver here if we're on screen
   // and WiFi dies out of band
@@ -143,27 +155,32 @@ void SettingsPageWifiComponent::handleWifiDisabled() {
 // in case these occur transiently. We don't want global page stack popping.
 // Really there should be a lightweight statemachine somewhere around this class.
 void SettingsPageWifiComponent::handleWifiConnected() {
-  DBG("SettingsPageWifiComponent::connect");
-  getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
+  DBG("SettingsPageWifiComponent::wifiConnected");
   passwordEditor->setVisible(false);
   connectionButton->setButtonText("Disconnect");
+  pageStack->removePage(pageStack->getDepth() - 2);
 }
 
 void SettingsPageWifiComponent::handleWifiFailedConnect() {
+  DBG("SettingsPageWifiComponent::wifiFailedConnect");
   passwordEditor->setText("");
 }
 
 void SettingsPageWifiComponent::handleWifiDisconnected() {
-  DBG("SettingsPageWifiComponent::disconnect");
+  DBG("SettingsPageWifiComponent::wifiDisconnected");
+  if (selectedAp && selectedAp->requiresAuth) {
+    passwordEditor->setVisible(true);
+  }
   connectionButton->setButtonText("Connect");
-  pageStack->popPage(PageStackComponent::kTransitionTranslateHorizontal);
+  pageStack->insertPage(accessPointListPage, pageStack->getDepth() - 1);
 }
 
 void SettingsPageWifiComponent::buttonClicked(Button *button) {
   auto &status = getWifiStatus();
 
+  // button from the connection dialog
   if (button == connectionButton) {
-    if (status.isConnected() && selectedAp == status.connectedAccessPoint()) {
+    if (status.isConnected()) {
       status.setDisconnected();
     } else {
       if (selectedAp->requiresAuth) {
@@ -175,6 +192,7 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
       }
     }
   }
+  // button from the ap list
   else {
     auto apButton = dynamic_cast<WifiAccessPointListItem *>(button);
     if (apButton) {
@@ -191,8 +209,11 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
     }
     
     if (button == backButton) {
-      if (pageStack->getDepth() > 1 && !status.isConnected()) {
+      // leave connection page
+      if (pageStack->getDepth() > 1) {
+        selectedAp = nullptr;
         pageStack->popPage(PageStackComponent::kTransitionTranslateHorizontal);
+      // leave wifi settings page
       } else {
         getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
       }

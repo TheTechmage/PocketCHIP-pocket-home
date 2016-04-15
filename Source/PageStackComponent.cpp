@@ -47,6 +47,14 @@ void PageStackComponent::popPage(Transition transition) {
   }
 }
 
+void PageStackComponent::insertPage(Component *page, int idx) {
+  stack.insert(idx, page);
+}
+
+void PageStackComponent::removePage(int idx) {
+  stack.remove(idx);
+}
+
 void PageStackComponent::clear(Transition transition) {
   if (!stack.empty()) {
     transitionOut(stack.getLast(), transition, transitionDurationMillis, true);

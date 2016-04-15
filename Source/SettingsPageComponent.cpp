@@ -283,10 +283,6 @@ void SettingsPageComponent::buttonClicked(Button *button) {
   if (button == backButton) {
     getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
   } else if (button == wifiCategoryItem->button) {
-    const auto &wifistatus = getWifiStatus();
-    if (wifistatus.isConnected()) {
-      wifiPage->pageStack->swapPage(wifiPage->connectionPage, PageStackComponent::kTransitionNone);
-    }
     getMainStack().pushPage(wifiPage, PageStackComponent::kTransitionTranslateHorizontal);
   } else if (button == bluetoothCategoryItem->button) {
     getMainStack().pushPage(bluetoothPage, PageStackComponent::kTransitionTranslateHorizontal);
