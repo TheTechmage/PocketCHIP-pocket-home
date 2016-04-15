@@ -248,7 +248,7 @@ void LauncherComponent::buttonClicked(Button *button) {
     if (button->getName() == "Settings" || button->getName() == "WiFi" ) {
       getMainStack().pushPage(page, PageStackComponent::kTransitionTranslateHorizontal);
     } else if (button->getName() == "Power" || button->getName() == "Battery" ) {
-        getMainStack().pushPage(page, PageStackComponent::kTransitionTranslateHorizontal);
+        getMainStack().pushPage(page, PageStackComponent::kTransitionTranslateHorizontalLeft);
     } else {
       pageStack->swapPage(page, PageStackComponent::kTransitionTranslateHorizontal);
     }

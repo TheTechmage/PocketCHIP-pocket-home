@@ -268,6 +268,7 @@ void SettingsPageComponent::resized() {
 
     Component *settingsItems[] = { wifiCategoryItem,       nullptr, bluetoothCategoryItem, nullptr,
                                    screenBrightnessSlider, nullptr, volumeSlider };
+
     auto b = bounds.reduced(10);
     b.setLeft(70);
     verticalLayout.layOutComponents(settingsItems, 7, b.getX(), b.getY(), b.getWidth(),

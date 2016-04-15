@@ -211,7 +211,7 @@ void PowerPageComponent::showPowerSpinner() {
 void PowerPageComponent::buttonClicked(Button *button) {
   if( !debounce ) {
     if (button == backButton) {
-      getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
+      getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontalLeft);
     } else if (button == powerOffButton) {
       debounce = true;
       showPowerSpinner();

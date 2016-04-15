@@ -12,7 +12,7 @@ public:
   void paint(Graphics &) override;
   void resized() override;
 
-  enum Transition { kTransitionNone, kTransitionTranslateHorizontal };
+  enum Transition { kTransitionNone, kTransitionTranslateHorizontal, kTransitionTranslateHorizontalLeft };
 
   void pushPage(Component *page, Transition transition);
   void swapPage(Component *page, Transition transition);

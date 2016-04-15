@@ -65,11 +65,15 @@ void PageStackComponent::clear(Transition transition) {
 void PageStackComponent::transitionIn(Component *component, Transition transition,
                                       int durationMillis, bool reverse) {
   addAndMakeVisible(component);
-
   auto bounds = getLocalBounds();
   switch (transition) {
     case kTransitionTranslateHorizontal: {
       float dir = reverse ? -1.0f : 1.0f;
+      component->setBounds(bounds.translated(bounds.getWidth() * dir, 0));
+      animateTranslation(component, 0, 0, 1.0f, durationMillis);
+      break;
+    } case kTransitionTranslateHorizontalLeft: {
+      float dir = reverse ? 1.0f : -1.0f;
       component->setBounds(bounds.translated(bounds.getWidth() * dir, 0));
       animateTranslation(component, 0, 0, 1.0f, durationMillis);
     } break;
@@ -89,6 +93,12 @@ void PageStackComponent::transitionOut(Component *component, Transition transiti
       auto bounds = getLocalBounds();
       float dir = reverse ? 1.0f : -1.0f;
       animateTranslation(component, bounds.getWidth() * dir, 0, 1.0f, durationMillis);
+      break;
+    } case kTransitionTranslateHorizontalLeft: {
+      auto bounds = getLocalBounds();
+      float dir = reverse ? -1.0f : 1.0f;
+      animateTranslation(component, bounds.getWidth() * dir, 0, 1.0f, durationMillis);
+      break;
     } break;
     default: {}
   }
