@@ -25,7 +25,7 @@ public:
 private:
   Array<Listener*> listeners;
   OwnedArray<WifiAccessPoint> accessPoints;
-  WifiAccessPoint *connectedAP = nullptr;
+  ScopedPointer<WifiAccessPoint> connectedAP = nullptr;
   bool enabled = false;
   bool connected = false;
 };

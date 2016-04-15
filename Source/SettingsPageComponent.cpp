@@ -82,9 +82,7 @@ void SettingsCategoryItemComponent::resized() {
   layout.layOutComponents(comps, 5, b.getX(), b.getY(), b.getWidth(), b.getHeight(), false, true);
 }
 
-void SettingsCategoryItemComponent::buttonClicked(Button *b) {}
-
-void SettingsCategoryItemComponent::buttonStateChanged(Button *b) {
+void SettingsCategoryItemComponent::buttonClicked(Button *b) {
   if (b == toggle) {
     enabledStateChanged(toggle->getToggleState());
   }
@@ -98,6 +96,9 @@ WifiCategoryItemComponent::WifiCategoryItemComponent() : SettingsCategoryItemCom
   iconDrawable =
       Drawable::createFromImageFile(assetFile("wifiStrength3.png"));
   icon->setImages(iconDrawable);
+  bool isEnabled = getWifiStatus().isEnabled();
+  toggle->setToggleState(isEnabled, NotificationType::dontSendNotification);
+  button->setEnabled(isEnabled);
   updateButtonText();
 }
 
@@ -282,10 +283,6 @@ void SettingsPageComponent::buttonClicked(Button *button) {
   if (button == backButton) {
     getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
   } else if (button == wifiCategoryItem->button) {
-    const auto &wifistatus = getWifiStatus();
-    if (wifistatus.isConnected()) {
-      wifiPage->pageStack->swapPage(wifiPage->connectionPage, PageStackComponent::kTransitionNone);
-    }
     getMainStack().pushPage(wifiPage, PageStackComponent::kTransitionTranslateHorizontal);
   } else if (button == bluetoothCategoryItem->button) {
     getMainStack().pushPage(bluetoothPage, PageStackComponent::kTransitionTranslateHorizontal);

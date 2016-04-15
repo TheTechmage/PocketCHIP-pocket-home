@@ -97,6 +97,8 @@ LauncherComponent::LauncherComponent(const var &configJson) {
 
   topButtons = new LauncherBarComponent();
   botButtons = new LauncherBarComponent();
+  topButtons->setInterceptsMouseClicks(false, true);
+  botButtons->setInterceptsMouseClicks(false, true);
   addAndMakeVisible(topButtons);
   addAndMakeVisible(botButtons);
   
@@ -134,23 +136,36 @@ LauncherComponent::LauncherComponent(const var &configJson) {
   }
   launchSpinner = new ImageComponent();
   launchSpinner->setImage(launchSpinnerImages[0]);
+  launchSpinner->setInterceptsMouseClicks(true, false);
   addChildComponent(launchSpinner);
-
+  
+  // Settings page
+  auto settingsPage = new SettingsPageComponent();
+  settingsPage->setName("Settings");
+  pages.add(settingsPage);
+  pagesByName.set("Settings", settingsPage);
+  pagesByName.set("WiFi", settingsPage);
+  
+  // Power page
+  auto powerPage = new PowerPageComponent();
+  powerPage->setName("Power");
+  pages.add(powerPage);
+  pagesByName.set("Power", powerPage);
+  pagesByName.set("Battery", powerPage);
+  
+  // Apps page
+  auto appsPage = new AppsPageComponent(this);
+  appsPage->setName("Apps");
+  pages.add(appsPage);
+  pagesByName.set("Apps", appsPage);
+  
+  // Read config for apps and corner locations
   auto pagesData = configJson["pages"].getArray();
   if (pagesData) {
     for (const auto &page : *pagesData) {
       auto name = page["name"].toString();
-      Component *pageComponent = nullptr;
-      if (name == "Settings") {
-        pageComponent = new SettingsPageComponent();
-      } else if( name == "Power") {
-          pageComponent = new PowerPageComponent();
-      } else if( name == "WiFi") {
-          pageComponent = new SettingsPageComponent();
-      } else if( name == "Battery") {
-          pageComponent = new PowerPageComponent();
-      } else {
-        auto appsPage = new AppsPageComponent(this);
+      if (name == "Apps") {
+        
         appsPage->createIconsFromJsonArray(page["items"]);
         auto buttonsData = *(page["cornerButtons"].getArray());
         
@@ -164,27 +179,19 @@ LauncherComponent::LauncherComponent(const var &configJson) {
         
         topButtons->addButtonsFromJsonArray(topData);
         botButtons->addButtonsFromJsonArray(botData);
-
-        pageComponent = appsPage;
+        
+        // NOTE(ryan): Maybe do something with a custom event later.. For now we just listen to all the
+        // buttons manually.
+        for (auto button : topButtons->buttons) {
+          button->addListener(this);
+          button->setTriggeredOnMouseDown(true);
+        }
+        for (auto button : botButtons->buttons) {
+          button->addListener(this);
+          button->setTriggeredOnMouseDown(true);
+        }
+        
       }
-      pageComponent->setName(name);
-      pages.add(pageComponent);
-      pagesByName.set(name, pageComponent);
-    }
-
-    topButtons->setInterceptsMouseClicks(false, true);
-    botButtons->setInterceptsMouseClicks(false, true);
-    launchSpinner->setInterceptsMouseClicks(true, false);
-
-    // NOTE(ryan): Maybe do something with a custom event later.. For now we just listen to all the
-    // buttons manually.
-    for (auto button : topButtons->buttons) {
-      button->addListener(this);
-      button->setTriggeredOnMouseDown(true);
-    }
-    for (auto button : botButtons->buttons) {
-      button->addListener(this);
-      button->setTriggeredOnMouseDown(true);
     }
   }
 
