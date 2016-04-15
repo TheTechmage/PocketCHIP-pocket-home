@@ -38,11 +38,10 @@ void BatteryMonitor::run( ) {
       // turn voltage into a percentage we can use
       status.percentage = (voltageOffset * 100)/maxOffset;
 
-      // only show lowest percentage graphic if battery is at least 10%
-      if ( status.percentage < 25 && status.percentage > 10) {
-          status.percentage = 25;
+      // only show lowest percentage graphic if battery is at least 15%
+      if ( status.percentage <= 25 && status.percentage > 15) {
+          status.percentage = 15;
       }
-      
       // limit range to [0:100]
       if(status.percentage>100) status.percentage = 100;
       if(status.percentage<0) status.percentage = 0;
