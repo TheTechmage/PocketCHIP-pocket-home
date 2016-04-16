@@ -128,11 +128,13 @@ Array<DrawableButton *> AppsPageComponent::createIconsFromJsonArray(const var &j
 }
 
 void AppsPageComponent::startApp(AppIconButton* appButton) {
+  DBG("AppsPageComponent::startApp - " << appButton->shell);
   auto launchApp = new ChildProcess();
   if (launchApp->start(appButton->shell)) {
     runningApps.add(launchApp);
     runningAppsByButton.set(appButton, runningApps.indexOf(launchApp));
-    runningCheckTimer.startTimer(5 * 1000);
+    // FIXME: uncomment when process running check works
+    // runningCheckTimer.startTimer(5 * 1000);
     
     debounce = true;
     debounceTimer.startTimer(2 * 1000);
@@ -143,8 +145,39 @@ void AppsPageComponent::startApp(AppIconButton* appButton) {
   }
 };
 
-void AppsPageComponent::focusApp(AppIconButton* appButton) {
-  DBG("focusApp: IMPLEMENT ME");
+void AppsPageComponent::focusApp(AppIconButton* appButton, const String& windowId) {
+  DBG("AppsPageComponent::focusApp - " << appButton->shell);
+  StringArray focusCmd{"xdotool", "windowactivate", windowId.toRawUTF8()};
+  ChildProcess focusWindow;
+  focusWindow.start(focusCmd);
+};
+
+void AppsPageComponent::startOrFocusApp(AppIconButton* appButton) {
+  if (debounce) return;
+  
+  bool shouldStart = true;
+  int appIdx = runningAppsByButton[appButton];
+  bool hasLaunched = runningApps[appIdx] != nullptr;
+  String windowId;
+  
+  if(hasLaunched) {
+    StringArray findCmd{"xdotool", "search", "--all", "--limit", "1", "--class", appButton->shell.toRawUTF8()};
+    ChildProcess findWindow;
+    findWindow.start(findCmd);
+    findWindow.waitForProcessToFinish(1000);
+    windowId = findWindow.readAllProcessOutput().trimEnd();
+    
+    // does xdotool find a window id? if so, we shouldn't start a new one
+    shouldStart = (windowId.length() > 0) ? false : true;
+  }
+  
+  if (shouldStart) {
+    startApp(appButton);
+  }
+  else {
+    focusApp(appButton, windowId);
+  }
+  
 };
 
 void AppsPageComponent::checkRunningApps() {
@@ -164,7 +197,8 @@ void AppsPageComponent::checkRunningApps() {
   }
   
   if (!runningApps.size()) {
-    runningCheckTimer.stopTimer();
+    // FIXME: uncomment when process running check works
+    // runningCheckTimer.stopTimer();
     launcherComponent->hideLaunchSpinner();
   }
 };
@@ -180,15 +214,6 @@ void AppsPageComponent::buttonClicked(Button *button) {
   }
   else {
     auto appButton = (AppIconButton*)button;
-    
-    // FIXME: debounce and running apps need to integrate, once running check works
-    if (debounce) {
-      focusApp(appButton);
-      DBG("AppsPageComponent::buttonClicked - switch focus: " << appButton->shell);
-    }
-    else {
-      startApp(appButton);
-      DBG("AppsPageComponent::buttonClicked - shell: " << appButton->shell);
-    }
+    startOrFocusApp(appButton);
   }
 }

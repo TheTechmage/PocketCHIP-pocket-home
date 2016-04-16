@@ -67,7 +67,8 @@ private:
   AppDebounceTimer debounceTimer;
   
   void startApp(AppIconButton* appButton);
-  void focusApp(AppIconButton* appButton);
+  void focusApp(AppIconButton* appButton, const String& windowId);
+  void startOrFocusApp(AppIconButton* appButton);
   
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AppsPageComponent)
 };
