@@ -1,4 +1,5 @@
 #include "PowerPageComponent.h"
+#include "PowerPageFelComponent.h"
 #include "Main.h"
 #include "Utils.h"
 #include "PokeLookAndFeel.h"
@@ -103,10 +104,12 @@ PowerPageComponent::PowerPageComponent() {
   mainPage->toBack();
   ChildProcess child{};
   debounce = 0;
+  
+  felPage = new PowerFelPageComponent();
 
   // create back button
   backButton = createImageButton(
-      "Back", createImageFromFile(assetFile("backIcon.png")));
+      "Back", createImageFromFile(assetFile("nextIcon.png")));
   backButton->addListener(this);
   backButton->setTriggeredOnMouseDown(true);
   backButton->setAlwaysOnTop(true);
@@ -181,7 +184,7 @@ void PowerPageComponent::resized() {
   sleepButton->setBounds(bounds.getWidth()/3.375, 90, 200, 40);
   rebootButton->setBounds(bounds.getWidth()/3.375, 140, 200, 40);
   felButton->setBounds(bounds.getWidth()/3.375, 190, 200, 40);
-  backButton->setBounds(bounds.getX(), bounds.getY(), 60, bounds.getHeight());
+  backButton->setBounds(bounds.getWidth()-60, bounds.getY(), 60, bounds.getHeight());
 }
 
 void PowerPageComponent::setSleep() {
@@ -225,9 +228,7 @@ void PowerPageComponent::buttonClicked(Button *button) {
       powerDebounceTimer.startTimer(2 * 1000);
       setSleep();
     } else if (button == felButton) {
-      debounce = true;
-      powerDebounceTimer.startTimer(2 * 1000);
-      child.start("felmode");
+      getMainStack().pushPage(felPage, PageStackComponent::kTransitionTranslateHorizontalLeft);
     }
   }
 }

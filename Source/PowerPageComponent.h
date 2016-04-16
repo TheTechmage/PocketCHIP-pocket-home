@@ -4,6 +4,7 @@
 
 #include "PowerPageComponent.h"
 #include "SwitchComponent.h"
+#include "PageStackComponent.h"
 
 class PowerPageComponent;
 
@@ -82,6 +83,11 @@ public:
     PowerSpinnerTimer powerSpinnerTimer;
     PowerDebounceTimer powerDebounceTimer;
     Array<Image> launchSpinnerImages;
+    HashMap<String, Component *> pagesByName;
+    
+    ScopedPointer<PageStackComponent> pageStack;
+    ScopedPointer<Component> felPage;
+    
 
   PowerPageComponent();
   ~PowerPageComponent();

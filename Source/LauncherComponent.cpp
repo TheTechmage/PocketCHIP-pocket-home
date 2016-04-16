@@ -2,6 +2,7 @@
 #include "AppsPageComponent.h"
 #include "SettingsPageComponent.h"
 #include "PowerPageComponent.h"
+
 #include "Main.h"
 #include "Utils.h"
 #include <math.h>
@@ -158,6 +159,7 @@ LauncherComponent::LauncherComponent(const var &configJson) {
   appsPage->setName("Apps");
   pages.add(appsPage);
   pagesByName.set("Apps", appsPage);
+
   
   // Read config for apps and corner locations
   auto pagesData = configJson["pages"].getArray();

@@ -13,7 +13,7 @@ namespace BinaryData
     const int            bluetooth_jsonSize = 1119;
 
     extern const char*   config_json;
-    const int            config_jsonSize = 2299;
+    const int            config_jsonSize = 2449;
 
     extern const char*   seguibl_ttf;
     const int            seguibl_ttfSize = 323400;

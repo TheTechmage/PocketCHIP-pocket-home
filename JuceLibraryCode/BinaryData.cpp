@@ -84,7 +84,7 @@ static const unsigned char temp_binary_data_1[] =
 "        {\r\n"
 "          \"name\": \"play pico 8\",\r\n"
 "          \"icon\": \"appIcons/pico8.png\",\r\n"
-"          \"shell\": \"pico8\"\r\n"
+"          \"shell\": \"pico8-splore\"\r\n"
 "        },\r\n"
 "        {\r\n"
 "          \"name\": \"make games\",\r\n"
@@ -97,9 +97,9 @@ static const unsigned char temp_binary_data_1[] =
 "          \"shell\": \"gnome-mplayer\"\r\n"
 "        },\r\n"
 "        {\r\n"
-"                \"name\": \"make music\",\r\n"
-"                \"icon\": \"appIcons/musicsequencer.png\",\r\n"
-"                \"shell\": \"sunvox\"\r\n"
+"          \"name\": \"make music\",\r\n"
+"          \"icon\": \"appIcons/musicsequencer.png\",\r\n"
+"          \"shell\": \"sunvox\"\r\n"
 "         },\r\n"
 "         {\r\n"
 "          \"name\": \"web browser\",\r\n"
@@ -113,9 +113,9 @@ static const unsigned char temp_binary_data_1[] =
 "        },\r\n"
 "        \r\n"
 "        {\r\n"
-"          \"name\": \"alex 4\",\r\n"
-"          \"icon\": \"appIcons/alex4.png\",\r\n"
-"          \"shell\": \"alex4\"\r\n"
+"          \"name\": \"write\",\r\n"
+"          \"icon\": \"appIcons/texteditor.png\",\r\n"
+"          \"shell\": \"leafpad\"\r\n"
 "        },\r\n"
 "        \r\n"
 "        {\r\n"
@@ -129,9 +129,14 @@ static const unsigned char temp_binary_data_1[] =
 "          \"shell\": \"viewnior\"\r\n"
 "        },\r\n"
 "        {\r\n"
-"          \"name\": \"install apps\",\r\n"
-"          \"icon\": \"appIcons/install.png\",\r\n"
-"          \"shell\": \"echo 0\"\r\n"
+"          \"name\": \"alex4\",\r\n"
+"          \"icon\": \"appIcons/alex4.png\",\r\n"
+"          \"shell\": \"alex4\"\r\n"
+"        },\r\n"
+"        {\r\n"
+"          \"name\": \"update software\",\r\n"
+"          \"icon\": \"appIcons/update.png\",\r\n"
+"          \"shell\": \"xfce4-terminal -e 'sudo apt-get update'\"\r\n"
 "        }\r\n"
 "      ],\r\n"
 "      \"cornerButtons\": [\r\n"
@@ -4082,7 +4087,7 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes) throw
     switch (hash)
     {
         case 0x0d665fd9:  numBytes = 1119; return bluetooth_json;
-        case 0x0106dbc5:  numBytes = 2299; return config_json;
+        case 0x0106dbc5:  numBytes = 2449; return config_json;
         case 0xc4f02f5a:  numBytes = 323400; return seguibl_ttf;
         case 0x53801bd2:  numBytes = 1156; return wifi_json;
         default: break;
