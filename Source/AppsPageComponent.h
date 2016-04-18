@@ -53,6 +53,9 @@ public:
   
   void buttonClicked(Button *button) override {};
   
+  // FIXME: this is barsize from launcher component
+  double btnHeight = 50;
+  
 private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AppListComponent)
 };
@@ -63,6 +66,7 @@ public:
   ~LibraryListComponent();
   
   void paint(Graphics &g) override;
+  void resized() override;
   
   void buttonClicked(Button *button) override;
 private:

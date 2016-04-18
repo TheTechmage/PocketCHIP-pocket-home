@@ -64,15 +64,13 @@ DrawableButton *AppListComponent::createAndOwnIcon(const String &name, const Str
 void AppListComponent::resized() {
   auto b = getLocalBounds();
   
-  // FIXME: this is barsize from launcher component
-  double btnHeight = 50;
   prevPageBtn->setSize(btnHeight, btnHeight);
   nextPageBtn->setSize(btnHeight, btnHeight);
   prevPageBtn->setBoundsToFit(b.getX(), b.getY(), b.getWidth(), b.getHeight(), Justification::centredTop, true);
   nextPageBtn->setBoundsToFit(b.getX(), b.getY(), b.getWidth(), b.getHeight(), Justification::centredBottom, true);
   
   // drop the page buttons from our available layout size
-  auto trainWidth = b.getWidth() - 2*btnHeight;
+  auto trainWidth = b.getWidth();
   auto trainHeight = b.getHeight() - (2.1*btnHeight);
   train->setSize(trainWidth, trainHeight);
   train->setBoundsToFit(b.getX(), b.getY(), b.getWidth(), b.getHeight(), Justification::centred, true);
@@ -130,6 +128,18 @@ LibraryListComponent::~LibraryListComponent() {}
 
 void LibraryListComponent::paint(Graphics &g) {
   g.fillAll(bgColor);
+}
+
+void LibraryListComponent::resized() {
+  AppListComponent::resized();
+  
+  const auto& b = getLocalBounds();
+  auto trainWidth = b.getWidth() - 2*btnHeight;
+  auto trainHeight = b.getHeight() - (2.1*btnHeight);
+  train->setSize(trainWidth, trainHeight);
+  train->setBoundsToFit(b.getX(), b.getY(), b.getWidth(), b.getHeight(), Justification::centred, true);
+  
+  backButton->setBounds(b.getWidth()-60, b.getY(), 60, b.getHeight());
 }
 
 void LibraryListComponent::buttonClicked(Button *button) {
