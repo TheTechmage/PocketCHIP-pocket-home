@@ -1,6 +1,7 @@
 #include "AppsPageComponent.h"
 #include "LauncherComponent.h"
 #include "PokeLookAndFeel.h"
+#include "Main.h"
 #include "Utils.h"
 
 void AppCheckTimer::timerCallback() {
@@ -31,15 +32,12 @@ Rectangle<float> AppIconButton::getImageBounds() const {
   return bounds.withHeight(PokeLookAndFeel::getDrawableButtonImageHeightForBounds(bounds)).toFloat();
 }
 
-AppsPageComponent::AppsPageComponent(LauncherComponent* launcherComponent) :
+AppListComponent::AppListComponent() :
   train(new TrainComponent(TrainComponent::Orientation::kOrientationGrid)),
   nextPageBtn(createImageButton("NextAppsPage",
                                 ImageFileFormat::loadFrom(assetFile("pageDownIcon.png")))),
   prevPageBtn(createImageButton("PrevAppsPage",
-                                ImageFileFormat::loadFrom(assetFile("pageUpIcon.png")))),
-  launcherComponent(launcherComponent),
-  runningCheckTimer(),
-  debounceTimer()
+                                ImageFileFormat::loadFrom(assetFile("pageUpIcon.png"))))
 {
   addChildComponent(nextPageBtn);
   addChildComponent(prevPageBtn);
@@ -47,16 +45,23 @@ AppsPageComponent::AppsPageComponent(LauncherComponent* launcherComponent) :
   prevPageBtn->addListener(this);
   
   addAndMakeVisible(train);
-  
-  runningCheckTimer.appsPage = this;
-  debounceTimer.appsPage = this;
+}
+AppListComponent::~AppListComponent() {}
+
+DrawableButton *AppListComponent::createAndOwnIcon(const String &name, const String &iconPath, const String &shell) {
+  auto image = createImageFromFile(assetFile(iconPath));
+  auto drawable = new DrawableImage();
+  drawable->setImage(image);
+  // FIXME: is this OwnedArray for the drawables actually necessary?
+  // won't the AppIconButton correctly own the drawable?
+  // Further we don't actually use this list anywhere.
+  iconDrawableImages.add(drawable);
+  auto button = new AppIconButton(name, shell, drawable);
+  addAndOwnIcon(name, button);
+  return button;
 }
 
-AppsPageComponent::~AppsPageComponent() {}
-
-void AppsPageComponent::paint(Graphics &g) {}
-
-void AppsPageComponent::resized() {
+void AppListComponent::resized() {
   auto b = getLocalBounds();
   
   // FIXME: this is barsize from launcher component
@@ -67,12 +72,13 @@ void AppsPageComponent::resized() {
   nextPageBtn->setBoundsToFit(b.getX(), b.getY(), b.getWidth(), b.getHeight(), Justification::centredBottom, true);
   
   // drop the page buttons from our available layout size
-  auto trainHeight = b.getHeight() - (2.1*nextPageBtn->getHeight());
-  train->setSize(b.getWidth(), trainHeight);
-  train->setBoundsToFit(b.getX(), b.getY(), b.getWidth(), b.getHeight(), Justification::centred, false);
+  auto trainWidth = b.getWidth() - 2*btnHeight;
+  auto trainHeight = b.getHeight() - (2.1*btnHeight);
+  train->setSize(trainWidth, trainHeight);
+  train->setBoundsToFit(b.getX(), b.getY(), b.getWidth(), b.getHeight(), Justification::centred, true);
 }
 
-void AppsPageComponent::checkShowPageNav() {
+void AppListComponent::checkShowPageNav() {
   if (train->hasNextPage()) {
     nextPageBtn->setVisible(true); nextPageBtn->setEnabled(true);
   }
@@ -88,27 +94,14 @@ void AppsPageComponent::checkShowPageNav() {
   }
 }
 
-void AppsPageComponent::addAndOwnIcon(const String &name, Component *icon) {
+void AppListComponent::addAndOwnIcon(const String &name, Component *icon) {
   trainIcons.add(icon);
   train->addItem(icon);
   ((Button*)icon)->setTriggeredOnMouseDown(true);
   ((Button*)icon)->addListener(this);
 }
 
-DrawableButton *AppsPageComponent::createAndOwnIcon(const String &name, const String &shell, const String &iconPath) {
-  auto image = createImageFromFile(assetFile(iconPath));
-  auto drawable = new DrawableImage();
-  drawable->setImage(image);
-  // FIXME: is this OwnedArray for the drawables actually necessary?
-  // won't the AppIconButton correctly own the drawable?
-  // Further we don't actually use this list anywhere.
-  iconDrawableImages.add(drawable);
-  auto button = new AppIconButton(name, shell, drawable);
-  addAndOwnIcon(name, button);
-  return button;
-}
-
-Array<DrawableButton *> AppsPageComponent::createIconsFromJsonArray(const var &json) {
+Array<DrawableButton *> AppListComponent::createIconsFromJsonArray(const var &json) {
   Array<DrawableButton *> buttons;
   if (json.isArray()) {
     for (const auto &item : *json.getArray()) {
@@ -116,13 +109,62 @@ Array<DrawableButton *> AppsPageComponent::createIconsFromJsonArray(const var &j
       auto shell = item["shell"];
       auto iconPath = item["icon"];
       if (name.isString() && shell.isString() && iconPath.isString()) {
-        auto icon = createAndOwnIcon(name, shell, iconPath);
+        auto icon = createAndOwnIcon(name, iconPath, shell);
         if (icon) {
           buttons.add(icon);
         }
       }
     }
   }
+  
+  checkShowPageNav();
+  return buttons;
+}
+
+LibraryListComponent::LibraryListComponent() :
+  AppListComponent()
+{
+  bgColor = Colour(PokeLookAndFeel::chipPurple);
+}
+LibraryListComponent::~LibraryListComponent() {}
+
+void LibraryListComponent::paint(Graphics &g) {
+  g.fillAll(bgColor);
+}
+
+void LibraryListComponent::buttonClicked(Button *button) {
+  if (button == prevPageBtn) {
+    train->showPrevPage();
+    checkShowPageNav();
+  }
+  else if (button == nextPageBtn) {
+    train->showNextPage();
+    checkShowPageNav();
+  }
+  else {
+    getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontalLeft);
+  }
+}
+
+AppsPageComponent::AppsPageComponent(LauncherComponent* launcherComponent) :
+  AppListComponent(),
+  launcherComponent(launcherComponent),
+  runningCheckTimer(),
+  debounceTimer()
+{
+  runningCheckTimer.appsPage = this;
+  debounceTimer.appsPage = this;
+}
+
+AppsPageComponent::~AppsPageComponent() {}
+
+Array<DrawableButton *> AppsPageComponent::createIconsFromJsonArray(const var &json) {
+  auto buttons = AppListComponent::createIconsFromJsonArray(json);
+  
+  // hard coded "virtual" application. Cannot be removed.
+  appsLibraryBtn = createAndOwnIcon("App Get", "appIcons/update.png", String::empty);
+  buttons.add(appsLibraryBtn);
+  
   checkShowPageNav();
   return buttons;
 }
@@ -180,6 +222,10 @@ void AppsPageComponent::startOrFocusApp(AppIconButton* appButton) {
   
 };
 
+void AppsPageComponent::openAppsLibrary() {
+  launcherComponent->showAppsLibrary();
+}
+
 void AppsPageComponent::checkRunningApps() {
   Array<int> needsRemove{};
   
@@ -211,6 +257,9 @@ void AppsPageComponent::buttonClicked(Button *button) {
   else if (button == nextPageBtn) {
     train->showNextPage();
     checkShowPageNav();
+  }
+  else if (button == appsLibraryBtn) {
+    openAppsLibrary();
   }
   else {
     auto appButton = (AppIconButton*)button;

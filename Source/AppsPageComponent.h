@@ -32,43 +32,74 @@ public:
   Rectangle<float> getImageBounds() const override;
 };
 
-class AppsPageComponent : public Component, public Button::Listener {
+class AppListComponent : public Component, public Button::Listener {
+public:
+  AppListComponent();
+  ~AppListComponent();
+  
+  ScopedPointer<TrainComponent> train;
+  
+  OwnedArray<Component> trainIcons;
+  OwnedArray<DrawableImage> iconDrawableImages;
+  ScopedPointer<ImageButton> nextPageBtn;
+  ScopedPointer<ImageButton> prevPageBtn;
+  
+  void resized() override;
+  void checkShowPageNav();
+  
+  void addAndOwnIcon(const String &name, Component *icon);
+  DrawableButton *createAndOwnIcon(const String &name, const String &iconPath, const String &shell);
+  virtual Array<DrawableButton *> createIconsFromJsonArray(const var &json);
+  
+  void buttonClicked(Button *button) override {};
+  
+private:
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AppListComponent)
+};
+
+class LibraryListComponent : public AppListComponent {
+public:
+  LibraryListComponent();
+  ~LibraryListComponent();
+  
+  void paint(Graphics &g) override;
+  
+  void buttonClicked(Button *button) override;
+private:
+  Colour bgColor;
+  
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LibraryListComponent)
+};
+
+class AppsPageComponent : public AppListComponent {
 public:
   AppsPageComponent(LauncherComponent* launcherComponent);
   ~AppsPageComponent();
   
-  ScopedPointer<TrainComponent> train;
-  OwnedArray<Component> trainIcons;
-  OwnedArray<DrawableImage> iconDrawableImages;
+  Array<DrawableButton *> createIconsFromJsonArray(const var &json) override;
+  
   OwnedArray<ChildProcess> runningApps;
   
-  bool debounce = false;
+  void buttonClicked(Button *button) override;
   
-  using AppRunningMap = HashMap<AppIconButton*, int>;
-
-  void paint(Graphics &) override;
-  void resized() override;
   void checkRunningApps();
-  void checkShowPageNav();
-
-  void addAndOwnIcon(const String &name, Component *icon);
-  DrawableButton *createAndOwnIcon(const String &name, const String &shell, const String &iconPath);
-  Array<DrawableButton *> createIconsFromJsonArray(const var &json);
-
-  void buttonClicked(Button *) override;
+  
+  bool debounce = false;
 
 private:
-  ScopedPointer<ImageButton> nextPageBtn;
-  ScopedPointer<ImageButton> prevPageBtn;
+  using AppRunningMap = HashMap<AppIconButton*, int>;
+
+  DrawableButton* appsLibraryBtn;
   LauncherComponent* launcherComponent;
   
   AppRunningMap runningAppsByButton;
   AppCheckTimer runningCheckTimer;
   AppDebounceTimer debounceTimer;
-  
+
   void startApp(AppIconButton* appButton);
   void focusApp(AppIconButton* appButton, const String& windowId);
   void startOrFocusApp(AppIconButton* appButton);
+  void openAppsLibrary();
   
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AppsPageComponent)
 };
