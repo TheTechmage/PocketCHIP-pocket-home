@@ -15,6 +15,7 @@ public:
     virtual ~Listener() {};
     virtual void handleInstallStarted(AppIconButton* btn) {};
     virtual void handleInstallFinished(AppIconButton* btn) {};
+    virtual void handleInstallTimedOut(AppIconButton* btn) {};
   };
   
   virtual void run();
@@ -28,6 +29,11 @@ public:
 private:
   void emitInstallStarted();
   void emitInstallFinished();
+  void emitInstallTimedOut();
+  
+  void clearCurrentInstall();
+  
+  int waitTimeout = 0;
   
   Array<Listener *> listeners;
   
@@ -56,6 +62,7 @@ public:
   
   void handleInstallStarted(AppIconButton* btn) override;
   void handleInstallFinished(AppIconButton* btn) override;
+  void handleInstallTimedOut(AppIconButton* btn) override;
   
   void buttonClicked(Button *btn) override;
 private:

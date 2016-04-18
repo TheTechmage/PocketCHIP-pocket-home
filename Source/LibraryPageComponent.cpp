@@ -33,11 +33,28 @@ void DownloadsMonitor::emitInstallFinished(){
   }
 }
 
+void DownloadsMonitor::emitInstallTimedOut(){
+  const MessageManagerLock mmLock;
+  
+  for (int i = 0; i < listeners.size(); i++) {
+    if (listeners[i])
+      listeners[i]->handleInstallTimedOut(installAppBtn);
+  }
+}
+
 bool DownloadsMonitor::hasPending( ) {
   return (installing || !appQueue.empty());
 }
 
+void DownloadsMonitor::clearCurrentInstall() {
+  installing = false;
+  installAppName = String::empty;
+  installProc = nullptr;
+}
+
 void DownloadsMonitor::run( ) {
+  constexpr auto waitTime = 2000;
+  
   while( !threadShouldExit() && hasPending() ) {
     DBG("DownloadsMonitor::run - checking download queue");
 
@@ -45,13 +62,17 @@ void DownloadsMonitor::run( ) {
     if (installing) {
       if (installProc->isRunning()) {
         DBG("DownloadsMonitor::run - running install of `" << installAppName << "`");
+        waitTimeout += waitTime;
+        if (waitTimeout > (60 * 1000)) {
+          waitTimeout = 0;
+          emitInstallTimedOut();
+          clearCurrentInstall();
+        }
       }
       else {
         DBG("DownloadsMonitor::run - finished install `" << installAppName << "`");
         emitInstallFinished();
-        installing = false;
-        installAppName = String::empty;
-        installProc = nullptr;
+        clearCurrentInstall();
       }
     }
     
@@ -71,7 +92,7 @@ void DownloadsMonitor::run( ) {
       appQueue.remove(0);
     }
     
-    wait(2000);
+    wait(waitTime);
   }
 }
 
@@ -110,6 +131,11 @@ void LibraryPageComponent::resized() {
   train->setBoundsToFit(b.getX(), b.getY(), b.getWidth(), b.getHeight(), Justification::centred, true);
   
   backButton->setBounds(b.getWidth()-60, b.getY(), 60, b.getHeight());
+}
+
+void LibraryPageComponent::handleInstallTimedOut(AppIconButton* btn) {
+  btn->removeColour(DrawableButton::backgroundColourId);
+  btn->setColour(DrawableButton::textColourId, Colours::indianred);
 }
 
 void LibraryPageComponent::handleInstallStarted(AppIconButton* btn) {
