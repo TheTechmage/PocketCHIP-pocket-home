@@ -11,6 +11,28 @@ DownloadsMonitor::DownloadsMonitor( )
 DownloadsMonitor::~DownloadsMonitor( ) {
 }
 
+void DownloadsMonitor::addListener(Listener* listener) {
+  listeners.add(listener);
+}
+
+void DownloadsMonitor::emitInstallStarted(){
+  const MessageManagerLock mmLock;
+
+  for (int i = 0; i < listeners.size(); i++) {
+    if (listeners[i])
+      listeners[i]->handleInstallStarted(installAppBtn);
+  }
+}
+
+void DownloadsMonitor::emitInstallFinished(){
+  const MessageManagerLock mmLock;
+
+  for (int i = 0; i < listeners.size(); i++) {
+    if (listeners[i])
+      listeners[i]->handleInstallFinished(installAppBtn);
+  }
+}
+
 bool DownloadsMonitor::hasPending( ) {
   return (installing || !appQueue.empty());
 }
@@ -26,6 +48,7 @@ void DownloadsMonitor::run( ) {
       }
       else {
         DBG("DownloadsMonitor::run - finished install `" << installAppName << "`");
+        emitInstallFinished();
         installing = false;
         installAppName = String::empty;
         installProc = nullptr;
@@ -34,13 +57,16 @@ void DownloadsMonitor::run( ) {
     
     // if queued and not installing, start next install
     if (appQueue.size() && !installing) {
-      installAppName = appQueue.getFirst()->shell;
+      installAppBtn = appQueue.getFirst();
+      installAppName = installAppBtn->shell;
       DBG("DownloadsMonitor::run - beginning install of `" << installAppName << "`");
       StringArray installCmd{"sudo", "apt-get", "--yes", "install", installAppName.toRawUTF8()};
       installProc = new ChildProcess();
       
       installing = true;
       installProc->start(installCmd);
+      
+      emitInstallStarted();
       
       appQueue.remove(0);
     }
@@ -56,6 +82,8 @@ LibraryPageComponent::LibraryPageComponent() :
   downloadsMonitor()
 {
   bgColor = Colour(PokeLookAndFeel::chipPurple);
+  
+  downloadsMonitor.addListener(this);
   
   backButton->addListener(this);
   backButton->setTriggeredOnMouseDown(true);
@@ -84,20 +112,37 @@ void LibraryPageComponent::resized() {
   backButton->setBounds(b.getWidth()-60, b.getY(), 60, b.getHeight());
 }
 
-void LibraryPageComponent::buttonClicked(Button *button) {
-  if (button == backButton) {
+void LibraryPageComponent::handleInstallStarted(AppIconButton* btn) {
+  btn->setColour(DrawableButton::backgroundColourId, PokeLookAndFeel::chipLightPink);
+  btn->setColour(DrawableButton::textColourId, Colours::white);
+  btn->setAlpha(0.8);
+}
+
+void LibraryPageComponent::handleInstallFinished(AppIconButton* btn) {
+  btn->removeColour(DrawableButton::backgroundColourId);
+  btn->setColour(DrawableButton::textColourId, Colours::white);
+  btn->setAlpha(1.0);
+}
+
+void LibraryPageComponent::buttonClicked(Button *btn) {
+  if (btn == backButton) {
     getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontalLeft);
   }
-  else if (button == prevPageBtn) {
+  else if (btn == prevPageBtn) {
     train->showPrevPage();
     checkShowPageNav();
   }
-  else if (button == nextPageBtn) {
+  else if (btn == nextPageBtn) {
     train->showNextPage();
     checkShowPageNav();
   }
   else {
-    downloadsMonitor.appQueue.add((AppIconButton*)button);
-    downloadsMonitor.startThread();
+    const auto& appBtn = (AppIconButton*)btn;
+    if ( !(downloadsMonitor.appQueue.indexOf(appBtn) >= 0) ) {
+      downloadsMonitor.appQueue.add(appBtn);
+      appBtn->setColour(DrawableButton::textColourId, PokeLookAndFeel::chipLightPink);
+      appBtn->setAlpha(0.5);
+      downloadsMonitor.startThread();
+    }
   }
 }

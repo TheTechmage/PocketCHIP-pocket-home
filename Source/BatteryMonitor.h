@@ -19,6 +19,8 @@ public:
   
   virtual void run();
   
+  // FIXME: this class is not thread safe. Only works because we're on
+  // a single threaded machine.
   const BatteryStatus& getCurrentStatus();
   
 };
