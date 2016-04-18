@@ -11,12 +11,12 @@ DownloadsMonitor::DownloadsMonitor( )
 DownloadsMonitor::~DownloadsMonitor( ) {
 }
 
-bool DownloadsMonitor::isRunning( ) {
+bool DownloadsMonitor::hasPending( ) {
   return (installing || !appQueue.empty());
 }
 
 void DownloadsMonitor::run( ) {
-  while( !threadShouldExit() && isRunning() ) {
+  while( !threadShouldExit() && hasPending() ) {
     DBG("DownloadsMonitor::run - checking download queue");
 
     // check installing status
@@ -35,7 +35,7 @@ void DownloadsMonitor::run( ) {
     if (appQueue.size() && !installing) {
       DBG("DownloadsMonitor::run - beginning install");
       auto first = appQueue.getFirst();
-      StringArray installCmd{"sudo", "apt-get", "install", first.toRawUTF8()};
+      StringArray installCmd{"sudo", "apt-get", "--yes", "install", first.toRawUTF8()};
       installProc = new ChildProcess();
       
       installing = true;

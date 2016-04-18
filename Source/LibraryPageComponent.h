@@ -10,7 +10,7 @@ public:
   ~DownloadsMonitor();
   
   virtual void run();
-  bool isRunning();
+  bool hasPending();
   
   Array<String> appQueue;
   ScopedPointer<ChildProcess> installProc;
