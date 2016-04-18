@@ -210,7 +210,7 @@ LauncherComponent::LauncherComponent(const var &configJson)
 
 LauncherComponent::~LauncherComponent() {
   batteryIconTimer.stopTimer();
-  batteryMonitor.stopThread(2000);
+  batteryMonitor.stopThread(100);
 }
 
 void LauncherComponent::paint(Graphics &g) {

@@ -4,10 +4,55 @@
 #include "Main.h"
 #include "Utils.h"
 
+DownloadsMonitor::DownloadsMonitor( )
+: Thread( "DownloadsMonitor" ) {
+}
+
+DownloadsMonitor::~DownloadsMonitor( ) {
+}
+
+bool DownloadsMonitor::isRunning( ) {
+  return (installing || !appQueue.empty());
+}
+
+void DownloadsMonitor::run( ) {
+  while( !threadShouldExit() && isRunning() ) {
+    DBG("DownloadsMonitor::run - checking download queue");
+
+    // check installing status
+    if (installing) {
+      if (installProc->isRunning()) {
+        DBG("DownloadsMonitor::run - running install ");
+      }
+      else {
+        DBG("DownloadsMonitor::run - finished install ");
+        installing = false;
+        installProc = nullptr;
+      }
+    }
+    
+    // if queued and not installing, start next install
+    if (appQueue.size() && !installing) {
+      DBG("DownloadsMonitor::run - beginning install");
+      auto first = appQueue.getFirst();
+      StringArray installCmd{"sudo", "apt-get", "install", first.toRawUTF8()};
+      installProc = new ChildProcess();
+      
+      installing = true;
+      installProc->start(installCmd);
+      
+      appQueue.remove(0);
+    }
+    
+    wait(2000);
+  }
+}
+
 LibraryPageComponent::LibraryPageComponent() :
   AppListComponent(),
   backButton(createImageButton("Back",
-                               createImageFromFile(assetFile("nextIcon.png"))))
+                               createImageFromFile(assetFile("nextIcon.png")))),
+  downloadsMonitor()
 {
   bgColor = Colour(PokeLookAndFeel::chipPurple);
   
@@ -16,7 +61,11 @@ LibraryPageComponent::LibraryPageComponent() :
   backButton->setAlwaysOnTop(true);
   addAndMakeVisible(backButton);
 }
-LibraryPageComponent::~LibraryPageComponent() {}
+
+LibraryPageComponent::~LibraryPageComponent() {
+  // TODO: determine good timeout on download thread destruction
+  downloadsMonitor.stopThread(5000);
+}
 
 void LibraryPageComponent::paint(Graphics &g) {
   g.fillAll(bgColor);
@@ -47,6 +96,8 @@ void LibraryPageComponent::buttonClicked(Button *button) {
     checkShowPageNav();
   }
   else {
-    // TODO: implement downloading here
+    auto& appName = ((AppIconButton*)button)->shell;
+    downloadsMonitor.appQueue.add(appName);
+    downloadsMonitor.startThread();
   }
 }
