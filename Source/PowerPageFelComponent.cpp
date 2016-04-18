@@ -152,6 +152,6 @@ void PowerFelPageComponent::buttonClicked(Button *button) {
       } else if( button == yesButton && !debounce ) {
         debounce = 1;
         DBG( "FEL MODE!");
-        child.start("felmode");
+        child.start("/usr/sbin/gotofel.sh");
       }
   }
