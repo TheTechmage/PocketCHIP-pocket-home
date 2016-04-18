@@ -12,11 +12,12 @@ public:
   virtual void run();
   bool hasPending();
   
-  Array<String> appQueue;
+  Array<AppIconButton *> appQueue;
   ScopedPointer<ChildProcess> installProc;
 
 private:
   bool installing = false;
+  String installAppName;
   
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DownloadsMonitor)
 };

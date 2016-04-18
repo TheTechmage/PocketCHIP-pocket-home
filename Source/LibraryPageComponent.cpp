@@ -22,20 +22,21 @@ void DownloadsMonitor::run( ) {
     // check installing status
     if (installing) {
       if (installProc->isRunning()) {
-        DBG("DownloadsMonitor::run - running install ");
+        DBG("DownloadsMonitor::run - running install of `" << installAppName << "`");
       }
       else {
-        DBG("DownloadsMonitor::run - finished install ");
+        DBG("DownloadsMonitor::run - finished install `" << installAppName << "`");
         installing = false;
+        installAppName = String::empty;
         installProc = nullptr;
       }
     }
     
     // if queued and not installing, start next install
     if (appQueue.size() && !installing) {
-      DBG("DownloadsMonitor::run - beginning install");
-      auto first = appQueue.getFirst();
-      StringArray installCmd{"sudo", "apt-get", "--yes", "install", first.toRawUTF8()};
+      installAppName = appQueue.getFirst()->shell;
+      DBG("DownloadsMonitor::run - beginning install of `" << installAppName << "`");
+      StringArray installCmd{"sudo", "apt-get", "--yes", "install", installAppName.toRawUTF8()};
       installProc = new ChildProcess();
       
       installing = true;
@@ -96,8 +97,7 @@ void LibraryPageComponent::buttonClicked(Button *button) {
     checkShowPageNav();
   }
   else {
-    auto& appName = ((AppIconButton*)button)->shell;
-    downloadsMonitor.appQueue.add(appName);
+    downloadsMonitor.appQueue.add((AppIconButton*)button);
     downloadsMonitor.startThread();
   }
 }
