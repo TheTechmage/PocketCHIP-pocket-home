@@ -11,10 +11,14 @@
       <FILE id="e8kBas" name="wifi.json" compile="0" resource="1" file="assets/wifi.json"/>
     </GROUP>
     <GROUP id="{4593A345-C350-960A-058D-B48F8240AA1D}" name="Source">
-      <FILE id="o22p3y" name="PowerPageFelComponent.cpp" compile="1" resource="0"
+      <FILE id="eKYlUb" name="PowerPageFelComponent.cpp" compile="1" resource="0"
             file="Source/PowerPageFelComponent.cpp"/>
-      <FILE id="JLlZKV" name="PowerPageFelComponent.h" compile="0" resource="0"
+      <FILE id="wCEi8b" name="PowerPageFelComponent.h" compile="0" resource="0"
             file="Source/PowerPageFelComponent.h"/>
+      <FILE id="B0mjr7" name="LibraryPageComponent.cpp" compile="1" resource="0"
+            file="Source/LibraryPageComponent.cpp"/>
+      <FILE id="z8Ob3L" name="LibraryPageComponent.h" compile="0" resource="0"
+            file="Source/LibraryPageComponent.h"/>
       <FILE id="Bc6FLL" name="PowerPageComponent.cpp" compile="1" resource="0"
             file="Source/PowerPageComponent.cpp"/>
       <FILE id="nawuRd" name="PowerPageComponent.h" compile="0" resource="0"

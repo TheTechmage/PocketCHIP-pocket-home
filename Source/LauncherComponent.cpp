@@ -1,5 +1,6 @@
 #include "LauncherComponent.h"
 #include "AppsPageComponent.h"
+#include "LibraryPageComponent.h"
 #include "SettingsPageComponent.h"
 #include "PowerPageComponent.h"
 
@@ -162,7 +163,7 @@ LauncherComponent::LauncherComponent(const var &configJson)
   pagesByName.set("Apps", appsPage);
   
   // Apps library
-  auto appsLibrary = new LibraryListComponent();
+  auto appsLibrary = new LibraryPageComponent();
   appsLibrary->setName("AppsLibrary");
   pages.add(appsLibrary);
   pagesByName.set("AppsLibrary", appsLibrary);

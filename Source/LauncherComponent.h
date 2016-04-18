@@ -7,7 +7,7 @@
 #include "BatteryMonitor.h"
 
 class LauncherComponent;
-class LibraryListComponent;
+class LibraryPageComponent;
 class AppsPageComponent;
 
 class LaunchSpinnerTimer : public Timer {

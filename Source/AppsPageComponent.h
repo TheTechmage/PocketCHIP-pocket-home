@@ -60,23 +60,6 @@ private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AppListComponent)
 };
 
-class LibraryListComponent : public AppListComponent {
-public:
-  LibraryListComponent();
-  ~LibraryListComponent();
-  
-  ScopedPointer<ImageButton> backButton;
-  
-  void paint(Graphics &g) override;
-  void resized() override;
-  
-  void buttonClicked(Button *button) override;
-private:
-  Colour bgColor;
-  
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LibraryListComponent)
-};
-
 class AppsPageComponent : public AppListComponent {
 public:
   AppsPageComponent(LauncherComponent* launcherComponent);
