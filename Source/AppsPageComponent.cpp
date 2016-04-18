@@ -120,9 +120,16 @@ Array<DrawableButton *> AppListComponent::createIconsFromJsonArray(const var &js
 }
 
 LibraryListComponent::LibraryListComponent() :
-  AppListComponent()
+  AppListComponent(),
+  backButton(createImageButton("Back",
+                               createImageFromFile(assetFile("nextIcon.png"))))
 {
   bgColor = Colour(PokeLookAndFeel::chipPurple);
+  
+  backButton->addListener(this);
+  backButton->setTriggeredOnMouseDown(true);
+  backButton->setAlwaysOnTop(true);
+  addAndMakeVisible(backButton);
 }
 LibraryListComponent::~LibraryListComponent() {}
 
@@ -143,7 +150,10 @@ void LibraryListComponent::resized() {
 }
 
 void LibraryListComponent::buttonClicked(Button *button) {
-  if (button == prevPageBtn) {
+  if (button == backButton) {
+    getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontalLeft);
+  }
+  else if (button == prevPageBtn) {
     train->showPrevPage();
     checkShowPageNav();
   }
@@ -152,7 +162,7 @@ void LibraryListComponent::buttonClicked(Button *button) {
     checkShowPageNav();
   }
   else {
-    getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontalLeft);
+    // TODO: implement downloading here
   }
 }
 

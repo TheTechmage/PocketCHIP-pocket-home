@@ -65,6 +65,8 @@ public:
   LibraryListComponent();
   ~LibraryListComponent();
   
+  ScopedPointer<ImageButton> backButton;
+  
   void paint(Graphics &g) override;
   void resized() override;
   
