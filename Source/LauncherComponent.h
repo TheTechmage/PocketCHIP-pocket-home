@@ -7,6 +7,8 @@
 #include "BatteryMonitor.h"
 
 class LauncherComponent;
+class LibraryPageComponent;
+class AppsPageComponent;
 
 class LaunchSpinnerTimer : public Timer {
 public:
@@ -46,8 +48,9 @@ public:
     BatteryIconTimer batteryIconTimer;
     WifiIconTimer wifiIconTimer;
     Component* defaultPage;
-    
-    
+  
+    // FIXME: we have no need for the pages/pagesByName if we're using scoped pointers for each page.
+    // All these variables do is add an extra string key the compiler can't see through.
     OwnedArray<Component> pages;
     ScopedPointer<PageStackComponent> pageStack;
     HashMap<String, Component *> pagesByName;
@@ -61,14 +64,15 @@ public:
     
     void paint(Graphics &) override;
     void resized() override;
-    
+  
+    void showAppsLibrary();
     void showLaunchSpinner();
     void hideLaunchSpinner();
-    
+  
 private:
     Colour bgColor;
     String bgImage;
-    
+  
     void buttonClicked(Button *) override;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LauncherComponent)

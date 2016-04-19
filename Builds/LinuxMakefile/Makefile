@@ -50,6 +50,7 @@ endif
 
 OBJECTS := \
   $(OBJDIR)/PowerPageFelComponent_e97c8ca5.o \
+  $(OBJDIR)/LibraryPageComponent_6532e93c.o \
   $(OBJDIR)/PowerPageComponent_4a26c732.o \
   $(OBJDIR)/BatteryMonitor_37302b96.o \
   $(OBJDIR)/WifiStatusJson_715858f8.o \
@@ -96,6 +97,11 @@ strip:
 $(OBJDIR)/PowerPageFelComponent_e97c8ca5.o: ../../Source/PowerPageFelComponent.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling PowerPageFelComponent.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/LibraryPageComponent_6532e93c.o: ../../Source/LibraryPageComponent.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling LibraryPageComponent.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/PowerPageComponent_4a26c732.o: ../../Source/PowerPageComponent.cpp
