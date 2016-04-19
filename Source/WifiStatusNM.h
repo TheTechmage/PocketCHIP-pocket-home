@@ -27,6 +27,8 @@ public:
   void initializeStatus() override;
 
   void handleWirelessEnabled();
+  void handleWirelessConnected();
+  void handleConnectedAccessPoint();
 
 private:
   Array<Listener*> listeners;
@@ -34,6 +36,7 @@ private:
   ScopedPointer<WifiAccessPoint> connectedAP = nullptr;
   bool enabled = false;
   bool connected = false;
+  bool connecting = false;
 
   NMClient* connectToNetworkManager();
 
