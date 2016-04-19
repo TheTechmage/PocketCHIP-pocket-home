@@ -38,14 +38,15 @@
       "cornerButtons": [
         {
           "location": "TopLeft",
-          "name": "WiFi",
-          "icon": "wifiStrength3.png"
-        },
-        {
-          "location": "TopRight",
           "name": "Battery",
           "icon": "battery_2.png"
         },
+        {
+          "location": "TopRight",
+          "name": "WiFi",
+          "icon": "wifiStrength3.png"
+        },
+
         {
           "location": "BottomLeft",
           "name": "Power",
