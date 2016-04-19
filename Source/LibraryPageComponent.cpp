@@ -4,11 +4,15 @@
 #include "Main.h"
 #include "Utils.h"
 
-DownloadsMonitor::DownloadsMonitor( )
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/wait.h>
+
+DownloadsMonitor::DownloadsMonitor()
 : Thread( "DownloadsMonitor" ) {
 }
 
-DownloadsMonitor::~DownloadsMonitor( ) {
+DownloadsMonitor::~DownloadsMonitor() {
 }
 
 void DownloadsMonitor::addListener(Listener* listener) {
@@ -17,6 +21,7 @@ void DownloadsMonitor::addListener(Listener* listener) {
 
 void DownloadsMonitor::emitInstallStarted(){
   const MessageManagerLock mmLock;
+  DBG("DownloadsMonitor::emitInstallStarted `" << installAppName << "`");
 
   for (int i = 0; i < listeners.size(); i++) {
     if (listeners[i])
@@ -26,6 +31,7 @@ void DownloadsMonitor::emitInstallStarted(){
 
 void DownloadsMonitor::emitInstallFinished(){
   const MessageManagerLock mmLock;
+  DBG("DownloadsMonitor::emitInstallFinished `" << installAppName << "`");
 
   for (int i = 0; i < listeners.size(); i++) {
     if (listeners[i])
@@ -35,6 +41,7 @@ void DownloadsMonitor::emitInstallFinished(){
 
 void DownloadsMonitor::emitInstallTimedOut(){
   const MessageManagerLock mmLock;
+  DBG("DownloadsMonitor::emitInstallTimedOut `" << installAppName << "`");
   
   for (int i = 0; i < listeners.size(); i++) {
     if (listeners[i])
@@ -49,28 +56,118 @@ bool DownloadsMonitor::hasPending( ) {
 void DownloadsMonitor::clearCurrentInstall() {
   installing = false;
   installAppName = String::empty;
-  installProc = nullptr;
+  installAppBtn = nullptr;
+  installPid = -1;
+}
+
+bool DownloadsMonitor::isRunning() {
+// method 1
+//  const char *pidStr = String(pid).toRawUTF8();
+//  const char *checkPid[] = { "ps", "-p", pidStr, NULL };
+//  runningCheckPid = spawn((char**)checkPid);
+//  return (getpgid(pid) >= 0) ? true : false;
+  
+// method 2
+//  int error = kill(pid,0);
+//  if (error == 0) {
+//    return true;
+//  }
+//  // doesn't exist
+//  else if (error == ESRCH) {
+//    return false;
+//  }
+//  else {
+//    return false;
+//  }
+  if (installPid == -1) return false;
+  
+  int status;
+  int wpid = waitpid(installPid, &status, WNOHANG);
+  // still running
+  if (wpid == 0) {
+    DBG("DownloadsMonitor::isRunning - still running " << installPid);
+    return true;
+  }
+  // status has changed
+  else if (wpid == installPid) {
+    DBG("DownloadsMonitor::isRunning - exited " << installPid);
+    // clean exit
+    if (status == 0) {
+      return false;
+    }
+    // terminated normally via exit
+    if (WIFEXITED(status)) {
+      return false;
+    }
+    // WIP: what are other conditions besides clean exit?
+    else {
+      return false;
+    }
+  }
+  // inconclusive
+  else {
+    // some other process has changed
+    if (wpid > 0) {
+      DBG("DownloadsMonitor::isRunning - found status for other process. pid: " << installPid << " otherpid: " << wpid);
+      return true;
+    }
+    // an error ocurred
+    else {
+      DBG("DownloadsMonitor::isRunning - error. pid: " << installPid << " status: " << status);
+      if (errno == ECHILD) {
+        DBG("DownloadsMonitor::isRunning - no child process to wait for " << installPid);
+      }
+      return true;
+    }
+  }
+}
+
+int DownloadsMonitor::spawn(char** arg) {
+  int pid = fork();
+  
+  // parent process
+  if (pid > 0) {
+    return pid;
+  }
+  // child process
+  else if (pid == 0) {
+    // create session and make process group leader
+    setsid();
+    // hide all stderr
+//    freopen("/dev/null", "a", stderr);
+    execvp(arg[0], arg);
+    // if we're here execvp failed
+    char* errstr;
+    asprintf(&errstr, "pocket-home: failed to spawn - %s", arg[0]);
+    perror(errstr);
+    exit(1);
+  }
+  // fork failed
+  else {
+    printf("pocket-home: fork failed.");
+    exit(1);
+  }
 }
 
 void DownloadsMonitor::run( ) {
   constexpr auto waitTime = 2000;
+  constexpr auto maxWait = 60 * 1000;
   
   while( !threadShouldExit() && hasPending() ) {
     DBG("DownloadsMonitor::run - checking download queue");
 
     // check installing status
     if (installing) {
-      if (installProc->isRunning()) {
+      if (isRunning()) {
         DBG("DownloadsMonitor::run - running install of `" << installAppName << "`");
         waitTimeout += waitTime;
-        if (waitTimeout > (60 * 1000)) {
+        if (waitTimeout > maxWait) {
           waitTimeout = 0;
           emitInstallTimedOut();
           clearCurrentInstall();
         }
       }
       else {
-        DBG("DownloadsMonitor::run - finished install `" << installAppName << "`");
         emitInstallFinished();
         clearCurrentInstall();
       }
@@ -80,12 +177,10 @@ void DownloadsMonitor::run( ) {
     if (appQueue.size() && !installing) {
       installAppBtn = appQueue.getFirst();
       installAppName = installAppBtn->shell;
-      DBG("DownloadsMonitor::run - beginning install of `" << installAppName << "`");
-      StringArray installCmd{"sudo", "apt-get", "--yes", "install", installAppName.toRawUTF8()};
-      installProc = new ChildProcess();
-      
       installing = true;
-      installProc->start(installCmd);
+//      const char *installCmd[] = {"sh", "-c", ("sudo apt-get --yes install " + installAppName).toRawUTF8(), NULL};
+      const char *installCmd[] = {"sudo", "apt-get", "--yes", "install", installAppName.toRawUTF8(), NULL};
+      installPid = spawn((char**)installCmd);
       
       emitInstallStarted();
       
@@ -135,7 +230,7 @@ void LibraryPageComponent::resized() {
 
 void LibraryPageComponent::handleInstallTimedOut(AppIconButton* btn) {
   btn->removeColour(DrawableButton::backgroundColourId);
-  btn->setColour(DrawableButton::textColourId, Colours::indianred);
+  btn->setColour(DrawableButton::textColourId, Colours::yellow);
 }
 
 void LibraryPageComponent::handleInstallStarted(AppIconButton* btn) {

@@ -18,11 +18,12 @@ public:
     virtual void handleInstallTimedOut(AppIconButton* btn) {};
   };
   
+  int spawn(char** arg);
   virtual void run();
+  bool isRunning();
   bool hasPending();
   
   Array<AppIconButton *> appQueue;
-  ScopedPointer<ChildProcess> installProc;
   
   void addListener(Listener* listener);
 
@@ -33,11 +34,12 @@ private:
   
   void clearCurrentInstall();
   
-  int waitTimeout = 0;
-  
   Array<Listener *> listeners;
   
   bool installing = false;
+  int installPid = 0;
+  int runningCheckPid = 0;
+  int waitTimeout = 0;
   
   String installAppName;
   AppIconButton * installAppBtn;
