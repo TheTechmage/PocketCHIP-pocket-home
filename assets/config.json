@@ -15,16 +15,6 @@
           "shell": "pico8-splore"
         },
         {
-          "name": "make games",
-          "icon": "appIcons/pico8terminal.png",
-          "shell": "pico8"
-        },
-        {
-          "name": "media player",
-          "icon": "appIcons/mediaplayer.png",
-          "shell": "gnome-mplayer"
-        },
-        {
           "name": "make music",
           "icon": "appIcons/musicsequencer.png",
           "shell": "sunvox"
@@ -35,37 +25,15 @@
           "shell": "netsurf"
         },
         {
-          "name": "watch youtube",
-          "icon": "appIcons/youtube.png",
-          "shell": "smtube"
-        },
-        
-        {
           "name": "write",
           "icon": "appIcons/texteditor.png",
           "shell": "leafpad"
         },
-        
         {
           "name": "browse files",
           "icon": "appIcons/filebrowser.png",
           "shell": "thunar"
         },
-        {
-          "name": "view images",
-          "icon": "appIcons/imageviewer.png",
-          "shell": "viewnior"
-        },
-        {
-          "name": "alex4",
-          "icon": "appIcons/alex4.png",
-          "shell": "alex4"
-        },
-        {
-          "name": "update software",
-          "icon": "appIcons/update.png",
-          "shell": "xfce4-terminal -e 'sudo apt-get update'"
-        }
       ],
       "cornerButtons": [
         {
