@@ -150,6 +150,31 @@ PowerPageComponent::PowerPageComponent() {
     powerSpinner = new ImageComponent();
     powerSpinner->setImage(launchSpinnerImages[0]);
     addChildComponent(powerSpinner);
+  
+  buildName = "Build: ";
+  auto releaseFileName = absoluteFileFromPath( "/etc/os-release" );
+  File releaseFile( releaseFileName );
+  if (releaseFile.exists()) {
+    auto fileStr = releaseFile.loadFileAsString();
+    auto lines = split(fileStr, "\n");
+    auto releaseKv = split(lines[8],"=");
+    std::vector<String> releaseV(releaseKv.begin()+1,releaseKv.end());
+    for (const auto& val : releaseV) {
+      // WIP: misses the removed equals
+      buildName += val;
+    }
+    DBG(buildName);
+  }
+  
+#if JUCE_MAC
+  buildName = "Build: MacOsX Dev Build";
+#endif
+  
+  buildNameLabel = new Label("Build Name");
+  buildNameLabel->setText(buildName, NotificationType::dontSendNotification);
+  buildNameLabel->setFont(16);
+  buildNameLabel->setJustificationType(Justification::centred);
+  addAndMakeVisible(buildNameLabel);
 }
 
 PowerPageComponent::~PowerPageComponent() {}
@@ -185,6 +210,9 @@ void PowerPageComponent::resized() {
   rebootButton->setBounds(bounds.getWidth()/3.375, 140, 200, 40);
   felButton->setBounds(bounds.getWidth()/3.375, 190, 200, 40);
   backButton->setBounds(bounds.getWidth()-60, bounds.getY(), 60, bounds.getHeight());
+  
+  buildNameLabel->setBounds(bounds.getX(), bounds.getY(), bounds.getWidth(), 30);
+  buildNameLabel->setBoundsToFit(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), Justification::centredBottom, true);
 }
 
 void PowerPageComponent::setSleep() {

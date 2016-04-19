@@ -24,22 +24,6 @@ typedef enum {
 WifiStatusNM::WifiStatusNM() : listeners() {}
 WifiStatusNM::~WifiStatusNM() {}
 
-std::vector<String> split(const String &orig, const String &delim) {
-  std::vector<String> elems;
-  int index = 0;
-  auto remainder = orig.substring(index);
-  while (remainder.length()) {
-    index = remainder.indexOf(delim);
-    if (index < 0) {
-      elems.push_back(remainder);
-      break;
-    }
-    elems.push_back(remainder.substring(0,index));
-    remainder = remainder.substring(index+1);
-  }
-  return elems;
-};
-
 bool isNMWifiRadioEnabled() {
   ChildProcess nmproc;
   StringArray cmd{"nmcli","r","wifi"};

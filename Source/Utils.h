@@ -20,3 +20,5 @@ float mix(float a, float b, float t);
 float mapLinear(float x, float imin, float imax, float omin, float omax);
 
 void animateTranslation(Component *component, int x, int y, float alpha, int durationMillis);
+
+std::vector<String> split(const String &orig, const String &delim);

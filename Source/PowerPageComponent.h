@@ -18,7 +18,7 @@ public:
 class PowerSpinnerTimer : public Timer {
 public:
     PowerSpinnerTimer() {};
-    void timerCallback();
+    void timerCallback() override;
     PowerPageComponent* powerComponent;
     int i = 0;
 };
@@ -78,13 +78,15 @@ public:
     ScopedPointer<TextButton> rebootButton;
     ScopedPointer<TextButton> sleepButton;
     ScopedPointer<TextButton> felButton;
+    ScopedPointer<Label> buildNameLabel;
     ScopedPointer<Component> mainPage;
     ScopedPointer<ImageComponent> powerSpinner;
     PowerSpinnerTimer powerSpinnerTimer;
     PowerDebounceTimer powerDebounceTimer;
     Array<Image> launchSpinnerImages;
     HashMap<String, Component *> pagesByName;
-    
+  
+  String buildName;
     ScopedPointer<PageStackComponent> pageStack;
     ScopedPointer<Component> felPage;
     
