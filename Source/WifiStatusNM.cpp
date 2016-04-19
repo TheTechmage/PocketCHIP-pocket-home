@@ -3,26 +3,18 @@
 #include "WifiStatus.h"
 #include "../JuceLibraryCode/JuceHeader.h"
 
-// From libnm-util/NetworkManager.h
-typedef enum {
-        NM_DEVICE_STATE_UNKNOWN      = 0,
-        NM_DEVICE_STATE_UNMANAGED    = 10,
-        NM_DEVICE_STATE_UNAVAILABLE  = 20,
-        NM_DEVICE_STATE_DISCONNECTED = 30,
-        NM_DEVICE_STATE_PREPARE      = 40,
-        NM_DEVICE_STATE_CONFIG       = 50,
-        NM_DEVICE_STATE_NEED_AUTH    = 60,
-        NM_DEVICE_STATE_IP_CONFIG    = 70,
-        NM_DEVICE_STATE_IP_CHECK     = 80,
-        NM_DEVICE_STATE_SECONDARIES  = 90,
-        NM_DEVICE_STATE_ACTIVATED    = 100,
-        NM_DEVICE_STATE_DEACTIVATING = 110,
-        NM_DEVICE_STATE_FAILED       = 120
-} NMDeviceState;
-
-
 WifiStatusNM::WifiStatusNM() : listeners() {}
 WifiStatusNM::~WifiStatusNM() {}
+
+NMClient* WifiStatusNM::connectToNetworkManager() {
+  if (!nmclient || !NM_IS_CLIENT(nmclient))
+    nmclient = nm_client_new(NULL, NULL);
+
+  if (!nmclient || !NM_IS_CLIENT(nmclient))
+    DBG("WifiStatusNM: failed to connect to nmclient over dbus");
+
+  return nmclient;
+}
 
 bool isNMWifiRadioEnabled() {
   ChildProcess nmproc;
@@ -173,6 +165,45 @@ void getNMAvailableAccessPoints(OwnedArray<WifiAccessPoint> &aps) {
   tag_map.clear();
 }
 
+NMListener::NMListener() : Thread("NMListener Thread") {}
+
+NMListener::~NMListener() {
+  DBG(__func__ << ": cleanup thread");
+  if (isThreadRunning()) {
+    signalThreadShouldExit();
+    notify();
+    stopThread(2000);
+  }
+}
+
+static void handle_wireless_enabled(WifiStatusNM *wifiStatus) {
+  DBG("SIGNAL: " << NM_CLIENT_WIRELESS_ENABLED << ": changed! ");
+  wifiStatus->handleWirelessEnabled();
+}
+
+void NMListener::initialize(WifiStatusNM *status, NMClient *client) {
+  nm = client;
+  wifiStatus = status;
+}
+
+void NMListener::run() {
+  context = g_main_context_default();
+  //context = g_main_context_new();
+  loop = g_main_loop_new(context, false);
+  //g_main_context_invoke(context, initialize_in_context, status);
+
+  g_signal_connect_swapped(nm, "notify::" NM_CLIENT_WIRELESS_ENABLED,
+    G_CALLBACK(handle_wireless_enabled), wifiStatus);
+
+  while (!threadShouldExit()) {
+    bool dispatched = g_main_context_iteration(context, false);
+    wait(100);
+  }
+
+  g_main_loop_unref(loop);
+  g_main_context_unref(context);
+}
+
 OwnedArray<WifiAccessPoint> *WifiStatusNM::nearbyAccessPoints() {
   getNMAvailableAccessPoints(accessPoints);
   return &accessPoints;
@@ -197,31 +228,27 @@ void WifiStatusNM::addListener(Listener* listener) {
 // TODO: direct action should not be named set, e.g. enable/disable/disconnect
 // otherwise easily confused with setters thats wrap members, which are slightly different idiom
 void WifiStatusNM::setEnabled() {
-  if (!enabled) {
-    auto cmd = "nmcli radio wifi on";
-    DBG("wifi cmd: " << cmd);
-    ChildProcess nmproc;
-    nmproc.start(cmd);
-    nmproc.waitForProcessToFinish(500);
-    enabled = isNMWifiRadioEnabled();
-    for(const auto& listener : listeners) {
-      listener->handleWifiEnabled();
-    }
-  }
+  if (!enabled)
+    nm_client_wireless_set_enabled(nmclient, true);
 }
 
 void WifiStatusNM::setDisabled() {
-  if (enabled) {
-    auto cmd = "nmcli radio wifi off";
-    DBG("wifi cmd: " << cmd);
-    ChildProcess nmproc;
-    nmproc.start(cmd);
-    nmproc.waitForProcessToFinish(500);
-    enabled = isNMWifiRadioEnabled();
-    for(const auto& listener : listeners) {
+  if (enabled)
+    nm_client_wireless_set_enabled(nmclient, false);
+}
+
+void WifiStatusNM::handleWirelessEnabled() {
+  enabled = nm_client_wireless_get_enabled(nmclient);
+  DBG("WifiStatusNM::" << __func__ << " changed to " << enabled);
+
+  //FIXME: Force and wait for a scan after enable
+  if (enabled)
+    for (const auto& listener : listeners)
+      listener->handleWifiEnabled();
+  else
+    for (const auto& listener : listeners)
       listener->handleWifiDisabled();
-    }
-  }
+
 }
 
 void WifiStatusNM::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
@@ -309,7 +336,14 @@ void WifiStatusNM::initializeStatus() {
   connectedAP = nullptr;
   connected = false;
 
-  enabled = isNMWifiRadioEnabled();
+  if (!this->connectToNetworkManager())
+    DBG("WifiStatusNM: failed to connect to nmclient over dbus");
+
+  nmlistener = new NMListener();
+  nmlistener->initialize(this, nmclient);
+  nmlistener->startThread();
+
+  enabled = nm_client_wireless_get_enabled(nmclient);
 
   if (!enabled)
     return;
