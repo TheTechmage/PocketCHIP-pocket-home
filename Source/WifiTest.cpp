@@ -66,6 +66,7 @@ void WifiNextStepTimer::timerCallback() {
 void WifiTestApplication::nextTestStep() {
   std::cout << "Executing testStep" << currentStep << std::endl;
   if (currentStep < testSteps.size()) {
+    wifiStatus->clearListeners();
     testSteps[currentStep](wifiStatus);
     currentStep++;
     return;

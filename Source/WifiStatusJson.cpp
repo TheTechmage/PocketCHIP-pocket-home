@@ -28,6 +28,10 @@ void WifiStatusJson::addListener(Listener* listener) {
   listeners.add(listener);
 }
 
+void WifiStatusJson::clearListeners() {
+  listeners.clear();
+}
+
 // TODO: direct action should not be named set, e.g. enable/disable/disconnect
 // otherwise easily confused with setters thats wrap members, which are slightly different idiom
 void WifiStatusJson::setEnabled() {

@@ -21,6 +21,7 @@ public:
   virtual bool isConnected() const = 0;
 
   virtual void addListener(Listener* listener) = 0;
+  virtual void clearListeners() = 0;
 
   virtual void setEnabled() = 0;
   virtual void setDisabled() = 0;

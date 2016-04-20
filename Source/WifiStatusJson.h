@@ -14,6 +14,7 @@ public:
   bool isConnected() const override;
 
   void addListener(Listener* listener) override;
+  void clearListeners() override;
 
   void setEnabled() override;
   void setDisabled() override;

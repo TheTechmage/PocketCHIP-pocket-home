@@ -266,6 +266,12 @@ bool WifiStatusNM::isConnected() const {
 
 void WifiStatusNM::addListener(Listener* listener) {
   listeners.add(listener);
+  DBG("WifiStatusNM::" << __func__ << " numListeners = " << listeners.size());
+}
+
+void WifiStatusNM::clearListeners() {
+  listeners.clear();
+  DBG("WifiStatusNM::" << __func__ << " numListeners = " << listeners.size());
 }
 
 // TODO: direct action should not be named set, e.g. enable/disable/disconnect
