@@ -8,12 +8,22 @@
 WifiStatusJson::WifiStatusJson() : listeners() {}
 WifiStatusJson::~WifiStatusJson() {}
 
-OwnedArray<WifiAccessPoint> *WifiStatusJson::nearbyAccessPoints() {
-  return &accessPoints;
+OwnedArray<WifiAccessPoint> WifiStatusJson::nearbyAccessPoints() {
+  OwnedArray<WifiAccessPoint> accessPoints;
+  auto json = JSON::parse(assetFile("wifi.json"));
+
+  for (const auto &apJson : *json.getArray()) {
+    auto ap = new WifiAccessPoint();
+    ap->ssid = apJson["name"];
+    ap->signalStrength = apJson["strength"];
+    ap->requiresAuth = apJson["auth"];
+    accessPoints.add(ap);
+  }
+  return accessPoints;
 }
 
-WifiAccessPoint *WifiStatusJson::connectedAccessPoint() const {
-  return connectedAP;
+WifiAccessPoint WifiStatusJson::connectedAccessPoint() const {
+  return WifiAccessPoint(*connectedAP);
 }
 
 bool WifiStatusJson::isEnabled() const {
@@ -100,17 +110,6 @@ void WifiStatusJson::setDisconnected() {
 }
 
 void WifiStatusJson::initializeStatus() {
-  auto json = JSON::parse(assetFile("wifi.json"));
   connectedAP = nullptr;
   connected = false;
-
-  accessPoints.clear();
-
-  for (const auto &apJson : *json.getArray()) {
-    auto ap = new WifiAccessPoint();
-    ap->ssid = apJson["name"];
-    ap->signalStrength = apJson["strength"];
-    ap->requiresAuth = apJson["auth"];
-    accessPoints.add(ap);
-  }
 }

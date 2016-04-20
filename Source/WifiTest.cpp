@@ -172,7 +172,7 @@ void WifiTestApplication::initialise(const String &commandLine) {
 
   auto test_ap_list = [](WifiStatus *wifiStatus) {
     std::cout << "Printing known AP's from wifiStatus ..." << std::endl;
-    for (auto ap : *wifiStatus->nearbyAccessPoints()) {
+    for (auto ap : wifiStatus->nearbyAccessPoints()) {
   	  std::cout << ap->ssid << std::endl;
     }
   };
@@ -195,7 +195,7 @@ void WifiTestApplication::initialise(const String &commandLine) {
     listener->expectConnected = true;
     wifiStatus->addListener(listener);
 
-    for (auto ap : *wifiStatus->nearbyAccessPoints()) {
+    for (auto ap : wifiStatus->nearbyAccessPoints()) {
       std::cout << "Comparing: " << ap->ssid << " to " << ssid << std::endl;
       if (ap->ssid == ssid) {
 	std::cout << "Found: " << ap->ssid << std::endl;
@@ -209,10 +209,7 @@ void WifiTestApplication::initialise(const String &commandLine) {
 
   auto test_connected_ap = [this](WifiStatus *wifiStatus) {
     auto ap = wifiStatus->connectedAccessPoint();
-    if (ap)
-      std::cout << "Connected AP SSID = " << ap->ssid << std::endl;
-    else
-      std::cout << "Connected AP is NULL" << std::endl;
+    std::cout << "Connected AP SSID = " << ap.ssid << std::endl;
   };
 
   auto test_explicit_disconnect = [this](WifiStatus *wifiStatus) {

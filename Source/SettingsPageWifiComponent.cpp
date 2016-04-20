@@ -10,6 +10,15 @@ void WifiAccessPointListItem::resized() {
   setSize(getLocalBounds().getWidth(), 42);
 }
 
+int wifiSignalStrengthToIdx(int strength) {
+  const auto& conAp = getWifiStatus().connectedAccessPoint();
+  // 0 to 100
+  float sigStrength = std::max(0, std::min(99, conAp.signalStrength));
+  // 0 - 3
+  return round( ( 4.0 * (sigStrength)/100.0f) );
+}
+
+
 void WifiAccessPointListItem::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) {
   auto bounds = getLocalBounds();
   auto inset = bounds.reduced(6, 4);
@@ -23,7 +32,12 @@ void WifiAccessPointListItem::paintButton(Graphics &g, bool isMouseOverButton, b
                          bounds.getWidth() - 2*borderThick, bounds.getHeight()  - 2*borderThick,
                          radius, borderThick);
 
-  icons->wifiStrength[ap->signalStrength]->drawWithin(g, iconBounds,
+  if (!ap) {
+     DBG(__func__ << ": ERROR: trying to paint NULL AP!!!!");
+     return;
+  }
+  DBG(__func__ << ": lookup Icon index by RSSI: " << wifiSignalStrengthToIdx(ap->signalStrength));
+  icons->wifiStrength[wifiSignalStrengthToIdx(ap->signalStrength)]->drawWithin(g, iconBounds,
                                                       RectanglePlacement::fillDestination, 1.0f);
   if (ap->requiresAuth) {
     iconBounds.translate(-h * 0.75, 0);
@@ -75,7 +89,10 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   accessPointListPage->itemHeight = 50;
   accessPointListPage->itemScaleMin = accessPointListPage->itemScaleMax = 1.0;
 
-  for (auto ap : *getWifiStatus().nearbyAccessPoints()) {
+  accessPoints = getWifiStatus().nearbyAccessPoints();
+  for (auto ap : accessPoints) {
+    DBG(__func__ << ": added " << ap->ssid << ", " << ap->signalStrength << ", "
+		    << ap->requiresAuth);
     auto item = new WifiAccessPointListItem(ap, icons);
     item->addListener(this);
     accessPointItems.add(item);
@@ -132,7 +149,7 @@ void SettingsPageWifiComponent::resized() {
     auto& wifiStatus = getWifiStatus();
     if (wifiStatus.isConnected()) {
       selectedAp = wifiStatus.connectedAccessPoint();
-      connectionLabel->setText(selectedAp->ssid, juce::NotificationType::dontSendNotification);
+      connectionLabel->setText(selectedAp.ssid, juce::NotificationType::dontSendNotification);
       passwordEditor->setVisible(false);
       connectionButton->setButtonText("Disconnect");
       pageStack->pushPage(connectionPage, PageStackComponent::kTransitionNone);
@@ -167,7 +184,7 @@ void SettingsPageWifiComponent::handleWifiFailedConnect() {
 
 void SettingsPageWifiComponent::handleWifiDisconnected() {
   DBG("SettingsPageWifiComponent::wifiDisconnected");
-  if (selectedAp && selectedAp->requiresAuth) {
+  if (selectedAp.requiresAuth) {
     passwordEditor->setVisible(true);
   }
   connectionButton->setButtonText("Connect");
@@ -182,12 +199,12 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
     if (status.isConnected()) {
       status.setDisconnected();
     } else {
-      if (selectedAp->requiresAuth) {
+      if (selectedAp.requiresAuth) {
         const auto& psk = passwordEditor->getTextValue().toString();
-        status.setConnectedAccessPoint(selectedAp, psk);
+        status.setConnectedAccessPoint(&selectedAp, psk);
       }
       else {
-        status.setConnectedAccessPoint(selectedAp);
+        status.setConnectedAccessPoint(&selectedAp);
       }
     }
   }
@@ -195,9 +212,10 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
   else {
     auto apButton = dynamic_cast<WifiAccessPointListItem *>(button);
     if (apButton) {
-      selectedAp = apButton->ap;
+      selectedAp = *apButton->ap;
       connectionLabel->setText(apButton->ap->ssid, juce::NotificationType::dontSendNotification);
-      if (selectedAp == status.connectedAccessPoint()) {
+      //FIXME: Need a better equality proxy, as discussed
+      if (selectedAp.ssid == status.connectedAccessPoint().ssid) {
         passwordEditor->setVisible(false);
         connectionButton->setButtonText("Disconnect");
       } else {
@@ -210,7 +228,6 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
     if (button == backButton) {
       // leave connection page
       if (pageStack->getDepth() > 1) {
-        selectedAp = nullptr;
         pageStack->popPage(PageStackComponent::kTransitionTranslateHorizontal);
       // leave wifi settings page
       } else {

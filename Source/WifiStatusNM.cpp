@@ -52,7 +52,7 @@ WifiAccessPoint *createNMWifiAccessPoint(NMAccessPoint *ap) {
 
   return new WifiAccessPoint {
     ssid_str,
-    1, //nm_access_point_get_strength(ap),
+    nm_access_point_get_strength(ap),
     security,
   };
 }
@@ -61,14 +61,18 @@ void addNMWifiAccessPoints(gpointer data, gpointer user_data) {
   NMAccessPoint *ap = NM_ACCESS_POINT(data);
   OwnedArray<WifiAccessPoint> *aps = (OwnedArray<WifiAccessPoint> *) user_data;
 
-  aps->add(createNMWifiAccessPoint(ap));
+  auto created_ap = createNMWifiAccessPoint(ap);
+  if (created_ap)
+    aps->add(created_ap);
 }
 
 WifiAccessPoint* getNMConnectedAP(NMDeviceWifi *wdev) {
   NMAccessPoint *ap = nm_device_wifi_get_active_access_point(wdev);
 
-  if (!wdev || !ap)
+  if (!wdev || !ap) {
+    DBG(__func__ << ": no NMAccessPoint found!");
     return NULL;
+  }
 
   return createNMWifiAccessPoint(ap);
 }
@@ -147,23 +151,25 @@ void NMListener::run() {
   g_main_context_unref(context);
 }
 
-OwnedArray<WifiAccessPoint> *WifiStatusNM::nearbyAccessPoints() {
+OwnedArray<WifiAccessPoint> WifiStatusNM::nearbyAccessPoints() {
   NMDeviceWifi *wdev;
+  OwnedArray<WifiAccessPoint> accessPoints;
 
-  wdev = NM_DEVICE_WIFI(nm_client_get_device_by_iface(nmclient, "wlan0"));
+  wdev = NM_DEVICE_WIFI(nmdevice);
   //nm_device_wifi_request_scan(wdev, NULL, NULL);
-
-  accessPoints.clear();
 
   g_ptr_array_foreach(
       (GPtrArray *) nm_device_wifi_get_access_points(wdev),
       addNMWifiAccessPoints, &accessPoints);
 
-  return &accessPoints;
+  DBG(__func__ << ": found " << accessPoints.size() << " AccessPoints");
+  return accessPoints;
 }
 
-WifiAccessPoint *WifiStatusNM::connectedAccessPoint() const {
-  return connectedAP;
+WifiAccessPoint WifiStatusNM::connectedAccessPoint() const {
+  const char * state = (connectedAP == nullptr) ? "NULL" : "ADDR";
+  DBG(__func__ << ": connectedAP points to " << state);
+  return WifiAccessPoint(*connectedAP);
 }
 
 bool WifiStatusNM::isEnabled() const {
@@ -274,7 +280,11 @@ void WifiStatusNM::handleWirelessConnected() {
 
 void WifiStatusNM::handleConnectedAccessPoint() {
   DBG("WifiStatusNM::" << __func__ << " changed active AP");
-  auto connectedAP = getNMConnectedAP(NM_DEVICE_WIFI(nmdevice));
+  connectedAP = getNMConnectedAP(NM_DEVICE_WIFI(nmdevice));
+  if (connectedAP)
+    DBG("WifiStatusNM::" << __func__ << " ssid = " << connectedAP->ssid);
+  else
+    DBG("WifiStatusNM::" << __func__ << " connectedAP = NULL");
 }
 
 void WifiStatusNM::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
@@ -386,6 +396,4 @@ void WifiStatusNM::initializeStatus() {
 
   if (connected)
     connectedAP = getNMConnectedAP(NM_DEVICE_WIFI(nmdevice));
-
-  nearbyAccessPoints();
 }
