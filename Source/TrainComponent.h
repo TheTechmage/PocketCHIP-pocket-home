@@ -48,6 +48,10 @@ private:
   StretchableLayoutManager rowLayout;
   StretchableLayoutManager colLayout;
   
+  double rowProp;
+  double rowSpacerProp;
+  double colProp;
+  
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Grid)
 };
 
