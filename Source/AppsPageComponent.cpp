@@ -71,7 +71,7 @@ void AppListComponent::resized() {
   
   // drop the page buttons from our available layout size
   auto trainWidth = b.getWidth();
-  auto trainHeight = b.getHeight() - (2.1*btnHeight);
+  auto trainHeight = b.getHeight() - (2.0*btnHeight);
   train->setSize(trainWidth, trainHeight);
   train->setBoundsToFit(b.getX(), b.getY(), b.getWidth(), b.getHeight(), Justification::centred, true);
 }

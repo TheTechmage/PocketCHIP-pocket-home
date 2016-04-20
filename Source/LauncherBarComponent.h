@@ -11,8 +11,6 @@ public:
 
 class LauncherBarComponent : public Component, public ButtonListener {
 public:
-  int buttonPadding = 14;
-
   OwnedArray<ImageButton> buttons;
 
   StretchableLayoutManager layout;

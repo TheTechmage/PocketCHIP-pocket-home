@@ -2,7 +2,7 @@
 #include "Utils.h"
 
 LauncherBarButton::LauncherBarButton(const String &name, const Image &image) : ImageButton(name) {
-  setImages(true, true, true,                       //
+  setImages(false, false, true,
             image, 1.0f, Colours::transparentWhite, // normal
             image, 1.0f, Colours::transparentWhite, // over
             image, 1.0f, Colours::transparentWhite, // down
@@ -45,13 +45,12 @@ void LauncherBarComponent::resized() {
   items[nitems-2] = nullptr;
 
   auto bounds = getLocalBounds();
-  bounds.reduce(buttonPadding / 2, buttonPadding);
-  int buttonSize = bounds.getHeight();
+//  bounds.reduce(buttonPadding / 2, buttonPadding);
+  int buttonSize = 50;
 
   if (layoutDirty) {
-    int itemWidth = buttonSize + buttonPadding;
     for (int i = 0; i < nitems; i++) {
-      layout.setItemLayout(i, itemWidth, itemWidth, buttonSize);
+      layout.setItemLayout(i, buttonSize, buttonSize, buttonSize);
     }
     layout.setItemLayout(nitems - 2, 0, -1.0, -1.0); // set second to last item (spacer) to be 100%
   }
