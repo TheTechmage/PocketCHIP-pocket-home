@@ -1,3 +1,5 @@
+#ifdef LINUX
+
 #include <map>
 
 #include "WifiStatus.h"
@@ -397,3 +399,5 @@ void WifiStatusNM::initializeStatus() {
   if (connected)
     connectedAP = getNMConnectedAP(NM_DEVICE_WIFI(nmdevice));
 }
+
+#endif // LINUX

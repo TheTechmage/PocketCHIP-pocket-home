@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef LINUX
+
 #include <NetworkManager.h>
 
 #include "Utils.h"
@@ -60,3 +62,5 @@ private:
   NMClient *nm;
   WifiStatusNM *wifiStatus;
 };
+
+#endif // LINUX
