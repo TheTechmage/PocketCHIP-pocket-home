@@ -31,7 +31,7 @@ bool resolveAPSecurity(NMAccessPoint *ap) {
   );
 }
 
-WifiAccessPoint *createWifiAccessPoint(NMAccessPoint *ap) {
+WifiAccessPoint *createNMWifiAccessPoint(NMAccessPoint *ap) {
   GBytes *ssid = nm_access_point_get_ssid(ap);
   char *ssid_str = NULL, *ssid_hex_str = NULL;
   bool security = resolveAPSecurity(ap);
@@ -57,79 +57,11 @@ WifiAccessPoint *createWifiAccessPoint(NMAccessPoint *ap) {
   };
 }
 
-bool isNMWifiRadioEnabled() {
-  ChildProcess nmproc;
-  StringArray cmd{"nmcli","r","wifi"};
-  String state;
+void addNMWifiAccessPoints(gpointer data, gpointer user_data) {
+  NMAccessPoint *ap = NM_ACCESS_POINT(data);
+  OwnedArray<WifiAccessPoint> *aps = (OwnedArray<WifiAccessPoint> *) user_data;
 
-  DBG("WifiStatusNM cmd: " << cmd.joinIntoString(" "));
-  nmproc.start(cmd);
-  nmproc.waitForProcessToFinish(1000);
-  state = nmproc.readAllProcessOutput();
-
-  if (state.trim() == "enabled")
-    return true;
-  else
-    return false;
-}
-
-bool getNMWifiConnectionProperty(const String propName, const String connName, String &val) {
-  ChildProcess nmproc;
-  String propertyOutput;
-  StringArray cmd{"nmcli","-f",propName.toRawUTF8(),"c","show","id",connName.toRawUTF8()};
-
-  DBG("WifiStatusNM cmd: " << cmd.joinIntoString(" "));
-  nmproc.start(cmd);
-  nmproc.waitForProcessToFinish(1000);
-  propertyOutput = nmproc.readAllProcessOutput();
-
-  auto key_val = split(propertyOutput, ":");
-  if (key_val[0] == propName) {
-    val = key_val[1].trim();
-    return true;
-  } else {
-    return false;
-  }
-}
-
-bool getNMWifiDeviceProperty(const String propName, String &val) {
-  ChildProcess nmproc;
-  String propertyOutput;
-  StringArray cmd{"nmcli","-f",propName.toRawUTF8(),"d","show","wlan0"};
-
-  DBG("WifiStatusNM cmd: " << cmd.joinIntoString(" "));
-  nmproc.start(cmd);
-  nmproc.waitForProcessToFinish(1000);
-  propertyOutput = nmproc.readAllProcessOutput();
-
-  auto key_val = split(propertyOutput, ":");
-  if (key_val[0] == propName) {
-    val = key_val[1].trim();
-    return true;
-  } else {
-    return false;
-  }
-}
-
-String getNMWifiConnectionName() {
-  String name;
-
-  if (getNMWifiDeviceProperty("GENERAL.CONNECTION", name)) {
-    return name;
-  } else {
-    return "";
-  }
-}
-
-String getNMWifiConnectedSSID() {
-  String connName = getNMWifiConnectionName();
-  String ssid;
-
-  if (getNMWifiConnectionProperty("802-11-wireless.ssid", connName, ssid)) {
-    return ssid;
-  } else {
-    return "";
-  }
+  aps->add(createNMWifiAccessPoint(ap));
 }
 
 WifiAccessPoint* getNMConnectedAP(NMDeviceWifi *wdev) {
@@ -138,39 +70,7 @@ WifiAccessPoint* getNMConnectedAP(NMDeviceWifi *wdev) {
   if (!wdev || !ap)
     return NULL;
 
-  return createWifiAccessPoint(ap);
-}
-
-void getNMAvailableAccessPoints(OwnedArray<WifiAccessPoint> &aps) {
-  String ssidList;
-  std::map<String, String> tag_map;
-  ChildProcess nmproc;
-
-  auto cmd = "nmcli -m multiline -f SSID,SECURITY,SIGNAL d wifi list ifname wlan0";
-  DBG("WifiStatusNM cmd: " << cmd);
-  nmproc.start(cmd);
-  nmproc.waitForProcessToFinish(500);
-  ssidList = nmproc.readAllProcessOutput();
-
-  auto addAccessPoint = [](std::map<String, String> &keyvals, OwnedArray<WifiAccessPoint> &aps) {
-    aps.add( new WifiAccessPoint {
-      keyvals["SSID"] == "--" ? "HiddenSSID" : keyvals["SSID"],
-      1, // keyvals["SIGNAL"].getIntValue()
-      keyvals["SECURITY"].isNotEmpty(), //FIXME: Assumes all security types equal
-    });
-  };
-
-  for (const String& tag : split(ssidList, "\n")) {
-    auto key_val = split(tag, ":");
-    if (key_val[0] == "SSID" && !tag_map.empty()) {
-      DBG("Adding non-empty tagmap to accessPoints");
-      addAccessPoint(tag_map, aps);
-      tag_map.clear();
-    }
-    tag_map.insert(std::make_pair(key_val[0], key_val[1].trimStart()));
-  }
-  addAccessPoint(tag_map, aps);
-  tag_map.clear();
+  return createNMWifiAccessPoint(ap);
 }
 
 NMListener::NMListener() : Thread("NMListener Thread") {}
@@ -248,7 +148,17 @@ void NMListener::run() {
 }
 
 OwnedArray<WifiAccessPoint> *WifiStatusNM::nearbyAccessPoints() {
-  getNMAvailableAccessPoints(accessPoints);
+  NMDeviceWifi *wdev;
+
+  wdev = NM_DEVICE_WIFI(nm_client_get_device_by_iface(nmclient, "wlan0"));
+  //nm_device_wifi_request_scan(wdev, NULL, NULL);
+
+  accessPoints.clear();
+
+  g_ptr_array_foreach(
+      (GPtrArray *) nm_device_wifi_get_access_points(wdev),
+      addNMWifiAccessPoints, &accessPoints);
+
   return &accessPoints;
 }
 
@@ -477,7 +387,5 @@ void WifiStatusNM::initializeStatus() {
   if (connected)
     connectedAP = getNMConnectedAP(NM_DEVICE_WIFI(nmdevice));
 
-  accessPoints.clear();
-
-  getNMAvailableAccessPoints(accessPoints);
+  nearbyAccessPoints();
 }
