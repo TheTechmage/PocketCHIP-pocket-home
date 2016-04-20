@@ -62,7 +62,7 @@ public:
 
 private:
   Colour bgColor;
-  String bgImage;
+  Image bgImage;
   
   bool init = false;
 

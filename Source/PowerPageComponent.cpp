@@ -98,7 +98,7 @@ void PowerCategoryItemComponent::enablementChanged() {
 
 PowerPageComponent::PowerPageComponent() {
   bgColor = Colour(0xff000000);
-  bgImage = "powerMenuBackground.png";
+  bgImage = createImageFromFile(assetFile("powerMenuBackground.png"));
   mainPage = new Component();
   addAndMakeVisible(mainPage);
   mainPage->toBack();
@@ -181,8 +181,7 @@ PowerPageComponent::~PowerPageComponent() {}
 
 void PowerPageComponent::paint(Graphics &g) {
     g.fillAll(bgColor);
-    auto image = createImageFromFile(assetFile(bgImage));
-    g.drawImageAt(image,0,0,false);
+    g.drawImageAt(bgImage,0,0,false);
 }
 
 void PowerPageComponent::resized() {
