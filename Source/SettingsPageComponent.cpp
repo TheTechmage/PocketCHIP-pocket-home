@@ -132,33 +132,32 @@ void WifiCategoryItemComponent::updateButtonText() {
 
 BluetoothCategoryItemComponent::BluetoothCategoryItemComponent()
 : SettingsCategoryItemComponent("bluetooth") {
-  //iconDrawable = Drawable::createFromImageData(BinaryData::bluetoothIcon_png,
-  //                                             BinaryData::bluetoothIcon_pngSize);
-  //icon->setImages(iconDrawable);
-  //updateButtonText();
+  iconDrawable = Drawable::createFromImageFile(assetFile("bluetoothIcon.png"));
+  icon->setImages(iconDrawable);
+  updateButtonText();
 }
 
 
 void BluetoothCategoryItemComponent::enabledStateChanged(bool enabled) {
-  //getBluetoothStatus().enabled = enabled;
-  //button->setEnabled(enabled);
-  //updateButtonText();
+  getBluetoothStatus().enabled = enabled;
+  button->setEnabled(enabled);
+  updateButtonText();
 }
 
 void BluetoothCategoryItemComponent::updateButtonText() {
-  //const auto &status = getBluetoothStatus();
-  //if (status.enabled) {
-  //  int connectedDeviceCount =
-  //      std::accumulate(status.devices.begin(), status.devices.end(), 0,
-  //                      [](int n, BluetoothDevice *d) { return n + d->connected; });
-  //  if (connectedDeviceCount > 0) {
-  //    button->setText(std::to_string(connectedDeviceCount) + " Devices Connected");
-  //  } else {
-   //   button->setText("No Devices Connected");
-   // }
-  //} else {
-  //  button->setText("Bluetooth Off");
-  //}
+  const auto &status = getBluetoothStatus();
+  if (status.enabled) {
+    int connectedDeviceCount =
+        std::accumulate(status.devices.begin(), status.devices.end(), 0,
+                        [](int n, BluetoothDevice *d) { return n + d->connected; });
+    if (connectedDeviceCount > 0) {
+      button->setText(std::to_string(connectedDeviceCount) + " Devices Connected");
+    } else {
+      button->setText("No Devices Connected");
+    }
+  } else {
+    button->setText("Bluetooth Off");
+  }
 }
 
 
@@ -232,18 +231,10 @@ SettingsPageComponent::SettingsPageComponent() {
   addAndMakeVisible(wifiCategoryItem);
   getWifiStatus().addListener(wifiCategoryItem);
 
-  //bluetoothCategoryItem = new BluetoothCategoryItemComponent();
-  //bluetoothCategoryItem->button->setTriggeredOnMouseDown(true);
-  //bluetoothCategoryItem->button->addListener(this);
-  //addAndMakeVisible(bluetoothCategoryItem);
-
   addAndMakeVisible(screenBrightnessSlider);
   addAndMakeVisible(volumeSlider);
 
   wifiPage = new SettingsPageWifiComponent();
-  
-  bluetoothPage = new SettingsPageBluetoothComponent();
-  
 }
 
 SettingsPageComponent::~SettingsPageComponent() {}
@@ -255,23 +246,25 @@ void SettingsPageComponent::paint(Graphics &g) {
 }
 
 void SettingsPageComponent::resized() {
-  
   auto bounds = getLocalBounds();
-
-
-
+  int numRows = 3;
+  double rowProp = 0.6/numRows;
   {
-    for (int i = 0, j = 0; i < 4; ++i) {
+    for (int i = 0, j = 0; i < numRows; ++i) {
       if (i > 0) verticalLayout.setItemLayout(j++, 0, -1, -1);
-      verticalLayout.setItemLayout(j++, 48, 48, 48);
+      verticalLayout.setItemLayout(j++, -rowProp, -rowProp, -rowProp);
     }
 
-    Component *settingsItems[] = { wifiCategoryItem,       nullptr, bluetoothCategoryItem, nullptr,
-                                   screenBrightnessSlider, nullptr, volumeSlider };
-
+    Component *settingsItems[] = {
+      wifiCategoryItem, nullptr,
+      screenBrightnessSlider, nullptr,
+      volumeSlider
+    };
+    int numItems = sizeof(settingsItems) / sizeof(Component*);
+    
     auto b = bounds.reduced(10);
     b.setLeft(70);
-    verticalLayout.layOutComponents(settingsItems, 7, b.getX(), b.getY(), b.getWidth(),
+    verticalLayout.layOutComponents(settingsItems, numItems, b.getX(), b.getY(), b.getWidth(),
                                     b.getHeight(), true, true);
   }
 
@@ -285,8 +278,6 @@ void SettingsPageComponent::buttonClicked(Button *button) {
     getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
   } else if (button == wifiCategoryItem->button) {
     getMainStack().pushPage(wifiPage, PageStackComponent::kTransitionTranslateHorizontal);
-  } else if (button == bluetoothCategoryItem->button) {
-    getMainStack().pushPage(bluetoothPage, PageStackComponent::kTransitionTranslateHorizontal);
   }
 }
 

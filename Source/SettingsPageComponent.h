@@ -102,10 +102,8 @@ public:
   ScopedPointer<ImageButton> backButton;
   ScopedPointer<Component> mainPage;
   ScopedPointer<WifiCategoryItemComponent> wifiCategoryItem;
-  ScopedPointer<BluetoothCategoryItemComponent> bluetoothCategoryItem;
 
   ScopedPointer<SettingsPageWifiComponent> wifiPage;
-  ScopedPointer<SettingsPageBluetoothComponent> bluetoothPage;
 
   StretchableLayoutManager verticalLayout;
 
