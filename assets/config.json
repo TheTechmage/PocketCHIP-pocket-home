@@ -7,7 +7,7 @@
         {
           "name": "terminal",
           "icon": "appIcons/terminal.png",
-          "shell": "xfce4-terminal"
+          "shell": "vala-terminal -v -fs 8 -g 24 24 -f Monospace"
         },
         {
           "name": "play pico 8",
