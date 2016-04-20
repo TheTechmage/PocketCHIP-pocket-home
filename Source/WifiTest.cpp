@@ -1,21 +1,51 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "WifiStatus.h"
 
-File absoluteFileFromPath(const String &path) {
-  return File::isAbsolutePath(path) ? File(path)
-                                    : File::getCurrentWorkingDirectory().getChildFile(path);
+class WifiTestListener : public WifiStatus::Listener {
+public:
+  WifiTestListener();
+
+  bool expectEnabled = false;
+  bool expectConnected = false;
+
+  void handleWifiEnabled() override;
+  void handleWifiDisabled() override;
+  void handleWifiConnected() override;
+  void handleWifiDisconnected() override;
+  void handleWifiFailedConnect() override;
+};
+
+WifiTestListener::WifiTestListener() : expectEnabled(), expectConnected() {}
+
+void WifiTestListener::handleWifiEnabled() {
+  DBG(__func__);
+  if (!expectEnabled)
+    std::cerr << "FAILED! not expecting to become enabled" << std::endl;
 }
 
-// TODO: allow user overrides of asset files
-File assetFile(const String &fileName) {
-  auto devFile = absoluteFileFromPath("../../assets/" + fileName);
-  File assetFile;
-
-  assetFile = devFile;
-
-  return assetFile;
+void WifiTestListener::handleWifiDisabled() {
+  DBG(__func__);
+  if (expectEnabled)
+    std::cerr << "FAILED! not expecting to become disabled" << std::endl;
 }
 
+void WifiTestListener::handleWifiConnected() {
+  DBG(__func__);
+  if (!expectConnected)
+    std::cerr << "FAILED! not expecting to become connected" << std::endl;
+}
+
+void WifiTestListener::handleWifiDisconnected() {
+  DBG(__func__);
+  if (expectConnected)
+    std::cerr << "FAILED! not expecting to become disconnected" << std::endl;
+}
+
+void WifiTestListener::handleWifiFailedConnect() {
+  DBG(__func__);
+  if (expectConnected)
+    std::cerr << "FAILED! not expecting to connection failure" << std::endl;
+}
 
 class WifiTestApplication;
 
@@ -50,10 +80,13 @@ public:
   String ssid = "BOGUS_SSID";
   String psk = "";
   void initialise(const String &commandLine);
+  
+  WifiTestListener *createWifiTestListener();
 
 private:
   Array< std::function<void(WifiStatus *wifiStatus)> > testSteps;
   WifiNextStepTimer testStepTimer;
+  OwnedArray<WifiTestListener> listeners;
 };
 
 void WifiNextStepTimer::timerCallback() {
@@ -63,7 +96,14 @@ void WifiNextStepTimer::timerCallback() {
   }
 }
 
+WifiTestListener *WifiTestApplication::createWifiTestListener() {
+  auto listener = new WifiTestListener();
+  listeners.add(listener);
+  return listener;
+}
+
 void WifiTestApplication::nextTestStep() {
+  std::cout << std::endl << std::endl;
   std::cout << "Executing testStep" << currentStep << std::endl;
   if (currentStep < testSteps.size()) {
     wifiStatus->clearListeners();
@@ -96,20 +136,32 @@ void WifiTestApplication::initialise(const String &commandLine) {
     wifiStatus = &wifiStatusNM;
 
   if (args.contains("--ssid"))
-    ssid = args[args.indexOf("--ssid")+1];
+    ssid = args[args.indexOf("--ssid")+1].unquoted();
   if (args.contains("--psk"))
-    psk = args[args.indexOf("--psk")+1];
+    psk = args[args.indexOf("--psk")+1].unquoted();
 
   std::cout << "Using SSID = " << ssid << std::endl;
   std::cout << "Using PSK = " << psk << std::endl;
   
-  auto test_set_enabled = [](WifiStatus *wifiStatus) {
+  auto test_set_enabled = [this](WifiStatus *wifiStatus) {
     std::cout << "Enabling wifiStatus ..." << std::endl;
+
+    auto listener = this->createWifiTestListener();
+    listener->expectEnabled = true;
+    listener->expectConnected = false;
+    wifiStatus->addListener(listener);
+
     wifiStatus->setEnabled();
   };
 
-  auto test_set_disabled = [](WifiStatus *wifiStatus) {
+  auto test_set_disabled = [this](WifiStatus *wifiStatus) {
     std::cout << "Disabling wifiStatus ..." << std::endl;
+
+    auto listener = this->createWifiTestListener();
+    listener->expectEnabled = false;
+    listener->expectConnected = false;
+    wifiStatus->addListener(listener);
+
     wifiStatus->setDisabled();
   };
 
@@ -137,7 +189,14 @@ void WifiTestApplication::initialise(const String &commandLine) {
 
   auto test_find_and_connect = [this](WifiStatus *wifiStatus) {
     std::cout << "Finding SSID " << ssid << " within wifiStatus..." << std::endl;
+
+    auto listener = this->createWifiTestListener();
+    listener->expectEnabled = true;
+    listener->expectConnected = true;
+    wifiStatus->addListener(listener);
+
     for (auto ap : *wifiStatus->nearbyAccessPoints()) {
+      std::cout << "Comparing: " << ap->ssid << " to " << ssid << std::endl;
       if (ap->ssid == ssid) {
 	std::cout << "Found: " << ap->ssid << std::endl;
         std::cout << "Connecting wifiStatus to " << ap->ssid << std::endl;
@@ -149,12 +208,21 @@ void WifiTestApplication::initialise(const String &commandLine) {
   };
 
   auto test_connected_ap = [this](WifiStatus *wifiStatus) {
-    std::cout << "Connected AP SSID = " <<
-	    wifiStatus->connectedAccessPoint()->ssid << std::endl;
+    auto ap = wifiStatus->connectedAccessPoint();
+    if (ap)
+      std::cout << "Connected AP SSID = " << ap->ssid << std::endl;
+    else
+      std::cout << "Connected AP is NULL" << std::endl;
   };
 
   auto test_explicit_disconnect = [this](WifiStatus *wifiStatus) {
     std::cout << "Disconnecting wifiStatus..." << std::endl;
+
+    auto listener = this->createWifiTestListener();
+    listener->expectEnabled = false;
+    listener->expectConnected = false;
+    wifiStatus->addListener(listener);
+
     wifiStatus->setDisconnected();
   };
 
@@ -177,7 +245,7 @@ void WifiTestApplication::initialise(const String &commandLine) {
   testSteps.add(test_connected);
 
   testStepTimer.wifiTestApp = this;
-  testStepTimer.startTimer(1000);
+  testStepTimer.startTimer(2000);
 }
 
 WifiStatus &WifiTestApplication::getWifiStatus() {
