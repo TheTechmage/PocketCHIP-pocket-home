@@ -256,13 +256,14 @@ void WifiStatusNM::handleWirelessConnected() {
     case NM_DEVICE_STATE_DISCONNECTED:
     case NM_DEVICE_STATE_DEACTIVATING:
     case NM_DEVICE_STATE_FAILED:
-      if (connecting)
+      if (connecting) {
         connected = false;
         connecting = false;
         DBG("WifiStatus::" << __func__ << " - failed");
         for(const auto& listener : listeners)
           listener->handleWifiFailedConnect();
         break;
+      }
 
       if (!connected)
         break;
