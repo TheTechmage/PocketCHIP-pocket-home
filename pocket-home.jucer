@@ -108,7 +108,8 @@
       </MODULEPATHS>
     </XCODE_MAC>
     <LINUX_MAKE targetFolder="Builds/LinuxMakefile" cppLanguageStandard="-std=c++11"
-                extraDefs="">
+                extraDefs="" extraLinkerFlags="$(PKG_CONFIG_LDFLAGS)" externalLibraries=""
+                extraCompilerFlags="$(PKG_CONFIG_CFLAGS)">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"
                        targetName="pocket-home" binaryPath="build/Debug"/>

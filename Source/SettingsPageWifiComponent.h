@@ -24,6 +24,8 @@ public:
 
 private:
   WifiIcons *icons;
+
+  int wifiSignalStrengthToIdx(int strength);
   
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WifiAccessPointListItem)
 };
@@ -33,7 +35,7 @@ public:
   SettingsPageWifiComponent();
   ~SettingsPageWifiComponent();
 
-  WifiAccessPoint *selectedAp;
+  WifiAccessPoint selectedAp;
 
   ScopedPointer<PageStackComponent> pageStack;
 
@@ -67,6 +69,8 @@ private:
   bool init = false;
 
   void buttonClicked(Button *) override;
+
+  OwnedArray<WifiAccessPoint> accessPoints;
   
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsPageWifiComponent)
 };

@@ -4,7 +4,7 @@
 
 struct WifiAccessPoint {
   String ssid;
-  int signalStrength; // -120 to 0
+  int signalStrength; // 0 to 100
   bool requiresAuth;
 };
 
@@ -15,12 +15,13 @@ public:
   
   class Listener;
   
-  virtual OwnedArray<WifiAccessPoint> *nearbyAccessPoints() = 0;
-  virtual WifiAccessPoint *connectedAccessPoint() const = 0;
+  virtual OwnedArray<WifiAccessPoint> nearbyAccessPoints() = 0;
+  virtual WifiAccessPoint connectedAccessPoint() const = 0;
   virtual bool isEnabled() const = 0;
   virtual bool isConnected() const = 0;
 
   virtual void addListener(Listener* listener) = 0;
+  virtual void clearListeners() = 0;
 
   virtual void setEnabled() = 0;
   virtual void setDisabled() = 0;

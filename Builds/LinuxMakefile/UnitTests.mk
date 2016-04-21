@@ -8,6 +8,7 @@ WifiTest_OBJECTS := \
   $(OBJDIR)/WifiStatusNM_92fce0ef.o \
   $(OBJDIR)/WifiStatusJson_715858f8.o \
   $(OBJDIR)/WifiStatus_30949170.o \
+  $(OBJDIR)/Utils_e4b11b92.o \
   $(OBJDIR)/juce_core_e13be5a9.o \
   $(OBJDIR)/juce_data_structures_b87144a5.o \
   $(OBJDIR)/juce_events_8da1559d.o \

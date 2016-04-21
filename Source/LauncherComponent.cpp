@@ -7,6 +7,7 @@
 #include "Main.h"
 #include "Utils.h"
 #include <math.h>
+#include <algorithm>
 
 void LaunchSpinnerTimer::timerCallback() {
   if (launcherComponent) {
@@ -70,12 +71,13 @@ void WifiIconTimer::timerCallback() {
   for( auto button : launcherComponent->topButtons->buttons ) {
     if (button->getName() == "WiFi") {
       Image wifiIcon;
-      if (const auto& conAp = getWifiStatus().connectedAccessPoint()) {
-        // -120f to 0
-        float sigStrength = conAp->signalStrength;
-        // 0.0 - 1.0
-        int status = round( (sigStrength+120.0f)/120.0f );
-        int idx = status * 3.0;
+      if (getWifiStatus().isConnected()) {
+        const auto& conAp = getWifiStatus().connectedAccessPoint();
+        // 0 to 100
+        float sigStrength = std::max(0, std::min(99, conAp.signalStrength));
+        int iconBins = launcherComponent->wifiIconImages.size() - 1;
+        int idx = round( ( iconBins * (sigStrength)/100.0f) );
+        DBG(__func__ << ": accessing icon " << idx);
         wifiIcon = launcherComponent->wifiIconImages[idx];
       }
       else {

@@ -25,7 +25,13 @@ BluetoothStatus &getBluetoothStatus();
 
 class PokeLaunchApplication : public JUCEApplication {
 public:
+
+#ifdef LINUX
   WifiStatusNM wifiStatusNM;
+#else
+  WifiStatusJson wifiStatusNM;
+#endif //LINUX
+
   WifiStatusJson wifiStatusJson;
   WifiStatus *wifiStatus;
 

@@ -157,13 +157,17 @@ PowerPageComponent::PowerPageComponent() {
   if (releaseFile.exists()) {
     auto fileStr = releaseFile.loadFileAsString();
     auto lines = split(fileStr, "\n");
-    auto releaseKv = split(lines[8],"=");
-    std::vector<String> releaseV(releaseKv.begin()+1,releaseKv.end());
-    for (const auto& val : releaseV) {
-      // WIP: misses the removed equals
-      buildName += val;
+    if (lines.size() < 9)
+      DBG(__func__ << ": No release information in /etc/os-release");
+    else {
+      auto releaseKv = split(lines[8],"=");
+      std::vector<String> releaseV(releaseKv.begin()+1,releaseKv.end());
+      for (const auto& val : releaseV) {
+        // WIP: misses the removed equals
+        buildName += val;
+      }
+      DBG(buildName);
     }
-    DBG(buildName);
   }
   
 #if JUCE_MAC
