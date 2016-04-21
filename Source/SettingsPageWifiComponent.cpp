@@ -11,11 +11,10 @@ void WifiAccessPointListItem::resized() {
 }
 
 int wifiSignalStrengthToIdx(int strength) {
-  const auto& conAp = getWifiStatus().connectedAccessPoint();
   // 0 to 100
-  float sigStrength = std::max(0, std::min(99, conAp.signalStrength));
+  float sigStrength = std::max(0., std::fmin(100, strength));
   // 0 - 3
-  return round( ( 4.0 * (sigStrength)/100.0f) );
+  return round( ( 3.0 * (sigStrength)/100.0f) );
 }
 
 
