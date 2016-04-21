@@ -35,7 +35,6 @@ void WifiAccessPointListItem::paintButton(Graphics &g, bool isMouseOverButton, b
      DBG(__func__ << ": ERROR: trying to paint NULL AP!!!!");
      return;
   }
-  DBG(__func__ << ": lookup Icon index by RSSI: " << wifiSignalStrengthToIdx(ap->signalStrength));
   icons->wifiStrength[wifiSignalStrengthToIdx(ap->signalStrength)]->drawWithin(g, iconBounds,
                                                       RectanglePlacement::fillDestination, 1.0f);
   if (ap->requiresAuth) {
@@ -213,8 +212,8 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
     if (apButton) {
       selectedAp = *apButton->ap;
       connectionLabel->setText(apButton->ap->ssid, juce::NotificationType::dontSendNotification);
-      //FIXME: Need a better equality proxy, as discussed
-      if (selectedAp.ssid == status.connectedAccessPoint().ssid) {
+      if (status.isConnected() &&
+          selectedAp.ssid == status.connectedAccessPoint().ssid) {
         passwordEditor->setVisible(false);
         connectionButton->setButtonText("Disconnect");
       } else {
