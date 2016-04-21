@@ -3,6 +3,9 @@
 #ifdef LINUX
 
 #include <NetworkManager.h>
+#include <nm-client.h>
+#include <nm-device.h>
+#include <nm-device-wifi.h>
 
 #include "Utils.h"
 #include "WifiStatus.h"

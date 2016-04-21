@@ -1,6 +1,6 @@
 #ifdef LINUX
 
-#include <map>
+#include <nm-remote-connection.h>
 
 #include "WifiStatus.h"
 #include "../JuceLibraryCode/JuceHeader.h"
@@ -10,7 +10,7 @@ WifiStatusNM::~WifiStatusNM() {}
 
 NMClient* WifiStatusNM::connectToNetworkManager() {
   if (!nmclient || !NM_IS_CLIENT(nmclient))
-    nmclient = nm_client_new(NULL, NULL);
+    nmclient = nm_client_new();
 
   if (!nmclient || !NM_IS_CLIENT(nmclient))
     DBG("WifiStatusNM: failed to connect to nmclient over dbus");
@@ -34,17 +34,19 @@ bool resolveAPSecurity(NMAccessPoint *ap) {
 }
 
 WifiAccessPoint *createNMWifiAccessPoint(NMAccessPoint *ap) {
-  GBytes *ssid = nm_access_point_get_ssid(ap);
+  const GByteArray *ssid = nm_access_point_get_ssid(ap);
+  //GBytes *ssid = nm_access_point_get_ssid(ap);
   char *ssid_str = NULL, *ssid_hex_str = NULL;
   bool security = resolveAPSecurity(ap);
 
   /* Convert to strings */
   if (ssid) {
-    const guint8 *ssid_data;
-    gsize ssid_len;
+    const guint8 *ssid_data = ssid->data;
+    gsize ssid_len = ssid->len;
 
-    ssid_data = (const guint8 *) g_bytes_get_data(ssid, &ssid_len);
-    ssid_str = nm_utils_ssid_to_utf8(ssid_data, ssid_len);
+    //ssid_data = (const guint8 *) g_bytes_get_data(ssid, &ssid_len);
+    //ssid_str = nm_utils_ssid_to_utf8(ssid_data, ssid_len);
+    ssid_str = (char *) ssid_data;
   }
 
   if (!ssid_str || !ssid) {
@@ -105,17 +107,21 @@ static void handle_active_access_point(WifiStatusNM *wifiStatus) {
   wifiStatus->handleConnectedAccessPoint();
 }
 
-static void handle_add_and_activate_finish(GObject *client,
-                                           GAsyncResult *result,
+static void handle_add_and_activate_finish(NMClient *client,
+                                           NMActiveConnection *active,
+                                           const char* path,
+                                           GError *err,
                                            gpointer user_data) {
+  /*
   NMActiveConnection *active;
   GError *err = NULL;
 
   active = nm_client_add_and_activate_connection_finish(NM_CLIENT(client), result, &err);
+  */
   if (err) {
     DBG("WifiStatusNM: failed to add/activate connection!");
     DBG("WifiStatusNM::" << __func__ << ": " << err->message);
-    g_error_free(err);
+    //g_error_free(err);
   }
 }
 
@@ -297,13 +303,23 @@ void WifiStatusNM::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
     NMActiveConnection *conn = nm_device_get_active_connection(nmdevice);
 
     if (conn) {
-      GError *err = NULL;
-      NMRemoteConnection *rconn = nm_active_connection_get_connection(conn);
-      nm_remote_connection_delete(rconn, NULL, &err);
-      if (err) {
-	DBG("WifiStatusNM: failed to remove active connection!");
-	DBG("WifiStatusNM::" << __func__ << ": " << err->message);
-	g_error_free(err);
+      const char *ac_uuid = nm_active_connection_get_uuid(conn);
+      const GPtrArray *avail_cons = nm_device_get_available_connections(nmdevice);
+
+      for (int i = 0; avail_cons && (i < avail_cons->len); i++) {
+        NMRemoteConnection *candidate = (NMRemoteConnection *) g_ptr_array_index(avail_cons, i);
+        const char *test_uuid = nm_connection_get_uuid(NM_CONNECTION(candidate));
+
+        if (g_strcmp0(ac_uuid, test_uuid) == 0) {
+          GError *err = NULL;
+          nm_remote_connection_delete(candidate, NULL, &err);
+          if (err) {
+            DBG("WifiStatusNM: failed to remove active connection!");
+            DBG("WifiStatusNM::" << __func__ << ": " << err->message);
+            g_error_free(err);
+          }
+          break;
+        }
       }
     }
     return;
@@ -315,7 +331,8 @@ void WifiStatusNM::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
     NMSettingWirelessSecurity *s_wsec = NULL;
     const char *nm_ap_path = NULL;
     const GPtrArray *ap_list;
-    GBytes *candidate_ssid;
+    const GByteArray *candidate_ssid;
+    //GBytes *candidate_ssid;
     NMAccessPoint *candidate_ap;
 
     //FIXME: expand WifiAccessPoint struct to know which NMAccessPoint it is
@@ -328,8 +345,11 @@ void WifiStatusNM::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
       if (!candidate_ssid)
         break;
 
+      /*
       ssid = nm_utils_ssid_to_utf8((const guint8 *) g_bytes_get_data(candidate_ssid, NULL),
                                                   g_bytes_get_size(candidate_ssid));
+      */
+      ssid = (char *) candidate_ssid->data;
 
       if (ssid && ap->ssid == ssid) {
         nm_ap_path = nm_object_get_path(NM_OBJECT(candidate_ap));
@@ -343,7 +363,7 @@ void WifiStatusNM::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
 
     connecting = true;
 
-    connection = nm_simple_connection_new();
+    connection = nm_connection_new();
     s_wifi = (NMSettingWireless *) nm_setting_wireless_new();
     nm_connection_add_setting(connection, NM_SETTING(s_wifi));
     g_object_set(s_wifi,
@@ -364,11 +384,10 @@ void WifiStatusNM::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
       */
     }
 
-    nm_client_add_and_activate_connection_async(nmclient,
+    nm_client_add_and_activate_connection(nmclient,
                                                 connection,
                                                 nmdevice,
                                                 nm_ap_path,
-                                                NULL,
                                                 handle_add_and_activate_finish,
                                                 NULL);
   }
