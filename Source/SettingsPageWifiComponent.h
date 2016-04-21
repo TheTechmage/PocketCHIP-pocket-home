@@ -24,6 +24,8 @@ public:
 
 private:
   WifiIcons *icons;
+
+  int wifiSignalStrengthToIdx(int strength);
   
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WifiAccessPointListItem)
 };

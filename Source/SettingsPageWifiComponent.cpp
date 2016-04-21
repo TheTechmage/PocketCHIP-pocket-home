@@ -10,14 +10,6 @@ void WifiAccessPointListItem::resized() {
   setSize(getLocalBounds().getWidth(), 42);
 }
 
-int wifiSignalStrengthToIdx(int strength) {
-  // 0 to 100
-  float sigStrength = std::max(0., std::fmin(100, strength));
-  // 0 - 3
-  return round( ( 3.0 * (sigStrength)/100.0f) );
-}
-
-
 void WifiAccessPointListItem::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) {
   auto bounds = getLocalBounds();
   auto inset = bounds.reduced(6, 4);
@@ -46,6 +38,13 @@ void WifiAccessPointListItem::paintButton(Graphics &g, bool isMouseOverButton, b
   g.setFont(h * 0.5);
   g.setColour(findColour(ListBox::ColourIds::textColourId));
   g.drawText(getName(), inset.reduced(h * 0.3, 0), Justification::centredLeft);
+}
+
+int WifiAccessPointListItem::wifiSignalStrengthToIdx(int strength) {
+    // 0 to 100
+    float sigStrength = std::max(0., std::fmin(100, strength));
+    int iconBins = icons->wifiStrength.size() - 1;
+    return round( ( iconBins * (sigStrength)/100.0f) );
 }
 
 SettingsPageWifiComponent::SettingsPageWifiComponent() {
