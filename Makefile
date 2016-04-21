@@ -1,7 +1,8 @@
 export CONFIG:=Release
 
 PKG_CONFIG_PACKAGES = \
-  libnm \
+  NetworkManager \
+  libnm-glib \
 
 export PKG_CONFIG_CFLAGS=$(foreach pkg, $(PKG_CONFIG_PACKAGES), $(shell pkg-config --cflags $(pkg)))
 export PKG_CONFIG_LDFLAGS=$(foreach pkg, $(PKG_CONFIG_PACKAGES), $(shell pkg-config --libs $(pkg)))
