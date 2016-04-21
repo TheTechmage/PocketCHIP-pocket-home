@@ -74,8 +74,7 @@ void WifiStatusJson::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
   }
   // try to connect to ap, dispatch events on success and failure
   else {
-    // FIXME: only until we get reading success over stdout hooked up
-    bool isTestCred = ap->ssid == "NTC";
+    bool isTestCred = ap->ssid == "MyFi";
     if (!isTestCred) {
       DBG("WifiStatusJson::setConnectedAccessPoint - failed ");
       connected = false;
