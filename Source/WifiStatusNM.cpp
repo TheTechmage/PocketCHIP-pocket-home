@@ -1,6 +1,7 @@
 #ifdef LINUX
 
 #include <nm-remote-connection.h>
+#include <nm-utils.h>
 
 #include "WifiStatus.h"
 #include "../JuceLibraryCode/JuceHeader.h"
@@ -45,8 +46,7 @@ WifiAccessPoint *createNMWifiAccessPoint(NMAccessPoint *ap) {
     gsize ssid_len = ssid->len;
 
     //ssid_data = (const guint8 *) g_bytes_get_data(ssid, &ssid_len);
-    //ssid_str = nm_utils_ssid_to_utf8(ssid_data, ssid_len);
-    ssid_str = (char *) ssid_data;
+    ssid_str = nm_utils_ssid_to_utf8(ssid);
   }
 
   if (!ssid_str || !ssid) {
@@ -132,7 +132,7 @@ void NMListener::initialize(WifiStatusNM *status, NMClient *client) {
 }
 
 void NMListener::run() {
-  NMDeviceWifi *wdev = NM_DEVICE_WIFI(nm_client_get_device_by_iface(nm, "wlan0"));
+  NMDevice *dev = nm_client_get_device_by_iface(nm, "wlan0");
   context = g_main_context_default();
   //context = g_main_context_new();
   loop = g_main_loop_new(context, false);
@@ -141,10 +141,10 @@ void NMListener::run() {
   g_signal_connect_swapped(nm, "notify::" NM_CLIENT_WIRELESS_ENABLED,
     G_CALLBACK(handle_wireless_enabled), wifiStatus);
 
-  g_signal_connect_swapped(NM_DEVICE(wdev), "notify::" NM_DEVICE_STATE,
+  g_signal_connect_swapped(dev, "notify::" NM_DEVICE_STATE,
     G_CALLBACK(handle_wireless_connected), wifiStatus);
 
-  g_signal_connect_swapped(wdev, "notify::" NM_DEVICE_WIFI_ACTIVE_ACCESS_POINT,
+  g_signal_connect_swapped(NM_DEVICE_WIFI(dev), "notify::" NM_DEVICE_WIFI_ACTIVE_ACCESS_POINT,
     G_CALLBACK(handle_active_access_point), wifiStatus);
 
   while (!threadShouldExit()) {
@@ -233,6 +233,7 @@ void WifiStatusNM::handleWirelessConnected() {
       if (connected)
         break;
 
+      handle_active_access_point(this);
       connected = true;
       connecting = false;
       DBG("WifiStatus::" << __func__ << " - connected");
@@ -255,17 +256,19 @@ void WifiStatusNM::handleWirelessConnected() {
     case NM_DEVICE_STATE_DISCONNECTED:
     case NM_DEVICE_STATE_DEACTIVATING:
     case NM_DEVICE_STATE_FAILED:
-      if (!connected)
-        break;
-      
-      connected = false;
-
       if (connecting)
+        connected = false;
         connecting = false;
         DBG("WifiStatus::" << __func__ << " - failed");
         for(const auto& listener : listeners)
           listener->handleWifiFailedConnect();
         break;
+
+      if (!connected)
+        break;
+
+      handle_active_access_point(this);
+      connected = false;
 
       for(const auto& listener : listeners)
         listener->handleWifiDisconnected();
@@ -278,6 +281,7 @@ void WifiStatusNM::handleWirelessConnected() {
       if (connecting || connected) {
         std::cerr << "WifiStatusNM::" << __func__
                   << ": wlan0 device entered unmanaged state: " << state << std::endl;
+        handle_active_access_point(this);
         connected = false;
         connecting = false;
         for(const auto& listener : listeners)
@@ -345,11 +349,7 @@ void WifiStatusNM::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
       if (!candidate_ssid)
         break;
 
-      /*
-      ssid = nm_utils_ssid_to_utf8((const guint8 *) g_bytes_get_data(candidate_ssid, NULL),
-                                                  g_bytes_get_size(candidate_ssid));
-      */
-      ssid = (char *) candidate_ssid->data;
+      ssid = nm_utils_ssid_to_utf8(candidate_ssid);
 
       if (ssid && ap->ssid == ssid) {
         nm_ap_path = nm_object_get_path(NM_OBJECT(candidate_ap));
