@@ -10,10 +10,10 @@ export PKG_CONFIG_LDFLAGS=$(foreach pkg, $(PKG_CONFIG_PACKAGES), $(shell /usr/bi
 
 
 all:
-	cd Builds/LinuxMakefile && make
+	cd Builds/LinuxMakefile && $(MAKE)
 
 clean:
-	cd Builds/LinuxMakefile && make clean
+	cd Builds/LinuxMakefile && $(MAKE) clean
 
 wifitest:
-	cd Builds/LinuxMakefile && make -f UnitTests.mk ../../build/$(CONFIG)/wifitest
+	cd Builds/LinuxMakefile && $(MAKE) -f UnitTests.mk ../../build/$(CONFIG)/wifitest

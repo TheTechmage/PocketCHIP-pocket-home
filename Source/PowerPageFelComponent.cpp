@@ -2,8 +2,55 @@
 #include "Main.h"
 #include "Utils.h"
 #include "PokeLookAndFeel.h"
+#include <sys/ioctl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #include <numeric>
+
+#if JUCE_LINUX
+
+#include <linux/i2c-dev.h>
+
+int i2c_dev_open( const char* i2cdev, uint8_t address ) {
+    int file;
+    if ( (file = open( i2cdev, O_RDWR ) ) < 0 ) {
+        printf("Failed to open the bus.\n");
+        printf("Error: %s\n", strerror( errno ) );
+        return 0;
+    }
+
+    if ( ioctl(file, I2C_SLAVE_FORCE, address) < 0 ) {
+        printf("Failed to acquire bus access and/or talk to slave.\n");
+        printf("Error: %s\n", strerror( errno ) );
+        return 0;
+    }
+    return file;
+}
+
+uint8_t i2c_write_byte(int file, uint8_t reg, uint8_t byte) {
+    uint8_t res = i2c_smbus_write_byte_data(file, reg, byte);
+    
+    if( res < 0 )
+        printf("Error: %s\n", strerror( errno ) );
+    
+    return res;
+}
+
+uint8_t i2c_read_byte(int file, uint8_t reg) {
+    uint8_t data = i2c_smbus_read_byte_data(file, reg);
+    return data;
+}
+
+#else
+
+// MacOSX i2c stubs
+int i2c_dev_open( const char* i2cdev, uint8_t address ) { return 0; }
+uint8_t i2c_write_byte(int file, uint8_t reg, uint8_t byte) { return 0; }
+uint8_t i2c_read_byte(int file, uint8_t reg) { return 0; }
+
+#endif
 
 PowerFelCategoryButton::PowerFelCategoryButton(const String &name)
 : Button(name),
@@ -151,7 +198,13 @@ void PowerFelPageComponent::buttonClicked(Button *button) {
         getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontalLeft);
       } else if( button == yesButton && !debounce ) {
         debounce = 1;
-        DBG( "FEL MODE!");
-        child.start("/usr/sbin/gotofel.sh");
+        int file = i2c_dev_open( "/dev/i2c-0", 0x34 );
+        if(file) {
+            i2c_write_byte(file, 0x4, 'f');
+            i2c_write_byte(file, 0x5, 'b');
+            i2c_write_byte(file, 0x6, '0');
+            i2c_write_byte(file, 0x7, 0x0);
+            child.start("systemctl reboot");
+        }
       }
   }
