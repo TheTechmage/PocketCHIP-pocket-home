@@ -2,13 +2,16 @@
 #include "Main.h"
 #include "Utils.h"
 #include "PokeLookAndFeel.h"
-#include <linux/i2c-dev.h>
 #include <sys/ioctl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 
 #include <numeric>
+
+#if JUCE_LINUX
+
+#include <linux/i2c-dev.h>
 
 int i2c_dev_open( const char* i2cdev, uint8_t address ) {
     int file;
@@ -27,14 +30,27 @@ int i2c_dev_open( const char* i2cdev, uint8_t address ) {
 }
 
 uint8_t i2c_write_byte(int file, uint8_t reg, uint8_t byte) {
-    if( i2c_smbus_write_byte_data(file, reg, byte) < 0 )
+    uint8_t res = i2c_smbus_write_byte_data(file, reg, byte);
+    
+    if( res < 0 )
         printf("Error: %s\n", strerror( errno ) );
+    
+    return res;
 }
 
 uint8_t i2c_read_byte(int file, uint8_t reg) {
     uint8_t data = i2c_smbus_read_byte_data(file, reg);
     return data;
 }
+
+#else
+
+// MacOSX i2c stubs
+int i2c_dev_open( const char* i2cdev, uint8_t address ) { return 0; }
+uint8_t i2c_write_byte(int file, uint8_t reg, uint8_t byte) { return 0; }
+uint8_t i2c_read_byte(int file, uint8_t reg) { return 0; }
+
+#endif
 
 PowerFelCategoryButton::PowerFelCategoryButton(const String &name)
 : Button(name),
