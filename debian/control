@@ -2,12 +2,14 @@ Source: pocket-home
 Section: x11
 Priority: optional
 Maintainer: Andrew Hay Kurtz <software@nextthing.co>
-Build-Depends: debhelper (>= 9), libx11-dev, libfreetype6, libfreetype6-dev
+Build-Depends: debhelper (>= 9), libx11-dev, libfreetype6, libfreetype6-dev,
+ libnm-glib-dev, network-manager-dev, pkg-config, libxrandr-dev, libxinerama-dev,
+ libxcursor-dev
 Standards-Version: 3.9.5
 Homepage: opensource.nextthing.co
 
 Package: pocket-home
 Architecture: armhf
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, libnm-glib4, network-manager
 Description: pocket-home is a home screen for PocketCHIP.
  pocket-home is a home screen for PocketCHIP. It can launch programs and change system settings.

@@ -10,5 +10,7 @@ sudo apt-get install \
     libxrandr-dev \
     libxcursor-dev \
     libxft-dev \
-    libxinerama-dev
+    libxinerama-dev \
+    libnm-glib-dev \
+    network-manager-dev
 ```

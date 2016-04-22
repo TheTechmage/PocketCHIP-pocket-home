@@ -8,12 +8,22 @@
 WifiStatusJson::WifiStatusJson() : listeners() {}
 WifiStatusJson::~WifiStatusJson() {}
 
-OwnedArray<WifiAccessPoint> *WifiStatusJson::nearbyAccessPoints() {
-  return &accessPoints;
+OwnedArray<WifiAccessPoint> WifiStatusJson::nearbyAccessPoints() {
+  OwnedArray<WifiAccessPoint> accessPoints;
+  auto json = JSON::parse(assetFile("wifi.json"));
+
+  for (const auto &apJson : *json.getArray()) {
+    auto ap = new WifiAccessPoint();
+    ap->ssid = apJson["name"];
+    ap->signalStrength = apJson["strength"];
+    ap->requiresAuth = apJson["auth"];
+    accessPoints.add(ap);
+  }
+  return accessPoints;
 }
 
-WifiAccessPoint *WifiStatusJson::connectedAccessPoint() const {
-  return connectedAP;
+WifiAccessPoint WifiStatusJson::connectedAccessPoint() const {
+  return WifiAccessPoint(*connectedAP);
 }
 
 bool WifiStatusJson::isEnabled() const {
@@ -26,6 +36,10 @@ bool WifiStatusJson::isConnected() const {
 
 void WifiStatusJson::addListener(Listener* listener) {
   listeners.add(listener);
+}
+
+void WifiStatusJson::clearListeners() {
+  listeners.clear();
 }
 
 // TODO: direct action should not be named set, e.g. enable/disable/disconnect
@@ -60,8 +74,7 @@ void WifiStatusJson::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
   }
   // try to connect to ap, dispatch events on success and failure
   else {
-    // FIXME: only until we get reading success over stdout hooked up
-    bool isTestCred = ap->ssid == "NTC";
+    bool isTestCred = ap->ssid == "MyFi";
     if (!isTestCred) {
       DBG("WifiStatusJson::setConnectedAccessPoint - failed ");
       connected = false;
@@ -96,17 +109,6 @@ void WifiStatusJson::setDisconnected() {
 }
 
 void WifiStatusJson::initializeStatus() {
-  auto json = JSON::parse(assetFile("wifi.json"));
   connectedAP = nullptr;
   connected = false;
-
-  accessPoints.clear();
-
-  for (const auto &apJson : *json.getArray()) {
-    auto ap = new WifiAccessPoint();
-    ap->ssid = apJson["name"];
-    ap->signalStrength = apJson["strength"];
-    ap->requiresAuth = apJson["auth"];
-    accessPoints.add(ap);
-  }
 }
