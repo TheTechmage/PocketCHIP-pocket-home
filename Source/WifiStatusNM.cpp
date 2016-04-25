@@ -111,10 +111,7 @@ WifiAccessPoint *createNMWifiAccessPoint(NMAccessPoint *ap) {
   };
 }
 
-void addNMWifiAccessPoints(gpointer data, gpointer user_data) {
-  NMAccessPoint *ap = NM_ACCESS_POINT(data);
-  OwnedArray<WifiAccessPoint> *aps = (OwnedArray<WifiAccessPoint> *) user_data;
-
+void addNMWifiAccessPoints(NMAccessPoint *ap, OwnedArray<WifiAccessPoint> *aps) {
   auto created_ap = createNMWifiAccessPoint(ap);
   if (created_ap)
     aps->add(created_ap);
@@ -211,14 +208,16 @@ void NMListener::run() {
 
 OwnedArray<WifiAccessPoint> WifiStatusNM::nearbyAccessPoints() {
   NMDeviceWifi *wdev;
+  const GPtrArray *ap_list;
   OwnedArray<WifiAccessPoint> accessPoints;
 
   wdev = NM_DEVICE_WIFI(nmdevice);
   //nm_device_wifi_request_scan(wdev, NULL, NULL);
 
-  g_ptr_array_foreach(
-      (GPtrArray *) nm_device_wifi_get_access_points(wdev),
-      addNMWifiAccessPoints, &accessPoints);
+  ap_list =  nm_device_wifi_get_access_points(wdev);
+  if (ap_list != NULL)
+    for (int i = 0; i < ap_list->len; i++)
+      addNMWifiAccessPoints((NMAccessPoint *) g_ptr_array_index(ap_list, i), &accessPoints);
 
   DBG(__func__ << ": found " << accessPoints.size() << " AccessPoints");
   return accessPoints;
@@ -391,6 +390,9 @@ void WifiStatusNM::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
 
     //FIXME: expand WifiAccessPoint struct to know which NMAccessPoint it is
     ap_list = nm_device_wifi_get_access_points(NM_DEVICE_WIFI(nmdevice));
+    if (ap_list == NULL)
+      return;
+
     for (int i = 0; i < ap_list->len; i++) {
       const char *candidate_hash;
       candidate_ap = (NMAccessPoint *) g_ptr_array_index(ap_list, i);
