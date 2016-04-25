@@ -140,7 +140,7 @@ void SettingsPageWifiComponent::resized() {
     auto& wifiStatus = getWifiStatus();
     if (wifiStatus.isConnected()) {
       selectedAp = wifiStatus.connectedAccessPoint();
-      connectionLabel->setText(selectedAp.ssid, juce::NotificationType::dontSendNotification);
+      connectionLabel->setText(selectedAp->ssid, juce::NotificationType::dontSendNotification);
       passwordEditor->setVisible(false);
       connectionButton->setButtonText("Disconnect");
       pageStack->pushPage(connectionPage, PageStackComponent::kTransitionNone);
@@ -171,7 +171,7 @@ void SettingsPageWifiComponent::handleWifiConnected() {
 
 void SettingsPageWifiComponent::handleWifiFailedConnect() {
   DBG("SettingsPageWifiComponent::wifiFailedConnect");
-  if (selectedAp.requiresAuth) {
+  if (selectedAp->requiresAuth) {
     errorLabel->setVisible(true);
     passwordEditor->setText("");
   }
@@ -179,7 +179,7 @@ void SettingsPageWifiComponent::handleWifiFailedConnect() {
 
 void SettingsPageWifiComponent::handleWifiDisconnected() {
   DBG("SettingsPageWifiComponent::wifiDisconnected");
-  if (selectedAp.requiresAuth) {
+  if (selectedAp->requiresAuth) {
     passwordEditor->setVisible(true);
   }
   connectionButton->setButtonText("Connect");
@@ -200,12 +200,12 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
     } else {
       errorLabel->setVisible(false);
       
-      if (selectedAp.requiresAuth) {
+      if (selectedAp->requiresAuth) {
         const auto& psk = passwordEditor->getTextValue().toString();
-        status.setConnectedAccessPoint(&selectedAp, psk);
+        status.setConnectedAccessPoint(selectedAp, psk);
       }
       else {
-        status.setConnectedAccessPoint(&selectedAp);
+        status.setConnectedAccessPoint(selectedAp);
       }
     }
   }
@@ -213,10 +213,10 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
   else {
     auto apButton = dynamic_cast<WifiAccessPointListItem *>(button);
     if (apButton) {
-      selectedAp = *apButton->ap;
+      selectedAp = new WifiAccessPoint(*apButton->ap);
       connectionLabel->setText(apButton->ap->ssid, juce::NotificationType::dontSendNotification);
       if (status.isConnected() &&
-          selectedAp.hash == status.connectedAccessPoint().hash) {
+          selectedAp->hash == status.connectedAccessPoint()->hash) {
         passwordEditor->setText(String::empty);
         passwordEditor->setVisible(false);
         errorLabel->setVisible(false);

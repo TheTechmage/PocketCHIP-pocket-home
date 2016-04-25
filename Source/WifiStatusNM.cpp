@@ -224,10 +224,11 @@ OwnedArray<WifiAccessPoint> WifiStatusNM::nearbyAccessPoints() {
   return accessPoints;
 }
 
-WifiAccessPoint WifiStatusNM::connectedAccessPoint() const {
-  const char * state = (connectedAP == nullptr) ? "NULL" : "ADDR";
-  DBG(__func__ << ": connectedAP points to " << state);
-  return WifiAccessPoint(*connectedAP);
+ScopedPointer<WifiAccessPoint> WifiStatusNM::connectedAccessPoint() const {
+  if (connectedAP == nullptr)
+    return nullptr;
+
+  return ScopedPointer<WifiAccessPoint>(new WifiAccessPoint(*connectedAP));
 }
 
 bool WifiStatusNM::isEnabled() const {

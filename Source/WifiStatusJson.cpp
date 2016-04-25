@@ -23,8 +23,8 @@ OwnedArray<WifiAccessPoint> WifiStatusJson::nearbyAccessPoints() {
   return accessPoints;
 }
 
-WifiAccessPoint WifiStatusJson::connectedAccessPoint() const {
-  return WifiAccessPoint(*connectedAP);
+ScopedPointer<WifiAccessPoint> WifiStatusJson::connectedAccessPoint() const {
+  return ScopedPointer<WifiAccessPoint>(new WifiAccessPoint(*connectedAP));
 }
 
 bool WifiStatusJson::isEnabled() const {

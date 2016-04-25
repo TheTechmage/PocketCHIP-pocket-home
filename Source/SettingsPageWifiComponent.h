@@ -35,7 +35,7 @@ public:
   SettingsPageWifiComponent();
   ~SettingsPageWifiComponent();
 
-  WifiAccessPoint selectedAp;
+  ScopedPointer<WifiAccessPoint> selectedAp;
 
   ScopedPointer<PageStackComponent> pageStack;
 

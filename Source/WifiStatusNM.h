@@ -18,7 +18,7 @@ public:
   ~WifiStatusNM() override;
   
   OwnedArray<WifiAccessPoint> nearbyAccessPoints() override;
-  WifiAccessPoint connectedAccessPoint() const override;
+  ScopedPointer<WifiAccessPoint> connectedAccessPoint() const override;
   bool isEnabled() const override;
   bool isConnected() const override;
 
