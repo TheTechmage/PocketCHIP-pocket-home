@@ -6,6 +6,8 @@
 #include "WifiStatus.h"
 #include "../JuceLibraryCode/JuceHeader.h"
 
+#define LIBNM_ITERATION_PERIOD 100 // milliseconds
+
 WifiStatusNM::WifiStatusNM() : listeners() {}
 WifiStatusNM::~WifiStatusNM() {}
 
@@ -200,7 +202,7 @@ void NMListener::run() {
       const MessageManagerLock mmLock;
       bool dispatched = g_main_context_iteration(context, false);
     }
-    wait(100);
+    wait(LIBNM_ITERATION_PERIOD);
   }
 
   g_main_loop_unref(loop);
