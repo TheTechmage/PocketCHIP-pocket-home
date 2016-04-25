@@ -133,12 +133,12 @@ PowerFelPageComponent::PowerFelPageComponent() {
     debounce = 0;
     
     // create back button
-    backButton = createImageButton(
-                                   "Back", createImageFromFile(assetFile("nextIcon.png")));
-    backButton->addListener(this);
-    backButton->setTriggeredOnMouseDown(true);
-    backButton->setAlwaysOnTop(true);
-    addAndMakeVisible(backButton);
+    //backButton = createImageButton(
+    //                               "Back", createImageFromFile(assetFile("nextIcon.png")));
+    //backButton->addListener(this);
+    //backButton->setTriggeredOnMouseDown(true);
+    //backButton->setAlwaysOnTop(true);
+    //addAndMakeVisible(backButton);
     
     yesButton = new TextButton("yes");
     yesButton->setButtonText("yes");
@@ -157,9 +157,10 @@ PowerFelPageComponent::PowerFelPageComponent() {
 PowerFelPageComponent::~PowerFelPageComponent() {}
 
 void PowerFelPageComponent::paint(Graphics &g) {
+    auto bounds = getLocalBounds();
     g.fillAll(bgColor);
     auto image = createImageFromFile(assetFile(bgImage));
-    g.drawImageAt(image,0,0,false);
+    g.drawImage(image,bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), 0, 0, image.getWidth(), image.getHeight(), false);
   
     g.setColour (Colours::white);
     g.setFont (22);
@@ -189,7 +190,7 @@ void PowerFelPageComponent::resized() {
     
     yesButton->setBounds(bounds.getWidth()/3.375, 120, 200, 40);
     noButton->setBounds(bounds.getWidth()/3.375, 185, 200, 40);
-    backButton->setBounds(bounds.getWidth()-60, bounds.getY(), 60, bounds.getHeight());
+    //backButton->setBounds(bounds.getWidth()-60, bounds.getY(), 60, bounds.getHeight());
 }
 
 

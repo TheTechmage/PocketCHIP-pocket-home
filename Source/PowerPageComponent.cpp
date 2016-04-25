@@ -176,7 +176,7 @@ PowerPageComponent::PowerPageComponent() {
   
   buildNameLabel = new Label("Build Name");
   buildNameLabel->setText(buildName, NotificationType::dontSendNotification);
-  buildNameLabel->setFont(16);
+  buildNameLabel->      setFont(16);
   buildNameLabel->setJustificationType(Justification::centred);
   addAndMakeVisible(buildNameLabel);
 }
@@ -184,8 +184,9 @@ PowerPageComponent::PowerPageComponent() {
 PowerPageComponent::~PowerPageComponent() {}
 
 void PowerPageComponent::paint(Graphics &g) {
+    auto bounds = getLocalBounds();
     g.fillAll(bgColor);
-    g.drawImageAt(bgImage,0,0,false);
+    g.drawImage(bgImage,bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), 0, 0, bgImage.getWidth(), bgImage.getHeight(), false);
 }
 
 void PowerPageComponent::resized() {

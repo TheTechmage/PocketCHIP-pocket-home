@@ -240,8 +240,9 @@ SettingsPageComponent::SettingsPageComponent() {
 SettingsPageComponent::~SettingsPageComponent() {}
 
 void SettingsPageComponent::paint(Graphics &g) {
+    auto bounds = getLocalBounds();
     g.fillAll(bgColor);
-    g.drawImageAt(bgImage,0,0,false);
+    g.drawImage(bgImage,bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), 0, 0, bgImage.getWidth(), bgImage.getHeight(), false);
 }
 
 void SettingsPageComponent::resized() {

@@ -216,8 +216,9 @@ LauncherComponent::~LauncherComponent() {
 }
 
 void LauncherComponent::paint(Graphics &g) {
+  auto bounds = getLocalBounds();
   g.fillAll(bgColor);
-  g.drawImageAt(bgImage,0,0,false);
+  g.drawImage(bgImage,bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), 0, 0, bounds.getWidth(), bounds.getHeight(), false);
 }
 
 void LauncherComponent::resized() {
