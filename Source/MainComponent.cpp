@@ -15,7 +15,7 @@ MainContentComponent::MainContentComponent(const var &configJson) {
   launcher = new LauncherComponent(configJson);
   pageStack->pushPage(launcher, PageStackComponent::kTransitionNone);
 
-  setSize(980, 572);
+  setSize(480, 272);
 }
 
 MainContentComponent::~MainContentComponent() {}
