@@ -17,6 +17,7 @@ OwnedArray<WifiAccessPoint> WifiStatusJson::nearbyAccessPoints() {
     ap->ssid = apJson["name"];
     ap->signalStrength = apJson["strength"];
     ap->requiresAuth = apJson["auth"];
+    ap->hash = apJson["name"];
     accessPoints.add(ap);
   }
   return accessPoints;

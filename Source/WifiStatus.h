@@ -6,6 +6,7 @@ struct WifiAccessPoint {
   String ssid;
   int signalStrength; // 0 to 100
   bool requiresAuth;
+  String hash;
 };
 
 class WifiStatus {
