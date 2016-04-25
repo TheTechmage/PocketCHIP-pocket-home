@@ -212,7 +212,7 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
       selectedAp = *apButton->ap;
       connectionLabel->setText(apButton->ap->ssid, juce::NotificationType::dontSendNotification);
       if (status.isConnected() &&
-          selectedAp.ssid == status.connectedAccessPoint().ssid) {
+          selectedAp.hash == status.connectedAccessPoint().hash) {
         passwordEditor->setVisible(false);
         connectionButton->setButtonText("Disconnect");
       } else {

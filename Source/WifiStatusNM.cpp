@@ -384,25 +384,21 @@ void WifiStatusNM::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
     NMSettingWirelessSecurity *s_wsec = NULL;
     const char *nm_ap_path = NULL;
     const GPtrArray *ap_list;
-    const GByteArray *candidate_ssid;
-    //GBytes *candidate_ssid;
     NMAccessPoint *candidate_ap;
 
     //FIXME: expand WifiAccessPoint struct to know which NMAccessPoint it is
     ap_list = nm_device_wifi_get_access_points(NM_DEVICE_WIFI(nmdevice));
     for (int i = 0; i < ap_list->len; i++) {
-      char *ssid;
+      const char *candidate_hash;
       candidate_ap = (NMAccessPoint *) g_ptr_array_index(ap_list, i);
+      candidate_hash = utils_hash_ap(nm_access_point_get_ssid(candidate_ap),
+                                     nm_access_point_get_mode(candidate_ap),
+                                     nm_access_point_get_flags(candidate_ap),
+                                     nm_access_point_get_wpa_flags(candidate_ap),
+                                     nm_access_point_get_rsn_flags(candidate_ap));
 
-      candidate_ssid = nm_access_point_get_ssid(candidate_ap);
-      if (!candidate_ssid)
-        break;
-
-      ssid = nm_utils_ssid_to_utf8(candidate_ssid);
-
-      if (ssid && ap->ssid == ssid) {
+      if (ap->hash == candidate_hash) {
         nm_ap_path = nm_object_get_path(NM_OBJECT(candidate_ap));
-        g_free(ssid);
         break;
       }
     }
@@ -416,7 +412,7 @@ void WifiStatusNM::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
     s_wifi = (NMSettingWireless *) nm_setting_wireless_new();
     nm_connection_add_setting(connection, NM_SETTING(s_wifi));
     g_object_set(s_wifi,
-                 NM_SETTING_WIRELESS_SSID, candidate_ssid,
+                 NM_SETTING_WIRELESS_SSID, nm_access_point_get_ssid(candidate_ap),
                  NM_SETTING_WIRELESS_HIDDEN, false,
                  NULL);
 
