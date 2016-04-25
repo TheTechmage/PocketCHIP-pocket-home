@@ -123,6 +123,8 @@ public:
   void sliderValueChanged(IconSliderComponent* slider);
   void sliderDragStarted(IconSliderComponent* slider);
   void sliderDragEnded(IconSliderComponent* slider);
+    
+  void visibilityChanged() override;
 
   void checkSliders();
   

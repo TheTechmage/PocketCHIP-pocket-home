@@ -69,6 +69,7 @@ private:
   bool init = false;
 
   void buttonClicked(Button *) override;
+  void updateAccessPoints();
 
   OwnedArray<WifiAccessPoint> accessPoints;
   

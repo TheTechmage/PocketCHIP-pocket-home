@@ -81,21 +81,8 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   backButton->setAlwaysOnTop(true);
   addAndMakeVisible(backButton);
 
-  // create ssid list
-  accessPointListPage = new TrainComponent(TrainComponent::kOrientationVertical);
-  accessPointListPage->itemHeight = 50;
-  accessPointListPage->itemScaleMin = accessPointListPage->itemScaleMax = 1.0;
-
-  accessPoints = getWifiStatus().nearbyAccessPoints();
-  for (auto ap : accessPoints) {
-    DBG(__func__ << ": added " << ap->ssid << ", " << ap->signalStrength << ", "
-		    << ap->requiresAuth);
-    auto item = new WifiAccessPointListItem(ap, icons);
-    item->addListener(this);
-    accessPointItems.add(item);
-    accessPointListPage->addItem(item);
-  }
-
+  updateAccessPoints();
+  
   // create connection "page"
   connectionPage = new Component("Connection Page");
 
@@ -186,6 +173,9 @@ void SettingsPageWifiComponent::handleWifiDisconnected() {
     passwordEditor->setVisible(true);
   }
   connectionButton->setButtonText("Connect");
+  
+  updateAccessPoints();
+  
   pageStack->insertPage(accessPointListPage, pageStack->getDepth() - 1);
 }
 
@@ -232,5 +222,24 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
         getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
       }
     }
+  }
+}
+
+// TODO: this is pretty expensive, but the cleanup is very simple. Could be replaced with a change
+// listener, or a merge operation.
+void SettingsPageWifiComponent::updateAccessPoints() {
+  // create ssid list
+  accessPointListPage = new TrainComponent(TrainComponent::kOrientationVertical);
+  accessPointListPage->itemHeight = 50;
+  accessPointListPage->itemScaleMin = accessPointListPage->itemScaleMax = 1.0;
+  
+  accessPoints = getWifiStatus().nearbyAccessPoints();
+  for (auto ap : accessPoints) {
+    DBG(__func__ << ": added " << ap->ssid << ", " << ap->signalStrength << ", "
+        << ap->requiresAuth);
+    auto item = new WifiAccessPointListItem(ap, icons);
+    item->addListener(this);
+    accessPointItems.add(item);
+    accessPointListPage->addItem(item);
   }
 }
