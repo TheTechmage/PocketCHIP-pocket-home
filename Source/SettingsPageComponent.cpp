@@ -239,6 +239,17 @@ SettingsPageComponent::SettingsPageComponent() {
 
 SettingsPageComponent::~SettingsPageComponent() {}
 
+// if we have UI depth (our radio is on) we show current wifi page (could be ap list or connection page)
+// otherwise we just push ourselves, since we are the top active level of wifi configuration
+void SettingsPageComponent::pushActiveWifiPage() {
+  if (getWifiStatus().isEnabled()) {
+    getMainStack().pushPage(wifiPage, PageStackComponent::kTransitionTranslateHorizontal);
+  }
+  else {
+    getMainStack().pushPage(this, PageStackComponent::kTransitionTranslateHorizontal);
+  }
+}
+
 void SettingsPageComponent::paint(Graphics &g) {
     auto bounds = getLocalBounds();
     g.fillAll(bgColor);
@@ -302,8 +313,6 @@ void SettingsPageComponent::setScreenBrightness() {
       }
     #endif
 }
-
-
 
 void SettingsPageComponent::sliderValueChanged(IconSliderComponent* slider) {
   //

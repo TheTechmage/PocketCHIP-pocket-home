@@ -110,7 +110,7 @@ public:
   SettingsPageComponent();
   ~SettingsPageComponent();
 
-  void getDeviceList();
+  void pushActiveWifiPage();
 
   void paint(Graphics &g) override;
   void resized() override;

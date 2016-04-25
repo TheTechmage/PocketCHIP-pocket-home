@@ -261,8 +261,11 @@ void LauncherComponent::buttonClicked(Button *button) {
   if ((!currentPage || currentPage->getName() != button->getName()) &&
       pagesByName.contains(button->getName())) {
     auto page = pagesByName[button->getName()];
-    if (button->getName() == "Settings" || button->getName() == "WiFi" ) {
+    if (button->getName() == "Settings") {
       getMainStack().pushPage(page, PageStackComponent::kTransitionTranslateHorizontal);
+    }
+    else if (button->getName() == "WiFi") {
+      ((SettingsPageComponent*)page)->pushActiveWifiPage();
     } else if (button->getName() == "Power" || button->getName() == "Battery" ) {
         getMainStack().pushPage(page, PageStackComponent::kTransitionTranslateHorizontalLeft);
     } else {
