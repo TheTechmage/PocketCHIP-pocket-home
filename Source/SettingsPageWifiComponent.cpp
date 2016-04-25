@@ -101,6 +101,11 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   connectionButton->addListener(this);
   connectionButton->setTriggeredOnMouseDown(true);
   connectionPage->addAndMakeVisible(connectionButton);
+    
+  errorLabel = new Label("Error Text", "Bad password ...");
+  errorLabel->setFont(26);
+  errorLabel->setJustificationType(juce::Justification::centred);
+  connectionPage->addChildComponent(errorLabel);
   
   // register for wifi status events
   getWifiStatus().addListener(this);
@@ -123,6 +128,7 @@ void SettingsPageWifiComponent::resized() {
   connectionLabel->setBounds(10, 50, pageBounds.getWidth() - 20, 50);
   passwordEditor->setBounds(90, 100, pageBounds.getWidth() - 180, 50);
   connectionButton->setBounds(90, 160, pageBounds.getWidth() - 180, 50);
+  errorLabel->setBounds(90, 210, pageBounds.getWidth()-180, 50);
   wifiIconComponent->setBounds(10, 10, 60, 60);
   backButton->setBounds(bounds.getX(), bounds.getY(), 60, bounds.getHeight());
   
@@ -159,12 +165,16 @@ void SettingsPageWifiComponent::handleWifiConnected() {
   DBG("SettingsPageWifiComponent::wifiConnected");
   passwordEditor->setVisible(false);
   connectionButton->setButtonText("Disconnect");
+  errorLabel->setVisible(false);
   pageStack->removePage(pageStack->getDepth() - 2);
 }
 
 void SettingsPageWifiComponent::handleWifiFailedConnect() {
   DBG("SettingsPageWifiComponent::wifiFailedConnect");
-  passwordEditor->setText("");
+  if (selectedAp.requiresAuth) {
+    errorLabel->setVisible(true);
+    passwordEditor->setText("");
+  }
 }
 
 void SettingsPageWifiComponent::handleWifiDisconnected() {
@@ -173,6 +183,7 @@ void SettingsPageWifiComponent::handleWifiDisconnected() {
     passwordEditor->setVisible(true);
   }
   connectionButton->setButtonText("Connect");
+  errorLabel->setVisible(false);
   
   updateAccessPoints();
   
@@ -187,6 +198,8 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
     if (status.isConnected()) {
       status.setDisconnected();
     } else {
+      errorLabel->setVisible(false);
+      
       if (selectedAp.requiresAuth) {
         const auto& psk = passwordEditor->getTextValue().toString();
         status.setConnectedAccessPoint(&selectedAp, psk);
@@ -204,10 +217,14 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
       connectionLabel->setText(apButton->ap->ssid, juce::NotificationType::dontSendNotification);
       if (status.isConnected() &&
           selectedAp.ssid == status.connectedAccessPoint().ssid) {
+        passwordEditor->setText(String::empty);
         passwordEditor->setVisible(false);
+        errorLabel->setVisible(false);
         connectionButton->setButtonText("Disconnect");
       } else {
+        passwordEditor->setText(String::empty);
         passwordEditor->setVisible(apButton->ap->requiresAuth);
+        errorLabel->setVisible(false);
         connectionButton->setButtonText("Connect");
       }
       pageStack->pushPage(connectionPage, PageStackComponent::kTransitionTranslateHorizontal);

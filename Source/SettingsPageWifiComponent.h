@@ -49,6 +49,7 @@ public:
   ScopedPointer<Label> connectionLabel;
   ScopedPointer<TextEditor> passwordEditor;
   ScopedPointer<TextButton> connectionButton;
+  ScopedPointer<Label> errorLabel;
 
   ScopedPointer<SwitchComponent> switchComponent;
 
