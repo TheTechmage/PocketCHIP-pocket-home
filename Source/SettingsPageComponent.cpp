@@ -239,6 +239,17 @@ SettingsPageComponent::SettingsPageComponent() {
 
 SettingsPageComponent::~SettingsPageComponent() {}
 
+// if we have UI depth (our radio is on) we show current wifi page (could be ap list or connection page)
+// otherwise we just push ourselves, since we are the top active level of wifi configuration
+void SettingsPageComponent::pushActiveWifiPage() {
+  if (getWifiStatus().isEnabled()) {
+    getMainStack().pushPage(wifiPage, PageStackComponent::kTransitionTranslateHorizontal);
+  }
+  else {
+    getMainStack().pushPage(this, PageStackComponent::kTransitionTranslateHorizontal);
+  }
+}
+
 void SettingsPageComponent::paint(Graphics &g) {
     auto bounds = getLocalBounds();
     g.fillAll(bgColor);
@@ -303,8 +314,6 @@ void SettingsPageComponent::setScreenBrightness() {
     #endif
 }
 
-
-
 void SettingsPageComponent::sliderValueChanged(IconSliderComponent* slider) {
   //
 }
@@ -329,3 +338,12 @@ void SettingsPageComponent::sliderDragEnded(IconSliderComponent* slider) {
   }
 }
 
+void SettingsPageComponent::visibilityChanged() {
+  // when we show settings, inform wifistatus we're interested
+  // in nearby networks, even though we don't use them here.
+  // we're getting ready for the wifi ap list, which is one screen beyond
+  // this one.
+  if (isVisible()) {
+    getWifiStatus().nearbyAccessPoints();
+  }
+}

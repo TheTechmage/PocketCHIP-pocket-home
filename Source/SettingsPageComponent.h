@@ -110,7 +110,7 @@ public:
   SettingsPageComponent();
   ~SettingsPageComponent();
 
-  void getDeviceList();
+  void pushActiveWifiPage();
 
   void paint(Graphics &g) override;
   void resized() override;
@@ -123,6 +123,8 @@ public:
   void sliderValueChanged(IconSliderComponent* slider);
   void sliderDragStarted(IconSliderComponent* slider);
   void sliderDragEnded(IconSliderComponent* slider);
+    
+  void visibilityChanged() override;
 
   void checkSliders();
   

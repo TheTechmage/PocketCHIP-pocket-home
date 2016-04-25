@@ -49,6 +49,7 @@ public:
   ScopedPointer<Label> connectionLabel;
   ScopedPointer<TextEditor> passwordEditor;
   ScopedPointer<TextButton> connectionButton;
+  ScopedPointer<Label> errorLabel;
 
   ScopedPointer<SwitchComponent> switchComponent;
 
@@ -69,6 +70,7 @@ private:
   bool init = false;
 
   void buttonClicked(Button *) override;
+  void updateAccessPoints();
 
   OwnedArray<WifiAccessPoint> accessPoints;
   

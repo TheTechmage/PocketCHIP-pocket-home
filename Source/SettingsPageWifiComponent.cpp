@@ -81,21 +81,8 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   backButton->setAlwaysOnTop(true);
   addAndMakeVisible(backButton);
 
-  // create ssid list
-  accessPointListPage = new TrainComponent(TrainComponent::kOrientationVertical);
-  accessPointListPage->itemHeight = 50;
-  accessPointListPage->itemScaleMin = accessPointListPage->itemScaleMax = 1.0;
-
-  accessPoints = getWifiStatus().nearbyAccessPoints();
-  for (auto ap : accessPoints) {
-    DBG(__func__ << ": added " << ap->ssid << ", " << ap->signalStrength << ", "
-		    << ap->requiresAuth);
-    auto item = new WifiAccessPointListItem(ap, icons);
-    item->addListener(this);
-    accessPointItems.add(item);
-    accessPointListPage->addItem(item);
-  }
-
+  updateAccessPoints();
+  
   // create connection "page"
   connectionPage = new Component("Connection Page");
 
@@ -114,6 +101,11 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   connectionButton->addListener(this);
   connectionButton->setTriggeredOnMouseDown(true);
   connectionPage->addAndMakeVisible(connectionButton);
+    
+  errorLabel = new Label("Error Text", "Bad password ...");
+  errorLabel->setFont(26);
+  errorLabel->setJustificationType(juce::Justification::centred);
+  connectionPage->addChildComponent(errorLabel);
   
   // register for wifi status events
   getWifiStatus().addListener(this);
@@ -136,6 +128,7 @@ void SettingsPageWifiComponent::resized() {
   connectionLabel->setBounds(10, 50, pageBounds.getWidth() - 20, 50);
   passwordEditor->setBounds(90, 100, pageBounds.getWidth() - 180, 50);
   connectionButton->setBounds(90, 160, pageBounds.getWidth() - 180, 50);
+  errorLabel->setBounds(90, 210, pageBounds.getWidth()-180, 50);
   wifiIconComponent->setBounds(10, 10, 60, 60);
   backButton->setBounds(bounds.getX(), bounds.getY(), 60, bounds.getHeight());
   
@@ -172,12 +165,16 @@ void SettingsPageWifiComponent::handleWifiConnected() {
   DBG("SettingsPageWifiComponent::wifiConnected");
   passwordEditor->setVisible(false);
   connectionButton->setButtonText("Disconnect");
+  errorLabel->setVisible(false);
   pageStack->removePage(pageStack->getDepth() - 2);
 }
 
 void SettingsPageWifiComponent::handleWifiFailedConnect() {
   DBG("SettingsPageWifiComponent::wifiFailedConnect");
-  passwordEditor->setText("");
+  if (selectedAp.requiresAuth) {
+    errorLabel->setVisible(true);
+    passwordEditor->setText("");
+  }
 }
 
 void SettingsPageWifiComponent::handleWifiDisconnected() {
@@ -186,6 +183,10 @@ void SettingsPageWifiComponent::handleWifiDisconnected() {
     passwordEditor->setVisible(true);
   }
   connectionButton->setButtonText("Connect");
+  errorLabel->setVisible(false);
+  
+  updateAccessPoints();
+  
   pageStack->insertPage(accessPointListPage, pageStack->getDepth() - 1);
 }
 
@@ -197,6 +198,8 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
     if (status.isConnected()) {
       status.setDisconnected();
     } else {
+      errorLabel->setVisible(false);
+      
       if (selectedAp.requiresAuth) {
         const auto& psk = passwordEditor->getTextValue().toString();
         status.setConnectedAccessPoint(&selectedAp, psk);
@@ -214,10 +217,14 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
       connectionLabel->setText(apButton->ap->ssid, juce::NotificationType::dontSendNotification);
       if (status.isConnected() &&
           selectedAp.ssid == status.connectedAccessPoint().ssid) {
+        passwordEditor->setText(String::empty);
         passwordEditor->setVisible(false);
+        errorLabel->setVisible(false);
         connectionButton->setButtonText("Disconnect");
       } else {
+        passwordEditor->setText(String::empty);
         passwordEditor->setVisible(apButton->ap->requiresAuth);
+        errorLabel->setVisible(false);
         connectionButton->setButtonText("Connect");
       }
       pageStack->pushPage(connectionPage, PageStackComponent::kTransitionTranslateHorizontal);
@@ -232,5 +239,24 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
         getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
       }
     }
+  }
+}
+
+// TODO: this is pretty expensive, but the cleanup is very simple. Could be replaced with a change
+// listener, or a merge operation.
+void SettingsPageWifiComponent::updateAccessPoints() {
+  // create ssid list
+  accessPointListPage = new TrainComponent(TrainComponent::kOrientationVertical);
+  accessPointListPage->itemHeight = 50;
+  accessPointListPage->itemScaleMin = accessPointListPage->itemScaleMax = 1.0;
+  
+  accessPoints = getWifiStatus().nearbyAccessPoints();
+  for (auto ap : accessPoints) {
+    DBG(__func__ << ": added " << ap->ssid << ", " << ap->signalStrength << ", "
+        << ap->requiresAuth);
+    auto item = new WifiAccessPointListItem(ap, icons);
+    item->addListener(this);
+    accessPointItems.add(item);
+    accessPointListPage->addItem(item);
   }
 }
