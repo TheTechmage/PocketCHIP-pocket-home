@@ -7,6 +7,36 @@
 #include "TrainComponent.h"
 #include "Main.h"
 
+class SettingsPageWifiComponent;
+class WifiSpinnerTimer;
+class WifiSpinner;
+
+class WifiSpinnerTimer : public Timer {
+public:
+  void timerCallback() override;
+  
+  WifiSpinner* spinner;
+};
+
+
+class WifiSpinner : public ImageComponent {
+public:
+  WifiSpinner(const String& componentName = String::empty);
+  ~WifiSpinner();
+  
+  void hide();
+  void show();
+  void nextImage();
+  
+private:
+  Array<Image> images;
+  WifiSpinnerTimer timer;
+  
+  int i = 0;
+  
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WifiSpinner)
+};
+
 struct WifiIcons {
   OwnedArray<Drawable> wifiStrength;
   ScopedPointer<Drawable> lockIcon;
@@ -42,6 +72,8 @@ public:
   ScopedPointer<ImageButton> backButton;
   ScopedPointer<ImageComponent> wifiIconComponent;
   ScopedPointer<WifiIcons> icons;
+  
+  ScopedPointer<WifiSpinner> spinner;
 
   ScopedPointer<TrainComponent> accessPointListPage;
 
@@ -70,6 +102,7 @@ private:
   bool init = false;
 
   void buttonClicked(Button *) override;
+  void updateConnectionLabel();
   void updateAccessPoints();
 
   OwnedArray<WifiAccessPoint> accessPoints;

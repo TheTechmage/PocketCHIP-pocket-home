@@ -3,6 +3,49 @@
 #include "Main.h"
 #include "Utils.h"
 
+WifiSpinner::WifiSpinner(const String& componentName)
+: ImageComponent(componentName)
+{
+  const Array<String> spinnerImgPaths{
+    "spinner0.png","spinner1.png","spinner2.png","spinner3.png",
+    "spinner4.png","spinner5.png","spinner6.png","spinner7.png"};
+
+  for(auto& path : spinnerImgPaths) {
+    auto image = createImageFromFile(assetFile(path));
+    images.add(image);
+  }
+  
+  const auto& startImg = images[0];
+  setImage(startImg);
+  setSize(startImg.getWidth(), startImg.getHeight());
+  
+  timer.spinner = this;
+}
+
+WifiSpinner::~WifiSpinner() {
+  timer.spinner = nullptr;
+}
+
+void WifiSpinner::hide() {
+  timer.stopTimer();
+  setVisible(false);
+}
+
+void WifiSpinner::show() {
+  timer.startTimer(500);
+  setVisible(true);
+}
+
+void WifiSpinner::nextImage() {
+  i++;
+  if (i == images.size()) { i = 0; }
+  setImage(images[i]);
+}
+
+void WifiSpinnerTimer::timerCallback() {
+  spinner->nextImage();
+}
+
 WifiAccessPointListItem::WifiAccessPointListItem(WifiAccessPoint *ap, WifiIcons *icons)
 : Button{ ap->ssid }, ap{ ap }, icons{ icons } {}
 
@@ -68,7 +111,7 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   icons->wifiStrength.set(1, Drawable::createFromImageFile(assetFile("wifiStrength1.png")));
   icons->wifiStrength.set(2, Drawable::createFromImageFile(assetFile("wifiStrength2.png")));
   icons->wifiStrength.set(3, Drawable::createFromImageFile(assetFile("wifiStrength3.png")));
-
+  
   icons->arrowIcon = Drawable::createFromImageFile(assetFile("backIcon.png"));
   auto xf = AffineTransform::identity.rotated(M_PI);
   icons->arrowIcon->setTransform(xf);
@@ -107,6 +150,10 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   errorLabel->setJustificationType(juce::Justification::centred);
   connectionPage->addChildComponent(errorLabel);
   
+  // add the spinner image to our page
+  spinner = new WifiSpinner("WifiSpinner");
+  connectionButton->addChildComponent(spinner);
+  
   // register for wifi status events
   getWifiStatus().addListener(this);
 }
@@ -125,12 +172,15 @@ void SettingsPageWifiComponent::resized() {
 
   pageStack->setBounds(pageBounds);
 
+  // FIXME: use scalable layout
   connectionLabel->setBounds(10, 50, pageBounds.getWidth() - 20, 50);
   passwordEditor->setBounds(90, 100, pageBounds.getWidth() - 180, 50);
   connectionButton->setBounds(90, 160, pageBounds.getWidth() - 180, 50);
   errorLabel->setBounds(90, 210, pageBounds.getWidth()-180, 50);
   wifiIconComponent->setBounds(10, 10, 60, 60);
   backButton->setBounds(bounds.getX(), bounds.getY(), 60, bounds.getHeight());
+  const auto& cb = connectionButton->getLocalBounds();
+  spinner->setBoundsToFit(cb.getX() + 6, cb.getY(), cb.getWidth(), cb.getHeight(), Justification::centredLeft, true);
   
   // FIXME: this logic belongs in constructor, but sizing info shows wrong on resize.
   if (!init) {
@@ -140,7 +190,7 @@ void SettingsPageWifiComponent::resized() {
     auto& wifiStatus = getWifiStatus();
     if (wifiStatus.isConnected()) {
       selectedAp = wifiStatus.connectedAccessPoint();
-      connectionLabel->setText(selectedAp->ssid, juce::NotificationType::dontSendNotification);
+      updateConnectionLabel();
       passwordEditor->setVisible(false);
       connectionButton->setButtonText("Disconnect");
       pageStack->pushPage(connectionPage, PageStackComponent::kTransitionNone);
@@ -163,6 +213,10 @@ void SettingsPageWifiComponent::handleWifiDisabled() {
 // Really there should be a lightweight statemachine somewhere around this class.
 void SettingsPageWifiComponent::handleWifiConnected() {
   DBG("SettingsPageWifiComponent::wifiConnected");
+  
+  spinner->hide();
+  
+  updateConnectionLabel();
   passwordEditor->setVisible(false);
   connectionButton->setButtonText("Disconnect");
   errorLabel->setVisible(false);
@@ -171,6 +225,10 @@ void SettingsPageWifiComponent::handleWifiConnected() {
 
 void SettingsPageWifiComponent::handleWifiFailedConnect() {
   DBG("SettingsPageWifiComponent::wifiFailedConnect");
+  
+  spinner->hide();
+  updateConnectionLabel();
+  
   if (selectedAp->requiresAuth) {
     errorLabel->setVisible(true);
     passwordEditor->setText("");
@@ -179,6 +237,10 @@ void SettingsPageWifiComponent::handleWifiFailedConnect() {
 
 void SettingsPageWifiComponent::handleWifiDisconnected() {
   DBG("SettingsPageWifiComponent::wifiDisconnected");
+  
+  spinner->hide();
+  updateConnectionLabel();
+  
   if (selectedAp->requiresAuth) {
     passwordEditor->setVisible(true);
   }
@@ -195,6 +257,7 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
 
   // button from the connection dialog
   if (button == connectionButton) {
+    spinner->show();
     if (status.isConnected()) {
       status.setDisconnected();
     } else {
@@ -214,7 +277,7 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
     auto apButton = dynamic_cast<WifiAccessPointListItem *>(button);
     if (apButton) {
       selectedAp = new WifiAccessPoint(*apButton->ap);
-      connectionLabel->setText(apButton->ap->ssid, juce::NotificationType::dontSendNotification);
+      updateConnectionLabel();
       if (status.isConnected() &&
           selectedAp->hash == status.connectedAccessPoint()->hash) {
         passwordEditor->setText(String::empty);
@@ -240,6 +303,18 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
       }
     }
   }
+}
+
+void SettingsPageWifiComponent::updateConnectionLabel() {
+  String ssidText = selectedAp->ssid;
+  const auto& status = getWifiStatus();
+  
+  if (status.isConnected() &&
+      status.connectedAccessPoint()->hash == selectedAp->hash) {
+    ssidText += " (connected)";
+  }
+  
+  connectionLabel->setText(ssidText, juce::NotificationType::dontSendNotification);
 }
 
 // TODO: this is pretty expensive, but the cleanup is very simple. Could be replaced with a change

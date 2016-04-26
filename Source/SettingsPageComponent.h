@@ -73,6 +73,7 @@ class WifiCategoryItemComponent : public SettingsCategoryItemComponent, public W
 public:
   WifiCategoryItemComponent();
 
+  void resized() override;
   void enabledStateChanged(bool enabled) override;
   void updateButtonText() override;
   
@@ -82,6 +83,8 @@ public:
   void handleWifiDisconnected() override;
 
 private:
+  ScopedPointer<WifiSpinner> spinner;
+  
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WifiCategoryItemComponent)
 };
 

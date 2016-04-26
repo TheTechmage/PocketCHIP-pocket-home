@@ -19,3 +19,10 @@ clean:
 
 wifitest:
 	cd Builds/LinuxMakefile && $(MAKE) -f UnitTests.mk ../../build/$(CONFIG)/wifitest
+
+devinstall:
+	killall pocket-home && \
+	sudo cp build/$(CONFIG)/pocket-home /usr/bin/pocket-home && \
+	sudo cp -R assets/* /usr/share/pocket-home && \
+	sleep 2 && \
+	pocket-home &

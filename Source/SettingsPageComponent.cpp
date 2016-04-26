@@ -92,34 +92,60 @@ void SettingsCategoryItemComponent::enablementChanged() {
   updateButtonText();
 }
 
-WifiCategoryItemComponent::WifiCategoryItemComponent() : SettingsCategoryItemComponent("wifi") {
+WifiCategoryItemComponent::WifiCategoryItemComponent() :
+  SettingsCategoryItemComponent("wifi"),
+  spinner(new WifiSpinner("SettingsWifiSpinner"))
+{
   iconDrawable =
       Drawable::createFromImageFile(assetFile("wifiStrength3.png"));
   icon->setImages(iconDrawable);
   bool isEnabled = getWifiStatus().isEnabled();
   toggle->setToggleState(isEnabled, NotificationType::dontSendNotification);
   button->setEnabled(isEnabled);
+  addChildComponent(spinner);
   updateButtonText();
+}
+
+void WifiCategoryItemComponent::resized() {
+  SettingsCategoryItemComponent::resized();
+  const auto& sb = icon->getBoundsInParent();
+  spinner->setBoundsToFit(sb.getX(), sb.getY(), sb.getWidth(), sb.getHeight(), Justification::centred, true);
 }
 
 void WifiCategoryItemComponent::enabledStateChanged(bool enabled) {
   enabled ? getWifiStatus().setEnabled() : getWifiStatus().setDisabled();
+  spinner->show();
+  icon->setVisible(false);
   updateButtonText();
 }
 
 void WifiCategoryItemComponent::handleWifiEnabled() {
+  // FIXME: this is wrong if we have no profiles to search for,
+  // will be fixed by explict busy message from wifi
+  spinner->show();
+  icon->setVisible(false);
   toggle->setToggleState(true, NotificationType::dontSendNotification);
   button->setEnabled(true);
   updateButtonText();
 }
 
 void WifiCategoryItemComponent::handleWifiDisabled() {
+  spinner->hide();
+  icon->setVisible(true);
   toggle->setToggleState(false, NotificationType::dontSendNotification);
   button->setEnabled(false);
   updateButtonText();
 }
-void WifiCategoryItemComponent::handleWifiConnected() { updateButtonText(); }
-void WifiCategoryItemComponent::handleWifiDisconnected() { updateButtonText(); }
+void WifiCategoryItemComponent::handleWifiConnected() {
+  spinner->hide();
+  icon->setVisible(true);
+  updateButtonText();
+}
+void WifiCategoryItemComponent::handleWifiDisconnected() {
+  spinner->hide();
+  icon->setVisible(true);
+  updateButtonText();
+}
 
 void WifiCategoryItemComponent::updateButtonText() {
   const auto &status = getWifiStatus();
