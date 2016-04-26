@@ -17,7 +17,7 @@ public:
   class Listener;
   
   virtual OwnedArray<WifiAccessPoint> nearbyAccessPoints() = 0;
-  virtual WifiAccessPoint connectedAccessPoint() const = 0;
+  virtual ScopedPointer<WifiAccessPoint> connectedAccessPoint() const = 0;
   virtual bool isEnabled() const = 0;
   virtual bool isConnected() const = 0;
 

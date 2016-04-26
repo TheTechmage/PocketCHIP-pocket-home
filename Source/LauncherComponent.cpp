@@ -74,7 +74,7 @@ void WifiIconTimer::timerCallback() {
       if (getWifiStatus().isConnected()) {
         const auto& conAp = getWifiStatus().connectedAccessPoint();
         // 0 to 100
-        float sigStrength = std::max(0, std::min(99, conAp.signalStrength));
+        float sigStrength = std::max(0, std::min(99, conAp->signalStrength));
         int iconBins = launcherComponent->wifiIconImages.size() - 1;
         int idx = round( ( iconBins * (sigStrength)/100.0f) );
         DBG(__func__ << ": accessing icon " << idx);
