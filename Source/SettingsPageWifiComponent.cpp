@@ -3,15 +3,47 @@
 #include "Main.h"
 #include "Utils.h"
 
-void WifiSpinnerTimer::timerCallback() {
-  if (wifiPage) {
-    auto& spinner = wifiPage->spinner;
-    const auto& images = wifiPage->spinnerImages;
-    
-    i++;
-    if (i == images.size()) { i = 0; }
-    spinner->setImage(images[i]);
+WifiSpinner::WifiSpinner(const String& componentName)
+: ImageComponent(componentName)
+{
+  const Array<String> spinnerImgPaths{
+    "spinner0.png","spinner1.png","spinner2.png","spinner3.png",
+    "spinner4.png","spinner5.png","spinner6.png","spinner7.png"};
+
+  for(auto& path : spinnerImgPaths) {
+    auto image = createImageFromFile(assetFile(path));
+    images.add(image);
   }
+  
+  const auto& startImg = images[0];
+  setImage(startImg);
+  setSize(startImg.getWidth(), startImg.getHeight());
+  
+  timer.spinner = this;
+}
+
+WifiSpinner::~WifiSpinner() {
+  timer.spinner = nullptr;
+}
+
+void WifiSpinner::hide() {
+  timer.stopTimer();
+  setVisible(false);
+}
+
+void WifiSpinner::show() {
+  timer.startTimer(500);
+  setVisible(true);
+}
+
+void WifiSpinner::nextImage() {
+  i++;
+  if (i == images.size()) { i = 0; }
+  setImage(images[i]);
+}
+
+void WifiSpinnerTimer::timerCallback() {
+  spinner->nextImage();
 }
 
 WifiAccessPointListItem::WifiAccessPointListItem(WifiAccessPoint *ap, WifiIcons *icons)
@@ -118,16 +150,8 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   errorLabel->setJustificationType(juce::Justification::centred);
   connectionPage->addChildComponent(errorLabel);
   
-  Array<String> spinnerImgPaths{"spinner0.png","spinner1.png","spinner2.png","spinner3.png","spinner4.png","spinner5.png","spinner6.png","spinner7.png"};
-  for(auto& path : spinnerImgPaths) {
-    auto image = createImageFromFile(assetFile(path));
-    spinnerImages.add(image);
-  }
-  const auto& spinStartImg = spinnerImages[0];
-  spinner = new ImageComponent();
-  spinnerTimer.wifiPage = this;
-  spinner->setImage(spinStartImg);
-  spinner->setSize(spinStartImg.getWidth(), spinStartImg.getHeight());
+  // add the spinner image to our page
+  spinner = new WifiSpinner("WifiSpinner");
   connectionButton->addChildComponent(spinner);
   
   // register for wifi status events
@@ -190,7 +214,7 @@ void SettingsPageWifiComponent::handleWifiDisabled() {
 void SettingsPageWifiComponent::handleWifiConnected() {
   DBG("SettingsPageWifiComponent::wifiConnected");
   
-  hideSpinner();
+  spinner->hide();
   
   updateConnectionLabel();
   passwordEditor->setVisible(false);
@@ -202,7 +226,7 @@ void SettingsPageWifiComponent::handleWifiConnected() {
 void SettingsPageWifiComponent::handleWifiFailedConnect() {
   DBG("SettingsPageWifiComponent::wifiFailedConnect");
   
-  hideSpinner();
+  spinner->hide();
   updateConnectionLabel();
   
   if (selectedAp->requiresAuth) {
@@ -214,7 +238,7 @@ void SettingsPageWifiComponent::handleWifiFailedConnect() {
 void SettingsPageWifiComponent::handleWifiDisconnected() {
   DBG("SettingsPageWifiComponent::wifiDisconnected");
   
-  hideSpinner();
+  spinner->hide();
   updateConnectionLabel();
   
   if (selectedAp->requiresAuth) {
@@ -233,7 +257,7 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
 
   // button from the connection dialog
   if (button == connectionButton) {
-    showSpinner();
+    spinner->show();
     if (status.isConnected()) {
       status.setDisconnected();
     } else {
@@ -291,16 +315,6 @@ void SettingsPageWifiComponent::updateConnectionLabel() {
   }
   
   connectionLabel->setText(ssidText, juce::NotificationType::dontSendNotification);
-}
-
-void SettingsPageWifiComponent::showSpinner() {
-  spinner->setVisible(true);
-  spinnerTimer.startTimer(500);
-}
-
-void SettingsPageWifiComponent::hideSpinner() {
-  spinner->setVisible(false);
-  spinnerTimer.stopTimer();
 }
 
 // TODO: this is pretty expensive, but the cleanup is very simple. Could be replaced with a change
