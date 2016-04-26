@@ -252,11 +252,15 @@ void WifiStatusNM::clearListeners() {
 // otherwise easily confused with setters thats wrap members, which are slightly different idiom
 void WifiStatusNM::setEnabled() {
   if (!enabled)
+    for (const auto& listener : listeners)
+      listener->handleWifiBusy();
     nm_client_wireless_set_enabled(nmclient, true);
 }
 
 void WifiStatusNM::setDisabled() {
   if (enabled)
+    for (const auto& listener : listeners)
+      listener->handleWifiBusy();
     nm_client_wireless_set_enabled(nmclient, false);
 }
 
@@ -379,7 +383,10 @@ void WifiStatusNM::handleConnectedAccessPoint() {
 
 void WifiStatusNM::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
   ScopedPointer<StringArray> cmd;
-  
+
+  for (const auto& listener : listeners)
+    listener->handleWifiBusy();
+
   // disconnect if no ap provided
   if (ap == nullptr) {
     NMActiveConnection *conn = nm_device_get_active_connection(nmdevice);
