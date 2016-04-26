@@ -120,15 +120,10 @@ void WifiCategoryItemComponent::enabledStateChanged(bool enabled) {
 }
 
 void WifiCategoryItemComponent::handleWifiEnabled() {
-  // FIXME: this is a dumb heuristic, attempts to capture
-  // whether it was user intent that we've been enabled.
-  // If the user intended to enable and was waiting, the spinner
-  // will be visible. If the enable was automatic we'll be searching
-  // for a network to connect to, and should spin indefinitely.
-  spinner->isVisible() ?
-    spinner->hide() : spinner->show();
-  
-  icon->setVisible(true);
+  // FIXME: this is wrong if we have no profiles to search for,
+  // will be fixed by explict busy message from wifi
+  spinner->show();
+  icon->setVisible(false);
   toggle->setToggleState(true, NotificationType::dontSendNotification);
   button->setEnabled(true);
   updateButtonText();
@@ -148,7 +143,7 @@ void WifiCategoryItemComponent::handleWifiConnected() {
 }
 void WifiCategoryItemComponent::handleWifiDisconnected() {
   spinner->hide();
-  icon->setVisible(false);
+  icon->setVisible(true);
   updateButtonText();
 }
 
