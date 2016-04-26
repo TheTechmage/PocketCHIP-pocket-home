@@ -134,9 +134,9 @@ AppsPageComponent::~AppsPageComponent() {}
 Array<DrawableButton *> AppsPageComponent::createIconsFromJsonArray(const var &json) {
   auto buttons = AppListComponent::createIconsFromJsonArray(json);
   
-  // hard coded "virtual" application. Cannot be removed.
-  appsLibraryBtn = createAndOwnIcon("App Get", "appIcons/update.png", String::empty);
-  buttons.add(appsLibraryBtn);
+  //// hard coded "virtual" application. Cannot be removed.
+  //appsLibraryBtn = createAndOwnIcon("App Get", "appIcons/update.png", String::empty);
+  //buttons.add(appsLibraryBtn);
   
   checkShowPageNav();
   return buttons;
