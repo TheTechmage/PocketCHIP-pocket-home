@@ -3,6 +3,17 @@
 #include "Main.h"
 #include "Utils.h"
 
+void WifiSpinnerTimer::timerCallback() {
+  if (wifiPage) {
+    auto& spinner = wifiPage->spinner;
+    const auto& images = wifiPage->spinnerImages;
+    
+    i++;
+    if (i == images.size()) { i = 0; }
+    spinner->setImage(images[i]);
+  }
+}
+
 WifiAccessPointListItem::WifiAccessPointListItem(WifiAccessPoint *ap, WifiIcons *icons)
 : Button{ ap->ssid }, ap{ ap }, icons{ icons } {}
 
@@ -68,7 +79,7 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   icons->wifiStrength.set(1, Drawable::createFromImageFile(assetFile("wifiStrength1.png")));
   icons->wifiStrength.set(2, Drawable::createFromImageFile(assetFile("wifiStrength2.png")));
   icons->wifiStrength.set(3, Drawable::createFromImageFile(assetFile("wifiStrength3.png")));
-
+  
   icons->arrowIcon = Drawable::createFromImageFile(assetFile("backIcon.png"));
   auto xf = AffineTransform::identity.rotated(M_PI);
   icons->arrowIcon->setTransform(xf);
@@ -107,6 +118,18 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   errorLabel->setJustificationType(juce::Justification::centred);
   connectionPage->addChildComponent(errorLabel);
   
+  Array<String> spinnerImgPaths{"spinner0.png","spinner1.png","spinner2.png","spinner3.png","spinner4.png","spinner5.png","spinner6.png","spinner7.png"};
+  for(auto& path : spinnerImgPaths) {
+    auto image = createImageFromFile(assetFile(path));
+    spinnerImages.add(image);
+  }
+  const auto& spinStartImg = spinnerImages[0];
+  spinner = new ImageComponent();
+  spinnerTimer.wifiPage = this;
+  spinner->setImage(spinStartImg);
+  spinner->setSize(spinStartImg.getWidth(), spinStartImg.getHeight());
+  connectionButton->addChildComponent(spinner);
+  
   // register for wifi status events
   getWifiStatus().addListener(this);
 }
@@ -125,12 +148,15 @@ void SettingsPageWifiComponent::resized() {
 
   pageStack->setBounds(pageBounds);
 
+  // FIXME: use scalable layout
   connectionLabel->setBounds(10, 50, pageBounds.getWidth() - 20, 50);
   passwordEditor->setBounds(90, 100, pageBounds.getWidth() - 180, 50);
   connectionButton->setBounds(90, 160, pageBounds.getWidth() - 180, 50);
   errorLabel->setBounds(90, 210, pageBounds.getWidth()-180, 50);
   wifiIconComponent->setBounds(10, 10, 60, 60);
   backButton->setBounds(bounds.getX(), bounds.getY(), 60, bounds.getHeight());
+  const auto& cb = connectionButton->getLocalBounds();
+  spinner->setBoundsToFit(cb.getX() + 6, cb.getY(), cb.getWidth(), cb.getHeight(), Justification::centredLeft, true);
   
   // FIXME: this logic belongs in constructor, but sizing info shows wrong on resize.
   if (!init) {
@@ -163,6 +189,9 @@ void SettingsPageWifiComponent::handleWifiDisabled() {
 // Really there should be a lightweight statemachine somewhere around this class.
 void SettingsPageWifiComponent::handleWifiConnected() {
   DBG("SettingsPageWifiComponent::wifiConnected");
+  
+  hideSpinner();
+  
   passwordEditor->setVisible(false);
   connectionButton->setButtonText("Disconnect");
   errorLabel->setVisible(false);
@@ -171,6 +200,9 @@ void SettingsPageWifiComponent::handleWifiConnected() {
 
 void SettingsPageWifiComponent::handleWifiFailedConnect() {
   DBG("SettingsPageWifiComponent::wifiFailedConnect");
+  
+  hideSpinner();
+  
   if (selectedAp->requiresAuth) {
     errorLabel->setVisible(true);
     passwordEditor->setText("");
@@ -179,6 +211,9 @@ void SettingsPageWifiComponent::handleWifiFailedConnect() {
 
 void SettingsPageWifiComponent::handleWifiDisconnected() {
   DBG("SettingsPageWifiComponent::wifiDisconnected");
+  
+  hideSpinner();
+  
   if (selectedAp->requiresAuth) {
     passwordEditor->setVisible(true);
   }
@@ -195,6 +230,7 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
 
   // button from the connection dialog
   if (button == connectionButton) {
+    showSpinner();
     if (status.isConnected()) {
       status.setDisconnected();
     } else {
@@ -240,6 +276,16 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
       }
     }
   }
+}
+
+void SettingsPageWifiComponent::showSpinner() {
+  spinner->setVisible(true);
+  spinnerTimer.startTimer(500);
+}
+
+void SettingsPageWifiComponent::hideSpinner() {
+  spinner->setVisible(false);
+  spinnerTimer.stopTimer();
 }
 
 // TODO: this is pretty expensive, but the cleanup is very simple. Could be replaced with a change

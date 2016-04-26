@@ -7,6 +7,18 @@
 #include "TrainComponent.h"
 #include "Main.h"
 
+class SettingsPageWifiComponent;
+
+class WifiSpinnerTimer : public Timer {
+public:
+  WifiSpinnerTimer() {};
+  void timerCallback();
+  
+  SettingsPageWifiComponent* wifiPage;
+  
+  int i = 0;
+};
+
 struct WifiIcons {
   OwnedArray<Drawable> wifiStrength;
   ScopedPointer<Drawable> lockIcon;
@@ -42,6 +54,10 @@ public:
   ScopedPointer<ImageButton> backButton;
   ScopedPointer<ImageComponent> wifiIconComponent;
   ScopedPointer<WifiIcons> icons;
+  
+  ScopedPointer<ImageComponent> spinner;
+  Array<Image> spinnerImages;
+  WifiSpinnerTimer spinnerTimer;
 
   ScopedPointer<TrainComponent> accessPointListPage;
 
@@ -70,6 +86,8 @@ private:
   bool init = false;
 
   void buttonClicked(Button *) override;
+  void showSpinner();
+  void hideSpinner();
   void updateAccessPoints();
 
   OwnedArray<WifiAccessPoint> accessPoints;
