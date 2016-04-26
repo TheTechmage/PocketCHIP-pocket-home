@@ -103,6 +103,7 @@ WifiCategoryItemComponent::WifiCategoryItemComponent() :
   toggle->setToggleState(isEnabled, NotificationType::dontSendNotification);
   button->setEnabled(isEnabled);
   addChildComponent(spinner);
+  spinner->setVisible(false);
   updateButtonText();
 }
 

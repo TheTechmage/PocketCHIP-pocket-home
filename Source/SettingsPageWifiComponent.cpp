@@ -3,8 +3,8 @@
 #include "Main.h"
 #include "Utils.h"
 
-WifiSpinner::WifiSpinner(const String& componentName)
-: ImageComponent(componentName)
+WifiSpinner::WifiSpinner(const String& componentName) :
+  ImageComponent(componentName)
 {
   const Array<String> spinnerImgPaths{
     "spinner0.png","spinner1.png","spinner2.png","spinner3.png",
@@ -23,17 +23,18 @@ WifiSpinner::WifiSpinner(const String& componentName)
 }
 
 WifiSpinner::~WifiSpinner() {
+  timer.stopTimer();
   timer.spinner = nullptr;
 }
 
 void WifiSpinner::hide() {
-  timer.stopTimer();
   setVisible(false);
+  timer.stopTimer();
 }
 
 void WifiSpinner::show() {
-  timer.startTimer(500);
   setVisible(true);
+  timer.startTimer(500);
 }
 
 void WifiSpinner::nextImage() {
