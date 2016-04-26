@@ -60,7 +60,7 @@ private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WifiAccessPointListItem)
 };
 
-class SettingsPageWifiComponent : public Component, public WifiStatus::Listener, private Button::Listener {
+class SettingsPageWifiComponent : public Component, public WifiStatus::Listener, private Button::Listener, private TextEditor::Listener {
 public:
   SettingsPageWifiComponent();
   ~SettingsPageWifiComponent();
@@ -100,11 +100,15 @@ private:
   Image bgImage;
   
   bool init = false;
-
-  void buttonClicked(Button *) override;
+  
+  void beginSetConnected();
+  void beginSetDisconnected();
   void updateConnectionLabel();
   void updateAccessPoints();
 
+  void buttonClicked(Button *) override;
+  void textEditorReturnKeyPressed(TextEditor &) override;
+  
   OwnedArray<WifiAccessPoint> accessPoints;
   
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsPageWifiComponent)

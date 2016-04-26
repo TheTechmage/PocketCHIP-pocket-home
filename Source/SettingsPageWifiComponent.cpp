@@ -138,6 +138,7 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   passwordEditor = new TextEditor("Password", (juce_wchar)0x2022);
   passwordEditor->setFont(26);
   passwordEditor->setTextToShowWhenEmpty("password", findColour(TextEditor::ColourIds::textColourId));
+  passwordEditor->addListener(this);
   connectionPage->addAndMakeVisible(passwordEditor);
 
   connectionButton = new TextButton("Connection Button");
@@ -253,24 +254,66 @@ void SettingsPageWifiComponent::handleWifiDisconnected() {
   pageStack->insertPage(accessPointListPage, pageStack->getDepth() - 1);
 }
 
+void SettingsPageWifiComponent::beginSetConnected() {
+  auto &status = getWifiStatus();
+  
+  spinner->show();
+  errorLabel->setVisible(false);
+  
+  if (selectedAp->requiresAuth) {
+    const auto& psk = passwordEditor->getTextValue().toString();
+    status.setConnectedAccessPoint(selectedAp, psk);
+  }
+  else {
+    status.setConnectedAccessPoint(selectedAp);
+  }
+}
+
+void SettingsPageWifiComponent::beginSetDisconnected() {
+  spinner->show();
+  getWifiStatus().setDisconnected();
+}
+
+void SettingsPageWifiComponent::updateConnectionLabel() {
+  String ssidText = selectedAp->ssid;
+  const auto& status = getWifiStatus();
+  
+  if (status.isConnected() &&
+      status.connectedAccessPoint()->hash == selectedAp->hash) {
+    ssidText += " (connected)";
+  }
+  
+  connectionLabel->setText(ssidText, juce::NotificationType::dontSendNotification);
+}
+
+// TODO: this is pretty expensive, but the cleanup is very simple. Could be replaced with a change
+// listener, or a merge operation.
+void SettingsPageWifiComponent::updateAccessPoints() {
+  // create ssid list
+  accessPointListPage = new TrainComponent(TrainComponent::kOrientationVertical);
+  accessPointListPage->itemHeight = 50;
+  accessPointListPage->itemScaleMin = accessPointListPage->itemScaleMax = 1.0;
+  
+  accessPoints = getWifiStatus().nearbyAccessPoints();
+  for (auto ap : accessPoints) {
+    DBG(__func__ << ": added " << ap->ssid << ", " << ap->signalStrength << ", "
+        << ap->requiresAuth);
+    auto item = new WifiAccessPointListItem(ap, icons);
+    item->addListener(this);
+    accessPointItems.add(item);
+    accessPointListPage->addItem(item);
+  }
+}
+
 void SettingsPageWifiComponent::buttonClicked(Button *button) {
   auto &status = getWifiStatus();
-
+  
   // button from the connection dialog
   if (button == connectionButton) {
-    spinner->show();
     if (status.isConnected()) {
-      status.setDisconnected();
+      beginSetDisconnected();
     } else {
-      errorLabel->setVisible(false);
-      
-      if (selectedAp->requiresAuth) {
-        const auto& psk = passwordEditor->getTextValue().toString();
-        status.setConnectedAccessPoint(selectedAp, psk);
-      }
-      else {
-        status.setConnectedAccessPoint(selectedAp);
-      }
+      beginSetConnected();
     }
   }
   // button from the ap list
@@ -306,33 +349,6 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
   }
 }
 
-void SettingsPageWifiComponent::updateConnectionLabel() {
-  String ssidText = selectedAp->ssid;
-  const auto& status = getWifiStatus();
-  
-  if (status.isConnected() &&
-      status.connectedAccessPoint()->hash == selectedAp->hash) {
-    ssidText += " (connected)";
-  }
-  
-  connectionLabel->setText(ssidText, juce::NotificationType::dontSendNotification);
-}
-
-// TODO: this is pretty expensive, but the cleanup is very simple. Could be replaced with a change
-// listener, or a merge operation.
-void SettingsPageWifiComponent::updateAccessPoints() {
-  // create ssid list
-  accessPointListPage = new TrainComponent(TrainComponent::kOrientationVertical);
-  accessPointListPage->itemHeight = 50;
-  accessPointListPage->itemScaleMin = accessPointListPage->itemScaleMax = 1.0;
-  
-  accessPoints = getWifiStatus().nearbyAccessPoints();
-  for (auto ap : accessPoints) {
-    DBG(__func__ << ": added " << ap->ssid << ", " << ap->signalStrength << ", "
-        << ap->requiresAuth);
-    auto item = new WifiAccessPointListItem(ap, icons);
-    item->addListener(this);
-    accessPointItems.add(item);
-    accessPointListPage->addItem(item);
-  }
+void SettingsPageWifiComponent::textEditorReturnKeyPressed(TextEditor &) {
+  beginSetConnected();
 }
