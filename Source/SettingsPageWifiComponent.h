@@ -86,6 +86,7 @@ private:
   bool init = false;
 
   void buttonClicked(Button *) override;
+  void updateConnectionLabel();
   void showSpinner();
   void hideSpinner();
   void updateAccessPoints();

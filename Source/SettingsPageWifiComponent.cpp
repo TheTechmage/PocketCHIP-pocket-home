@@ -166,7 +166,7 @@ void SettingsPageWifiComponent::resized() {
     auto& wifiStatus = getWifiStatus();
     if (wifiStatus.isConnected()) {
       selectedAp = wifiStatus.connectedAccessPoint();
-      connectionLabel->setText(selectedAp->ssid, juce::NotificationType::dontSendNotification);
+      updateConnectionLabel();
       passwordEditor->setVisible(false);
       connectionButton->setButtonText("Disconnect");
       pageStack->pushPage(connectionPage, PageStackComponent::kTransitionNone);
@@ -192,6 +192,7 @@ void SettingsPageWifiComponent::handleWifiConnected() {
   
   hideSpinner();
   
+  updateConnectionLabel();
   passwordEditor->setVisible(false);
   connectionButton->setButtonText("Disconnect");
   errorLabel->setVisible(false);
@@ -202,6 +203,7 @@ void SettingsPageWifiComponent::handleWifiFailedConnect() {
   DBG("SettingsPageWifiComponent::wifiFailedConnect");
   
   hideSpinner();
+  updateConnectionLabel();
   
   if (selectedAp->requiresAuth) {
     errorLabel->setVisible(true);
@@ -213,6 +215,7 @@ void SettingsPageWifiComponent::handleWifiDisconnected() {
   DBG("SettingsPageWifiComponent::wifiDisconnected");
   
   hideSpinner();
+  updateConnectionLabel();
   
   if (selectedAp->requiresAuth) {
     passwordEditor->setVisible(true);
@@ -250,7 +253,7 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
     auto apButton = dynamic_cast<WifiAccessPointListItem *>(button);
     if (apButton) {
       selectedAp = new WifiAccessPoint(*apButton->ap);
-      connectionLabel->setText(apButton->ap->ssid, juce::NotificationType::dontSendNotification);
+      updateConnectionLabel();
       if (status.isConnected() &&
           selectedAp->hash == status.connectedAccessPoint()->hash) {
         passwordEditor->setText(String::empty);
@@ -276,6 +279,18 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
       }
     }
   }
+}
+
+void SettingsPageWifiComponent::updateConnectionLabel() {
+  String ssidText = selectedAp->ssid;
+  const auto& status = getWifiStatus();
+  
+  if (status.isConnected() &&
+      status.connectedAccessPoint()->hash == selectedAp->hash) {
+    ssidText += " (connected)";
+  }
+  
+  connectionLabel->setText(ssidText, juce::NotificationType::dontSendNotification);
 }
 
 void SettingsPageWifiComponent::showSpinner() {
