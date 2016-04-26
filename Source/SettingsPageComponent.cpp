@@ -103,7 +103,6 @@ WifiCategoryItemComponent::WifiCategoryItemComponent() :
   toggle->setToggleState(isEnabled, NotificationType::dontSendNotification);
   button->setEnabled(isEnabled);
   addChildComponent(spinner);
-  spinner->setVisible(false);
   updateButtonText();
 }
 
@@ -114,17 +113,16 @@ void WifiCategoryItemComponent::resized() {
 }
 
 void WifiCategoryItemComponent::enabledStateChanged(bool enabled) {
-  enabled ? getWifiStatus().setEnabled() : getWifiStatus().setDisabled();
   spinner->show();
   icon->setVisible(false);
   updateButtonText();
+  
+  enabled ? getWifiStatus().setEnabled() : getWifiStatus().setDisabled();
 }
 
 void WifiCategoryItemComponent::handleWifiEnabled() {
-  // FIXME: this is wrong if we have no profiles to search for,
-  // will be fixed by explict busy message from wifi
-  spinner->show();
-  icon->setVisible(false);
+  spinner->hide();
+  icon->setVisible(true);
   toggle->setToggleState(true, NotificationType::dontSendNotification);
   button->setEnabled(true);
   updateButtonText();
