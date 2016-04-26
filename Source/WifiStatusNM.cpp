@@ -273,6 +273,29 @@ void WifiStatusNM::handleWirelessEnabled() {
       listener->handleWifiDisabled();
 }
 
+void removeNMConnection(NMDevice *nmdevice, NMActiveConnection *conn) {
+  if (conn) {
+    const char *ac_uuid = nm_active_connection_get_uuid(conn);
+    const GPtrArray *avail_cons = nm_device_get_available_connections(nmdevice);
+
+    for (int i = 0; avail_cons && (i < avail_cons->len); i++) {
+      NMRemoteConnection *candidate = (NMRemoteConnection *) g_ptr_array_index(avail_cons, i);
+      const char *test_uuid = nm_connection_get_uuid(NM_CONNECTION(candidate));
+
+      if (g_strcmp0(ac_uuid, test_uuid) == 0) {
+        GError *err = NULL;
+        nm_remote_connection_delete(candidate, NULL, &err);
+        if (err) {
+          DBG("WifiStatusNM: failed to remove active connection!");
+          DBG("WifiStatusNM::" << __func__ << ": " << err->message);
+          g_error_free(err);
+        }
+        break;
+      }
+    }
+  }
+}
+
 void WifiStatusNM::handleWirelessConnected() {
   NMDeviceState state = nm_device_get_state(nmdevice);
   DBG("WifiStatusNM::" << __func__ << " changed to " << state
@@ -300,6 +323,10 @@ void WifiStatusNM::handleWirelessConnected() {
       break;
 
     case NM_DEVICE_STATE_NEED_AUTH:
+      if (connecting) {
+	NMActiveConnection *conn = nm_client_get_activating_connection(nmclient);
+        removeNMConnection(nmdevice, conn);
+      }
       /* FIXME: let this drop into the general failed case for now
        *        eventually this should prompt the user
        */
@@ -356,27 +383,8 @@ void WifiStatusNM::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
   // disconnect if no ap provided
   if (ap == nullptr) {
     NMActiveConnection *conn = nm_device_get_active_connection(nmdevice);
+    removeNMConnection(nmdevice, conn);
 
-    if (conn) {
-      const char *ac_uuid = nm_active_connection_get_uuid(conn);
-      const GPtrArray *avail_cons = nm_device_get_available_connections(nmdevice);
-
-      for (int i = 0; avail_cons && (i < avail_cons->len); i++) {
-        NMRemoteConnection *candidate = (NMRemoteConnection *) g_ptr_array_index(avail_cons, i);
-        const char *test_uuid = nm_connection_get_uuid(NM_CONNECTION(candidate));
-
-        if (g_strcmp0(ac_uuid, test_uuid) == 0) {
-          GError *err = NULL;
-          nm_remote_connection_delete(candidate, NULL, &err);
-          if (err) {
-            DBG("WifiStatusNM: failed to remove active connection!");
-            DBG("WifiStatusNM::" << __func__ << ": " << err->message);
-            g_error_free(err);
-          }
-          break;
-        }
-      }
-    }
     return;
   }
   // try to connect to ap, dispatch events on success and failure
