@@ -129,6 +129,7 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   
   // create connection "page"
   connectionPage = new Component("Connection Page");
+  connectionPage->addComponentListener(this);
 
   connectionLabel = new Label("Connected", "Connection Label");
   connectionLabel->setFont(26);
@@ -137,7 +138,6 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
 
   passwordEditor = new TextEditor("Password", (juce_wchar)0x2022);
   passwordEditor->setFont(26);
-  passwordEditor->setTextToShowWhenEmpty("password", findColour(TextEditor::ColourIds::textColourId));
   passwordEditor->addListener(this);
   connectionPage->addAndMakeVisible(passwordEditor);
 
@@ -351,4 +351,11 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
 
 void SettingsPageWifiComponent::textEditorReturnKeyPressed(TextEditor &) {
   beginSetConnected();
+}
+
+void SettingsPageWifiComponent::componentVisibilityChanged(Component& component) {
+  // focus the password editor after the connection page finishes its transition in
+  if (&component == connectionPage.get() && component.isVisible()) {
+    passwordEditor->grabKeyboardFocus();
+  }
 }
