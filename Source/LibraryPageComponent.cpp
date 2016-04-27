@@ -26,10 +26,10 @@ void LibraryPageComponent::resized() {
   AppListComponent::resized();
   
   const auto& b = getLocalBounds();
-  auto trainWidth = b.getWidth() - 2*btnHeight;
-  auto trainHeight = b.getHeight() - (2.1*btnHeight);
-  train->setSize(trainWidth, trainHeight);
-  train->setBoundsToFit(b.getX(), b.getY(), b.getWidth(), b.getHeight(), Justification::centred, true);
+  auto gridWidth = b.getWidth() - 2*btnHeight;
+  auto gridHeight = b.getHeight() - (2.1*btnHeight);
+  grid->setSize(gridWidth, gridHeight);
+  grid->setBoundsToFit(b.getX(), b.getY(), b.getWidth(), b.getHeight(), Justification::centred, true);
   
   backButton->setBounds(b.getWidth()-60, b.getY(), 60, b.getHeight());
 }
@@ -39,11 +39,11 @@ void LibraryPageComponent::buttonClicked(Button *button) {
     getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontalLeft);
   }
   else if (button == prevPageBtn) {
-    train->showPrevPage();
+    grid->showPrevPage();
     checkShowPageNav();
   }
   else if (button == nextPageBtn) {
-    train->showNextPage();
+    grid->showNextPage();
     checkShowPageNav();
   }
   else {

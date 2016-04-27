@@ -4,7 +4,7 @@
 
 #include "SwitchComponent.h"
 #include "PageStackComponent.h"
-#include "TrainComponent.h"
+#include "Grid.h"
 #include "Main.h"
 
 class SettingsPageWifiComponent;
@@ -78,7 +78,7 @@ public:
   ScopedPointer<WifiSpinner> spinner;
 
   ScopedPointer<Component> accessPointListPage;
-  ScopedPointer<TrainComponent> accessPointList;
+  ScopedPointer<Grid> accessPointList;
   ScopedPointer<ImageButton> nextPageBtn;
   ScopedPointer<ImageButton> prevPageBtn;
 

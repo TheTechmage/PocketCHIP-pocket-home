@@ -3,7 +3,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "SwitchComponent.h"
 #include "PageStackComponent.h"
-#include "TrainComponent.h"
+#include "Grid.h"
 #include "Main.h"
 
 struct BTIcons {
@@ -42,7 +42,7 @@ public:
   ScopedPointer<Drawable> checkIcon;
   ScopedPointer<ImageComponent> btIcon;
 
-  ScopedPointer<TrainComponent> deviceListPage;
+  ScopedPointer<Grid> deviceListPage;
   OwnedArray<Component> deviceListItems;
 
   ScopedPointer<Component> connectionPage;

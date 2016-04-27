@@ -4,7 +4,6 @@
 
 #include "AppsPageComponent.h"
 #include "IconSliderComponent.h"
-#include "TrainComponent.h"
 #include "SwitchComponent.h"
 #include "SettingsPageWifiComponent.h"
 #include "SettingsPageBluetoothComponent.h"

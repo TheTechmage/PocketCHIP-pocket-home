@@ -2,7 +2,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
-#include "TrainComponent.h"
+#include "Grid.h"
 
 class AppsPageComponent;
 class LauncherComponent;
@@ -37,9 +37,9 @@ public:
   AppListComponent();
   ~AppListComponent();
   
-  ScopedPointer<TrainComponent> train;
+  ScopedPointer<Grid> grid;
   
-  OwnedArray<Component> trainIcons;
+  OwnedArray<Component> gridIcons;
   OwnedArray<DrawableImage> iconDrawableImages;
   ScopedPointer<ImageButton> nextPageBtn;
   ScopedPointer<ImageButton> prevPageBtn;

@@ -312,9 +312,7 @@ void SettingsPageWifiComponent::updateConnectionLabel() {
 // listener, or a merge operation.
 void SettingsPageWifiComponent::updateAccessPoints() {
   // create ssid list
-  accessPointList = new TrainComponent(TrainComponent::kOrientationGrid, 1, 4);
-  accessPointList->itemHeight = 50;
-  accessPointList->itemScaleMin = accessPointList->itemScaleMax = 1.0;
+  accessPointList = new Grid(1, 4);
   
   accessPoints = getWifiStatus().nearbyAccessPoints();
   for (auto ap : accessPoints) {
