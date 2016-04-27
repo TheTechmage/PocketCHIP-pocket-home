@@ -177,7 +177,8 @@ LauncherComponent::LauncherComponent(const var &configJson)
       auto name = page["name"].toString();
       if (name == "Apps") {
         
-        appsPage->createIconsFromJsonArray(page["items"]);
+        const auto& appButtons = appsPage->createIconsFromJsonArray(page["items"]);
+        for (auto button : appButtons) { button->setWantsKeyboardFocus(false); }
         appsLibrary->createIconsFromJsonArray(page["items"]);
         auto buttonsData = *(page["cornerButtons"].getArray());
         
@@ -197,10 +198,12 @@ LauncherComponent::LauncherComponent(const var &configJson)
         for (auto button : topButtons->buttons) {
           button->addListener(this);
           button->setTriggeredOnMouseDown(true);
+          button->setWantsKeyboardFocus(false);
         }
         for (auto button : botButtons->buttons) {
           button->addListener(this);
           button->setTriggeredOnMouseDown(true);
+          button->setWantsKeyboardFocus(false);
         }
         
       }
