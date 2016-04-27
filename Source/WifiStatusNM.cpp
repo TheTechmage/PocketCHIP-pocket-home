@@ -377,6 +377,14 @@ void WifiStatusNM::handleConnectedAccessPoint() {
     DBG("WifiStatusNM::" << __func__ << " connectedAP = NULL");
 }
 
+bool isValidWEPKeyFormat(String key) {
+  return (key.length() == 10) || (key.length() == 26);
+}
+
+bool isValidWEPPassphraseFormat(String phrase) {
+  return (phrase.length() == 5) || (phrase.length() == 13);
+}
+
 void WifiStatusNM::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
   ScopedPointer<StringArray> cmd;
   
@@ -432,14 +440,23 @@ void WifiStatusNM::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
     if (!psk.isEmpty()) {
       s_wsec = (NMSettingWirelessSecurity *) nm_setting_wireless_security_new();
       nm_connection_add_setting(connection, NM_SETTING(s_wsec));
-      g_object_set(s_wsec, NM_SETTING_WIRELESS_SECURITY_PSK, psk.toRawUTF8(), NULL);
-      /* FIXME: Assuming WPA/WPA2 PSK ... skipping WEP and WPA-Enterprise
-      nm_setting_wireless_security_set_wep_key(s_wsec, 0, password);
-      g_object_set(G_OBJECT(s_wsec),
-                   NM_SETTING_WIRELESS_SECURITY_WEP_KEY_TYPE,
-                   wep_passphrase ? NM_WEP_KEY_TYPE_PASSPHRASE: NM_WEP_KEY_TYPE_KEY,
-                   NULL);
-      */
+
+      if (nm_access_point_get_wpa_flags(candidate_ap) == NM_802_11_AP_SEC_NONE &&
+          nm_access_point_get_rsn_flags(candidate_ap) == NM_802_11_AP_SEC_NONE) {
+        /* WEP */
+        nm_setting_wireless_security_set_wep_key(s_wsec, 0, psk.toRawUTF8());
+	if (isValidWEPKeyFormat(psk))
+          g_object_set(G_OBJECT(s_wsec), NM_SETTING_WIRELESS_SECURITY_WEP_KEY_TYPE,
+                       NM_WEP_KEY_TYPE_KEY, NULL);
+	else if (isValidWEPPassphraseFormat(psk))
+          g_object_set(G_OBJECT(s_wsec), NM_SETTING_WIRELESS_SECURITY_WEP_KEY_TYPE,
+                       NM_WEP_KEY_TYPE_PASSPHRASE, NULL);
+	else
+	  DBG("User input invalid WEP Key type, psk.length() = " << psk.length()
+              << ", not in [5,10,13,26]");
+      } else {
+        g_object_set(s_wsec, NM_SETTING_WIRELESS_SECURITY_PSK, psk.toRawUTF8(), NULL);
+      }
     }
 
     nm_client_add_and_activate_connection(nmclient,
