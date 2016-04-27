@@ -251,17 +251,19 @@ void WifiStatusNM::clearListeners() {
 // TODO: direct action should not be named set, e.g. enable/disable/disconnect
 // otherwise easily confused with setters thats wrap members, which are slightly different idiom
 void WifiStatusNM::setEnabled() {
-  if (!enabled)
+  if (!enabled) {
     for (const auto& listener : listeners)
       listener->handleWifiBusy();
     nm_client_wireless_set_enabled(nmclient, true);
+  }
 }
 
 void WifiStatusNM::setDisabled() {
-  if (enabled)
+  if (enabled) {
     for (const auto& listener : listeners)
       listener->handleWifiBusy();
     nm_client_wireless_set_enabled(nmclient, false);
+  }
 }
 
 void WifiStatusNM::handleWirelessEnabled() {
