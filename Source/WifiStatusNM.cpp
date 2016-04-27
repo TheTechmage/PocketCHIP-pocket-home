@@ -1,5 +1,6 @@
 #ifdef LINUX
 
+#include <map>
 #include <nm-remote-connection.h>
 #include <nm-utils.h>
 
@@ -94,13 +95,11 @@ WifiAccessPoint *createNMWifiAccessPoint(NMAccessPoint *ap) {
     ssid_str = nm_utils_ssid_to_utf8(ssid);
   }
 
-  if (!ssid_str || !ssid) {
-    DBG("libnm conversion of ssid to utf8 failed, skipping");
-    return NULL;
-  }
+  if (!ssid_str || !ssid)
+    DBG("libnm conversion of ssid to utf8 failed, using empty string");
 
   return new WifiAccessPoint {
-    ssid_str,
+    !ssid_str ? "" : ssid_str,
     nm_access_point_get_strength(ap),
     security,
     utils_hash_ap(nm_access_point_get_ssid(ap),
@@ -111,13 +110,7 @@ WifiAccessPoint *createNMWifiAccessPoint(NMAccessPoint *ap) {
   };
 }
 
-void addNMWifiAccessPoints(NMAccessPoint *ap, OwnedArray<WifiAccessPoint> *aps) {
-  auto created_ap = createNMWifiAccessPoint(ap);
-  if (created_ap)
-    aps->add(created_ap);
-}
-
-WifiAccessPoint* getNMConnectedAP(NMDeviceWifi *wdev) {
+ScopedPointer<WifiAccessPoint> getNMConnectedAP(NMDeviceWifi *wdev) {
   NMAccessPoint *ap = nm_device_wifi_get_active_access_point(wdev);
 
   if (!wdev || !ap) {
@@ -215,9 +208,25 @@ OwnedArray<WifiAccessPoint> WifiStatusNM::nearbyAccessPoints() {
   //nm_device_wifi_request_scan(wdev, NULL, NULL);
 
   ap_list =  nm_device_wifi_get_access_points(wdev);
-  if (ap_list != NULL)
-    for (int i = 0; i < ap_list->len; i++)
-      addNMWifiAccessPoints((NMAccessPoint *) g_ptr_array_index(ap_list, i), &accessPoints);
+  if (ap_list != NULL) {
+    std::map<String, WifiAccessPoint *> uniqueAPs;
+    for (int i = 0; i < ap_list->len; i++) {
+      NMAccessPoint *ap = (NMAccessPoint *) g_ptr_array_index(ap_list, i);
+      auto created_ap = createNMWifiAccessPoint(ap);
+
+      /*FIXME: dropping hidden (no ssid) networks until gui supports it*/
+      if (created_ap->ssid.length() == 0)
+        break;
+
+      if (uniqueAPs.find(created_ap->hash) == uniqueAPs.end())
+        uniqueAPs[created_ap->hash] = created_ap;
+      else
+        if (uniqueAPs[created_ap->hash]->signalStrength < created_ap->signalStrength)
+	  uniqueAPs[created_ap->hash] = created_ap;
+    }
+    for (const auto entry : uniqueAPs)
+      accessPoints.add(entry.second);
+  }
 
   DBG(__func__ << ": found " << accessPoints.size() << " AccessPoints");
   return accessPoints;
