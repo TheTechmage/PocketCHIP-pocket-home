@@ -268,6 +268,7 @@ SettingsPageComponent::~SettingsPageComponent() {}
 // otherwise we just push ourselves, since we are the top active level of wifi configuration
 void SettingsPageComponent::pushActiveWifiPage() {
   if (getWifiStatus().isEnabled()) {
+    wifiPage->updateAccessPoints();
     getMainStack().pushPage(wifiPage, PageStackComponent::kTransitionTranslateHorizontal);
   }
   else {
