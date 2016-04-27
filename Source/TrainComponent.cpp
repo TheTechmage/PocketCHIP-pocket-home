@@ -157,11 +157,11 @@ void Grid::showNextPage() {
   };
 }
 
-TrainComponent::TrainComponent(Orientation orientation_) {
+TrainComponent::TrainComponent(Orientation orientation_, int cols, int rows) {
   orientation = orientation_;
   
   if (kOrientationGrid == orientation) {
-    grid = new Grid(3,2);
+    grid = new Grid(cols,rows);
     addAndMakeVisible(grid);
   }
 

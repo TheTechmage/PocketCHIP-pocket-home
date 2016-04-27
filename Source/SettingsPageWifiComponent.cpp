@@ -91,7 +91,12 @@ int WifiAccessPointListItem::wifiSignalStrengthToIdx(int strength) {
     return round( ( iconBins * (sigStrength)/100.0f) );
 }
 
-SettingsPageWifiComponent::SettingsPageWifiComponent() {
+SettingsPageWifiComponent::SettingsPageWifiComponent() :
+  nextPageBtn(createImageButton("NextAppsPage",
+                                ImageFileFormat::loadFrom(assetFile("pageDownIcon.png")))),
+  prevPageBtn(createImageButton("PrevAppsPage",
+                                ImageFileFormat::loadFrom(assetFile("pageUpIcon.png"))))
+{
   bgColor = Colour(PokeLookAndFeel::chipPurple);
   bgImage = createImageFromFile(assetFile("settingsBackground.png"));
   
@@ -125,6 +130,12 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() {
   backButton->setAlwaysOnTop(true);
   addAndMakeVisible(backButton);
 
+  // create wifi access point list "page"
+  accessPointListPage = new Component("Access Point List Page");
+  nextPageBtn->addListener(this);
+  prevPageBtn->addListener(this);
+  accessPointListPage->addAndMakeVisible(nextPageBtn);
+  accessPointListPage->addAndMakeVisible(prevPageBtn);
   updateAccessPoints();
   
   // create connection "page"
@@ -169,20 +180,31 @@ void SettingsPageWifiComponent::paint(Graphics &g) {
 }
 
 void SettingsPageWifiComponent::resized() {
-  auto bounds = getLocalBounds();
-  auto pageBounds = Rectangle<int>(120, 0, bounds.getWidth() - 120, bounds.getHeight());
+  auto b = getLocalBounds();
+  auto pb = Rectangle<int>(120, 0, b.getWidth() - 120, b.getHeight());
 
-  pageStack->setBounds(pageBounds);
+  pageStack->setBounds(pb);
 
   // FIXME: use scalable layout
-  connectionLabel->setBounds(10, 50, pageBounds.getWidth() - 20, 50);
-  passwordEditor->setBounds(90, 100, pageBounds.getWidth() - 180, 50);
-  connectionButton->setBounds(90, 160, pageBounds.getWidth() - 180, 50);
-  errorLabel->setBounds(90, 210, pageBounds.getWidth()-180, 50);
+  connectionLabel->setBounds(10, 50, pb.getWidth() - 20, 50);
+  passwordEditor->setBounds(90, 100, pb.getWidth() - 180, 50);
+  connectionButton->setBounds(90, 160, pb.getWidth() - 180, 50);
+  errorLabel->setBounds(90, 210, pb.getWidth()-180, 50);
   wifiIconComponent->setBounds(10, 10, 60, 60);
-  backButton->setBounds(bounds.getX(), bounds.getY(), 60, bounds.getHeight());
+  backButton->setBounds(b.getX(), b.getY(), 60, b.getHeight());
   const auto& cb = connectionButton->getLocalBounds();
-  spinner->setBoundsToFit(cb.getX() + 6, cb.getY(), cb.getWidth(), cb.getHeight(), Justification::centredLeft, true);
+  spinner->setBoundsToFit(cb.getX() + (cb.getHeight()/2.), cb.getY(), cb.getWidth(), cb.getHeight(), Justification::centredLeft, true);
+  
+  int btnHeight = 50;
+  prevPageBtn->setSize(btnHeight, btnHeight);
+  nextPageBtn->setSize(btnHeight, btnHeight);
+  prevPageBtn->setBoundsToFit(0, 0, pb.getWidth(), pb.getHeight(), Justification::centredTop, true);
+  nextPageBtn->setBoundsToFit(0, 0, pb.getWidth(), pb.getHeight(), Justification::centredBottom, true);
+  // drop the page buttons from our available layout size
+  auto trainWidth = pb.getWidth();
+  auto trainHeight = pb.getHeight() - (2.0*btnHeight);
+  accessPointList->setSize(trainWidth, trainHeight);
+  accessPointList->setBoundsToFit(0, 0, pb.getWidth(), pb.getHeight(), Justification::centred, true);
   
   // FIXME: this logic belongs in constructor, but sizing info shows wrong on resize.
   if (!init) {
@@ -290,9 +312,9 @@ void SettingsPageWifiComponent::updateConnectionLabel() {
 // listener, or a merge operation.
 void SettingsPageWifiComponent::updateAccessPoints() {
   // create ssid list
-  accessPointListPage = new TrainComponent(TrainComponent::kOrientationVertical);
-  accessPointListPage->itemHeight = 50;
-  accessPointListPage->itemScaleMin = accessPointListPage->itemScaleMax = 1.0;
+  accessPointList = new TrainComponent(TrainComponent::kOrientationGrid, 1, 4);
+  accessPointList->itemHeight = 50;
+  accessPointList->itemScaleMin = accessPointList->itemScaleMax = 1.0;
   
   accessPoints = getWifiStatus().nearbyAccessPoints();
   for (auto ap : accessPoints) {
@@ -301,7 +323,26 @@ void SettingsPageWifiComponent::updateAccessPoints() {
     auto item = new WifiAccessPointListItem(ap, icons);
     item->addListener(this);
     accessPointItems.add(item);
-    accessPointListPage->addItem(item);
+    accessPointList->addItem(item);
+  }
+  
+  accessPointListPage->addAndMakeVisible(accessPointList);
+  checkShowListNav();
+}
+
+void SettingsPageWifiComponent::checkShowListNav() {
+  if (accessPointList->hasNextPage()) {
+    nextPageBtn->setVisible(true); nextPageBtn->setEnabled(true);
+  }
+  else {
+    nextPageBtn->setVisible(false); nextPageBtn->setEnabled(false);
+  }
+  
+  if (accessPointList->hasPrevPage()) {
+    prevPageBtn->setVisible(true); prevPageBtn->setEnabled(true);
+  }
+  else {
+    prevPageBtn->setVisible(false); prevPageBtn->setEnabled(false);
   }
 }
 
@@ -336,11 +377,19 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
       }
       pageStack->pushPage(connectionPage, PageStackComponent::kTransitionTranslateHorizontal);
     }
-    
-    if (button == backButton) {
+    else if (button == prevPageBtn) {
+      accessPointList->showPrevPage();
+      checkShowListNav();
+    }
+    else if (button == nextPageBtn) {
+      accessPointList->showNextPage();
+      checkShowListNav();
+    }
+    else if (button == backButton) {
       // leave connection page
       if (pageStack->getDepth() > 1) {
         pageStack->popPage(PageStackComponent::kTransitionTranslateHorizontal);
+        checkShowListNav();
       // leave wifi settings page
       } else {
         getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
@@ -353,6 +402,8 @@ void SettingsPageWifiComponent::textEditorReturnKeyPressed(TextEditor &) {
   beginSetConnected();
 }
 
+// FIXME: this is a hack for setting keyboard focus on animation completion
+// why can't we set in when we queue the animation and have it respected on completion?
 void SettingsPageWifiComponent::componentVisibilityChanged(Component& component) {
   // focus the password editor after the connection page finishes its transition in
   if (&component == connectionPage.get() && component.isVisible()) {

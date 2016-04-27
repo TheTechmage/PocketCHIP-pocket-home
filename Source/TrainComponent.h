@@ -71,7 +71,7 @@ public:
 
   Array<Component *> items;
 
-  TrainComponent(Orientation orientation_);
+  TrainComponent(Orientation orientation_, int cols, int rows);
   ~TrainComponent();
 
   void paint(Graphics &) override;

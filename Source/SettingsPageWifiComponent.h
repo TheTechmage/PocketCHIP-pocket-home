@@ -77,7 +77,10 @@ public:
   
   ScopedPointer<WifiSpinner> spinner;
 
-  ScopedPointer<TrainComponent> accessPointListPage;
+  ScopedPointer<Component> accessPointListPage;
+  ScopedPointer<TrainComponent> accessPointList;
+  ScopedPointer<ImageButton> nextPageBtn;
+  ScopedPointer<ImageButton> prevPageBtn;
 
   ScopedPointer<Component> connectionPage;
   ScopedPointer<Label> connectionLabel;
@@ -107,6 +110,7 @@ private:
   void beginSetDisconnected();
   void updateConnectionLabel();
   void updateAccessPoints();
+  void checkShowListNav();
 
   void buttonClicked(Button *) override;
   void textEditorReturnKeyPressed(TextEditor &) override;

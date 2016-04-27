@@ -33,7 +33,7 @@ Rectangle<float> AppIconButton::getImageBounds() const {
 }
 
 AppListComponent::AppListComponent() :
-  train(new TrainComponent(TrainComponent::Orientation::kOrientationGrid)),
+  train(new TrainComponent(TrainComponent::Orientation::kOrientationGrid, 3, 2)),
   nextPageBtn(createImageButton("NextAppsPage",
                                 ImageFileFormat::loadFrom(assetFile("pageDownIcon.png")))),
   prevPageBtn(createImageButton("PrevAppsPage",

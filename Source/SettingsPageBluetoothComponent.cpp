@@ -37,7 +37,7 @@ SettingsPageBluetoothComponent::SettingsPageBluetoothComponent() {
   addAndMakeVisible(pageStack);
 
   // create device list "page"
-  deviceListPage = new TrainComponent(TrainComponent::kOrientationVertical);
+  deviceListPage = new TrainComponent(TrainComponent::kOrientationVertical, 1, 4);
   deviceListPage->itemHeight = 50;
   deviceListPage->itemScaleMin = deviceListPage->itemScaleMax = 1.0;
 
