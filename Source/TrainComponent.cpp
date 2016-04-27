@@ -1,84 +1,70 @@
 #include "TrainComponent.h"
 #include "Utils.h"
 
-GridPage::GridPage() :
-  gridRow1(new Component()),
-  gridRow2(new Component())
+GridPage::GridPage(int numCols, int numRows) :
+  numCols(numCols),
+  numRows(numRows),
+  gridRows()
 {
-  addAndMakeVisible(gridRow1);
-  addAndMakeVisible(gridRow2);
+  for (int i = 0; i < numRows; i++) {
+    gridRows.add(new Component());
+    addAndMakeVisible(gridRows.getLast());
+  }
 }
-GridPage::~GridPage() {}
 
 bool GridPage::addItem(Component *item) {
-  if (items.size() == gridRows * gridCols) return false;
+  if (items.size() == numRows * numCols) return false;
   
+  // add to flat list
   items.add(item);
   
-  // build row lists for use in stretch layout
-  for (int i = 0; i < gridRows; i++) {
-    for (int j = 0; j < gridCols; j++) {
-      auto item = items[j + (i*gridCols)];
-      if (i == 0)
-        itemsRow1[j] = item;
-      else
-        itemsRow2[j] = item;
-    }
-  }
-  
-  // add to view tree
-  if (items.size() <= gridCols) {
-    gridRow1->addAndMakeVisible(item);
-  }
-  else {
-    gridRow2->addAndMakeVisible(item);
-  }
+  // add to view tree in row container
+  int row = (items.size() - 1) / numCols;
+  gridRows[row]->addAndMakeVisible(item);
   
   return true;
 }
 
 void GridPage::resized() {}
 
-Grid::Grid() {
-  page = new GridPage();
+Grid::Grid(int numCols, int numRows) :
+  numCols(numCols),
+  numRows(numRows)
+{
+  page = new GridPage(numCols, numRows);
   pages.add(page);
   addAndMakeVisible(page);
-  
-  // FIXME: these should be static on this class, not child
-  const auto gridRows = page->gridRows;
-  const auto gridCols = page->gridCols;
-  
+
   // mildly convoluted way of finding proportion of available height to give each row,
   // accounting for spacer rows which are relatively heighted based on this measure.
   // First measures row proportion without spacers.
-  rowProp = (1.0f/gridRows);
+  rowProp = (1.0f/numRows);
   // Then find an appropriate relative spacer proportion.
   rowSpacerProp = rowProp / 8.;
   // Reduce ideal row proportion by room taken up by spacers.
-  double rowAmountWithoutSpacers = 1.0 - (rowSpacerProp * (gridRows - 1));
-  rowProp = (rowAmountWithoutSpacers / gridRows);
+  double rowAmountWithoutSpacers = 1.0 - (rowSpacerProp * (numRows - 1));
+  rowProp = (rowAmountWithoutSpacers / numRows);
   
   // columns lack spacers and are trivial to proportion.
-  colProp = (1.0f/gridCols);
+  colProp = (1.0f/numCols);
   
   int layoutIdx = 0;
-  for (int i = 0; i < gridRows; i++) {
+  for (int i = 0; i < numRows; i++) {
     rowLayout.setItemLayout(layoutIdx, -rowProp/4, -rowProp, -rowProp);
     layoutIdx++;
     // set size preference for spacer if there are rows left in the loop
-    if ((i+1) < gridRows) {
+    if ((i+1) < numRows) {
       rowLayout.setItemLayout(layoutIdx, -rowSpacerProp, -rowSpacerProp, -rowSpacerProp);
       layoutIdx++;
     }
   }
-  for (int i = 0; i < gridCols; i++) {
+  for (int i = 0; i < numCols; i++) {
     colLayout.setItemLayout(i, -colProp/4, -colProp, -colProp);
   }
 }
-Grid::~Grid() {}
 
 void Grid::createPage() {
-  pages.add(new GridPage());
+  pages.add(new GridPage(numCols, numRows));
 }
 
 void Grid::addItem(Component *item) {
@@ -93,29 +79,42 @@ void Grid::addItem(Component *item) {
 void Grid::resized() {
   const auto& bounds = getLocalBounds();
   
-  // build row list with spacers added
-  Component* rowComps[] = {page->gridRow1.get(), nullptr, page->gridRow2.get()};
-  int numRows = sizeof(rowComps) / sizeof(Component*);
+  // create row components list for use in stretch layout
+  // include room for rows and spacers
+  int numRowComps = (2*page->gridRows.size()) - 1;
+  Component* rowComps[numRowComps];
+  for (int i = 0, j = 0; i < numRows; i++) {
+    rowComps[j++] = page->gridRows[i];
+    // add spacer null component
+    if ((i+1) < numRows) {
+      rowComps[j++] = nullptr;
+    }
+  }
+
+  // fill item row lists
+  // create row components list for use in stretch layout
+  Component* itemRows[numRows][numCols];
+  for (int i = 0; i < numRows; i++) {
+    for (int j = 0; j < numCols; j++) {
+      auto item = page->items[j + (i*numCols)];
+      itemRows[i][j] = item;
+    }
+  }
   
-  // build list of item rows
-  Component** itemRows[] = {page->itemsRow1, page->itemsRow2};
-  int numItemRows = sizeof(itemRows) / sizeof(Component**);
-  
-  // get row height and number of columns
+  // get row height
   auto rowHeight = bounds.getHeight() * rowProp;
-  const auto numCols = page->gridCols;
   
   // size from largest to smallest, stretchable
   // set page size to grid size
   page->setBounds(bounds);
   
   // lay out components, size the rows first
-  rowLayout.layOutComponents(rowComps, numRows, bounds.getX(), bounds.getY(),
+  rowLayout.layOutComponents(rowComps, numRowComps, bounds.getX(), bounds.getY(),
                              bounds.getWidth(), bounds.getHeight(),
                              true, true);
   
   // size items within rows, creating columns
-  for (int i = 0; i < numItemRows; i++) {
+  for (int i = 0; i < numRows; i++) {
     auto& itemsRow = itemRows[i];
     // columns are laid out within rows, using the elements of the row
     colLayout.layOutComponents(itemsRow, numCols, bounds.getX(), bounds.getY(),
@@ -162,7 +161,7 @@ TrainComponent::TrainComponent(Orientation orientation_) {
   orientation = orientation_;
   
   if (kOrientationGrid == orientation) {
-    grid = new Grid();
+    grid = new Grid(3,2);
     addAndMakeVisible(grid);
   }
 

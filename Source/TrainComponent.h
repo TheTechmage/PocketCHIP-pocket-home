@@ -4,35 +4,29 @@
 
 class GridPage : public Component {
 public:
-  GridPage();
-  ~GridPage() override;
+  GridPage(int numCols, int numRows);
   
-  // WIP: move up
-  static constexpr int gridCols = 3;
-  static constexpr int gridRows = 2;
+  int numCols;
+  int numRows;
   
   bool addItem(Component *item);
   void resized() override;
-  // TODO: make these private, expose with generic container interfaces
-  // TODO: number of rows should be controlled by the gridRows var
-  ScopedPointer<Component> gridRow1;
-  ScopedPointer<Component> gridRow2;
-  Component* itemsRow1[gridCols];
-  Component* itemsRow2[gridCols];
+
+  Array<Component *> items;
+  OwnedArray<Component> gridRows;
   
 private:
-  Array<Component *> items;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GridPage)
 };
 
 class Grid : public Component {
 public:
-  Grid();
-  ~Grid() override;
+  Grid(int numCols, int numRows);
   
+  int numCols;
+  int numRows;
   Array<Component *> items;
-  
   OwnedArray<GridPage> pages;
   GridPage* page = nullptr;
   
