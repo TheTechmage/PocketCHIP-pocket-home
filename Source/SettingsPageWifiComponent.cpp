@@ -193,7 +193,7 @@ void SettingsPageWifiComponent::resized() {
   wifiIconComponent->setBounds(10, 10, 60, 60);
   backButton->setBounds(b.getX(), b.getY(), 60, b.getHeight());
   const auto& cb = connectionButton->getLocalBounds();
-  spinner->setBoundsToFit(cb.getX() + (cb.getHeight()/2.), cb.getY(), cb.getWidth(), cb.getHeight(), Justification::centredLeft, true);
+  spinner->setBoundsToFit(cb.getX() + (cb.getHeight()/4.), cb.getY(), cb.getWidth(), cb.getHeight(), Justification::centredLeft, true);
   
   int btnHeight = 50;
   prevPageBtn->setSize(btnHeight, btnHeight);
