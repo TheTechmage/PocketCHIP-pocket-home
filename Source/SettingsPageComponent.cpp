@@ -362,13 +362,3 @@ void SettingsPageComponent::sliderDragEnded(IconSliderComponent* slider) {
     setSoundVolume();
   }
 }
-
-void SettingsPageComponent::visibilityChanged() {
-  // when we show settings, inform wifistatus we're interested
-  // in nearby networks, even though we don't use them here.
-  // we're getting ready for the wifi ap list, which is one screen beyond
-  // this one.
-  if (isVisible()) {
-    getWifiStatus().nearbyAccessPoints();
-  }
-}
