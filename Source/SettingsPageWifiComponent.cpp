@@ -254,10 +254,13 @@ void SettingsPageWifiComponent::handleWifiDisconnected() {
   pageStack->insertPage(accessPointListPage, pageStack->getDepth() - 1);
 }
 
+void SettingsPageWifiComponent::handleWifiBusy() {
+  spinner->show();
+}
+
 void SettingsPageWifiComponent::beginSetConnected() {
   auto &status = getWifiStatus();
   
-  spinner->show();
   errorLabel->setVisible(false);
   
   if (selectedAp->requiresAuth) {
@@ -270,7 +273,6 @@ void SettingsPageWifiComponent::beginSetConnected() {
 }
 
 void SettingsPageWifiComponent::beginSetDisconnected() {
-  spinner->show();
   getWifiStatus().setDisconnected();
 }
 

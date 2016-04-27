@@ -113,7 +113,6 @@ void WifiCategoryItemComponent::resized() {
 }
 
 void WifiCategoryItemComponent::enabledStateChanged(bool enabled) {
-  spinner->show();
   icon->setVisible(false);
   updateButtonText();
   
@@ -135,15 +134,21 @@ void WifiCategoryItemComponent::handleWifiDisabled() {
   button->setEnabled(false);
   updateButtonText();
 }
+
 void WifiCategoryItemComponent::handleWifiConnected() {
   spinner->hide();
   icon->setVisible(true);
   updateButtonText();
 }
+
 void WifiCategoryItemComponent::handleWifiDisconnected() {
   spinner->hide();
   icon->setVisible(true);
   updateButtonText();
+}
+
+void WifiCategoryItemComponent::handleWifiBusy() {
+  spinner->show();
 }
 
 void WifiCategoryItemComponent::updateButtonText() {

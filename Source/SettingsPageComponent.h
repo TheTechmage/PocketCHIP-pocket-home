@@ -81,6 +81,7 @@ public:
   void handleWifiDisabled() override;
   void handleWifiConnected() override;
   void handleWifiDisconnected() override;
+  void handleWifiBusy() override;
 
 private:
   ScopedPointer<WifiSpinner> spinner;
