@@ -11,6 +11,8 @@
       <FILE id="e8kBas" name="wifi.json" compile="0" resource="1" file="assets/wifi.json"/>
     </GROUP>
     <GROUP id="{4593A345-C350-960A-058D-B48F8240AA1D}" name="Source">
+      <FILE id="flS9A2" name="Grid.cpp" compile="1" resource="0" file="Source/Grid.cpp"/>
+      <FILE id="RsGKce" name="Grid.h" compile="0" resource="0" file="Source/Grid.h"/>
       <FILE id="eKYlUb" name="PowerPageFelComponent.cpp" compile="1" resource="0"
             file="Source/PowerPageFelComponent.cpp"/>
       <FILE id="wCEi8b" name="PowerPageFelComponent.h" compile="0" resource="0"
@@ -58,10 +60,6 @@
             file="Source/AppsPageComponent.cpp"/>
       <FILE id="MMG2ZH" name="AppsPageComponent.h" compile="0" resource="0"
             file="Source/AppsPageComponent.h"/>
-      <FILE id="WbtOiR" name="TrainComponent.cpp" compile="1" resource="0"
-            file="Source/TrainComponent.cpp"/>
-      <FILE id="W76qVq" name="TrainComponent.h" compile="0" resource="0"
-            file="Source/TrainComponent.h"/>
       <FILE id="xoVLAp" name="PokeLookAndFeel.cpp" compile="1" resource="0"
             file="Source/PokeLookAndFeel.cpp"/>
       <FILE id="g1eykD" name="PokeLookAndFeel.h" compile="0" resource="0"

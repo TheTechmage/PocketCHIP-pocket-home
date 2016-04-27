@@ -49,6 +49,7 @@ ifeq ($(CONFIG),Release)
 endif
 
 OBJECTS := \
+  $(OBJDIR)/Grid_a461bccf.o \
   $(OBJDIR)/PowerPageFelComponent_e97c8ca5.o \
   $(OBJDIR)/LibraryPageComponent_6532e93c.o \
   $(OBJDIR)/PowerPageComponent_4a26c732.o \
@@ -62,7 +63,6 @@ OBJECTS := \
   $(OBJDIR)/Utils_e4b11b92.o \
   $(OBJDIR)/LauncherBarComponent_b69b173.o \
   $(OBJDIR)/AppsPageComponent_7872953d.o \
-  $(OBJDIR)/TrainComponent_b5ba2cde.o \
   $(OBJDIR)/PokeLookAndFeel_55885106.o \
   $(OBJDIR)/MainComponent_a6ffb4a5.o \
   $(OBJDIR)/SettingsPageComponent_10c3e5ac.o \
@@ -93,6 +93,11 @@ clean:
 strip:
 	@echo Stripping pocket-home
 	-@strip --strip-unneeded $(OUTDIR)/$(TARGET)
+
+$(OBJDIR)/Grid_a461bccf.o: ../../Source/Grid.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling Grid.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/PowerPageFelComponent_e97c8ca5.o: ../../Source/PowerPageFelComponent.cpp
 	-@mkdir -p $(OBJDIR)
@@ -157,11 +162,6 @@ $(OBJDIR)/LauncherBarComponent_b69b173.o: ../../Source/LauncherBarComponent.cpp
 $(OBJDIR)/AppsPageComponent_7872953d.o: ../../Source/AppsPageComponent.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling AppsPageComponent.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/TrainComponent_b5ba2cde.o: ../../Source/TrainComponent.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling TrainComponent.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/PokeLookAndFeel_55885106.o: ../../Source/PokeLookAndFeel.cpp

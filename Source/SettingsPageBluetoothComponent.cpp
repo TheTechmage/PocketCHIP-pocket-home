@@ -37,9 +37,7 @@ SettingsPageBluetoothComponent::SettingsPageBluetoothComponent() {
   addAndMakeVisible(pageStack);
 
   // create device list "page"
-  deviceListPage = new TrainComponent(TrainComponent::kOrientationVertical);
-  deviceListPage->itemHeight = 50;
-  deviceListPage->itemScaleMin = deviceListPage->itemScaleMax = 1.0;
+  deviceListPage = new Grid(1, 4);
 
   for (auto btDevice : getBluetoothStatus().devices) {
     auto item = new BluetoothDeviceListItem(btDevice, &icons);

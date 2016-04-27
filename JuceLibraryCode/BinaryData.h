@@ -13,13 +13,13 @@ namespace BinaryData
     const int            bluetooth_jsonSize = 1119;
 
     extern const char*   config_json;
-    const int            config_jsonSize = 1637;
+    const int            config_jsonSize = 1625;
 
     extern const char*   seguibl_ttf;
     const int            seguibl_ttfSize = 323400;
 
     extern const char*   wifi_json;
-    const int            wifi_jsonSize = 1156;
+    const int            wifi_jsonSize = 1091;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];

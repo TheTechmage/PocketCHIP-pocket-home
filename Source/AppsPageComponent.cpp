@@ -33,7 +33,7 @@ Rectangle<float> AppIconButton::getImageBounds() const {
 }
 
 AppListComponent::AppListComponent() :
-  train(new TrainComponent(TrainComponent::Orientation::kOrientationGrid)),
+  grid(new Grid(3, 2)),
   nextPageBtn(createImageButton("NextAppsPage",
                                 ImageFileFormat::loadFrom(assetFile("pageDownIcon.png")))),
   prevPageBtn(createImageButton("PrevAppsPage",
@@ -44,7 +44,7 @@ AppListComponent::AppListComponent() :
   nextPageBtn->addListener(this);
   prevPageBtn->addListener(this);
   
-  addAndMakeVisible(train);
+  addAndMakeVisible(grid);
 }
 AppListComponent::~AppListComponent() {}
 
@@ -70,21 +70,21 @@ void AppListComponent::resized() {
   nextPageBtn->setBoundsToFit(b.getX(), b.getY(), b.getWidth(), b.getHeight(), Justification::centredBottom, true);
   
   // drop the page buttons from our available layout size
-  auto trainWidth = b.getWidth();
-  auto trainHeight = b.getHeight() - (2.0*btnHeight);
-  train->setSize(trainWidth, trainHeight);
-  train->setBoundsToFit(b.getX(), b.getY(), b.getWidth(), b.getHeight(), Justification::centred, true);
+  auto gridWidth = b.getWidth();
+  auto gridHeight = b.getHeight() - (2.0*btnHeight);
+  grid->setSize(gridWidth, gridHeight);
+  grid->setBoundsToFit(b.getX(), b.getY(), b.getWidth(), b.getHeight(), Justification::centred, true);
 }
 
 void AppListComponent::checkShowPageNav() {
-  if (train->hasNextPage()) {
+  if (grid->hasNextPage()) {
     nextPageBtn->setVisible(true); nextPageBtn->setEnabled(true);
   }
   else {
     nextPageBtn->setVisible(false); nextPageBtn->setEnabled(false);
   }
   
-  if (train->hasPrevPage()) {
+  if (grid->hasPrevPage()) {
     prevPageBtn->setVisible(true); prevPageBtn->setEnabled(true);
   }
   else {
@@ -93,8 +93,8 @@ void AppListComponent::checkShowPageNav() {
 }
 
 void AppListComponent::addAndOwnIcon(const String &name, Component *icon) {
-  trainIcons.add(icon);
-  train->addItem(icon);
+  gridIcons.add(icon);
+  grid->addItem(icon);
   ((Button*)icon)->setTriggeredOnMouseDown(true);
   ((Button*)icon)->addListener(this);
 }
@@ -224,11 +224,11 @@ void AppsPageComponent::checkRunningApps() {
 
 void AppsPageComponent::buttonClicked(Button *button) {
   if (button == prevPageBtn) {
-    train->showPrevPage();
+    grid->showPrevPage();
     checkShowPageNav();
   }
   else if (button == nextPageBtn) {
-    train->showNextPage();
+    grid->showNextPage();
     checkShowPageNav();
   }
   else if (button == appsLibraryBtn) {
