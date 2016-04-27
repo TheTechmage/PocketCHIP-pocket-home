@@ -313,6 +313,7 @@ void SettingsPageComponent::buttonClicked(Button *button) {
   if (button == backButton) {
     getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
   } else if (button == wifiCategoryItem->button) {
+    wifiPage->updateAccessPoints();
     getMainStack().pushPage(wifiPage, PageStackComponent::kTransitionTranslateHorizontal);
   }
 }

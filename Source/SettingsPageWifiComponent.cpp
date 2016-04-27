@@ -136,7 +136,8 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() :
   prevPageBtn->addListener(this);
   accessPointListPage->addAndMakeVisible(nextPageBtn);
   accessPointListPage->addAndMakeVisible(prevPageBtn);
-  updateAccessPoints();
+  createAccessPointList();
+  checkShowListNav();
   
   // create connection "page"
   connectionPage = new Component("Connection Page");
@@ -310,7 +311,7 @@ void SettingsPageWifiComponent::updateConnectionLabel() {
 
 // TODO: this is pretty expensive, but the cleanup is very simple. Could be replaced with a change
 // listener, or a merge operation.
-void SettingsPageWifiComponent::updateAccessPoints() {
+void SettingsPageWifiComponent::createAccessPointList() {
   // create ssid list
   accessPointList = new Grid(1, 4);
   
@@ -325,7 +326,13 @@ void SettingsPageWifiComponent::updateAccessPoints() {
   }
   
   accessPointListPage->addAndMakeVisible(accessPointList);
+}
+
+
+void SettingsPageWifiComponent::updateAccessPoints() {
+  createAccessPointList();
   checkShowListNav();
+  if (init) resized();
 }
 
 void SettingsPageWifiComponent::checkShowListNav() {

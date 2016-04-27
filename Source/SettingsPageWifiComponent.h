@@ -91,6 +91,8 @@ public:
   ScopedPointer<SwitchComponent> switchComponent;
 
   OwnedArray<WifiAccessPointListItem> accessPointItems;
+    
+  void updateAccessPoints();
 
   void paint(Graphics &g) override;
   void resized() override;
@@ -109,7 +111,7 @@ private:
   void beginSetConnected();
   void beginSetDisconnected();
   void updateConnectionLabel();
-  void updateAccessPoints();
+  void createAccessPointList();
   void checkShowListNav();
 
   void buttonClicked(Button *) override;
