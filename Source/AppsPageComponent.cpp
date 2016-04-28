@@ -176,7 +176,9 @@ void AppsPageComponent::startOrFocusApp(AppIconButton* appButton) {
   String windowId;
   
   if(hasLaunched) {
-    StringArray findCmd{"xdotool", "search", "--all", "--limit", "1", "--class", appButton->shell.toRawUTF8()};
+    const auto shellWords = split(appButton->shell, " ");
+    const auto& cmdName = shellWords[0];
+    StringArray findCmd{"xdotool", "search", "--all", "--limit", "1", "--class", cmdName.toRawUTF8()};
     ChildProcess findWindow;
     findWindow.start(findCmd);
     findWindow.waitForProcessToFinish(1000);
