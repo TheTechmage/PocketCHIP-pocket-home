@@ -226,26 +226,48 @@ void SettingsPageWifiComponent::resized() {
   }
 }
 
-void SettingsPageWifiComponent::handleWifiDisabled() {
-  DBG("SettingsPageWifiComponent::wifiDisabled");
-  // TODO: this event should probably kick you out of this page entirely
-  // though how did you get here (parent should block entry)? should only deliver here if we're on screen
-  // and WiFi dies out of band
+void SettingsPageWifiComponent::handleWifiEnabled() {
+  DBG("SettingsPageWifiComponent::wifiEnabled");
+  spinner->hide();
 }
 
-// FIXME: these handlers should double check what page we're on,
-// in case these occur transiently. We don't want global page stack popping.
-// Really there should be a lightweight statemachine somewhere around this class.
-void SettingsPageWifiComponent::handleWifiConnected() {
-  DBG("SettingsPageWifiComponent::wifiConnected");
-  
+void SettingsPageWifiComponent::handleWifiDisabled() {
+  DBG("SettingsPageWifiComponent::wifiDisabled");
   spinner->hide();
   
+  // if wifi is disabled while we're on this page, pop back to previous page.
+  if (getMainStack().getCurrentPage() == this) {
+    getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
+    // make sure we leave access list page as entry page.
+    pageStack->clear(PageStackComponent::kTransitionNone);
+    pageStack->pushPage(accessPointListPage, PageStackComponent::kTransitionNone);
+  }
+}
+
+void SettingsPageWifiComponent::handleWifiConnected() {
+  DBG("SettingsPageWifiComponent::wifiConnected");
+  spinner->hide();
+
+  selectedAp = getWifiStatus().connectedAccessPoint();
+
   updateConnectionLabel();
   passwordEditor->setVisible(false);
   connectionButton->setButtonText("Disconnect");
   errorLabel->setVisible(false);
-  pageStack->removePage(pageStack->getDepth() - 2);
+  
+  // if we're on the connection page, and we just connected, remove the
+  // ability to go back to the access point list
+  if (pageStack->getCurrentPage() == connectionPage
+      && pageStack->getDepth() > 1) {
+    pageStack->removePage(pageStack->getDepth() - 2);
+  }
+  // if we're on the access point list, and just connected, swap to the connection page
+  else if (pageStack->getCurrentPage() == accessPointListPage) {
+    // check if we're the current stack item, if we are our transition should be animated
+    auto transition = (getMainStack().getCurrentPage() == this) ?
+      PageStackComponent::kTransitionTranslateHorizontal : PageStackComponent::kTransitionNone;
+    pageStack->swapPage(connectionPage, transition);
+  }
 }
 
 void SettingsPageWifiComponent::handleWifiFailedConnect() {
@@ -274,13 +296,20 @@ void SettingsPageWifiComponent::handleWifiDisconnected() {
   
   updateAccessPoints();
   
-  pageStack->insertPage(accessPointListPage, pageStack->getDepth() - 1);
+  // add our access point list back into the stack, so it's available from back button
+  if (pageStack->getCurrentPage() == connectionPage
+      && pageStack->getDepth() == 1) {
+    pageStack->insertPage(accessPointListPage, pageStack->getDepth() - 1);
+  }
+}
+
+void SettingsPageWifiComponent::handleWifiBusy() {
+  spinner->show();
 }
 
 void SettingsPageWifiComponent::beginSetConnected() {
   auto &status = getWifiStatus();
   
-  spinner->show();
   errorLabel->setVisible(false);
   
   if (selectedAp->requiresAuth) {
@@ -293,7 +322,6 @@ void SettingsPageWifiComponent::beginSetConnected() {
 }
 
 void SettingsPageWifiComponent::beginSetDisconnected() {
-  spinner->show();
   getWifiStatus().setDisconnected();
 }
 

@@ -42,6 +42,7 @@ public:
   virtual void handleWifiConnected() {}
   virtual void handleWifiDisconnected() {}
   virtual void handleWifiFailedConnect() {}
+  virtual void handleWifiBusy() {}
 };
 
 #include "WifiStatusJson.h"

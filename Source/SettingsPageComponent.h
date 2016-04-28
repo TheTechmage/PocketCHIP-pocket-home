@@ -80,6 +80,7 @@ public:
   void handleWifiDisabled() override;
   void handleWifiConnected() override;
   void handleWifiDisconnected() override;
+  void handleWifiBusy() override;
 
 private:
   ScopedPointer<WifiSpinner> spinner;
@@ -125,8 +126,6 @@ public:
   void sliderValueChanged(IconSliderComponent* slider);
   void sliderDragStarted(IconSliderComponent* slider);
   void sliderDragEnded(IconSliderComponent* slider);
-    
-  void visibilityChanged() override;
 
   void checkSliders();
   

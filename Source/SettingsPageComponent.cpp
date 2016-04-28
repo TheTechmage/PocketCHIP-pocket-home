@@ -113,7 +113,6 @@ void WifiCategoryItemComponent::resized() {
 }
 
 void WifiCategoryItemComponent::enabledStateChanged(bool enabled) {
-  spinner->show();
   icon->setVisible(false);
   updateButtonText();
   
@@ -135,15 +134,21 @@ void WifiCategoryItemComponent::handleWifiDisabled() {
   button->setEnabled(false);
   updateButtonText();
 }
+
 void WifiCategoryItemComponent::handleWifiConnected() {
   spinner->hide();
   icon->setVisible(true);
   updateButtonText();
 }
+
 void WifiCategoryItemComponent::handleWifiDisconnected() {
   spinner->hide();
   icon->setVisible(true);
   updateButtonText();
+}
+
+void WifiCategoryItemComponent::handleWifiBusy() {
+  spinner->show();
 }
 
 void WifiCategoryItemComponent::updateButtonText() {
@@ -362,15 +367,5 @@ void SettingsPageComponent::sliderDragEnded(IconSliderComponent* slider) {
   } else if( slider == volumeSlider&& volumeSliderTimer.isTimerRunning()) {
     volumeSliderTimer.stopTimer();
     setSoundVolume();
-  }
-}
-
-void SettingsPageComponent::visibilityChanged() {
-  // when we show settings, inform wifistatus we're interested
-  // in nearby networks, even though we don't use them here.
-  // we're getting ready for the wifi ap list, which is one screen beyond
-  // this one.
-  if (isVisible()) {
-    getWifiStatus().nearbyAccessPoints();
   }
 }

@@ -97,10 +97,12 @@ public:
   void paint(Graphics &g) override;
   void resized() override;
   
+  void handleWifiEnabled() override;
   void handleWifiDisabled() override;
   void handleWifiConnected() override;
   void handleWifiDisconnected() override;
   void handleWifiFailedConnect() override;
+  void handleWifiBusy() override;
 
 private:
   Colour bgColor;

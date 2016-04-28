@@ -47,6 +47,10 @@ void WifiStatusJson::clearListeners() {
 // otherwise easily confused with setters thats wrap members, which are slightly different idiom
 void WifiStatusJson::setEnabled() {
   if (!enabled) {
+    for(const auto& listener : listeners) {
+      listener->handleWifiBusy();
+    }
+    
     enabled = true;
     for(const auto& listener : listeners) {
       listener->handleWifiEnabled();
@@ -56,6 +60,10 @@ void WifiStatusJson::setEnabled() {
 
 void WifiStatusJson::setDisabled() {
   if (enabled) {
+    for(const auto& listener : listeners) {
+      listener->handleWifiBusy();
+    }
+    
     enabled = false;
     for(const auto& listener : listeners) {
       listener->handleWifiDisabled();
@@ -64,6 +72,10 @@ void WifiStatusJson::setDisabled() {
 }
 
 void WifiStatusJson::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
+  for(const auto& listener : listeners) {
+    listener->handleWifiBusy();
+  }
+  
   // disconnect if no ap provided
   if (ap == nullptr) {
     DBG("WifiStatusJson::setConnectedAccessPoint - disconnect");
