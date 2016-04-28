@@ -216,7 +216,7 @@ OwnedArray<WifiAccessPoint> WifiStatusNM::nearbyAccessPoints() {
 
       /*FIXME: dropping hidden (no ssid) networks until gui supports it*/
       if (created_ap->ssid.length() == 0)
-        break;
+        continue;
 
       if (uniqueAPs.find(created_ap->hash) == uniqueAPs.end())
         uniqueAPs[created_ap->hash] = created_ap;

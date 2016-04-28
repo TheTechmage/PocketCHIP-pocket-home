@@ -209,7 +209,7 @@ void WifiTestApplication::initialise(const String &commandLine) {
 
   auto test_connected_ap = [this](WifiStatus *wifiStatus) {
     auto ap = wifiStatus->connectedAccessPoint();
-    std::cout << "Connected AP SSID = " << ap.ssid << std::endl;
+    std::cout << "Connected AP SSID = " << ap->ssid << std::endl;
   };
 
   auto test_explicit_disconnect = [this](WifiStatus *wifiStatus) {
