@@ -20,9 +20,9 @@
           "shell": "sunvox"
          },
          {
-          "name": "web browser",
-          "icon": "appIcons/webbrowser.png",
-          "shell": "netsurf"
+          "name": "help",
+          "icon": "appIcons/window.png",
+          "shell": "yelp /usr/share/pocket-localdoc/index.html"
         },
         {
           "name": "write",
