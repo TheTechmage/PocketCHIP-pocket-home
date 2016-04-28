@@ -90,6 +90,7 @@ public:
   void paint(Graphics &g) override;
   void resized() override;
   
+  void handleWifiEnabled() override;
   void handleWifiDisabled() override;
   void handleWifiConnected() override;
   void handleWifiDisconnected() override;
