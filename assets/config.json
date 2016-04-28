@@ -21,8 +21,8 @@
          },
          {
           "name": "help",
-          "icon": "appIcons/window.png",
-          "shell": "yelp /usr/share/pocket-localdoc/index.html"
+          "icon": "appIcons/help.png",
+          "shell": "yelp /usr/share/pocketchip-localdoc/index.html"
         },
         {
           "name": "write",
