@@ -162,7 +162,8 @@ void AppsPageComponent::startApp(AppIconButton* appButton) {
 
 void AppsPageComponent::focusApp(AppIconButton* appButton, const String& windowId) {
   DBG("AppsPageComponent::focusApp - " << appButton->shell);
-  StringArray focusCmd{"xdotool", "windowactivate", windowId.toRawUTF8()};
+  String focusShell = "echo 'focus_client_by_window_id("+windowId+")' | awesome-client";
+  StringArray focusCmd{"sh", "-c", focusShell.toRawUTF8()};
   ChildProcess focusWindow;
   focusWindow.start(focusCmd);
 };
