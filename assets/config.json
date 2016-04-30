@@ -32,7 +32,7 @@
         {
           "name": "browse files",
           "icon": "appIcons/filebrowser.png",
-          "shell": "thunar"
+          "shell": "pcmanfm"
         },
       ],
       "cornerButtons": [
