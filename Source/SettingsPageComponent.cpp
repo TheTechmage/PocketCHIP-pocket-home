@@ -28,6 +28,8 @@ void SettingsCategoryButton::paintButton(Graphics &g, bool isMouseOverButton, bo
   float radius = float(bounds.getHeight()) / 2.0f;
   
   g.setColour(Colours::white);
+  isButtonDown ? setAlpha(0.5f) : setAlpha(1.0f);
+  
   if (isEnabled()) {
     g.drawRoundedRectangle(bounds.getX() + borderThick, bounds.getY() + borderThick,
                            bounds.getWidth() - 2*borderThick, bounds.getHeight()  - 2*borderThick,
@@ -112,7 +114,6 @@ void WifiCategoryItemComponent::resized() {
 }
 
 void WifiCategoryItemComponent::enabledStateChanged(bool enabled) {
-  icon->setVisible(false);
   updateButtonText();
   
   enabled ? getWifiStatus().setEnabled() : getWifiStatus().setDisabled();
@@ -148,6 +149,7 @@ void WifiCategoryItemComponent::handleWifiDisconnected() {
 
 void WifiCategoryItemComponent::handleWifiBusy() {
   spinner->show();
+  icon->setVisible(false);
 }
 
 void WifiCategoryItemComponent::updateButtonText() {

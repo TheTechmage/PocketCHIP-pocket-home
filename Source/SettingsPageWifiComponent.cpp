@@ -63,6 +63,7 @@ void WifiAccessPointListItem::paintButton(Graphics &g, bool isMouseOverButton, b
   float radius = float(bounds.getHeight()) / 2.0f;
 
   g.setColour(findColour(ListBox::ColourIds::backgroundColourId));
+  isButtonDown ? setAlpha(0.5f) : setAlpha(1.0f);
   g.drawRoundedRectangle(bounds.getX() + borderThick, bounds.getY() + borderThick,
                          bounds.getWidth() - 2*borderThick, bounds.getHeight()  - 2*borderThick,
                          radius, borderThick);
