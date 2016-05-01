@@ -51,7 +51,7 @@ ImageButton *createImageButton(const String &name, const Image &image) {
   imageButton->setImages(true, true, true,
                     image, 1.0f, Colours::transparentWhite, // normal
                     image, 1.0f, Colours::transparentWhite, // over
-                    image, 0.7f, Colours::transparentWhite, // down
+                    image, 0.5f, Colours::transparentWhite, // down
                     0);
   return imageButton;
 }

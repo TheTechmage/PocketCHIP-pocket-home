@@ -54,7 +54,7 @@ void BatteryIconTimer::timerCallback() {
           button->setImages(false, false, true,
                        batteryImg, 1.0f, Colours::transparentWhite, // normal
                        batteryImg, 1.0f, Colours::transparentWhite, // over
-                       batteryImg, 1.0f, Colours::transparentWhite, // down
+                       batteryImg, 0.5f, Colours::transparentWhite, // down
                        0);
       }
     }
@@ -86,7 +86,7 @@ void WifiIconTimer::timerCallback() {
       button->setImages(false, false, true,
                         wifiIcon, 1.0f, Colours::transparentWhite, // normal
                         wifiIcon, 1.0f, Colours::transparentWhite, // over
-                        wifiIcon, 0.3f, Colours::transparentWhite, // down
+                        wifiIcon, 0.5f, Colours::transparentWhite, // down
                         0);
 
     }
