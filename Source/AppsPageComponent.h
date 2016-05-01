@@ -51,6 +51,7 @@ public:
   DrawableButton *createAndOwnIcon(const String &name, const String &iconPath, const String &shell);
   virtual Array<DrawableButton *> createIconsFromJsonArray(const var &json);
   
+  void buttonStateChanged(Button*) override {};
   void buttonClicked(Button *button) override {};
   
   // FIXME: this is barsize from launcher component
@@ -69,6 +70,7 @@ public:
   
   OwnedArray<ChildProcess> runningApps;
   
+  virtual void buttonStateChanged(Button*) override;
   void buttonClicked(Button *button) override;
   
   void checkRunningApps();

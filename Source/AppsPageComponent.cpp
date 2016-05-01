@@ -224,6 +224,43 @@ void AppsPageComponent::checkRunningApps() {
   }
 };
 
+void AppsPageComponent::buttonStateChanged(Button* btn) {
+  auto appBtn = (AppIconButton*)btn;
+  auto appIcon = (DrawableImage*)appBtn->getCurrentImage();
+  auto buttonPopup = launcherComponent->focusButtonPopup.get();
+  constexpr auto scale = 1.5;
+
+  // show floating button popup if we're holding downstate and not showing the popup
+  if (btn->isMouseButtonDown() &&
+      btn->isMouseOver() &&
+      !buttonPopup->isVisible()) {
+    // copy application icon bounds in screen space
+    auto boundsNext = appIcon->getScreenBounds();
+    auto boundsCentre = boundsNext.getCentre();
+    
+    // scale and recenter
+    boundsNext.setSize(boundsNext.getWidth()*scale, boundsNext.getHeight()*scale);
+    boundsNext.setCentre(boundsCentre);
+    
+    // translate back to space local to popup parent (local bounds)
+    auto parentPos = launcherComponent->getScreenPosition();
+    boundsNext.setPosition(boundsNext.getPosition() - parentPos);
+    
+    // show popup icon, hide real button beneath
+    buttonPopup->setImage(appIcon->getImage());
+    buttonPopup->setBounds(boundsNext);
+    buttonPopup->setVisible(true);
+    appIcon->setVisible(false);
+    appBtn->setColour(DrawableButton::textColourId, Colours::transparentWhite);
+  }
+  // set UI back to default if we can see the popup, but aren't holding the button down
+  else if (btn->isVisible()) {
+    appIcon->setVisible(true);
+    appBtn->setColour(DrawableButton::textColourId, getLookAndFeel().findColour(DrawableButton::textColourId));
+    buttonPopup->setVisible(false);
+  }
+}
+
 void AppsPageComponent::buttonClicked(Button *button) {
   if (button == prevPageBtn) {
     grid->showPrevPage();

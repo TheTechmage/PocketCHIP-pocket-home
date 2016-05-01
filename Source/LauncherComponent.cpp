@@ -144,6 +144,10 @@ LauncherComponent::LauncherComponent(const var &configJson)
   launchSpinner->setInterceptsMouseClicks(true, false);
   addChildComponent(launchSpinner);
   
+  focusButtonPopup = new ImageComponent("Focus Button Popup");
+  focusButtonPopup->setInterceptsMouseClicks(false, false);
+  addChildComponent(focusButtonPopup);
+  
   // Settings page
   auto settingsPage = new SettingsPageComponent();
   settingsPage->setName("Settings");
