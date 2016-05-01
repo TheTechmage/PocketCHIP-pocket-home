@@ -95,7 +95,6 @@ void AppListComponent::checkShowPageNav() {
 void AppListComponent::addAndOwnIcon(const String &name, Component *icon) {
   gridIcons.add(icon);
   grid->addItem(icon);
-  ((Button*)icon)->setTriggeredOnMouseDown(true);
   ((Button*)icon)->addListener(this);
 }
 

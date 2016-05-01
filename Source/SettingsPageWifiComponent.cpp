@@ -126,7 +126,6 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() :
   backButton = createImageButton(
                                  "Back", createImageFromFile(assetFile("backIcon.png")));
   backButton->addListener(this);
-  backButton->setTriggeredOnMouseDown(true);
   backButton->setAlwaysOnTop(true);
   addAndMakeVisible(backButton);
 
@@ -156,7 +155,6 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() :
   connectionButton = new TextButton("Connection Button");
   connectionButton->setButtonText("Connect");
   connectionButton->addListener(this);
-  connectionButton->setTriggeredOnMouseDown(true);
   connectionPage->addAndMakeVisible(connectionButton);
     
   errorLabel = new Label("Error Text", "Bad password ...");

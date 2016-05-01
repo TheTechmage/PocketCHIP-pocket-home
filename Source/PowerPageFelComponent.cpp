@@ -132,24 +132,14 @@ PowerFelPageComponent::PowerFelPageComponent() {
     ChildProcess child{};
     debounce = 0;
     
-    // create back button
-    //backButton = createImageButton(
-    //                               "Back", createImageFromFile(assetFile("nextIcon.png")));
-    //backButton->addListener(this);
-    //backButton->setTriggeredOnMouseDown(true);
-    //backButton->setAlwaysOnTop(true);
-    //addAndMakeVisible(backButton);
-    
     yesButton = new TextButton("yes");
     yesButton->setButtonText("yes");
     yesButton->addListener(this);
-    yesButton->setTriggeredOnMouseDown(true);
     addAndMakeVisible(yesButton);
     
     noButton = new TextButton("no");
     noButton->setButtonText("no");
     noButton->addListener(this);
-    noButton->setTriggeredOnMouseDown(true);
     addAndMakeVisible(noButton);
 
 }

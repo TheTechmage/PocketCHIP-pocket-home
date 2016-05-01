@@ -12,7 +12,6 @@ LibraryPageComponent::LibraryPageComponent() :
   bgColor = Colour(PokeLookAndFeel::chipPurple);
   
   backButton->addListener(this);
-  backButton->setTriggeredOnMouseDown(true);
   backButton->setAlwaysOnTop(true);
   addAndMakeVisible(backButton);
 }

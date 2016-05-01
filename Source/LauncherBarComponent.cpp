@@ -65,7 +65,6 @@ void LauncherBarComponent::addButton(const String &name, const String &iconPath)
   auto iconFile = assetFile(iconPath);
   auto image = createImageFromFile(iconFile);
   auto button = new LauncherBarButton(name, image);
-  button->setTriggeredOnMouseDown(true);
   button->addListener(this);
   buttons.add(button);
   addAndMakeVisible(button);

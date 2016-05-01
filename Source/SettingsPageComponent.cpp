@@ -56,7 +56,6 @@ SettingsCategoryItemComponent::SettingsCategoryItemComponent(const String &name)
   toggle{ new SwitchComponent() },
   button{ new SettingsCategoryButton(name) } {
   toggle->addListener(this);
-  toggle->setTriggeredOnMouseDown(true);
   addAndMakeVisible(icon);
   addAndMakeVisible(toggle);
   addAndMakeVisible(button);
@@ -251,12 +250,10 @@ SettingsPageComponent::SettingsPageComponent() {
   backButton = createImageButton(
                                  "Back", createImageFromFile(assetFile("backIcon.png")));
   backButton->addListener(this);
-  backButton->setTriggeredOnMouseDown(true);
   backButton->setAlwaysOnTop(true);
   addAndMakeVisible(backButton);
 
   wifiCategoryItem = new WifiCategoryItemComponent();
-  wifiCategoryItem->button->setTriggeredOnMouseDown(true);
   wifiCategoryItem->button->addListener(this);
   addAndMakeVisible(wifiCategoryItem);
   getWifiStatus().addListener(wifiCategoryItem);

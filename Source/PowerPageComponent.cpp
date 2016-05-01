@@ -111,32 +111,27 @@ PowerPageComponent::PowerPageComponent() {
   backButton = createImageButton(
       "Back", createImageFromFile(assetFile("nextIcon.png")));
   backButton->addListener(this);
-  backButton->setTriggeredOnMouseDown(true);
   backButton->setAlwaysOnTop(true);
   addAndMakeVisible(backButton);
     
   powerOffButton = new TextButton("Power OFF");
   powerOffButton->setButtonText("shutdown");
   powerOffButton->addListener(this);
-  powerOffButton->setTriggeredOnMouseDown(true);
   addAndMakeVisible(powerOffButton);
     
   rebootButton = new TextButton("Reboot");
   rebootButton->setButtonText("reboot");
   rebootButton->addListener(this);
-  rebootButton->setTriggeredOnMouseDown(true);
   addAndMakeVisible(rebootButton);
     
    sleepButton = new TextButton("Sleep");
    sleepButton->setButtonText("sleep");
    sleepButton->addListener(this);
-   sleepButton->setTriggeredOnMouseDown(true);
    addAndMakeVisible(sleepButton);
     
     felButton = new TextButton("Fel");
     felButton->setButtonText("flash software");
     felButton->addListener(this);
-    felButton->setTriggeredOnMouseDown(true);
     addAndMakeVisible(felButton);
 
     powerDebounceTimer.powerComponent = this;
