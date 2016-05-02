@@ -278,6 +278,8 @@ void SettingsPageWifiComponent::handleWifiFailedConnect() {
   if (selectedAp && selectedAp->requiresAuth) {
     errorLabel->setVisible(true);
     passwordEditor->setText("");
+    passwordEditor->setEnabled(true);
+    passwordEditor->grabKeyboardFocus();
   }
 }
 
@@ -289,6 +291,8 @@ void SettingsPageWifiComponent::handleWifiDisconnected() {
   
   if (selectedAp && selectedAp->requiresAuth) {
     passwordEditor->setVisible(true);
+    passwordEditor->setEnabled(true);
+    passwordEditor->grabKeyboardFocus();
   }
   connectionButton->setButtonText("Connect");
   errorLabel->setVisible(false);
@@ -310,6 +314,7 @@ void SettingsPageWifiComponent::beginSetConnected() {
   auto &status = getWifiStatus();
   
   errorLabel->setVisible(false);
+  passwordEditor->setEnabled(false);
   
   if (selectedAp && selectedAp->requiresAuth) {
     const auto& psk = passwordEditor->getTextValue().toString();
