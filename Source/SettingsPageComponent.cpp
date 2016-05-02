@@ -155,7 +155,12 @@ void WifiCategoryItemComponent::handleWifiBusy() {
 void WifiCategoryItemComponent::updateButtonText() {
   const auto &status = getWifiStatus();
   if (status.isEnabled()) {
-    button->setText(status.isConnected() ? status.connectedAccessPoint()->ssid : "Not Connected");
+    if (status.isConnected() && status.connectedAccessPoint()) {
+      button->setText(status.connectedAccessPoint()->ssid);
+    }
+    else {
+      button->setText("Not Connected");
+    }
   } else {
     button->setText("WiFi Off");
   }

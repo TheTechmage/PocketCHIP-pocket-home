@@ -275,7 +275,7 @@ void SettingsPageWifiComponent::handleWifiFailedConnect() {
   spinner->hide();
   updateConnectionLabel();
   
-  if (selectedAp->requiresAuth) {
+  if (selectedAp && selectedAp->requiresAuth) {
     errorLabel->setVisible(true);
     passwordEditor->setText("");
   }
@@ -287,7 +287,7 @@ void SettingsPageWifiComponent::handleWifiDisconnected() {
   spinner->hide();
   updateConnectionLabel();
   
-  if (selectedAp->requiresAuth) {
+  if (selectedAp && selectedAp->requiresAuth) {
     passwordEditor->setVisible(true);
   }
   connectionButton->setButtonText("Connect");
@@ -298,7 +298,7 @@ void SettingsPageWifiComponent::handleWifiDisconnected() {
   // add our access point list back into the stack, so it's available from back button
   if (pageStack->getCurrentPage() == connectionPage
       && pageStack->getDepth() == 1) {
-    pageStack->insertPage(accessPointListPage, pageStack->getDepth() - 1);
+    pageStack->insertPage(accessPointListPage, 0);
   }
 }
 
@@ -311,7 +311,7 @@ void SettingsPageWifiComponent::beginSetConnected() {
   
   errorLabel->setVisible(false);
   
-  if (selectedAp->requiresAuth) {
+  if (selectedAp && selectedAp->requiresAuth) {
     const auto& psk = passwordEditor->getTextValue().toString();
     status.setConnectedAccessPoint(selectedAp, psk);
   }
@@ -325,12 +325,20 @@ void SettingsPageWifiComponent::beginSetDisconnected() {
 }
 
 void SettingsPageWifiComponent::updateConnectionLabel() {
-  String ssidText = selectedAp->ssid;
   const auto& status = getWifiStatus();
+  String ssidText;
   
-  if (status.isConnected() &&
-      status.connectedAccessPoint()->hash == selectedAp->hash) {
-    ssidText += " (connected)";
+  if (selectedAp) {
+    ssidText = selectedAp->ssid;
+    
+    auto connectedAp = status.connectedAccessPoint();
+    if (status.isConnected() && connectedAp &&
+        connectedAp->hash == selectedAp->hash) {
+      ssidText += " (connected)";
+    }
+  }
+  else {
+    ssidText = "Access point disconnected.";
   }
   
   connectionLabel->setText(ssidText, juce::NotificationType::dontSendNotification);
@@ -403,9 +411,12 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
     auto apButton = dynamic_cast<WifiAccessPointListItem *>(button);
     if (apButton) {
       selectedAp = new WifiAccessPoint(*apButton->ap);
+      auto connectedAp = status.connectedAccessPoint().get();
+      
       updateConnectionLabel();
-      if (status.isConnected() &&
-          selectedAp->hash == status.connectedAccessPoint()->hash) {
+      
+      if (status.isConnected() && connectedAp &&
+          connectedAp->hash == selectedAp->hash) {
         passwordEditor->setText(String::empty);
         passwordEditor->setVisible(false);
         errorLabel->setVisible(false);
@@ -416,6 +427,7 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
         errorLabel->setVisible(false);
         connectionButton->setButtonText("Connect");
       }
+      
       pageStack->pushPage(connectionPage, PageStackComponent::kTransitionTranslateHorizontal);
     }
     else if (button == prevPageBtn) {
