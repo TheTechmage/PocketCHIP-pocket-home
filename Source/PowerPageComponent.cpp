@@ -6,14 +6,6 @@
 
 #include <numeric>
 
-void PowerDebounceTimer::timerCallback() {
-    DBG("APowerDebounceTimer::timerCallback - check power debounce");
-    if (powerComponent) {
-        powerComponent->debounce = false;
-    }
-    stopTimer();
-}
-
 void PowerSpinnerTimer::timerCallback() {
     if (powerComponent) {
         auto lsp = powerComponent->powerSpinner.get();
@@ -25,77 +17,6 @@ void PowerSpinnerTimer::timerCallback() {
     }
 }
 
-PowerCategoryButton::PowerCategoryButton(const String &name)
-: Button(name),
-  displayText(name)
-{}
-
-void PowerCategoryButton::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) {
-  const auto& bounds = pillBounds;
-  float borderThick = 4.0f;
-  float radius = float(bounds.getHeight()) / 2.0f;
-  
-  g.setColour(Colours::white);
-  if (isEnabled()) {
-    g.drawRoundedRectangle(bounds.getX() + borderThick, bounds.getY() + borderThick,
-                           bounds.getWidth() - 2*borderThick, bounds.getHeight()  - 2*borderThick,
-                           radius, borderThick);
-  }
-  
-  // TODO: write button text as grey if choice is completely unset?
-  g.setFont(20);
-  g.drawText(displayText, bounds.getX(), bounds.getY(),
-             bounds.getWidth(), bounds.getHeight(),
-             Justification::centred);
-}
-
-void PowerCategoryButton::resized() {
-  pillBounds.setSize(getLocalBounds().getWidth(), 42);
-  fitRectInRect(pillBounds, getLocalBounds(), Justification::centred, false);
-}
-
-void PowerCategoryButton::setText(const String &text) {
-  displayText = text;
-  repaint();
-}
-
-PowerCategoryItemComponent::PowerCategoryItemComponent(const String &name)
-: icon{ new DrawableButton("icon", DrawableButton::ImageFitted) },
-  button{ new PowerCategoryButton(name) } {
-  addAndMakeVisible(icon);
-  addAndMakeVisible(button);
-  button->setEnabled(false); // default to disabled state
-}
-
-void PowerCategoryItemComponent::paint(Graphics &g) {}
-
-void PowerCategoryItemComponent::resized() {
-  auto b = getLocalBounds();
-  auto h = b.getHeight();
-
-  int spacing = 10;
-  int togWidth = h * 1.1f;
-
-  layout.setItemLayout(0, h, h, h);
-  layout.setItemLayout(1, spacing, spacing, spacing);
-  layout.setItemLayout(2, togWidth, togWidth, togWidth);
-  layout.setItemLayout(3, spacing, spacing, spacing);
-  layout.setItemLayout(4, h, -1, -1);
-
-  Component *comps[] = { icon, nullptr, nullptr, button };
-  layout.layOutComponents(comps, 5, b.getX(), b.getY(), b.getWidth(), b.getHeight(), false, true);
-}
-
-void PowerCategoryItemComponent::buttonClicked(Button *b) {}
-
-void PowerCategoryItemComponent::buttonStateChanged(Button *b) {
-    //
-}
-
-void PowerCategoryItemComponent::enablementChanged() {
-  updateButtonText();
-}
-
 PowerPageComponent::PowerPageComponent() {
   bgColor = Colour(0xff000000);
   bgImage = createImageFromFile(assetFile("powerMenuBackground.png"));
@@ -103,7 +24,6 @@ PowerPageComponent::PowerPageComponent() {
   addAndMakeVisible(mainPage);
   mainPage->toBack();
   ChildProcess child{};
-  debounce = 0;
   
   felPage = new PowerFelPageComponent();
 
@@ -133,9 +53,7 @@ PowerPageComponent::PowerPageComponent() {
     felButton->setButtonText("flash software");
     felButton->addListener(this);
     addAndMakeVisible(felButton);
-
-    powerDebounceTimer.powerComponent = this;
-    
+  
     powerSpinnerTimer.powerComponent = this;
     Array<String> spinnerImgPaths{"wait1.png","wait2.png","wait3.png","wait4.png"};
     for(auto& path : spinnerImgPaths) {
@@ -239,23 +157,17 @@ void PowerPageComponent::showPowerSpinner() {
 }
 
 void PowerPageComponent::buttonClicked(Button *button) {
-  if( !debounce ) {
-    if (button == backButton) {
-      getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontalLeft);
-    } else if (button == powerOffButton) {
-      debounce = true;
-      showPowerSpinner();
-      child.start("systemctl poweroff");
-    } else if (button == rebootButton) {
-      debounce = true;
-      showPowerSpinner();
-      child.start("systemctl reboot");
-    } else if (button == sleepButton) {
-      debounce = true;
-      powerDebounceTimer.startTimer(2 * 1000);
-      setSleep();
-    } else if (button == felButton) {
-      getMainStack().pushPage(felPage, PageStackComponent::kTransitionTranslateHorizontalLeft);
-    }
+  if (button == backButton) {
+    getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontalLeft);
+  } else if (button == powerOffButton) {
+    showPowerSpinner();
+    child.start("systemctl poweroff");
+  } else if (button == rebootButton) {
+    showPowerSpinner();
+    child.start("systemctl reboot");
+  } else if (button == sleepButton) {
+    setSleep();
+  } else if (button == felButton) {
+    getMainStack().pushPage(felPage, PageStackComponent::kTransitionTranslateHorizontalLeft);
   }
 }
