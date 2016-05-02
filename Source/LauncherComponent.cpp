@@ -153,14 +153,12 @@ LauncherComponent::LauncherComponent(const var &configJson)
   settingsPage->setName("Settings");
   pages.add(settingsPage);
   pagesByName.set("Settings", settingsPage);
-  pagesByName.set("WiFi", settingsPage);
   
   // Power page
   auto powerPage = new PowerPageComponent();
   powerPage->setName("Power");
   pages.add(powerPage);
   pagesByName.set("Power", powerPage);
-  pagesByName.set("Battery", powerPage);
   
   // Apps page
   auto appsPage = new AppsPageComponent(this);
@@ -196,20 +194,19 @@ LauncherComponent::LauncherComponent(const var &configJson)
         
         topButtons->addButtonsFromJsonArray(topData);
         botButtons->addButtonsFromJsonArray(botData);
-        
-        // NOTE(ryan): Maybe do something with a custom event later.. For now we just listen to all the
-        // buttons manually.
-        for (auto button : topButtons->buttons) {
-          button->addListener(this);
-          button->setWantsKeyboardFocus(false);
-        }
-        for (auto button : botButtons->buttons) {
-          button->addListener(this);
-          button->setWantsKeyboardFocus(false);
-        }
-        
       }
     }
+  }
+  
+  // NOTE(ryan): Maybe do something with a custom event later.. For now we just listen to all the
+  // buttons manually.
+  for (auto button : topButtons->buttons) {
+    button->setWantsKeyboardFocus(false);
+    button->setInterceptsMouseClicks(false, false);
+  }
+  for (auto button : botButtons->buttons) {
+    button->addListener(this);
+    button->setWantsKeyboardFocus(false);
   }
 
   defaultPage = pagesByName[configJson["defaultPage"]];
@@ -268,12 +265,8 @@ void LauncherComponent::buttonClicked(Button *button) {
     auto page = pagesByName[button->getName()];
     if (button->getName() == "Settings") {
       getMainStack().pushPage(page, PageStackComponent::kTransitionTranslateHorizontal);
-    } else if (button->getName() == "WiFi") {
-      ((SettingsPageComponent*)page)->pushActiveWifiPage();
     } else if (button->getName() == "Power") {
         getMainStack().pushPage(page, PageStackComponent::kTransitionTranslateHorizontalLeft);
-    } else if (button->getName() == "Battery" ) {
-      // TODO: create a power settings and statistics page
     } else {
       pageStack->swapPage(page, PageStackComponent::kTransitionTranslateHorizontal);
     }
