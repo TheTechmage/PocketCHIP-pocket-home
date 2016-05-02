@@ -116,7 +116,8 @@ private:
   void createAccessPointList();
   void checkShowListNav();
 
-  void buttonClicked(Button *) override;
+  void buttonStateChanged(Button*) override;
+  void buttonClicked(Button*) override;
   void textEditorReturnKeyPressed(TextEditor &) override;
   void componentVisibilityChanged(Component &) override;
   

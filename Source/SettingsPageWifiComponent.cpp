@@ -378,6 +378,15 @@ void SettingsPageWifiComponent::checkShowListNav() {
   }
 }
 
+void SettingsPageWifiComponent::buttonStateChanged(Button *btn) {
+  if (btn->isMouseButtonDown() && btn->isMouseOver()) {
+    btn->setAlpha(0.5f);
+  }
+  else {
+    btn->setAlpha(1.0f);
+  }
+}
+
 void SettingsPageWifiComponent::buttonClicked(Button *button) {
   auto &status = getWifiStatus();
   
