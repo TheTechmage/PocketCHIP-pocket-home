@@ -65,7 +65,8 @@ public:
     bool debounce;
     void paint(Graphics &g) override;
     void resized() override;
-    void buttonClicked(Button *b) override;
+    void buttonStateChanged(Button*) override;
+    void buttonClicked(Button*) override;
     void setSleep();
     
 private:

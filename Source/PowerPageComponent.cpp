@@ -18,7 +18,7 @@ void PowerSpinnerTimer::timerCallback() {
 }
 
 PowerPageComponent::PowerPageComponent() {
-  bgColor = Colour(0xff000000);
+  bgColor = Colours::black;
   bgImage = createImageFromFile(assetFile("powerMenuBackground.png"));
   mainPage = new Component();
   addAndMakeVisible(mainPage);
@@ -154,6 +154,15 @@ void PowerPageComponent::showPowerSpinner() {
     felButton->setVisible(false);
     powerSpinner->setVisible(true);
     powerSpinnerTimer.startTimer(1*1000);
+}
+
+void PowerPageComponent::buttonStateChanged(Button *btn) {
+  if (btn->isMouseButtonDown() && btn->isMouseOver()) {
+    btn->setAlpha(0.5f);
+  }
+  else {
+    btn->setAlpha(1.0f);
+  }
 }
 
 void PowerPageComponent::buttonClicked(Button *button) {

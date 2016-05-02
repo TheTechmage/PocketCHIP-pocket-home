@@ -44,7 +44,8 @@ public:
   void paint(Graphics &g) override;
   void resized() override;
   void showPowerSpinner();
-  void buttonClicked(Button *b) override;
+  void buttonStateChanged(Button*) override;
+  void buttonClicked(Button*) override;
   void setSleep();
   
 private:

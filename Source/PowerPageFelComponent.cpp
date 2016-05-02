@@ -124,7 +124,7 @@ void PowerFelCategoryItemComponent::enablementChanged() {
 }
 
 PowerFelPageComponent::PowerFelPageComponent() {
-    bgColor = Colour(0xff000000);
+    bgColor = Colours::black;
     bgImage = "powerMenuBackground.png";
     mainPage = new Component();
     addAndMakeVisible(mainPage);
@@ -183,6 +183,14 @@ void PowerFelPageComponent::resized() {
     //backButton->setBounds(bounds.getWidth()-60, bounds.getY(), 60, bounds.getHeight());
 }
 
+void PowerFelPageComponent::buttonStateChanged(Button *btn) {
+  if (btn->isMouseButtonDown() && btn->isMouseOver()) {
+    btn->setAlpha(0.5f);
+  }
+  else {
+   btn->setAlpha(1.0f);
+  }
+}
 
 void PowerFelPageComponent::buttonClicked(Button *button) {
       if (button == backButton || button == noButton ) {
