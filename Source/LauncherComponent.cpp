@@ -71,8 +71,8 @@ void WifiIconTimer::timerCallback() {
   for( auto button : launcherComponent->topButtons->buttons ) {
     if (button->getName() == "WiFi") {
       Image wifiIcon;
-      if (getWifiStatus().isConnected()) {
-        const auto& conAp = getWifiStatus().connectedAccessPoint();
+      const auto& conAp = getWifiStatus().connectedAccessPoint();
+      if (getWifiStatus().isConnected() && conAp) {
         // 0 to 100
         float sigStrength = std::max(0, std::min(99, conAp->signalStrength));
         int iconBins = launcherComponent->wifiIconImages.size() - 1;
