@@ -228,7 +228,7 @@ void AppsPageComponent::buttonStateChanged(Button* btn) {
   auto appBtn = (AppIconButton*)btn;
   auto appIcon = (DrawableImage*)appBtn->getCurrentImage();
   auto buttonPopup = launcherComponent->focusButtonPopup.get();
-  constexpr auto scale = 1.5;
+  constexpr auto scale = 1.2;
 
   // show floating button popup if we're holding downstate and not showing the popup
   if (btn->isMouseButtonDown() &&
