@@ -39,12 +39,12 @@
         {
           "location": "TopLeft",
           "name": "Battery",
-          "icon": "battery_2.png"
+          "icon": "battery_0.png"
         },
         {
           "location": "TopRight",
           "name": "WiFi",
-          "icon": "wifiStrength3.png"
+          "icon": "wifiOff.png"
         },
 
         {

@@ -72,23 +72,31 @@ void WifiIconTimer::timerCallback() {
     if (button->getName() == "WiFi") {
       Image wifiIcon;
       const auto& conAp = getWifiStatus().connectedAccessPoint();
+      
+      // wifi on and connected
       if (getWifiStatus().isConnected() && conAp) {
         // 0 to 100
         float sigStrength = std::max(0, std::min(99, conAp->signalStrength));
-        int iconBins = launcherComponent->wifiIconImages.size() - 1;
+        // don't include the wifi-off icon as a bin
+        int iconBins = launcherComponent->wifiIconImages.size() - 2;
         int idx = round( ( iconBins * (sigStrength)/100.0f) );
         DBG(__func__ << ": accessing icon " << idx);
         wifiIcon = launcherComponent->wifiIconImages[idx];
       }
-      else {
+      // wifi on but no connection
+      else if (getWifiStatus().isEnabled()) {
         wifiIcon = launcherComponent->wifiIconImages[0];
       }
+      // wifi off
+      else {
+        wifiIcon = launcherComponent->wifiIconImages.getLast();
+      }
+      
       button->setImages(false, false, true,
                         wifiIcon, 1.0f, Colours::transparentWhite, // normal
                         wifiIcon, 1.0f, Colours::transparentWhite, // over
                         wifiIcon, 0.5f, Colours::transparentWhite, // down
                         0);
-
     }
   }
 }
@@ -115,7 +123,7 @@ LauncherComponent::LauncherComponent(const var &configJson)
   wifiIconTimer.launcherComponent = this;
   wifiIconTimer.startTimer(5000);
     
-  Array<String> wifiImgPaths{"wifiStrength0.png","wifiStrength1.png","wifiStrength2.png","wifiStrength3.png"};
+  Array<String> wifiImgPaths{"wifiStrength0.png","wifiStrength1.png","wifiStrength2.png","wifiStrength3.png","wifiOff.png"};
   for(auto& path : wifiImgPaths) {
     auto image = createImageFromFile(assetFile(path));
     wifiIconImages.add(image);
