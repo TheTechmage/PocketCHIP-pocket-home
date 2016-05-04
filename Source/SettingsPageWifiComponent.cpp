@@ -106,7 +106,7 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() :
 
   wifiIconComponent = new ImageComponent("WiFi Icon");
   wifiIconComponent->setImage(
-      ImageFileFormat::loadFrom(assetFile("wifiStrength3.png")));
+      ImageFileFormat::loadFrom(assetFile("wifiIcon.png")));
   addAndMakeVisible(wifiIconComponent);
 
   icons = new WifiIcons();

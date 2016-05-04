@@ -98,7 +98,7 @@ WifiCategoryItemComponent::WifiCategoryItemComponent() :
   spinner(new WifiSpinner("SettingsWifiSpinner"))
 {
   iconDrawable =
-      Drawable::createFromImageFile(assetFile("wifiStrength3.png"));
+      Drawable::createFromImageFile(assetFile("wifiIcon.png"));
   icon->setImages(iconDrawable);
   bool isEnabled = getWifiStatus().isEnabled();
   toggle->setToggleState(isEnabled, NotificationType::dontSendNotification);
