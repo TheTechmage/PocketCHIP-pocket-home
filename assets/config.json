@@ -22,7 +22,7 @@
          {
           "name": "help",
           "icon": "appIcons/help.png",
-          "shell": "yelp /usr/share/pocketchip-localdoc/index.html"
+          "shell": "surf /usr/share/pocketchip-localdoc/index.html"
         },
         {
           "name": "write",
