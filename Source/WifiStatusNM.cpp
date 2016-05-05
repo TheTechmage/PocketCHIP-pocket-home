@@ -134,7 +134,8 @@ NMListener::~NMListener() {
 
 static void handle_wireless_enabled(WifiStatusNM *wifiStatus) {
   DBG("SIGNAL: " << NM_CLIENT_WIRELESS_ENABLED << ": changed! ");
-  wifiStatus->handleWirelessEnabled();
+  if (wifiStatus->isEnabled())
+    wifiStatus->handleWirelessEnabled();
 }
 
 static void handle_wireless_connected(WifiStatusNM *wifiStatus) {
@@ -145,6 +146,12 @@ static void handle_wireless_connected(WifiStatusNM *wifiStatus) {
 static void handle_active_access_point(WifiStatusNM *wifiStatus) {
   DBG("SIGNAL: " << NM_DEVICE_WIFI_ACTIVE_ACCESS_POINT << ": changed! ");
   wifiStatus->handleConnectedAccessPoint();
+}
+
+static void handle_changed_access_points(WifiStatusNM *wifiStatus) {
+  DBG("SIGNAL: access-point-added | access-point-removed: changed! ");
+  if (!wifiStatus->isEnabled())
+    wifiStatus->handleWirelessEnabled();
 }
 
 static void handle_add_and_activate_finish(NMClient *client,
@@ -186,6 +193,12 @@ void NMListener::run() {
 
   g_signal_connect_swapped(NM_DEVICE_WIFI(dev), "notify::" NM_DEVICE_WIFI_ACTIVE_ACCESS_POINT,
     G_CALLBACK(handle_active_access_point), wifiStatus);
+
+  g_signal_connect_swapped(NM_DEVICE_WIFI(dev), "access-point-added",
+    G_CALLBACK(handle_changed_access_points), wifiStatus);
+
+  g_signal_connect_swapped(NM_DEVICE_WIFI(dev), "access-point-removed",
+    G_CALLBACK(handle_changed_access_points), wifiStatus);
 
   while (!threadShouldExit()) {
     {
