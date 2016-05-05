@@ -292,7 +292,6 @@ void WifiStatusNM::handleWirelessEnabled() {
   enabled = nm_client_wireless_get_enabled(nmclient);
   DBG("WifiStatusNM::" << __func__ << " changed to " << enabled);
 
-  //FIXME: Force and wait for a scan after enable
   if (enabled)
     for (const auto& listener : listeners)
       listener->handleWifiEnabled();
@@ -347,7 +346,11 @@ void WifiStatusNM::handleWirelessConnected() {
     case NM_DEVICE_STATE_IP_CONFIG:
     case NM_DEVICE_STATE_IP_CHECK:
     case NM_DEVICE_STATE_SECONDARIES:
+    case NM_DEVICE_STATE_DEACTIVATING:
       /* No state change for now, wait for connection to complete/fail */
+      DBG(__func__ << ": Wifi state change in progress, signal handleWifiBusy()");
+      for (const auto& listener : listeners)
+        listener->handleWifiBusy();
       break;
 
     case NM_DEVICE_STATE_NEED_AUTH:
@@ -359,7 +362,6 @@ void WifiStatusNM::handleWirelessConnected() {
        *        eventually this should prompt the user
        */
     case NM_DEVICE_STATE_DISCONNECTED:
-    case NM_DEVICE_STATE_DEACTIVATING:
     case NM_DEVICE_STATE_FAILED:
       if (connecting) {
         connected = false;
