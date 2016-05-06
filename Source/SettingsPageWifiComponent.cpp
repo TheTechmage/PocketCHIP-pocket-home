@@ -304,6 +304,13 @@ void SettingsPageWifiComponent::handleWifiDisconnected() {
       && pageStack->getDepth() == 1) {
     pageStack->insertPage(accessPointListPage, 0);
   }
+  
+  // if we're not currently displaying the connection page,
+  // make sure we pop back to the ap list. This way when you
+  // reenter wifi it shows the correct level of UI.
+  if (getMainStack().getCurrentPage() != connectionPage) {
+    pageStack->popPage(PageStackComponent::kTransitionNone);
+  }
 }
 
 void SettingsPageWifiComponent::handleWifiBusy() {
