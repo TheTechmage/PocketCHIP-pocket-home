@@ -10,10 +10,11 @@ void PowerSpinnerTimer::timerCallback() {
     if (powerComponent) {
         auto lsp = powerComponent->powerSpinner.get();
         const auto& lspImg = powerComponent->launchSpinnerImages;
-        
         i++;
         if (i == lspImg.size()) { i = 0; }
+      
         lsp->setImage(lspImg[i]);
+        
     }
 }
 
@@ -55,7 +56,7 @@ PowerPageComponent::PowerPageComponent() {
     addAndMakeVisible(felButton);
   
     powerSpinnerTimer.powerComponent = this;
-    Array<String> spinnerImgPaths{"wait1.png","wait2.png","wait3.png","wait4.png"};
+    Array<String> spinnerImgPaths{"wait0.png","wait1.png","wait2.png","wait3.png","wait4.png","wait5.png","wait6.png","wait7.png"};
     for(auto& path : spinnerImgPaths) {
         auto image = createImageFromFile(assetFile(path));
         launchSpinnerImages.add(image);
@@ -105,7 +106,7 @@ void PowerPageComponent::paint(Graphics &g) {
 void PowerPageComponent::resized() {
   
   auto bounds = getLocalBounds();
-   powerSpinner->setBounds(bounds.getWidth()/3., 0, bounds.getWidth()/3., bounds.getHeight());
+   powerSpinner->setBounds(0, 0, bounds.getWidth(), bounds.getHeight());
 
   {
     for (int i = 0, j = 0; i < 4; ++i) {

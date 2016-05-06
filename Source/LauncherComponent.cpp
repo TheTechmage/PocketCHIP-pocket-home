@@ -142,7 +142,7 @@ LauncherComponent::LauncherComponent(const var &configJson)
   }
 
   launchSpinnerTimer.launcherComponent = this;
-  Array<String> spinnerImgPaths{"wait1.png","wait2.png","wait3.png","wait4.png"};
+  Array<String> spinnerImgPaths{"wait0.png","wait1.png","wait2.png","wait3.png","wait4.png","wait5.png","wait6.png","wait7.png"};
   for(auto& path : spinnerImgPaths) {
     auto image = createImageFromFile(assetFile(path));
     launchSpinnerImages.add(image);
@@ -241,7 +241,7 @@ void LauncherComponent::resized() {
                              barSize);
   pageStack->setBounds(bounds.getX() + barSize, bounds.getY(), bounds.getWidth() - 2*barSize,
                        bounds.getHeight());
-  launchSpinner->setBounds(bounds.getWidth()/3., 0, bounds.getWidth()/3., bounds.getHeight());
+  launchSpinner->setBounds(0, 0, bounds.getWidth(), bounds.getHeight());
 
   // init
   if (!resize) {
