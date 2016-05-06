@@ -140,11 +140,13 @@ void WifiCategoryItemComponent::handleWifiBusy() {
 }
 
 void WifiCategoryItemComponent::enableWifiActions() {
+  bool isEnabled = getWifiStatus().isEnabled();
+  
   spinner->hide();
   icon->setVisible(true);
   
-  button->setEnabled(true);
-  icon->setEnabled(true);
+  button->setEnabled(isEnabled);
+  toggle->setEnabled(true);
   
   updateButtonText();
   toggle->setToggleState(getWifiStatus().isEnabled(), NotificationType::dontSendNotification);
@@ -155,7 +157,7 @@ void WifiCategoryItemComponent::disableWifiActions() {
   icon->setVisible(false);
   
   button->setEnabled(false);
-  icon->setEnabled(false);
+  toggle->setEnabled(false);
   
   updateButtonText();
   toggle->setToggleState(getWifiStatus().isEnabled(), NotificationType::dontSendNotification);
