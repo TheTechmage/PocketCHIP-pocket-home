@@ -120,37 +120,47 @@ void WifiCategoryItemComponent::enabledStateChanged(bool enabled) {
 }
 
 void WifiCategoryItemComponent::handleWifiEnabled() {
-  spinner->hide();
-  icon->setVisible(true);
-  toggle->setToggleState(true, NotificationType::dontSendNotification);
-  button->setEnabled(true);
-  updateButtonText();
+  enableWifiActions();
 }
 
 void WifiCategoryItemComponent::handleWifiDisabled() {
-  spinner->hide();
-  icon->setVisible(true);
-  toggle->setToggleState(false, NotificationType::dontSendNotification);
-  button->setEnabled(false);
-  updateButtonText();
+  enableWifiActions();
 }
 
 void WifiCategoryItemComponent::handleWifiConnected() {
-  spinner->hide();
-  icon->setVisible(true);
-  updateButtonText();
+  enableWifiActions();
 }
 
 void WifiCategoryItemComponent::handleWifiDisconnected() {
-  spinner->hide();
-  icon->setVisible(true);
-  updateButtonText();
+  enableWifiActions();
 }
 
 void WifiCategoryItemComponent::handleWifiBusy() {
+  disableWifiActions();
+}
+
+void WifiCategoryItemComponent::enableWifiActions() {
+  spinner->hide();
+  icon->setVisible(true);
+  
+  button->setEnabled(true);
+  icon->setEnabled(true);
+  
+  updateButtonText();
+  toggle->setToggleState(getWifiStatus().isEnabled(), NotificationType::dontSendNotification);
+}
+
+void WifiCategoryItemComponent::disableWifiActions() {
   spinner->show();
   icon->setVisible(false);
+  
+  button->setEnabled(false);
+  icon->setEnabled(false);
+  
+  updateButtonText();
+  toggle->setToggleState(getWifiStatus().isEnabled(), NotificationType::dontSendNotification);
 }
+
 
 void WifiCategoryItemComponent::updateButtonText() {
   const auto &status = getWifiStatus();

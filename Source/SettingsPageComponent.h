@@ -83,6 +83,8 @@ public:
   void handleWifiBusy() override;
 
 private:
+  void enableWifiActions();
+  void disableWifiActions();
   ScopedPointer<WifiSpinner> spinner;
   
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WifiCategoryItemComponent)
