@@ -110,6 +110,8 @@ private:
   
   bool init = false;
   
+  void enableWifiActions();
+  void disableWifiActions();
   void beginSetConnected();
   void beginSetDisconnected();
   void updateConnectionLabel();
