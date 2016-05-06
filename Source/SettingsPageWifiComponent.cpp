@@ -227,12 +227,12 @@ void SettingsPageWifiComponent::resized() {
 
 void SettingsPageWifiComponent::handleWifiEnabled() {
   DBG("SettingsPageWifiComponent::wifiEnabled");
-  spinner->hide();
+  enableWifiActions();
 }
 
 void SettingsPageWifiComponent::handleWifiDisabled() {
   DBG("SettingsPageWifiComponent::wifiDisabled");
-  spinner->hide();
+  enableWifiActions();
   
   // if wifi is disabled while we're on this page, pop back to previous page.
   if (getMainStack().getCurrentPage() == this) {
@@ -245,7 +245,7 @@ void SettingsPageWifiComponent::handleWifiDisabled() {
 
 void SettingsPageWifiComponent::handleWifiConnected() {
   DBG("SettingsPageWifiComponent::wifiConnected");
-  spinner->hide();
+  enableWifiActions();
 
   selectedAp = getWifiStatus().connectedAccessPoint();
 
@@ -271,27 +271,25 @@ void SettingsPageWifiComponent::handleWifiConnected() {
 
 void SettingsPageWifiComponent::handleWifiFailedConnect() {
   DBG("SettingsPageWifiComponent::wifiFailedConnect");
-  
-  spinner->hide();
+  enableWifiActions();
+
   updateConnectionLabel();
   
   if (selectedAp && selectedAp->requiresAuth) {
     errorLabel->setVisible(true);
     passwordEditor->setText("");
-    passwordEditor->setEnabled(true);
     passwordEditor->grabKeyboardFocus();
   }
 }
 
 void SettingsPageWifiComponent::handleWifiDisconnected() {
   DBG("SettingsPageWifiComponent::wifiDisconnected");
+  enableWifiActions();
   
-  spinner->hide();
   updateConnectionLabel();
   
   if (selectedAp && selectedAp->requiresAuth) {
     passwordEditor->setVisible(true);
-    passwordEditor->setEnabled(true);
     passwordEditor->grabKeyboardFocus();
   }
   connectionButton->setButtonText("Connect");
@@ -314,14 +312,27 @@ void SettingsPageWifiComponent::handleWifiDisconnected() {
 }
 
 void SettingsPageWifiComponent::handleWifiBusy() {
+  disableWifiActions();
+}
+
+void SettingsPageWifiComponent::enableWifiActions() {
+  bool isEnabled = getWifiStatus().isEnabled();
+  
+  spinner->hide();
+  connectionButton->setEnabled(isEnabled);
+  passwordEditor->setEnabled(isEnabled);
+}
+
+void SettingsPageWifiComponent::disableWifiActions() {
   spinner->show();
+  connectionButton->setEnabled(false);
+  passwordEditor->setEnabled(false);
 }
 
 void SettingsPageWifiComponent::beginSetConnected() {
   auto &status = getWifiStatus();
   
   errorLabel->setVisible(false);
-  passwordEditor->setEnabled(false);
   
   if (selectedAp && selectedAp->requiresAuth) {
     const auto& psk = passwordEditor->getTextValue().toString();
