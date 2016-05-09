@@ -20,6 +20,7 @@ public:
   void setDisabled() override;
   void setConnectedAccessPoint(WifiAccessPoint *ap, String psk = String::empty) override;
   void setDisconnected() override;
+  void cancelConnection() override;
 
   void initializeStatus() override;
 

@@ -28,6 +28,7 @@ public:
   virtual void setDisabled() = 0;
   virtual void setConnectedAccessPoint(WifiAccessPoint *ap, String psk = String::empty) = 0;
   virtual void setDisconnected() = 0;
+  virtual void cancelConnection() = 0;
 
   virtual void initializeStatus() = 0;
 };

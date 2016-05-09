@@ -172,6 +172,14 @@ static void handle_add_and_activate_finish(NMClient *client,
   }
 }
 
+static void handle_disconnect_finish(NMDevice *nmdevice,
+                                     GError *err,
+                                     gpointer user_data) {
+  if (err) {
+    DBG("WifiStatusNM: failed to disconnect!");
+    DBG("WifiStatusNM::" << __func__ << ": " << err->message);
+  }
+}
 
 void NMListener::initialize(WifiStatusNM *status, NMClient *client) {
   nm = client;
@@ -415,92 +423,106 @@ bool isValidWEPPassphraseFormat(String phrase) {
 
 void WifiStatusNM::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
   ScopedPointer<StringArray> cmd;
+  NMConnection *connection = NULL;
+  NMSettingWireless *s_wifi = NULL;
+  NMSettingWirelessSecurity *s_wsec = NULL;
+  const char *nm_ap_path = NULL;
+  const GPtrArray *ap_list;
+  NMAccessPoint *candidate_ap;
 
   for (const auto& listener : listeners)
     listener->handleWifiBusy();
 
-  // disconnect if no ap provided
-  if (ap == nullptr) {
-    NMActiveConnection *conn = nm_device_get_active_connection(nmdevice);
-    removeNMConnection(nmdevice, conn);
-
+  //FIXME: expand WifiAccessPoint struct to know which NMAccessPoint it is
+  ap_list = nm_device_wifi_get_access_points(NM_DEVICE_WIFI(nmdevice));
+  if (ap_list == NULL)
     return;
-  }
-  // try to connect to ap, dispatch events on success and failure
-  else {
-    NMConnection *connection = NULL;
-    NMSettingWireless *s_wifi = NULL;
-    NMSettingWirelessSecurity *s_wsec = NULL;
-    const char *nm_ap_path = NULL;
-    const GPtrArray *ap_list;
-    NMAccessPoint *candidate_ap;
 
-    //FIXME: expand WifiAccessPoint struct to know which NMAccessPoint it is
-    ap_list = nm_device_wifi_get_access_points(NM_DEVICE_WIFI(nmdevice));
-    if (ap_list == NULL)
-      return;
+  for (int i = 0; i < ap_list->len; i++) {
+    const char *candidate_hash;
+    candidate_ap = (NMAccessPoint *) g_ptr_array_index(ap_list, i);
+    candidate_hash = utils_hash_ap(nm_access_point_get_ssid(candidate_ap),
+                                   nm_access_point_get_mode(candidate_ap),
+                                   nm_access_point_get_flags(candidate_ap),
+                                   nm_access_point_get_wpa_flags(candidate_ap),
+                                   nm_access_point_get_rsn_flags(candidate_ap));
 
-    for (int i = 0; i < ap_list->len; i++) {
-      const char *candidate_hash;
-      candidate_ap = (NMAccessPoint *) g_ptr_array_index(ap_list, i);
-      candidate_hash = utils_hash_ap(nm_access_point_get_ssid(candidate_ap),
-                                     nm_access_point_get_mode(candidate_ap),
-                                     nm_access_point_get_flags(candidate_ap),
-                                     nm_access_point_get_wpa_flags(candidate_ap),
-                                     nm_access_point_get_rsn_flags(candidate_ap));
-
-      if (ap->hash == candidate_hash) {
-        nm_ap_path = nm_object_get_path(NM_OBJECT(candidate_ap));
-        break;
-      }
+    if (ap->hash == candidate_hash) {
+      nm_ap_path = nm_object_get_path(NM_OBJECT(candidate_ap));
+      break;
     }
-
-    if (!nm_ap_path)
-      return;
-
-    connecting = true;
-
-    connection = nm_connection_new();
-    s_wifi = (NMSettingWireless *) nm_setting_wireless_new();
-    nm_connection_add_setting(connection, NM_SETTING(s_wifi));
-    g_object_set(s_wifi,
-                 NM_SETTING_WIRELESS_SSID, nm_access_point_get_ssid(candidate_ap),
-                 NM_SETTING_WIRELESS_HIDDEN, false,
-                 NULL);
-
-    if (!psk.isEmpty()) {
-      s_wsec = (NMSettingWirelessSecurity *) nm_setting_wireless_security_new();
-      nm_connection_add_setting(connection, NM_SETTING(s_wsec));
-
-      if (nm_access_point_get_wpa_flags(candidate_ap) == NM_802_11_AP_SEC_NONE &&
-          nm_access_point_get_rsn_flags(candidate_ap) == NM_802_11_AP_SEC_NONE) {
-        /* WEP */
-        nm_setting_wireless_security_set_wep_key(s_wsec, 0, psk.toRawUTF8());
-	if (isValidWEPKeyFormat(psk))
-          g_object_set(G_OBJECT(s_wsec), NM_SETTING_WIRELESS_SECURITY_WEP_KEY_TYPE,
-                       NM_WEP_KEY_TYPE_KEY, NULL);
-	else if (isValidWEPPassphraseFormat(psk))
-          g_object_set(G_OBJECT(s_wsec), NM_SETTING_WIRELESS_SECURITY_WEP_KEY_TYPE,
-                       NM_WEP_KEY_TYPE_PASSPHRASE, NULL);
-	else
-	  DBG("User input invalid WEP Key type, psk.length() = " << psk.length()
-              << ", not in [5,10,13,26]");
-      } else {
-        g_object_set(s_wsec, NM_SETTING_WIRELESS_SECURITY_PSK, psk.toRawUTF8(), NULL);
-      }
-    }
-
-    nm_client_add_and_activate_connection(nmclient,
-                                                connection,
-                                                nmdevice,
-                                                nm_ap_path,
-                                                handle_add_and_activate_finish,
-                                                NULL);
   }
+
+  if (!nm_ap_path)
+    return;
+
+  connecting = true;
+
+  connection = nm_connection_new();
+  s_wifi = (NMSettingWireless *) nm_setting_wireless_new();
+  nm_connection_add_setting(connection, NM_SETTING(s_wifi));
+  g_object_set(s_wifi,
+               NM_SETTING_WIRELESS_SSID, nm_access_point_get_ssid(candidate_ap),
+               NM_SETTING_WIRELESS_HIDDEN, false,
+               NULL);
+
+  if (!psk.isEmpty()) {
+    s_wsec = (NMSettingWirelessSecurity *) nm_setting_wireless_security_new();
+    nm_connection_add_setting(connection, NM_SETTING(s_wsec));
+
+    if (nm_access_point_get_wpa_flags(candidate_ap) == NM_802_11_AP_SEC_NONE &&
+        nm_access_point_get_rsn_flags(candidate_ap) == NM_802_11_AP_SEC_NONE) {
+      /* WEP */
+      nm_setting_wireless_security_set_wep_key(s_wsec, 0, psk.toRawUTF8());
+      if (isValidWEPKeyFormat(psk))
+        g_object_set(G_OBJECT(s_wsec), NM_SETTING_WIRELESS_SECURITY_WEP_KEY_TYPE,
+                     NM_WEP_KEY_TYPE_KEY, NULL);
+      else if (isValidWEPPassphraseFormat(psk))
+        g_object_set(G_OBJECT(s_wsec), NM_SETTING_WIRELESS_SECURITY_WEP_KEY_TYPE,
+                     NM_WEP_KEY_TYPE_PASSPHRASE, NULL);
+      else
+        DBG("User input invalid WEP Key type, psk.length() = " << psk.length()
+            << ", not in [5,10,13,26]");
+    } else {
+      g_object_set(s_wsec, NM_SETTING_WIRELESS_SECURITY_PSK, psk.toRawUTF8(), NULL);
+    }
+  }
+
+  nm_client_add_and_activate_connection(nmclient,
+                                              connection,
+                                              nmdevice,
+                                              nm_ap_path,
+                                              handle_add_and_activate_finish,
+                                              NULL);
 }
 
 void WifiStatusNM::setDisconnected() {
-  setConnectedAccessPoint(nullptr);
+  for (const auto& listener : listeners)
+    listener->handleWifiBusy();
+
+  NMActiveConnection *conn = nm_device_get_active_connection(nmdevice);
+  removeNMConnection(nmdevice, conn);
+
+  return;
+}
+
+void WifiStatusNM::cancelConnection() {
+  if (connected) {
+    DBG("WifiStatusNM: cancelConnection() after connected, ignoring ...");
+    return;
+  }
+
+  for (const auto& listener : listeners)
+    listener->handleWifiBusy();
+
+  if (connecting) {
+    // just stop connecting if the user had not requested connection
+    NMActiveConnection *conn = nm_device_get_active_connection(nmdevice);
+    removeNMConnection(nmdevice, conn);
+  } else {
+    // just stop connecting if the user had not requested connection
+    nm_device_disconnect(nmdevice, handle_disconnect_finish, NULL);
+  }
 }
 
 void WifiStatusNM::initializeStatus() {

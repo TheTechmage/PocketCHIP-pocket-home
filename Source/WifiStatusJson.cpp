@@ -124,6 +124,15 @@ void WifiStatusJson::setDisconnected() {
   setConnectedAccessPoint(nullptr);
 }
 
+void WifiStatusJson::cancelConnection() {
+  if (connected) {
+    DBG("WifiStatusJson: cancelConnection() after connected, ignoring ...");
+    return;
+  }
+
+  setConnectedAccessPoint(nullptr);
+}
+
 void WifiStatusJson::initializeStatus() {
   connectedAP = nullptr;
   connected = false;
