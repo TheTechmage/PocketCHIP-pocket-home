@@ -254,18 +254,25 @@ void SettingsPageWifiComponent::handleWifiConnected() {
   connectionButton->setButtonText("Disconnect");
   errorLabel->setVisible(false);
   
-  // if we're on the connection page, and we just connected, remove the
-  // ability to go back to the access point list
-  if (pageStack->getCurrentPage() == connectionPage
-      && pageStack->getDepth() > 1) {
-    pageStack->removePage(pageStack->getDepth() - 2);
+  // if we're on the connection page, and we just connected
+  if (pageStack->getCurrentPage() == connectionPage) {
+    // remove the ability to go back to the access point list
+    if (pageStack->getDepth() > 1) {
+      pageStack->removePage(pageStack->getDepth() - 2);
+    }
+    
+    // pop back to previous page if we're focused
+    if (getMainStack().getCurrentPage() == this)
+      getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
   }
-  // if we're on the access point list, and just connected, swap to the connection page
+  // if we're on the access point list, and just connected
   else if (pageStack->getCurrentPage() == accessPointListPage) {
-    // check if we're the current stack item, if we are our transition should be animated
-    auto transition = (getMainStack().getCurrentPage() == this) ?
-      PageStackComponent::kTransitionTranslateHorizontal : PageStackComponent::kTransitionNone;
-    pageStack->swapPage(connectionPage, transition);
+    // swap to the connection page
+    pageStack->swapPage(connectionPage, PageStackComponent::kTransitionTranslateHorizontal);
+    
+    // pop back to previous page if we're focused
+    if (getMainStack().getCurrentPage() == this)
+      getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
   }
 }
 
@@ -279,6 +286,12 @@ void SettingsPageWifiComponent::handleWifiFailedConnect() {
     errorLabel->setVisible(true);
     passwordEditor->setText("");
     passwordEditor->grabKeyboardFocus();
+  }
+  
+  // make sure we show the ap list from back button
+  // add our access point list back into the stack, so it's available from back button
+  if (pageStack->getDepth() == 1) {
+    pageStack->insertPage(accessPointListPage, 0);
   }
 }
 
@@ -297,17 +310,15 @@ void SettingsPageWifiComponent::handleWifiDisconnected() {
   
   updateAccessPoints();
   
-  // add our access point list back into the stack, so it's available from back button
-  if (pageStack->getCurrentPage() == connectionPage
-      && pageStack->getDepth() == 1) {
-    pageStack->insertPage(accessPointListPage, 0);
-  }
-  
-  // if we're not currently displaying the connection page,
-  // make sure we pop back to the ap list. This way when you
-  // reenter wifi it shows the correct level of UI.
-  if (getMainStack().getCurrentPage() != connectionPage) {
-    pageStack->popPage(PageStackComponent::kTransitionNone);
+  // if we receive disconnect while on connection page
+  if (pageStack->getCurrentPage() == connectionPage) {
+    // add our access point list back into the stack, so it's available from back button
+    if (pageStack->getDepth() == 1) {
+      pageStack->insertPage(accessPointListPage, 0);
+    }
+    
+    // go back to ap list
+    pageStack->popPage(PageStackComponent::kTransitionTranslateHorizontal);
   }
 }
 
