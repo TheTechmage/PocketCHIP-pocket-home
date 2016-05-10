@@ -36,22 +36,22 @@ PowerPageComponent::PowerPageComponent() {
   addAndMakeVisible(backButton);
     
   powerOffButton = new TextButton("Power OFF");
-  powerOffButton->setButtonText("shutdown");
+  powerOffButton->setButtonText("Shutdown");
   powerOffButton->addListener(this);
   addAndMakeVisible(powerOffButton);
     
   rebootButton = new TextButton("Reboot");
-  rebootButton->setButtonText("reboot");
+  rebootButton->setButtonText("Reboot");
   rebootButton->addListener(this);
   addAndMakeVisible(rebootButton);
     
    sleepButton = new TextButton("Sleep");
-   sleepButton->setButtonText("sleep");
+   sleepButton->setButtonText("Sleep");
    sleepButton->addListener(this);
    addAndMakeVisible(sleepButton);
     
     felButton = new TextButton("Fel");
-    felButton->setButtonText("flash software");
+    felButton->setButtonText("Flash Software");
     felButton->addListener(this);
     addAndMakeVisible(felButton);
   
@@ -123,10 +123,10 @@ void PowerPageComponent::resized() {
 
   mainPage->setBounds(bounds);
 
-  powerOffButton->setBounds(bounds.getWidth()/3.375, 40, 200, 40);
-  sleepButton->setBounds(bounds.getWidth()/3.375, 90, 200, 40);
-  rebootButton->setBounds(bounds.getWidth()/3.375, 140, 200, 40);
-  felButton->setBounds(bounds.getWidth()/3.375, 190, 200, 40);
+  powerOffButton->setBounds(bounds.getWidth()/7, 40, 350, 40);
+  sleepButton->setBounds(bounds.getWidth()/7, 90, 350, 40);
+  rebootButton->setBounds(bounds.getWidth()/7, 140, 350, 40);
+  felButton->setBounds(bounds.getWidth()/7, 190, 350, 40);
   backButton->setBounds(bounds.getWidth()-60, bounds.getY(), 60, bounds.getHeight());
   
   buildNameLabel->setBounds(bounds.getX(), bounds.getY(), bounds.getWidth(), 30);

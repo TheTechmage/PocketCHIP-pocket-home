@@ -154,8 +154,8 @@ void PowerFelPageComponent::paint(Graphics &g) {
   
     g.setColour (Colours::white);
     g.setFont (22);
-    g.drawText ("about to reboot into software flashing mode.", 0, 40, 480, 40, Justification::centred, true);
-    g.drawText ("are you sure?", 0, 60, 480, 40, Justification::centred, true);
+    g.drawText ("About to reboot into software flashing mode.", 0, 40, 480, 40, Justification::centred, true);
+    g.drawText ("Are you sure?", 0, 60, 480, 40, Justification::centred, true);
 }
 
 void PowerFelPageComponent::resized() {

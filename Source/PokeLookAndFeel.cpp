@@ -25,14 +25,14 @@ PokeLookAndFeel::PokeLookAndFeel() {
   setColour(SwitchComponent::colorIdHandle, Colours::white);
   setColour(SwitchComponent::colorIdHandleOff, chipPink);
 
-  seguibl = Typeface::createSystemTypefaceFor(BinaryData::seguibl_ttf,
-                                             BinaryData::seguibl_ttfSize);
+  seguibl = Typeface::createSystemTypefaceFor(BinaryData::LatoRegular_ttf,
+                                             BinaryData::LatoRegular_ttfSize);
 }
 
 PokeLookAndFeel::~PokeLookAndFeel(){};
 
 float PokeLookAndFeel::getDrawableButtonTextHeightForBounds(const Rectangle<int> &bounds) {
-  return jmin(20.0f, bounds.getHeight() * 0.25f);
+  return jmin(23.0f, bounds.getHeight() * 0.99f);
 }
 
 float PokeLookAndFeel::getDrawableButtonImageHeightForBounds(const Rectangle<int> &bounds) {
@@ -80,10 +80,10 @@ void PokeLookAndFeel::drawLinearSliderBackground(Graphics &g, int x, int y, int 
 
   if (slider.isHorizontal()) {
     const float iy = y + height * 0.5f - radius;
-    indent.addRoundedRectangle(x - radius, iy, width + radius * 2.0f, radius * 2.0f, radius);
+    indent.addRoundedRectangle(x - radius, iy, width + radius * 2.0f, radius * 2.0f, 1);
   } else {
     const float ix = x + width * 0.5f - radius;
-    indent.addRoundedRectangle(ix, y - radius, radius * 2.0f, height + radius * 2.0f, radius);
+    indent.addRoundedRectangle(ix, y - radius, radius * 2.0f, height + radius * 2.0f, 1);
   }
 
   g.fillPath(indent);
@@ -105,8 +105,9 @@ int PokeLookAndFeel::getSliderThumbRadius(Slider &slider) {
 void PokeLookAndFeel::drawButtonText(Graphics &g, TextButton &button, bool isMouseOverButton,
                                      bool isButtonDown) {
   Font font(getTextButtonFont(button, button.getHeight()));
+  font.setExtraKerningFactor(0.07f);
+  font.setHeight(24);
   g.setFont(font);
-  g.setFont(24);
   g.setColour(button.findColour(button.getToggleState() ? TextButton::textColourOnId
                                                         : TextButton::textColourOffId)
                   .withMultipliedAlpha(button.isEnabled() ? 1.0f : 0.5f));
@@ -130,7 +131,7 @@ void PokeLookAndFeel::drawButtonBackground(Graphics &g, Button &button,
   const int height = button.getHeight();
 
   auto path = Path();
-  path.addRoundedRectangle(0, 0, width, height, 10);
+  path.addRoundedRectangle(0, 0, width, height, 1);
   g.setColour(chipPink);
   g.fillPath(path);
 }
@@ -144,11 +145,14 @@ void PokeLookAndFeel::drawDrawableButton(Graphics &g, DrawableButton &button,
 
   const int textH = (button.getStyle() == DrawableButton::ImageAboveTextLabel)
                         ? getDrawableButtonTextHeightForBounds(button.getLocalBounds())
+  
                         : 0;
 
+  Font font(18);
+  font.setExtraKerningFactor(0.07f);
   if (textH > 0) {
-    g.setFont(textH);
-
+    g.setFont(font);
+    //g.setFont(textH);
     g.setColour(button.findColour(toggleState ? DrawableButton::textColourOnId
                                               : DrawableButton::textColourId)
                     .withMultipliedAlpha(button.isEnabled() ? 1.0f : 0.4f));

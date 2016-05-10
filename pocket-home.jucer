@@ -7,7 +7,8 @@
     <GROUP id="{A1DF3F2A-774E-D561-3D99-5D88F7D2D731}" name="assets">
       <FILE id="lJvIsl" name="bluetooth.json" compile="0" resource="1" file="assets/bluetooth.json"/>
       <FILE id="FHWvCu" name="config.json" compile="0" resource="1" file="assets/config.json"/>
-      <FILE id="vpRBHk" name="seguibl.ttf" compile="0" resource="1" file="assets/fonts/seguibl.ttf"/>
+      <FILE id="P08AkY" name="Lato-Regular.ttf" compile="0" resource="1"
+            file="assets/fonts/Lato-Regular.ttf"/>
       <FILE id="e8kBas" name="wifi.json" compile="0" resource="1" file="assets/wifi.json"/>
     </GROUP>
     <GROUP id="{4593A345-C350-960A-058D-B48F8240AA1D}" name="Source">

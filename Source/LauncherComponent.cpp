@@ -104,7 +104,7 @@ void WifiIconTimer::timerCallback() {
 LauncherComponent::LauncherComponent(const var &configJson)
 {
   bgColor = Colour(0xff2e8dbd);
-  createImageFromFile(assetFile("mainBackground.png"));
+  bgImage = createImageFromFile(assetFile("mainBackground.png"));
   pageStack = new PageStackComponent();
   addAndMakeVisible(pageStack);
 
