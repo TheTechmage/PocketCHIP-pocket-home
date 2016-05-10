@@ -114,7 +114,7 @@ private:
   void disableWifiActions();
   void beginSetConnected();
   void beginSetDisconnected();
-  void updateConnectionLabel();
+  void updateConnectionLabelAndButton();
   void createAccessPointList();
   void checkShowListNav();
 

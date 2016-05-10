@@ -154,7 +154,6 @@ SettingsPageWifiComponent::SettingsPageWifiComponent() :
   connectionPage->addAndMakeVisible(passwordEditor);
 
   connectionButton = new TextButton("Connection Button");
-  connectionButton->setButtonText("Connect");
   connectionButton->addListener(this);
   connectionPage->addAndMakeVisible(connectionButton);
     
@@ -193,7 +192,7 @@ void SettingsPageWifiComponent::resized() {
   wifiIconComponent->setBounds(10, 10, 60, 60);
   backButton->setBounds(b.getX(), b.getY(), 60, b.getHeight());
   const auto& cb = connectionButton->getLocalBounds();
-  spinner->setBoundsToFit(cb.getX() + (cb.getHeight()/4.), cb.getY(), cb.getWidth(), cb.getHeight(), Justification::centredLeft, true);
+  spinner->setBoundsToFit(cb.getX(), cb.getY(), cb.getWidth(), cb.getHeight(), Justification::centred, true);
   
   int btnHeight = 50;
   prevPageBtn->setSize(btnHeight, btnHeight);
@@ -214,9 +213,8 @@ void SettingsPageWifiComponent::resized() {
     auto& wifiStatus = getWifiStatus();
     if (wifiStatus.isConnected()) {
       selectedAp = wifiStatus.connectedAccessPoint();
-      updateConnectionLabel();
+      updateConnectionLabelAndButton();
       passwordEditor->setVisible(false);
-      connectionButton->setButtonText("Disconnect");
       pageStack->pushPage(connectionPage, PageStackComponent::kTransitionNone);
     }
     else {
@@ -227,11 +225,13 @@ void SettingsPageWifiComponent::resized() {
 
 void SettingsPageWifiComponent::handleWifiEnabled() {
   DBG("SettingsPageWifiComponent::wifiEnabled");
+  
   enableWifiActions();
 }
 
 void SettingsPageWifiComponent::handleWifiDisabled() {
   DBG("SettingsPageWifiComponent::wifiDisabled");
+  
   enableWifiActions();
   
   // if wifi is disabled while we're on this page, pop back to previous page.
@@ -245,13 +245,10 @@ void SettingsPageWifiComponent::handleWifiDisabled() {
 
 void SettingsPageWifiComponent::handleWifiConnected() {
   DBG("SettingsPageWifiComponent::wifiConnected");
-  enableWifiActions();
-
   selectedAp = getWifiStatus().connectedAccessPoint();
 
-  updateConnectionLabel();
+  enableWifiActions();
   passwordEditor->setVisible(false);
-  connectionButton->setButtonText("Disconnect");
   errorLabel->setVisible(false);
   
   // if we're on the connection page
@@ -274,9 +271,8 @@ void SettingsPageWifiComponent::handleWifiConnected() {
 
 void SettingsPageWifiComponent::handleWifiFailedConnect() {
   DBG("SettingsPageWifiComponent::wifiFailedConnect");
+  
   enableWifiActions();
-
-  updateConnectionLabel();
   
   if (selectedAp && selectedAp->requiresAuth) {
     errorLabel->setVisible(true);
@@ -293,18 +289,15 @@ void SettingsPageWifiComponent::handleWifiFailedConnect() {
 
 void SettingsPageWifiComponent::handleWifiDisconnected() {
   DBG("SettingsPageWifiComponent::wifiDisconnected");
-  enableWifiActions();
   
-  updateConnectionLabel();
+  enableWifiActions();
+  updateAccessPoints();
   
   if (selectedAp && selectedAp->requiresAuth) {
     passwordEditor->setVisible(true);
     passwordEditor->grabKeyboardFocus();
   }
-  connectionButton->setButtonText("Connect");
   errorLabel->setVisible(false);
-  
-  updateAccessPoints();
   
   // if we receive disconnect while on connection page
   if (pageStack->getCurrentPage() == connectionPage) {
@@ -328,10 +321,14 @@ void SettingsPageWifiComponent::enableWifiActions() {
   spinner->hide();
   connectionButton->setEnabled(isEnabled);
   passwordEditor->setEnabled(isEnabled);
+  
+  updateConnectionLabelAndButton();
 }
 
 void SettingsPageWifiComponent::disableWifiActions() {
   spinner->show();
+  connectionButton->setButtonText("");
+
   connectionButton->setEnabled(false);
   passwordEditor->setEnabled(false);
 }
@@ -341,6 +338,11 @@ void SettingsPageWifiComponent::beginSetConnected() {
   
   errorLabel->setVisible(false);
   
+  // make sure we hide the ap list while attempting to connect
+  if (pageStack->getDepth() > 1) {
+    pageStack->removePage(pageStack->getDepth() - 2);
+  }
+  
   if (selectedAp && selectedAp->requiresAuth) {
     const auto& psk = passwordEditor->getTextValue().toString();
     status.setConnectedAccessPoint(selectedAp, psk);
@@ -348,35 +350,35 @@ void SettingsPageWifiComponent::beginSetConnected() {
   else {
     status.setConnectedAccessPoint(selectedAp);
   }
-    
-  // make sure we hide the ap list while attempting to connect
-  if (pageStack->getDepth() > 1) {
-    pageStack->removePage(pageStack->getDepth() - 2);
-  }
 }
 
 void SettingsPageWifiComponent::beginSetDisconnected() {
   getWifiStatus().setDisconnected();
 }
 
-void SettingsPageWifiComponent::updateConnectionLabel() {
+void SettingsPageWifiComponent::updateConnectionLabelAndButton() {
   const auto& status = getWifiStatus();
   String ssidText;
+  String buttonText;
   
   if (selectedAp) {
     ssidText = selectedAp->ssid;
+    buttonText = "Connect";
     
     auto connectedAp = status.connectedAccessPoint();
     if (status.isConnected() && connectedAp &&
         connectedAp->hash == selectedAp->hash) {
       ssidText += " (connected)";
+      buttonText = "Disconnect";
     }
   }
   else {
     ssidText = "Access point disconnected.";
+    buttonText = "...";
   }
   
   connectionLabel->setText(ssidText, juce::NotificationType::dontSendNotification);
+  connectionButton->setButtonText(buttonText);
 }
 
 // TODO: this is pretty expensive, but the cleanup is very simple. Could be replaced with a change
@@ -448,19 +450,17 @@ void SettingsPageWifiComponent::buttonClicked(Button *button) {
       selectedAp = new WifiAccessPoint(*apButton->ap);
       auto connectedAp = status.connectedAccessPoint().get();
       
-      updateConnectionLabel();
+      updateConnectionLabelAndButton();
       
       if (status.isConnected() && connectedAp &&
           connectedAp->hash == selectedAp->hash) {
         passwordEditor->setText(String::empty);
         passwordEditor->setVisible(false);
         errorLabel->setVisible(false);
-        connectionButton->setButtonText("Disconnect");
       } else {
         passwordEditor->setText(String::empty);
         passwordEditor->setVisible(apButton->ap->requiresAuth);
         errorLabel->setVisible(false);
-        connectionButton->setButtonText("Connect");
       }
       
       pageStack->pushPage(connectionPage, PageStackComponent::kTransitionTranslateHorizontal);
