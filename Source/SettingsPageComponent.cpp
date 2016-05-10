@@ -135,17 +135,19 @@ void WifiCategoryItemComponent::handleWifiDisconnected() {
   enableWifiActions();
 }
 
+void WifiCategoryItemComponent::handleWifiFailedConnect() {
+  enableWifiActions();
+}
+
 void WifiCategoryItemComponent::handleWifiBusy() {
   disableWifiActions();
 }
 
 void WifiCategoryItemComponent::enableWifiActions() {
-  bool isEnabled = getWifiStatus().isEnabled();
-  
   spinner->hide();
   icon->setVisible(true);
   
-  button->setEnabled(isEnabled);
+  button->setEnabled(getWifiStatus().isEnabled());
   toggle->setEnabled(true);
   
   updateButtonText();
@@ -156,7 +158,7 @@ void WifiCategoryItemComponent::disableWifiActions() {
   spinner->show();
   icon->setVisible(false);
   
-  button->setEnabled(false);
+  button->setEnabled(getWifiStatus().isEnabled());
   toggle->setEnabled(false);
   
   updateButtonText();
