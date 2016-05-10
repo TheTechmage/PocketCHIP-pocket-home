@@ -1,3 +1,10 @@
+pocket-home (0.0.3) unstable; urgency=low
+
+  * New look and feel.
+  * Compatibility patches for wifi errors.
+
+ -- Ben Young <software@nextthing.co>  Mon, 9 May 2016 18:15:16 +0000
+
 pocket-home (0.0.2) unstable; urgency=low
 
   * Pull in testing changes.
