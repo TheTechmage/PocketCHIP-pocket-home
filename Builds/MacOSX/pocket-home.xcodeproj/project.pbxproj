@@ -236,7 +236,6 @@
 		4A7937C4EE1F575BFAF3397E /* juce_Colour.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_Colour.cpp; path = ../../deps/JUCE/modules/juce_graphics/colour/juce_Colour.cpp; sourceTree = SOURCE_ROOT; };
 		4A9D2ED0813A5AB8705693A9 /* juce_SystemStats.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_SystemStats.cpp; path = ../../deps/JUCE/modules/juce_core/system/juce_SystemStats.cpp; sourceTree = SOURCE_ROOT; };
 		4B78332812E8B49CC135A14B /* juce_Array.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_Array.h; path = ../../deps/JUCE/modules/juce_core/containers/juce_Array.h; sourceTree = SOURCE_ROOT; };
-		4BFD21336C817DAF91E99024 /* seguibl.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = seguibl.ttf; path = ../../assets/fonts/seguibl.ttf; sourceTree = SOURCE_ROOT; };
 		4D8757139158D9935FEB1A29 /* juce_RelativeCoordinatePositioner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_RelativeCoordinatePositioner.h; path = ../../deps/JUCE/modules/juce_gui_basics/positioning/juce_RelativeCoordinatePositioner.h; sourceTree = SOURCE_ROOT; };
 		4D9AE5AD94CCEBD9D2A4FBDD /* juce_FileTreeComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_FileTreeComponent.cpp; path = ../../deps/JUCE/modules/juce_gui_basics/filebrowser/juce_FileTreeComponent.cpp; sourceTree = SOURCE_ROOT; };
 		4E16397A5873846560E6C812 /* juce_DialogWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_DialogWindow.h; path = ../../deps/JUCE/modules/juce_gui_basics/windows/juce_DialogWindow.h; sourceTree = SOURCE_ROOT; };
@@ -378,6 +377,7 @@
 		825EF073C8A9783B6DB6639F /* juce_mac_CoreGraphicsHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_mac_CoreGraphicsHelpers.h; path = ../../deps/JUCE/modules/juce_graphics/native/juce_mac_CoreGraphicsHelpers.h; sourceTree = SOURCE_ROOT; };
 		828E235F0CF5F7666377742B /* juce_SliderPropertyComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_SliderPropertyComponent.cpp; path = ../../deps/JUCE/modules/juce_gui_basics/properties/juce_SliderPropertyComponent.cpp; sourceTree = SOURCE_ROOT; };
 		82DB739A77C75D988470F74F /* juce_linux_Files.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_linux_Files.cpp; path = ../../deps/JUCE/modules/juce_core/native/juce_linux_Files.cpp; sourceTree = SOURCE_ROOT; };
+		838A1FDC1A43D1D0D86FFFD8 /* Lato-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Lato-Regular.ttf"; path = "../../assets/fonts/Lato-Regular.ttf"; sourceTree = SOURCE_ROOT; };
 		83D38E4D0E9435D9A27A17D8 /* juce_HighResolutionTimer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_HighResolutionTimer.cpp; path = ../../deps/JUCE/modules/juce_core/threads/juce_HighResolutionTimer.cpp; sourceTree = SOURCE_ROOT; };
 		85202D8C01CE630D58FE6741 /* juce_CallOutBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_CallOutBox.h; path = ../../deps/JUCE/modules/juce_gui_basics/windows/juce_CallOutBox.h; sourceTree = SOURCE_ROOT; };
 		85315A05CEA8EF549B94C430 /* juce_File.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_File.cpp; path = ../../deps/JUCE/modules/juce_core/files/juce_File.cpp; sourceTree = SOURCE_ROOT; };
@@ -1245,10 +1245,8 @@
 				E10CCF27E71FCD846DAC0AB3 /* Main.h */,
 				00F169F4F344BBF6892637D1 /* Main.cpp */,
 			);
-			indentWidth = 2;
 			name = Source;
 			sourceTree = "<group>";
-			tabWidth = 2;
 		};
 		69289AB55C9A35D94C277E23 /* image_formats */ = {
 			isa = PBXGroup;
@@ -1327,7 +1325,7 @@
 			children = (
 				C4A55CD338AC718F0A513A66 /* bluetooth.json */,
 				0EA5F70BB96DEA3B63886CFE /* config.json */,
-				4BFD21336C817DAF91E99024 /* seguibl.ttf */,
+				838A1FDC1A43D1D0D86FFFD8 /* Lato-Regular.ttf */,
 				BEA73F0F044F15F4ECD6275B /* wifi.json */,
 			);
 			name = assets;
@@ -1811,6 +1809,7 @@
 			);
 			name = Source;
 			sourceTree = "<group>";
+			tabWidth = 2;
 		};
 		EECC258785CE44A32E1CD1AA /* misc */ = {
 			isa = PBXGroup;

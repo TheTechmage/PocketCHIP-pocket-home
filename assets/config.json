@@ -5,32 +5,32 @@
       "name": "Apps",
       "items": [
         {
-          "name": "terminal",
+          "name": "Terminal",
           "icon": "appIcons/terminal.png",
           "shell": "vala-terminal -fs 8 -g 20 20"
         },
         {
-          "name": "play pico 8",
+          "name": "Play Pico 8",
           "icon": "appIcons/pico8.png",
           "shell": "pico8"
         },
         {
-          "name": "make music",
+          "name": "Make Music",
           "icon": "appIcons/musicsequencer.png",
           "shell": "sunvox"
          },
          {
-          "name": "help",
+          "name": "Get Help",
           "icon": "appIcons/help.png",
           "shell": "surf /usr/share/pocketchip-localdoc/index.html"
         },
         {
-          "name": "write",
+          "name": "Write",
           "icon": "appIcons/texteditor.png",
           "shell": "leafpad"
         },
         {
-          "name": "browse files",
+          "name": "Browse Files",
           "icon": "appIcons/filebrowser.png",
           "shell": "pcmanfm"
         },
