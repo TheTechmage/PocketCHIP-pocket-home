@@ -135,17 +135,19 @@ void WifiCategoryItemComponent::handleWifiDisconnected() {
   enableWifiActions();
 }
 
+void WifiCategoryItemComponent::handleWifiFailedConnect() {
+  enableWifiActions();
+}
+
 void WifiCategoryItemComponent::handleWifiBusy() {
   disableWifiActions();
 }
 
 void WifiCategoryItemComponent::enableWifiActions() {
-  bool isEnabled = getWifiStatus().isEnabled();
-  
   spinner->hide();
   icon->setVisible(true);
   
-  button->setEnabled(isEnabled);
+  button->setEnabled(getWifiStatus().isEnabled());
   toggle->setEnabled(true);
   
   updateButtonText();
@@ -156,7 +158,7 @@ void WifiCategoryItemComponent::disableWifiActions() {
   spinner->show();
   icon->setVisible(false);
   
-  button->setEnabled(false);
+  button->setEnabled(getWifiStatus().isEnabled());
   toggle->setEnabled(false);
   
   updateButtonText();
@@ -284,18 +286,6 @@ SettingsPageComponent::SettingsPageComponent() {
 }
 
 SettingsPageComponent::~SettingsPageComponent() {}
-
-// if we have UI depth (our radio is on) we show current wifi page (could be ap list or connection page)
-// otherwise we just push ourselves, since we are the top active level of wifi configuration
-void SettingsPageComponent::pushActiveWifiPage() {
-  if (getWifiStatus().isEnabled()) {
-    wifiPage->updateAccessPoints();
-    getMainStack().pushPage(wifiPage, PageStackComponent::kTransitionTranslateHorizontal);
-  }
-  else {
-    getMainStack().pushPage(this, PageStackComponent::kTransitionTranslateHorizontal);
-  }
-}
 
 void SettingsPageComponent::paint(Graphics &g) {
     auto bounds = getLocalBounds();

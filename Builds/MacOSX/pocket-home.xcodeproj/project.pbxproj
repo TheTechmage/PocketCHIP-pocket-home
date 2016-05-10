@@ -1245,6 +1245,7 @@
 				E10CCF27E71FCD846DAC0AB3 /* Main.h */,
 				00F169F4F344BBF6892637D1 /* Main.cpp */,
 			);
+			indentWidth = 2;
 			name = Source;
 			sourceTree = "<group>";
 		};
