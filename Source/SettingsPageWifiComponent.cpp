@@ -254,26 +254,22 @@ void SettingsPageWifiComponent::handleWifiConnected() {
   connectionButton->setButtonText("Disconnect");
   errorLabel->setVisible(false);
   
-  // if we're on the connection page, and we just connected
+  // if we're on the connection page
   if (pageStack->getCurrentPage() == connectionPage) {
     // remove the ability to go back to the access point list
     if (pageStack->getDepth() > 1) {
       pageStack->removePage(pageStack->getDepth() - 2);
     }
-    
-    // pop back to previous page if we're focused
-    if (getMainStack().getCurrentPage() == this)
-      getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
   }
-  // if we're on the access point list, and just connected
+  // if we're on the access point list
   else if (pageStack->getCurrentPage() == accessPointListPage) {
     // swap to the connection page
     pageStack->swapPage(connectionPage, PageStackComponent::kTransitionTranslateHorizontal);
-    
-    // pop back to previous page if we're focused
-    if (getMainStack().getCurrentPage() == this)
-      getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
   }
+  
+  // pop back to previous page if we're focused
+  if (getMainStack().getCurrentPage() == this)
+    getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontal);
 }
 
 void SettingsPageWifiComponent::handleWifiFailedConnect() {
