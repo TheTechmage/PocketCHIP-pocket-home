@@ -159,6 +159,7 @@ static void handle_add_and_activate_finish(NMClient *client,
                                            const char* path,
                                            GError *err,
                                            gpointer user_data) {
+  WifiStatusNM *wifiStatus = (WifiStatusNM *) user_data;
   /*
   NMActiveConnection *active;
   GError *err = NULL;
@@ -168,6 +169,7 @@ static void handle_add_and_activate_finish(NMClient *client,
   if (err) {
     DBG("WifiStatusNM: failed to add/activate connection!");
     DBG("WifiStatusNM::" << __func__ << ": " << err->message);
+    wifiStatus->handleWirelessConnected();
     //g_error_free(err);
   }
 }
@@ -495,7 +497,7 @@ void WifiStatusNM::setConnectedAccessPoint(WifiAccessPoint *ap, String psk) {
                                                 nmdevice,
                                                 nm_ap_path,
                                                 handle_add_and_activate_finish,
-                                                NULL);
+                                                this);
   }
 }
 
