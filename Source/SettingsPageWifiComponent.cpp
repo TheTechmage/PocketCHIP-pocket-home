@@ -341,6 +341,11 @@ void SettingsPageWifiComponent::beginSetConnected() {
   else {
     status.setConnectedAccessPoint(selectedAp);
   }
+    
+  // make sure we hide the ap list while attempting to connect
+  if (pageStack->getDepth() > 1) {
+    pageStack->removePage(pageStack->getDepth() - 2);
+  }
 }
 
 void SettingsPageWifiComponent::beginSetDisconnected() {
