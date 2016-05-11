@@ -14,8 +14,12 @@ class LaunchSpinnerTimer : public Timer {
 public:
     LaunchSpinnerTimer() {};
     void timerCallback();
+  
     LauncherComponent* launcherComponent;
+  
     int i = 0;
+    int t = 0;
+    int timeout = 30 * 1000;
 };
 
 class BatteryIconTimer : public Timer {

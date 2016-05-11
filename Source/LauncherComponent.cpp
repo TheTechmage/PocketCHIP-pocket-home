@@ -14,9 +14,18 @@ void LaunchSpinnerTimer::timerCallback() {
     auto lsp = launcherComponent->launchSpinner.get();
     const auto& lspImg = launcherComponent->launchSpinnerImages;
     
+    // change image
     i++;
     if (i == lspImg.size()) { i = 0; }
     lsp->setImage(lspImg[i]);
+    
+    // check timeout
+    t += getTimerInterval();
+    if (t > timeout) {
+      t = 0;
+      lsp->setVisible(false);
+      stopTimer();
+    }
   }
 }
 
@@ -253,7 +262,7 @@ void LauncherComponent::resized() {
 void LauncherComponent::showLaunchSpinner() {
   DBG("Show launch spinner");
   launchSpinner->setVisible(true);
-  launchSpinnerTimer.startTimer(1*1000);
+  launchSpinnerTimer.startTimer(500);
 }
 
 void LauncherComponent::hideLaunchSpinner() {
