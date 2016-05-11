@@ -1808,6 +1808,7 @@
 				F52C15B3C4E93E9FE736BCD9 /* Frameworks */,
 				3227693E509670763A902693 /* Products */,
 			);
+			indentWidth = 2;
 			name = Source;
 			sourceTree = "<group>";
 			tabWidth = 2;

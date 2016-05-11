@@ -25,7 +25,6 @@ SettingsCategoryButton::SettingsCategoryButton(const String &name)
 void SettingsCategoryButton::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) {
   const auto& bounds = pillBounds;
   float borderThick = 4.0f;
-  float radius = float(bounds.getHeight()) / 2.0f;
   
   g.setColour(Colours::white);
   isButtonDown ? setAlpha(0.5f) : setAlpha(1.0f);
@@ -33,7 +32,7 @@ void SettingsCategoryButton::paintButton(Graphics &g, bool isMouseOverButton, bo
   if (isEnabled()) {
     g.drawRoundedRectangle(bounds.getX() + borderThick, bounds.getY() + borderThick,
                            bounds.getWidth() - 2*borderThick, bounds.getHeight()  - 2*borderThick,
-                           radius, borderThick);
+                           1, borderThick);
   }
   
   // TODO: write button text as grey if choice is completely unset?

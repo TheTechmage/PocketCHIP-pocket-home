@@ -103,7 +103,7 @@ void WifiIconTimer::timerCallback() {
 
 LauncherComponent::LauncherComponent(const var &configJson)
 {
-  bgColor = Colour(0xff2e8dbd);
+  bgColor = Colour(0x000000);
   bgImage = createImageFromFile(assetFile("mainBackground.png"));
   pageStack = new PageStackComponent();
   addAndMakeVisible(pageStack);
@@ -228,7 +228,7 @@ LauncherComponent::~LauncherComponent() {
 void LauncherComponent::paint(Graphics &g) {
   auto bounds = getLocalBounds();
   g.fillAll(bgColor);
-  g.drawImage(bgImage,bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), 0, 0, bounds.getWidth(), bounds.getHeight(), false);
+  g.drawImage(bgImage,bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), 0, 0, bgImage.getWidth(), bgImage.getHeight(), false);
 }
 
 void LauncherComponent::resized() {
