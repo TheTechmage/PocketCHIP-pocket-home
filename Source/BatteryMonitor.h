@@ -11,14 +11,18 @@ struct BatteryStatus {
 class BatteryMonitor: public juce::Thread {
 private:
   BatteryStatus status;
+  
+  File voltageFile;
+  File chargingFile;
+  
   float maxVoltage = 4.25;
   float minVoltage = 3.275;
 public:
   BatteryMonitor();
   ~BatteryMonitor();
   
-  virtual void run();
-  
   const BatteryStatus& getCurrentStatus();
+  void updateStatus();
   
+  virtual void run();
 };

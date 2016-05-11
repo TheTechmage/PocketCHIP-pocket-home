@@ -124,14 +124,6 @@ LauncherComponent::LauncherComponent(const var &configJson)
   addAndMakeVisible(topButtons);
   addAndMakeVisible(botButtons);
   
-  batteryMonitor.startThread();
-  
-  batteryIconTimer.launcherComponent = this;
-  batteryIconTimer.startTimer(1000);
-    
-  wifiIconTimer.launcherComponent = this;
-  wifiIconTimer.startTimer(5000);
-    
   Array<String> wifiImgPaths{"wifiStrength0.png","wifiStrength1.png","wifiStrength2.png","wifiStrength3.png","wifiOff.png"};
   for(auto& path : wifiImgPaths) {
     auto image = createImageFromFile(assetFile(path));
@@ -156,6 +148,7 @@ LauncherComponent::LauncherComponent(const var &configJson)
     auto image = createImageFromFile(assetFile(path));
     launchSpinnerImages.add(image);
   }
+  
   launchSpinner = new ImageComponent();
   launchSpinner->setImage(launchSpinnerImages[0]);
   launchSpinner->setInterceptsMouseClicks(false, false);
@@ -227,6 +220,17 @@ LauncherComponent::LauncherComponent(const var &configJson)
   }
 
   defaultPage = pagesByName[configJson["defaultPage"]];
+  
+  batteryMonitor.updateStatus();
+  batteryMonitor.startThread();
+  
+  batteryIconTimer.launcherComponent = this;
+  batteryIconTimer.startTimer(1000);
+  batteryIconTimer.timerCallback();
+  
+  wifiIconTimer.launcherComponent = this;
+  wifiIconTimer.startTimer(2000);
+  wifiIconTimer.timerCallback();
 }
 
 LauncherComponent::~LauncherComponent() {
