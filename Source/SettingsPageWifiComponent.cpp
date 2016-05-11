@@ -58,15 +58,14 @@ void WifiAccessPointListItem::paintButton(Graphics &g, bool isMouseOverButton, b
   auto bounds = getLocalBounds();
   auto inset = bounds.reduced(6, 4);
   auto w = bounds.getWidth(), h = bounds.getHeight();
-  auto iconBounds = Rectangle<float>(w - h, h/5.0, h*0.6, h*0.6);
+  auto iconBounds = Rectangle<float>(w - h, h/5.0, h*0.5, h*0.5);
   auto borderThick = 4.0;
-  float radius = float(bounds.getHeight()) / 2.0f;
 
   g.setColour(findColour(ListBox::ColourIds::backgroundColourId));
   isButtonDown ? setAlpha(0.5f) : setAlpha(1.0f);
   g.drawRoundedRectangle(bounds.getX() + borderThick, bounds.getY() + borderThick,
-                         bounds.getWidth() - 2*borderThick, bounds.getHeight()  - 2*borderThick,
-                         radius, borderThick);
+                         bounds.getWidth() - 4*borderThick, bounds.getHeight()  - 2*borderThick,
+                         1, borderThick);
 
   if (!ap) {
      DBG(__func__ << ": ERROR: trying to paint NULL AP!!!!");

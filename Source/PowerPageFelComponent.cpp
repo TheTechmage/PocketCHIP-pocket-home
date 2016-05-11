@@ -154,8 +154,10 @@ void PowerFelPageComponent::paint(Graphics &g) {
   
     g.setColour (Colours::white);
     g.setFont (22);
-    g.drawText ("About to reboot into software flashing mode.", 0, 40, 480, 40, Justification::centred, true);
-    g.drawText ("Are you sure?", 0, 60, 480, 40, Justification::centred, true);
+    g.drawText ("About to reboot into software flashing mode.", 0, 20, 480, 40, Justification::centred, true);
+    g.drawText ("Are you sure?", 0, 40, 480, 40, Justification::centred, true);
+    g.setFont (18);
+    g.drawText ("For instructions, visit pcflash.getchip.com", 0, 215, 480, 40, Justification::centred, true);
 }
 
 void PowerFelPageComponent::resized() {
@@ -178,8 +180,8 @@ void PowerFelPageComponent::resized() {
     
     mainPage->setBounds(bounds);
     
-    yesButton->setBounds(bounds.getWidth()/3.375, 120, 200, 40);
-    noButton->setBounds(bounds.getWidth()/3.375, 185, 200, 40);
+    yesButton->setBounds(bounds.getWidth()/3.375, 95, 200, 40);
+    noButton->setBounds(bounds.getWidth()/3.375, 165, 200, 40);
     //backButton->setBounds(bounds.getWidth()-60, bounds.getY(), 60, bounds.getHeight());
 }
 

@@ -105,7 +105,7 @@ int PokeLookAndFeel::getSliderThumbRadius(Slider &slider) {
 void PokeLookAndFeel::drawButtonText(Graphics &g, TextButton &button, bool isMouseOverButton,
                                      bool isButtonDown) {
   Font font(getTextButtonFont(button, button.getHeight()));
-  font.setExtraKerningFactor(0.07f);
+  font.setExtraKerningFactor(0.06f);
   font.setHeight(24);
   g.setFont(font);
   g.setColour(button.findColour(button.getToggleState() ? TextButton::textColourOnId
@@ -149,7 +149,7 @@ void PokeLookAndFeel::drawDrawableButton(Graphics &g, DrawableButton &button,
                         : 0;
 
   Font font(18);
-  font.setExtraKerningFactor(0.07f);
+  font.setExtraKerningFactor(0.06f);
   if (textH > 0) {
     g.setFont(font);
     //g.setFont(textH);
