@@ -3,10 +3,14 @@
 #include "WifiStatus.h"
 #include "Utils.h"
 
+// FIXME: this is a hack to fix touch screen presses causing buzzing
+// when no application holds alsa open
+#if JUCE_LINUX
 #include <alsa/asoundlib.h>
 
 #define DEFAULT_BUFFER_SIZE	4096	/*in samples*/
 snd_pcm_t *g_alsa_playback_handle = 0;
+#endif
 
 void BluetoothStatus::populateFromJson(const var &json) {
   devices.clear();
@@ -52,6 +56,7 @@ bool PokeLaunchApplication::moreThanOneInstanceAllowed() {
 }
 
 bool PokeLaunchApplication::sound() {
+#if JUCE_LINUX
   int err;
   int freq = 44100, channels = 2;
   snd_pcm_hw_params_t *hw_params;
@@ -126,7 +131,7 @@ bool PokeLaunchApplication::sound() {
 
   /* Stop PCM device and drop pending frames */
   snd_pcm_drain(g_alsa_playback_handle);
-  
+#endif
 
   return true;
 }
