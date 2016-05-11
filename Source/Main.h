@@ -41,6 +41,8 @@ public:
 
   static PokeLaunchApplication *get();
 
+  bool sound();
+
   const String getApplicationName() override;
   const String getApplicationVersion() override;
   bool moreThanOneInstanceAllowed() override;

@@ -5,6 +5,7 @@ PKG_CONFIG:=$(shell which pkg-config)
 PKG_CONFIG_PACKAGES = \
   NetworkManager \
   libnm-glib \
+	alsa \
 
 export PKG_CONFIG_CFLAGS=$(foreach pkg, $(PKG_CONFIG_PACKAGES), $(shell $(PKG_CONFIG) --cflags $(pkg)))
 export PKG_CONFIG_LDFLAGS=$(foreach pkg, $(PKG_CONFIG_PACKAGES), $(shell $(PKG_CONFIG) --libs $(pkg)))
