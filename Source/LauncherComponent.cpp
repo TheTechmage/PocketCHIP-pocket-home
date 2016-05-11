@@ -149,7 +149,7 @@ LauncherComponent::LauncherComponent(const var &configJson)
   }
   launchSpinner = new ImageComponent();
   launchSpinner->setImage(launchSpinnerImages[0]);
-  launchSpinner->setInterceptsMouseClicks(true, false);
+  launchSpinner->setInterceptsMouseClicks(false, false);
   addChildComponent(launchSpinner);
   
   focusButtonPopup = new ImageComponent("Focus Button Popup");
