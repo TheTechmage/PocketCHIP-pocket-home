@@ -310,7 +310,7 @@ void SettingsPageComponent::resized() {
     int numItems = sizeof(settingsItems) / sizeof(Component*);
     
     auto b = bounds.reduced(10);
-    b.setLeft(70);
+    b.setLeft(60);
     verticalLayout.layOutComponents(settingsItems, numItems, b.getX(), b.getY(), b.getWidth(),
                                     b.getHeight(), true, true);
   }

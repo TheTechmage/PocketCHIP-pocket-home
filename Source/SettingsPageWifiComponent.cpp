@@ -179,19 +179,20 @@ void SettingsPageWifiComponent::paint(Graphics &g) {
 
 void SettingsPageWifiComponent::resized() {
   auto b = getLocalBounds();
-  auto pb = Rectangle<int>(120, 0, b.getWidth() - 120, b.getHeight());
+  auto pb = Rectangle<int>(60, 0, b.getWidth() - 120, b.getHeight());
 
   pageStack->setBounds(pb);
 
   // FIXME: use scalable layout
-  connectionLabel->setBounds(10, 50, pb.getWidth() - 20, 50);
-  passwordEditor->setBounds(90, 100, pb.getWidth() - 180, 50);
-  connectionButton->setBounds(90, 160, pb.getWidth() - 180, 50);
-  errorLabel->setBounds(90, 210, pb.getWidth()-180, 50);
-  wifiIconComponent->setBounds(10, 10, 60, 60);
-  backButton->setBounds(b.getX(), b.getY(), 60, b.getHeight());
+  connectionLabel->setBounds(0, 50, pb.getWidth(), 50);
+  passwordEditor->setBounds(60, 100, pb.getWidth() - 120, 50);
+  connectionButton->setBounds(60, 160, pb.getWidth() - 120, 50);
   const auto& cb = connectionButton->getLocalBounds();
   spinner->setBoundsToFit(cb.getX(), cb.getY(), cb.getWidth(), cb.getHeight(), Justification::centred, true);
+  errorLabel->setBounds(60, 210, pb.getWidth() - 120, 50);
+  
+  wifiIconComponent->setBounds(b.getX() + 5, b.getY() + 5, 50, 50);
+  backButton->setBounds(b.getX(), b.getY(), 60, b.getHeight());
   
   int btnHeight = 50;
   prevPageBtn->setSize(btnHeight, btnHeight);
