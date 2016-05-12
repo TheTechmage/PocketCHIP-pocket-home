@@ -1,3 +1,9 @@
+pocket-home (0.0.5) unstable; urgency=low
+
+  * Battery fix
+
+ -- Ben Young <software@nextthing.co>  Mon, 11 May 2016 20:40:16 +0000
+
 pocket-home (0.0.4) unstable; urgency=low
 
   * New look and feel [again].
