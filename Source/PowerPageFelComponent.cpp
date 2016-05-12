@@ -133,12 +133,12 @@ PowerFelPageComponent::PowerFelPageComponent() {
     debounce = 0;
     
     yesButton = new TextButton("yes");
-    yesButton->setButtonText("yes");
+    yesButton->setButtonText("Yes");
     yesButton->addListener(this);
     addAndMakeVisible(yesButton);
     
     noButton = new TextButton("no");
-    noButton->setButtonText("no");
+    noButton->setButtonText("No");
     noButton->addListener(this);
     addAndMakeVisible(noButton);
 
