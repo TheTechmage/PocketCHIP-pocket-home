@@ -144,6 +144,7 @@ Array<DrawableButton *> AppsPageComponent::createIconsFromJsonArray(const var &j
 void AppsPageComponent::startApp(AppIconButton* appButton) {
   DBG("AppsPageComponent::startApp - " << appButton->shell);
   auto launchApp = new ChildProcess();
+  launchApp->start("xmodmap ${HOME}/.Xmodmap"); // Reload xmodmap to ensure it's running
   if (launchApp->start(appButton->shell)) {
     runningApps.add(launchApp);
     runningAppsByButton.set(appButton, runningApps.indexOf(launchApp));
