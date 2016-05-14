@@ -23,6 +23,7 @@ void LibraryPageComponent::paint(Graphics &g) {
 
 void LibraryPageComponent::resized() {
   AppListComponent::resized();
+  auto btnHeight = getButtonHeight();
   
   const auto& b = getLocalBounds();
   auto gridWidth = b.getWidth() - 2*btnHeight;

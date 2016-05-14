@@ -61,8 +61,13 @@ DrawableButton *AppListComponent::createAndOwnIcon(const String &name, const Str
   return button;
 }
 
+float AppListComponent::getButtonHeight() {
+  return 50.f;
+}
+
 void AppListComponent::resized() {
   auto b = getLocalBounds();
+  int btnHeight = getButtonHeight();
   
   prevPageBtn->setSize(btnHeight, btnHeight);
   nextPageBtn->setSize(btnHeight, btnHeight);

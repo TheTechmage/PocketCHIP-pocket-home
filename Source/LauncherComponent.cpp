@@ -246,7 +246,7 @@ void LauncherComponent::paint(Graphics &g) {
 
 void LauncherComponent::resized() {
   auto bounds = getLocalBounds();
-  int barSize = 50;
+  int barSize = bounds.getWidth() / 9.6f;
   
   topButtons->setBounds(bounds.getX(), bounds.getY(), bounds.getWidth(),
                         barSize);
@@ -254,7 +254,7 @@ void LauncherComponent::resized() {
                              barSize);
   pageStack->setBounds(bounds.getX() + barSize, bounds.getY(), bounds.getWidth() - 2*barSize,
                        bounds.getHeight());
-  launchSpinner->setBounds(0, 0, bounds.getWidth(), bounds.getHeight());
+  launchSpinner->setBounds(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
 
   // init
   if (!resize) {

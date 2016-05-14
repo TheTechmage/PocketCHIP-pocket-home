@@ -44,6 +44,7 @@ public:
   ScopedPointer<ImageButton> nextPageBtn;
   ScopedPointer<ImageButton> prevPageBtn;
   
+  float getButtonHeight();
   void resized() override;
   void checkShowPageNav();
   
@@ -53,9 +54,6 @@ public:
   
   void buttonStateChanged(Button*) override {};
   void buttonClicked(Button *button) override {};
-  
-  // FIXME: this is barsize from launcher component
-  double btnHeight = 50;
   
 private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AppListComponent)
