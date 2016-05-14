@@ -78,7 +78,6 @@ public:
 private:
   using AppRunningMap = HashMap<AppIconButton*, int>;
 
-  DrawableButton* appsLibraryBtn;
   LauncherComponent* launcherComponent;
   
   AppRunningMap runningAppsByButton;
@@ -88,7 +87,6 @@ private:
   void startApp(AppIconButton* appButton);
   void focusApp(AppIconButton* appButton, const String& windowId);
   void startOrFocusApp(AppIconButton* appButton);
-  void openAppsLibrary();
   
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AppsPageComponent)
 };

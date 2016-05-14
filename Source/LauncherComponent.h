@@ -7,7 +7,6 @@
 #include "BatteryMonitor.h"
 
 class LauncherComponent;
-class LibraryPageComponent;
 class AppsPageComponent;
 
 class LaunchSpinnerTimer : public Timer {
@@ -70,7 +69,6 @@ public:
     void paint(Graphics &) override;
     void resized() override;
   
-    void showAppsLibrary();
     void showLaunchSpinner();
     void hideLaunchSpinner();
   

@@ -1,6 +1,5 @@
 #include "LauncherComponent.h"
 #include "AppsPageComponent.h"
-#include "LibraryPageComponent.h"
 #include "SettingsPageComponent.h"
 #include "PowerPageComponent.h"
 
@@ -176,12 +175,6 @@ LauncherComponent::LauncherComponent(const var &configJson)
   pages.add(appsPage);
   pagesByName.set("Apps", appsPage);
   
-  // Apps library
-  auto appsLibrary = new LibraryPageComponent();
-  appsLibrary->setName("AppsLibrary");
-  pages.add(appsLibrary);
-  pagesByName.set("AppsLibrary", appsLibrary);
-  
   // Read config for apps and corner locations
   auto pagesData = configJson["pages"].getArray();
   if (pagesData) {
@@ -191,7 +184,6 @@ LauncherComponent::LauncherComponent(const var &configJson)
         
         const auto& appButtons = appsPage->createIconsFromJsonArray(page["items"]);
         for (auto button : appButtons) { button->setWantsKeyboardFocus(false); }
-        appsLibrary->createIconsFromJsonArray(page["items"]);
         auto buttonsData = *(page["cornerButtons"].getArray());
         
         // FIXME: is there a better way to slice juce Array<var> ?
@@ -273,10 +265,6 @@ void LauncherComponent::hideLaunchSpinner() {
   DBG("Hide launch spinner");
   launchSpinnerTimer.stopTimer();
   launchSpinner->setVisible(false);
-}
-
-void LauncherComponent::showAppsLibrary() {
-  getMainStack().pushPage(pagesByName["AppsLibrary"], PageStackComponent::kTransitionTranslateHorizontalLeft);
 }
 
 void LauncherComponent::buttonClicked(Button *button) {
