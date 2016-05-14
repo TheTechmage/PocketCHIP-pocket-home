@@ -11,7 +11,7 @@ void PageStackComponent::paint(Graphics &g) {}
 
 void PageStackComponent::resized() {
   if (!stack.empty()) {
-    stack.getLast()->setBounds(getBounds());
+    stack.getLast()->setBounds(getLocalBounds());
   }
 }
 
