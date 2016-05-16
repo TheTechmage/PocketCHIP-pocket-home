@@ -59,7 +59,7 @@ void BatteryIconTimer::timerCallback() {
 
           }
           
-          button->setImages(false, false, true,
+          button->setImages(true, true, true,
                        batteryImg, 1.0f, Colours::transparentWhite, // normal
                        batteryImg, 1.0f, Colours::transparentWhite, // over
                        batteryImg, 0.5f, Colours::transparentWhite, // down
@@ -100,7 +100,7 @@ void WifiIconTimer::timerCallback() {
         wifiIcon = launcherComponent->wifiIconImages.getLast();
       }
       
-      button->setImages(false, false, true,
+      button->setImages(true, true, true,
                         wifiIcon, 1.0f, Colours::transparentWhite, // normal
                         wifiIcon, 1.0f, Colours::transparentWhite, // over
                         wifiIcon, 0.5f, Colours::transparentWhite, // down

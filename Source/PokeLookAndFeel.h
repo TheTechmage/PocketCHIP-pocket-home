@@ -29,6 +29,12 @@ public:
 
   void drawButtonBackground(Graphics &, Button &, const Colour &backgroundColour,
                             bool isMouseOverButton, bool isButtonDown) override;
+  
+  void drawImageButton(Graphics& g, Image* image,
+                  int imageX, int imageY, int imageW, int imageH,
+                  const Colour& overlayColour,
+                  float imageOpacity,
+                  ImageButton& button) override;
 
   void drawDrawableButton(Graphics &g, DrawableButton &button, bool isMouseOverButton,
                           bool isButtonDown) override;

@@ -43,11 +43,7 @@ ImageButton *createImageButton(const String &name, const File &imageFile) {
 }
 
 ImageButton *createImageButton(const String &name, const Image &image) {
-  auto imageButton = new ImageButton("Back");
-  // FIXME: to support touch areas of different size from the base image,
-  // we need to explicitly size the images within image buttons when necessary,
-  // rather than relying on the resizing parameters used here in setImages().
-  // Otherwise images are forced to resize whenever we change component size.
+  auto imageButton = new ImageButton("ImageButton");
   imageButton->setImages(true, true, true,
                     image, 1.0f, Colours::transparentWhite, // normal
                     image, 1.0f, Colours::transparentWhite, // over

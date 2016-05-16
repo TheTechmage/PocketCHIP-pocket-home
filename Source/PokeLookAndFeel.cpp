@@ -1,6 +1,7 @@
 #include "PokeLookAndFeel.h"
 #include "SwitchComponent.h"
 #include "Utils.h"
+#include "LauncherBarComponent.h"
 
 Colour PokeLookAndFeel::lightGrey = Colour(0xffe1e1e1);
 Colour PokeLookAndFeel::medGrey = Colour(0xffc0c0c0);
@@ -134,6 +135,52 @@ void PokeLookAndFeel::drawButtonBackground(Graphics &g, Button &button,
   path.addRoundedRectangle(0, 0, width, height, 1);
   g.setColour(chipPink);
   g.fillPath(path);
+}
+
+// FIXME: to support touch areas of proportional size from the base image,
+// we need to explicitly size the images within image buttons when necessary,
+// rather than relying on the automatic image resizing of ImageButton (it's either 100% resize or disabled).
+// Otherwise images are forced to resize to the full size of the ImageButton.
+void PokeLookAndFeel::drawImageButton(Graphics& g, Image* image,
+                                      int imageX, int imageY, int imageW, int imageH,
+                                      const Colour& overlayColour,
+                                      float imageOpacity,
+                                      ImageButton& button)
+{
+  if (! button.isEnabled())
+    imageOpacity *= 0.3f;
+  
+  AffineTransform t;
+  // FIXME: yes, runtime reflection really is the best way to override basic behavior of ImageButton
+  // (and many other JUCE classes whose public overrideable functions depend on private members)
+  auto launcherBtn = dynamic_cast<LauncherBarButton*>(&button);
+  if (launcherBtn) {
+    float s = launcherBtn->imageScale;
+    int iW = imageW * s;
+    int iH = imageH * s;
+    int iX = imageX + (imageW - iW) / 2.f;
+    int iY = imageY + (imageH - iH) / 2.f;
+    t = RectanglePlacement(RectanglePlacement::stretchToFit)
+      .getTransformToFit(image->getBounds().toFloat(),
+                         Rectangle<int>(iX, iY, iW, iH).toFloat());
+  }
+  else {
+    t = RectanglePlacement(RectanglePlacement::stretchToFit)
+      .getTransformToFit(image->getBounds().toFloat(),
+                         Rectangle<int>(imageX, imageY, imageW, imageH).toFloat());
+  }
+  
+  if (! overlayColour.isOpaque())
+  {
+    g.setOpacity (imageOpacity);
+    g.drawImageTransformed (*image, t, false);
+  }
+  
+  if (! overlayColour.isTransparent())
+  {
+    g.setColour (overlayColour);
+    g.drawImageTransformed (*image, t, true);
+  }
 }
 
 void PokeLookAndFeel::drawDrawableButton(Graphics &g, DrawableButton &button,
