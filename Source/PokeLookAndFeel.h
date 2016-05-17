@@ -6,10 +6,11 @@ class PokeLookAndFeel : public LookAndFeel_V3 {
 public:
   PokeLookAndFeel();
   ~PokeLookAndFeel();
-
+  
+  static float getButtonHeight();
   static float getDrawableButtonTextHeightForBounds(const Rectangle<int> &bounds);
   static float getDrawableButtonImageHeightForBounds(const Rectangle<int> &bounds);
-
+  
   Typeface::Ptr getTypefaceForFont(const Font &font) override;
 
   void drawLinearSliderThumb(Graphics &g, int x, int y, int width, int height, float sliderPos,

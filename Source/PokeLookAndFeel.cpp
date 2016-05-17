@@ -2,6 +2,7 @@
 #include "SwitchComponent.h"
 #include "Utils.h"
 #include "LauncherBarComponent.h"
+#include "Main.h"
 
 Colour PokeLookAndFeel::lightGrey = Colour(0xffe1e1e1);
 Colour PokeLookAndFeel::medGrey = Colour(0xffc0c0c0);
@@ -31,6 +32,17 @@ PokeLookAndFeel::PokeLookAndFeel() {
 }
 
 PokeLookAndFeel::~PokeLookAndFeel(){};
+
+float PokeLookAndFeel::getButtonHeight() {
+  float height = 1.0f;
+  
+  if (PokeLaunchApplication::get()->getMainWindow())
+    height = getMainContentComponent().getWidth() / 9.6f;
+  else
+    height = 60.f;
+  
+  return height;
+}
 
 float PokeLookAndFeel::getDrawableButtonTextHeightForBounds(const Rectangle<int> &bounds) {
   return jmin(23.0f, bounds.getHeight() * 0.99f);

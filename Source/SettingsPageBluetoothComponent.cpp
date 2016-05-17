@@ -1,6 +1,7 @@
 #include "SettingsPageBluetoothComponent.h"
 #include "Main.h"
 #include "Utils.h"
+#include "PokeLookAndFeel.h"
 
 BluetoothDeviceListItem::BluetoothDeviceListItem(BluetoothDevice *device, BTIcons *icons)
 : Button{ device->name }, device(device), icons{ icons } {}
@@ -82,14 +83,15 @@ void SettingsPageBluetoothComponent::paint(Graphics &g) {}
 
 
 void SettingsPageBluetoothComponent::resized() {
+  auto btnHeight = PokeLookAndFeel::getButtonHeight();
   auto bounds = getLocalBounds();
-  auto pageBounds = Rectangle<int>(120, 0, bounds.getWidth() - 120, bounds.getHeight());
+  auto pageBounds = Rectangle<int>(btnHeight, 0, bounds.getWidth() - btnHeight*2, bounds.getHeight());
 
   pageStack->setBounds(pageBounds);
-  connectionLabel->setBounds(10, 70, pageBounds.getWidth() - 20, 60);
-  connectionButton->setBounds(90, 160, pageBounds.getWidth() - 180, 50);
-  btIcon->setBounds(-10, 0, 80, 80);
-  backButton->setBounds(bounds.getX(), bounds.getY(), 60, bounds.getHeight());
+  connectionLabel->setBounds(10, 70, pageBounds.getWidth() - 20, btnHeight);
+  connectionButton->setBounds(90, 160, pageBounds.getWidth() - 180, btnHeight);
+  btIcon->setBounds(-10, 0, btnHeight, btnHeight);
+  backButton->setBounds(bounds.getX(), bounds.getY(), btnHeight, bounds.getHeight());
 
   if (!init) { // TODO: Stupid shim to layout page correctly.
                // Should be in Constructor, or not at all.

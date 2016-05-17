@@ -293,6 +293,7 @@ void SettingsPageComponent::paint(Graphics &g) {
 }
 
 void SettingsPageComponent::resized() {
+  auto btnHeight = PokeLookAndFeel::getButtonHeight();
   auto bounds = getLocalBounds();
   int numRows = 3;
   double rowProp = 0.6/numRows;
@@ -310,17 +311,17 @@ void SettingsPageComponent::resized() {
     int numItems = sizeof(settingsItems) / sizeof(Component*);
     
     auto b = bounds;
-    b.setLeft(60);
+    b.setLeft(btnHeight);
     b.setTop(30);
     b.setHeight(b.getHeight() - 30);
-    b.setWidth(b.getWidth() - 60);
+    b.setWidth(b.getWidth() - btnHeight);
     verticalLayout.layOutComponents(settingsItems, numItems, b.getX(), b.getY(), b.getWidth(),
                                     b.getHeight(), true, true);
   }
 
   mainPage->setBounds(bounds);
 
-  backButton->setBounds(bounds.getX(), bounds.getY(), 60, bounds.getHeight());
+  backButton->setBounds(bounds.getX(), bounds.getY(), btnHeight, bounds.getHeight());
 }
 
 void SettingsPageComponent::buttonClicked(Button *button) {

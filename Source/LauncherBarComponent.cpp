@@ -1,8 +1,9 @@
 #include "LauncherBarComponent.h"
 #include "Utils.h"
+#include "PokeLookAndFeel.h"
 
 LauncherBarButton::LauncherBarButton(const String &name, const Image &image) : ImageButton(name) {
-  setImages(true, true, true,
+  setImages(false, true, true,
             image, 1.0f, Colours::transparentWhite, // normal
             image, 1.0f, Colours::transparentWhite, // over
             image, 0.5f, Colours::transparentWhite, // down
@@ -31,8 +32,7 @@ void LauncherBarComponent::resized() {
   items[nitems-2] = nullptr;
 
   auto bounds = getLocalBounds();
-//  bounds.reduce(buttonPadding / 2, buttonPadding);
-  int buttonSize = 50;
+  int buttonSize = PokeLookAndFeel::getButtonHeight();
 
   if (layoutDirty) {
     for (int i = 0; i < nitems; i++) {

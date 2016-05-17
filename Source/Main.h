@@ -4,7 +4,6 @@
 
 #include "MainComponent.h"
 #include "WifiStatus.h"
-#include "Utils.h"
 
 struct BluetoothDevice {
   String name, macAddress;
@@ -22,6 +21,7 @@ struct BluetoothStatus {
 PageStackComponent &getMainStack();
 WifiStatus &getWifiStatus();
 BluetoothStatus &getBluetoothStatus();
+MainContentComponent &getMainContentComponent();
 
 class PokeLaunchApplication : public JUCEApplication {
 public:
@@ -64,6 +64,8 @@ public:
     void activeWindowStatusChanged() override;
     void closeButtonPressed() override;
   };
+  
+  PokeLaunchApplication::MainWindow* getMainWindow();
 
 private:
   ScopedPointer<MainWindow> mainWindow;

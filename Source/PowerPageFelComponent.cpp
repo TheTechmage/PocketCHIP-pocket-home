@@ -182,7 +182,6 @@ void PowerFelPageComponent::resized() {
     
     yesButton->setBounds(bounds.getWidth()/3.375, 95, 200, 40);
     noButton->setBounds(bounds.getWidth()/3.375, 165, 200, 40);
-    //backButton->setBounds(bounds.getWidth()-60, bounds.getY(), 60, bounds.getHeight());
 }
 
 void PowerFelPageComponent::buttonStateChanged(Button *btn) {

@@ -2,6 +2,7 @@
 #include "AppsPageComponent.h"
 #include "SettingsPageComponent.h"
 #include "PowerPageComponent.h"
+#include "PokeLookAndFeel.h"
 
 #include "Main.h"
 #include "Utils.h"
@@ -59,7 +60,7 @@ void BatteryIconTimer::timerCallback() {
 
           }
           
-          button->setImages(true, true, true,
+          button->setImages(false, true, true,
                        batteryImg, 1.0f, Colours::transparentWhite, // normal
                        batteryImg, 1.0f, Colours::transparentWhite, // over
                        batteryImg, 0.5f, Colours::transparentWhite, // down
@@ -100,7 +101,7 @@ void WifiIconTimer::timerCallback() {
         wifiIcon = launcherComponent->wifiIconImages.getLast();
       }
       
-      button->setImages(true, true, true,
+      button->setImages(false, true, true,
                         wifiIcon, 1.0f, Colours::transparentWhite, // normal
                         wifiIcon, 1.0f, Colours::transparentWhite, // over
                         wifiIcon, 0.5f, Colours::transparentWhite, // down
@@ -238,7 +239,7 @@ void LauncherComponent::paint(Graphics &g) {
 
 void LauncherComponent::resized() {
   auto bounds = getLocalBounds();
-  int barSize = bounds.getWidth() / 9.6f;
+  int barSize = PokeLookAndFeel::getButtonHeight();
   
   topButtons->setBounds(bounds.getX(), bounds.getY(), bounds.getWidth(),
                         barSize);

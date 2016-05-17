@@ -37,6 +37,10 @@ BluetoothStatus &getBluetoothStatus() {
   return PokeLaunchApplication::get()->bluetoothStatus;
 }
 
+MainContentComponent &getMainContentComponent() {
+  return *static_cast<MainContentComponent*>( PokeLaunchApplication::get()->getMainWindow()->getContentComponent() );
+}
+
 PokeLaunchApplication::PokeLaunchApplication() {}
 
 PokeLaunchApplication *PokeLaunchApplication::get() {
@@ -200,6 +204,10 @@ void PokeLaunchApplication::anotherInstanceStarted(const String &commandLine) {
 
 PageStackComponent &PokeLaunchApplication::getMainStack() {
   return *dynamic_cast<MainContentComponent *>(mainWindow->getContentComponent())->pageStack;
+}
+
+PokeLaunchApplication::MainWindow* PokeLaunchApplication::getMainWindow() {
+  return mainWindow.get();
 }
 
 PokeLaunchApplication::MainWindow::MainWindow(String name, const var &configJson)

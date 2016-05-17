@@ -43,8 +43,7 @@ public:
   OwnedArray<DrawableImage> iconDrawableImages;
   ScopedPointer<ImageButton> nextPageBtn;
   ScopedPointer<ImageButton> prevPageBtn;
-  
-  float getButtonHeight();
+
   void resized() override;
   void checkShowPageNav();
   

@@ -179,29 +179,30 @@ void SettingsPageWifiComponent::paint(Graphics &g) {
 
 void SettingsPageWifiComponent::resized() {
   auto b = getLocalBounds();
-  auto pb = Rectangle<int>(60, 0, b.getWidth() - 120, b.getHeight());
+  
+  int btnH = PokeLookAndFeel::getButtonHeight();
+  auto pb = Rectangle<int>(btnH, 0, b.getWidth() - btnH*2, b.getHeight());
 
   pageStack->setBounds(pb);
 
   // FIXME: use scalable layout
-  connectionLabel->setBounds(0, 50, pb.getWidth(), 50);
-  passwordEditor->setBounds(60, 100, pb.getWidth() - 120, 50);
-  connectionButton->setBounds(60, 160, pb.getWidth() - 120, 50);
+  connectionLabel->setBounds(0, btnH, pb.getWidth(), btnH);
+  passwordEditor->setBounds(btnH, btnH*2, pb.getWidth() - btnH*2, btnH);
+  connectionButton->setBounds(btnH, btnH*3, pb.getWidth() - btnH*2, btnH);
   const auto& cb = connectionButton->getLocalBounds();
   spinner->setBoundsToFit(cb.getX(), cb.getY(), cb.getWidth(), cb.getHeight(), Justification::centred, true);
-  errorLabel->setBounds(60, 210, pb.getWidth() - 120, 50);
+  errorLabel->setBounds(btnH, btnH*4, pb.getWidth() - btnH*2, btnH);
   
-  wifiIconComponent->setBounds(b.getX() + 5, b.getY() + 5, 50, 50);
-  backButton->setBounds(b.getX(), b.getY(), 60, b.getHeight());
+  wifiIconComponent->setBounds(b.getX() + 5, b.getY() + 5, btnH, btnH);
+  backButton->setBounds(b.getX(), b.getY(), btnH, b.getHeight());
   
-  int btnHeight = 50;
-  prevPageBtn->setSize(btnHeight, btnHeight);
-  nextPageBtn->setSize(btnHeight, btnHeight);
+  prevPageBtn->setSize(btnH, btnH);
+  nextPageBtn->setSize(btnH, btnH);
   prevPageBtn->setBoundsToFit(0, 0, pb.getWidth(), pb.getHeight(), Justification::centredTop, true);
   nextPageBtn->setBoundsToFit(0, 0, pb.getWidth(), pb.getHeight(), Justification::centredBottom, true);
   // drop the page buttons from our available layout size
   auto trainWidth = pb.getWidth();
-  auto trainHeight = pb.getHeight() - (2.0*btnHeight);
+  auto trainHeight = pb.getHeight() - btnH*2;
   accessPointList->setSize(trainWidth, trainHeight);
   accessPointList->setBoundsToFit(0, 0, pb.getWidth(), pb.getHeight(), Justification::centred, true);
   

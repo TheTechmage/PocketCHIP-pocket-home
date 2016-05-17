@@ -1,6 +1,7 @@
 #include "IconSliderComponent.h"
 #include "Utils.h"
 #include "SettingsPageComponent.h"
+#include "PokeLookAndFeel.h"
 
 IconSliderComponent::IconSliderComponent(const Drawable &iconLoDrawable,
                                          const Drawable &iconHiDrawable) {
@@ -52,9 +53,10 @@ void IconSliderComponent::resized() {
   auto bounds = getLocalBounds();
   auto bh = bounds.getHeight();
   auto bw = bounds.getWidth();
+  auto btnHeight = PokeLookAndFeel::getButtonHeight();
 
   sliderLayout.setItemLayout(0, bh, bh, bh);
-  sliderLayout.setItemLayout(1, 50, -1.0, -1.0);
+  sliderLayout.setItemLayout(1, btnHeight, -1.0, -1.0);
   sliderLayout.setItemLayout(2, bh, bh, bh);
 
   Component *parts[] = { iconLow, slider, iconHi };
