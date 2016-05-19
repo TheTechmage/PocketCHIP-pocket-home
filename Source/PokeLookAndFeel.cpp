@@ -112,7 +112,7 @@ void PokeLookAndFeel::drawLinearSlider(Graphics &g, int x, int y, int width, int
 }
 
 int PokeLookAndFeel::getSliderThumbRadius(Slider &slider) {
-  return jmin(14, slider.getHeight() / 2, slider.getWidth() / 2);
+  return jmin(slider.getHeight() * 0.33f, slider.getWidth() * 0.33f);
 }
 
 void PokeLookAndFeel::drawButtonText(Graphics &g, TextButton &button, bool isMouseOverButton,

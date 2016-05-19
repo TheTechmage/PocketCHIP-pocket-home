@@ -24,7 +24,7 @@ SettingsCategoryButton::SettingsCategoryButton(const String &name)
 
 void SettingsCategoryButton::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) {
   const auto& bounds = pillBounds;
-  float borderThick = 4.0f;
+  float borderThick = pillBounds.getHeight() / 10.f;
   
   g.setColour(Colours::white);
   isButtonDown ? setAlpha(0.5f) : setAlpha(1.0f);
@@ -43,7 +43,7 @@ void SettingsCategoryButton::paintButton(Graphics &g, bool isMouseOverButton, bo
 }
 
 void SettingsCategoryButton::resized() {
-  pillBounds.setSize(getLocalBounds().getWidth(), 42);
+  pillBounds.setSize(getLocalBounds().getWidth(), PokeLookAndFeel::getButtonHeight() * 0.75);
   fitRectInRect(pillBounds, getLocalBounds(), Justification::centred, false);
 }
 
@@ -69,7 +69,7 @@ void SettingsCategoryItemComponent::resized() {
   auto b = getLocalBounds();
   auto h = b.getHeight();
 
-  int spacing = 10;
+  int spacing = PokeLookAndFeel::getButtonHeight() / 6.f;
   int togWidth = h * 1.1f;
 
   layout.setItemLayout(0, h, h, h);
@@ -312,8 +312,8 @@ void SettingsPageComponent::resized() {
     
     auto b = bounds;
     b.setLeft(btnHeight);
-    b.setTop(30);
-    b.setHeight(b.getHeight() - 30);
+    b.setTop(btnHeight/2.f);
+    b.setHeight(b.getHeight() - btnHeight/2.f);
     b.setWidth(b.getWidth() - btnHeight);
     verticalLayout.layOutComponents(settingsItems, numItems, b.getX(), b.getY(), b.getWidth(),
                                     b.getHeight(), true, true);
