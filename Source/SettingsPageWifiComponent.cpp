@@ -50,16 +50,12 @@ void WifiSpinnerTimer::timerCallback() {
 WifiAccessPointListItem::WifiAccessPointListItem(WifiAccessPoint *ap, WifiIcons *icons)
 : Button{ ap->ssid }, ap{ ap }, icons{ icons } {}
 
-void WifiAccessPointListItem::resized() {
-  setSize(getLocalBounds().getWidth(), 42);
-}
-
 void WifiAccessPointListItem::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) {
   auto bounds = getLocalBounds();
-  auto inset = bounds.reduced(6, 4);
+  auto inset = bounds.reduced(bounds.getWidth() / 10, bounds.getHeight() / 10);
   auto w = bounds.getWidth(), h = bounds.getHeight();
   auto iconBounds = Rectangle<float>(w - h, h/5.0, h*0.5, h*0.5);
-  auto borderThick = 4.0;
+  auto borderThick = jmax(1, jmin(bounds.getWidth() / 10, bounds.getHeight() / 10));
 
   g.setColour(findColour(ListBox::ColourIds::backgroundColourId));
   isButtonDown ? setAlpha(0.5f) : setAlpha(1.0f);
@@ -185,7 +181,7 @@ void SettingsPageWifiComponent::resized() {
 
   pageStack->setBounds(pb);
 
-  // FIXME: use scalable layout
+  // FIXME: use a scaleable layout here
   connectionLabel->setBounds(0, btnH, pb.getWidth(), btnH);
   passwordEditor->setBounds(btnH, btnH*2, pb.getWidth() - btnH*2, btnH);
   connectionButton->setBounds(btnH, btnH*3, pb.getWidth() - btnH*2, btnH);
@@ -193,7 +189,7 @@ void SettingsPageWifiComponent::resized() {
   spinner->setBoundsToFit(cb.getX(), cb.getY(), cb.getWidth(), cb.getHeight(), Justification::centred, true);
   errorLabel->setBounds(btnH, btnH*4, pb.getWidth() - btnH*2, btnH);
   
-  wifiIconComponent->setBounds(b.getX() + 5, b.getY() + 5, btnH, btnH);
+  wifiIconComponent->setBounds(b.getX() + btnH/12, b.getY() + btnH/12, btnH, btnH);
   backButton->setBounds(b.getX(), b.getY(), btnH, b.getHeight());
   
   prevPageBtn->setSize(btnH, btnH);

@@ -50,7 +50,6 @@ public:
   WifiAccessPointListItem(WifiAccessPoint *ap, WifiIcons *icons);
 
   void paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) override;
-  void resized() override;
 
 private:
   WifiIcons *icons;

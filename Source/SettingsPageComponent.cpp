@@ -31,7 +31,7 @@ void SettingsCategoryButton::paintButton(Graphics &g, bool isMouseOverButton, bo
   
   if (isEnabled()) {
     g.drawRoundedRectangle(bounds.getX() + borderThick, bounds.getY() + borderThick,
-                           bounds.getWidth() - 2*borderThick, bounds.getHeight()  - 2*borderThick,
+                           bounds.getWidth() - 2*borderThick, bounds.getHeight() - 2*borderThick,
                            1, borderThick);
   }
   
@@ -43,7 +43,7 @@ void SettingsCategoryButton::paintButton(Graphics &g, bool isMouseOverButton, bo
 }
 
 void SettingsCategoryButton::resized() {
-  pillBounds.setSize(getLocalBounds().getWidth(), PokeLookAndFeel::getButtonHeight() * 0.75);
+  pillBounds.setSize(getLocalBounds().getWidth(), getLocalBounds().getHeight());
   fitRectInRect(pillBounds, getLocalBounds(), Justification::centred, false);
 }
 
@@ -69,14 +69,14 @@ void SettingsCategoryItemComponent::resized() {
   auto b = getLocalBounds();
   auto h = b.getHeight();
 
-  int spacing = PokeLookAndFeel::getButtonHeight() / 6.f;
-  int togWidth = h * 1.1f;
+  double togWidth = h * 1.1f;
+  double s = h * 0.25f;
 
   layout.setItemLayout(0, h, h, h);
-  layout.setItemLayout(1, spacing, spacing, spacing);
+  layout.setItemLayout(1, 0, s, s);
   layout.setItemLayout(2, togWidth, togWidth, togWidth);
-  layout.setItemLayout(3, spacing, spacing, spacing);
-  layout.setItemLayout(4, h, -1, -1);
+  layout.setItemLayout(3, 0, s, s);
+  layout.setItemLayout(4, 0, -1, -1);
 
   Component *comps[] = { icon, nullptr, toggle, nullptr, button };
   layout.layOutComponents(comps, 5, b.getX(), b.getY(), b.getWidth(), b.getHeight(), false, true);
