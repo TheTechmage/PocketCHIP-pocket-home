@@ -55,7 +55,7 @@ void WifiAccessPointListItem::paintButton(Graphics &g, bool isMouseOverButton, b
   auto inset = bounds.reduced(bounds.getWidth() / 10, bounds.getHeight() / 10);
   auto w = bounds.getWidth(), h = bounds.getHeight();
   auto iconBounds = Rectangle<float>(w - h, h/5.0, h*0.5, h*0.5);
-  auto borderThick = jmax(1, jmin(bounds.getWidth() / 10, bounds.getHeight() / 10));
+  auto borderThick = jmax(1, jmin(bounds.getWidth() / 9, bounds.getHeight() / 9));
 
   g.setColour(findColour(ListBox::ColourIds::backgroundColourId));
   isButtonDown ? setAlpha(0.5f) : setAlpha(1.0f);
@@ -178,20 +178,32 @@ void SettingsPageWifiComponent::resized() {
   
   int btnH = PokeLookAndFeel::getButtonHeight();
   auto pb = Rectangle<int>(btnH, 0, b.getWidth() - btnH*2, b.getHeight());
-
-  pageStack->setBounds(pb);
-
-  // FIXME: use a scaleable layout here
-  connectionLabel->setBounds(0, btnH, pb.getWidth(), btnH);
-  passwordEditor->setBounds(btnH, btnH*2, pb.getWidth() - btnH*2, btnH);
-  connectionButton->setBounds(btnH, btnH*3, pb.getWidth() - btnH*2, btnH);
-  const auto& cb = connectionButton->getLocalBounds();
-  spinner->setBoundsToFit(cb.getX(), cb.getY(), cb.getWidth(), cb.getHeight(), Justification::centred, true);
-  errorLabel->setBounds(btnH, btnH*4, pb.getWidth() - btnH*2, btnH);
   
-  wifiIconComponent->setBounds(b.getX() + btnH/12, b.getY() + btnH/12, btnH, btnH);
+  // top level page elements
+  pageStack->setBounds(pb);
+  wifiIconComponent->setBounds(b.getX() + btnH/10, b.getY() + btnH/12, btnH * 0.9f, btnH * 0.9f);
   backButton->setBounds(b.getX(), b.getY(), btnH, b.getHeight());
   
+  // individual connection page
+  connectionLabel->setBounds(0, pb.getY(), pb.getWidth(), btnH);
+  passwordEditor->setBounds(btnH, pb.getY(), pb.getWidth() - btnH*2, btnH);
+  connectionButton->setBounds(btnH, pb.getY(), pb.getWidth() - btnH*2, btnH);
+  errorLabel->setBounds(btnH, pb.getY(), pb.getWidth() - btnH*2, btnH);
+  
+  StretchableLayoutManager connectionLayout{};
+  Component* connectionItems[] = {nullptr, connectionLabel, passwordEditor, connectionButton, errorLabel, nullptr};
+  connectionLayout.setItemLayout(0, -0, -1, -1);
+  connectionLayout.setItemLayout(1, btnH, btnH, btnH);
+  connectionLayout.setItemLayout(2, btnH, btnH, btnH);
+  connectionLayout.setItemLayout(3, btnH, btnH, btnH);
+  connectionLayout.setItemLayout(4, btnH, btnH, btnH);
+  connectionLayout.setItemLayout(5, -0, -1, -1);
+  connectionLayout.layOutComponents(connectionItems, 6, pb.getX(), pb.getY(), pb.getWidth(), pb.getHeight(), true, false);
+  
+  const auto& cb = connectionButton->getLocalBounds();
+  spinner->setBoundsToFit(cb.getX(), cb.getY(), cb.getWidth(), cb.getHeight(), Justification::centred, true);
+  
+  // wifi ap list
   prevPageBtn->setSize(btnH, btnH);
   nextPageBtn->setSize(btnH, btnH);
   prevPageBtn->setBoundsToFit(0, 0, pb.getWidth(), pb.getHeight(), Justification::centredTop, true);
