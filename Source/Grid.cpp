@@ -54,7 +54,7 @@ Grid::Grid(int numCols, int numRows) :
     layoutIdx++;
     // set size preference for spacer if there are rows left in the loop
     if ((i+1) < numRows) {
-      rowLayout.setItemLayout(layoutIdx, -rowSpacerProp, -rowSpacerProp, -rowSpacerProp);
+      rowLayout.setItemLayout(layoutIdx, 0, -rowSpacerProp, -rowSpacerProp);
       layoutIdx++;
     }
   }
