@@ -37,7 +37,7 @@ float PokeLookAndFeel::getButtonHeight() {
   float height = 1.0f;
   
   if (PokeLaunchApplication::get()->getMainWindow())
-    height = getMainContentComponent().getWidth() / 9.6f;
+    height = jmin(getMainContentComponent().getWidth(), getMainContentComponent().getHeight()) / 5.0f;
   else
     height = 60.f;
   
