@@ -77,7 +77,7 @@ void PowerFelCategoryButton::paintButton(Graphics &g, bool isMouseOverButton, bo
 }
 
 void PowerFelCategoryButton::resized() {
-    pillBounds.setSize(getLocalBounds().getWidth(), 42);
+    pillBounds.setSize(getLocalBounds().getWidth(), PokeLookAndFeel::getButtonHeight());
     fitRectInRect(pillBounds, getLocalBounds(), Justification::centred, false);
 }
 
@@ -104,13 +104,12 @@ void PowerFelCategoryItemComponent::resized() {
     int togWidth = h * 1.1f;
     
     layout.setItemLayout(0, h, h, h);
-    layout.setItemLayout(1, spacing, spacing, spacing);
+    layout.setItemLayout(1, 0, spacing, spacing);
     layout.setItemLayout(2, togWidth, togWidth, togWidth);
-    layout.setItemLayout(3, spacing, spacing, spacing);
-    layout.setItemLayout(4, h, -1, -1);
+    layout.setItemLayout(3, 0, spacing, spacing);
     
     Component *comps[] = { icon, nullptr, nullptr, button };
-    layout.layOutComponents(comps, 5, b.getX(), b.getY(), b.getWidth(), b.getHeight(), false, true);
+    layout.layOutComponents(comps, 4, b.getX(), b.getY(), b.getWidth(), b.getHeight(), false, true);
 }
 
 void PowerFelCategoryItemComponent::buttonClicked(Button *b) {}
@@ -123,25 +122,44 @@ void PowerFelCategoryItemComponent::enablementChanged() {
     updateButtonText();
 }
 
-PowerFelPageComponent::PowerFelPageComponent() {
+PowerFelPageComponent::PowerFelPageComponent() :
+  mainPage(new Component("PowerPageFelMain")),
+  flashDescription(new Label("FlashDescription")),
+  flashPrompt(new Label("FlashPrompt")),
+  yesButton(new TextButton("YesButton")),
+  noButton(new TextButton("NoButton")),
+  flashInstructions(new Label("FlashInstructions"))
+{
     bgColor = Colours::black;
     bgImage = "powerMenuBackground.png";
-    mainPage = new Component();
+  
     addAndMakeVisible(mainPage);
     mainPage->toBack();
     ChildProcess child{};
     debounce = 0;
-    
-    yesButton = new TextButton("yes");
+  
+    flashDescription->setText("About to reboot into software flashing mode.", NotificationType::dontSendNotification);
+    flashDescription->setFont(22);
+    flashDescription->setJustificationType(juce::Justification::centred);
+    addAndMakeVisible(flashDescription);
+  
+    flashPrompt->setText("Are you sure?", NotificationType::dontSendNotification);
+    flashPrompt->setFont(22);
+    flashPrompt->setJustificationType(juce::Justification::centred);
+    addAndMakeVisible(flashPrompt);
+  
     yesButton->setButtonText("Yes");
     yesButton->addListener(this);
     addAndMakeVisible(yesButton);
-    
-    noButton = new TextButton("no");
+  
     noButton->setButtonText("No");
     noButton->addListener(this);
     addAndMakeVisible(noButton);
-
+  
+    flashInstructions->setText("For instructions, visit pcflash.getchip.com", NotificationType::dontSendNotification);
+    flashInstructions->setFont(18);
+    flashInstructions->setJustificationType(juce::Justification::centred);
+    addAndMakeVisible(flashInstructions);
 }
 
 PowerFelPageComponent::~PowerFelPageComponent() {}
@@ -151,37 +169,40 @@ void PowerFelPageComponent::paint(Graphics &g) {
     g.fillAll(bgColor);
     auto image = createImageFromFile(assetFile(bgImage));
     g.drawImage(image,bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), 0, 0, image.getWidth(), image.getHeight(), false);
-  
-    g.setColour (Colours::white);
-    g.setFont (22);
-    g.drawText ("About to reboot into software flashing mode.", 0, 20, 480, 40, Justification::centred, true);
-    g.drawText ("Are you sure?", 0, 40, 480, 40, Justification::centred, true);
-    g.setFont (18);
-    g.drawText ("For instructions, visit pcflash.getchip.com", 0, 215, 480, 40, Justification::centred, true);
 }
 
 void PowerFelPageComponent::resized() {
     
-    auto bounds = getLocalBounds();
-    auto pageBounds = Rectangle<int>(120, 0, bounds.getWidth() - 120, bounds.getHeight());
+    auto b = getLocalBounds();
+    auto btnHeight = PokeLookAndFeel::getButtonHeight();
+    auto itemHeight = btnHeight * 0.78;
   
+    mainPage->setBounds(b);
+  
+    flashDescription->setSize(b.getWidth(), itemHeight);
+    flashPrompt->setSize(b.getWidth(), itemHeight);
+  
+    yesButton->setBounds(b.getWidth()/4, 0, b.getWidth()/2, itemHeight);
+    noButton->setBounds(b.getWidth()/4, 0, b.getWidth()/2, itemHeight);
+  
+    flashInstructions->setSize(b.getWidth(), itemHeight);
+
     {
-        for (int i = 0, j = 0; i < 4; ++i) {
-            if (i > 0) verticalLayout.setItemLayout(j++, 0, -1, -1);
-            verticalLayout.setItemLayout(j++, 48, 48, 48);
+        Component *PowerFelItems[] = { flashDescription, flashPrompt, nullptr, yesButton, nullptr, noButton, nullptr, flashInstructions};
+        int numItems = sizeof(PowerFelItems)/sizeof(Component*);
+      
+        for (int i = 0; i < numItems; ++i) {
+            if (PowerFelItems[i] == nullptr)
+                verticalLayout.setItemLayout(i, 1, -1, -1);
+            else
+                verticalLayout.setItemLayout(i, itemHeight, itemHeight, itemHeight);
         }
-        
-        Component *PowerFelItems[] = { yesButton.get(), nullptr, nullptr, noButton.get() };
-        auto b = bounds.reduced(10);
-        b.setLeft(70);
-        verticalLayout.layOutComponents(PowerFelItems, 1, b.getX(), b.getY(), b.getWidth(),
-                                        b.getHeight(), true, true);
+      
+        verticalLayout.layOutComponents(PowerFelItems, numItems,
+                                        b.getX(), b.getY(),
+                                        b.getWidth(), b.getHeight(),
+                                        true, false);
     }
-    
-    mainPage->setBounds(bounds);
-    
-    yesButton->setBounds(bounds.getWidth()/3.375, 95, 200, 40);
-    noButton->setBounds(bounds.getWidth()/3.375, 165, 200, 40);
 }
 
 void PowerFelPageComponent::buttonStateChanged(Button *btn) {
@@ -194,7 +215,7 @@ void PowerFelPageComponent::buttonStateChanged(Button *btn) {
 }
 
 void PowerFelPageComponent::buttonClicked(Button *button) {
-      if (button == backButton || button == noButton ) {
+      if (button == noButton ) {
         getMainStack().popPage(PageStackComponent::kTransitionTranslateHorizontalLeft);
       } else if( button == yesButton && !debounce ) {
         debounce = 1;

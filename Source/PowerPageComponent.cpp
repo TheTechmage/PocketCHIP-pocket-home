@@ -104,34 +104,32 @@ void PowerPageComponent::paint(Graphics &g) {
 }
 
 void PowerPageComponent::resized() {
+  auto b = getLocalBounds();
+  auto btnHeight = PokeLookAndFeel::getButtonHeight();
+  auto pageMargX = btnHeight;
+  auto pageMargY = btnHeight * 0.75;
   
-  auto bounds = getLocalBounds();
-   powerSpinner->setBounds(0, 0, bounds.getWidth(), bounds.getHeight());
+  mainPage->setBounds(b);
+  powerSpinner->setBounds(0, 0, b.getWidth(), b.getHeight());
 
   {
+    Component *powerItems[] = { powerOffButton, nullptr, sleepButton, nullptr, rebootButton, nullptr, felButton };
+    int numItems = sizeof(powerItems)/sizeof(Component*);
+    auto btnHeightNoMargin = btnHeight * 0.74;
+    
     for (int i = 0, j = 0; i < 4; ++i) {
       if (i > 0) verticalLayout.setItemLayout(j++, 0, -1, -1);
-      verticalLayout.setItemLayout(j++, 48, 48, 48);
+      verticalLayout.setItemLayout(j++, btnHeightNoMargin, btnHeightNoMargin, btnHeightNoMargin);
     }
 
-    Component *powerItems[] = { powerOffButton.get(), rebootButton.get(), sleepButton.get() };
-    auto b = bounds.reduced(10);
-    b.setLeft(70);
-    verticalLayout.layOutComponents(powerItems, 1, b.getX(), b.getY(), b.getWidth(),
-                                    b.getHeight(), true, true);
+    verticalLayout.layOutComponents(powerItems, numItems, b.getX() + pageMargX, b.getY() + pageMargY, b.getWidth() - 2*pageMargX,
+                                    b.getHeight() - 2*pageMargY, true, true);
   }
 
-  mainPage->setBounds(bounds);
-
-  auto btnHeight = PokeLookAndFeel::getButtonHeight();
-  powerOffButton->setBounds(bounds.getWidth()/7, 40, 350, 40);
-  sleepButton->setBounds(bounds.getWidth()/7, 90, 350, 40);
-  rebootButton->setBounds(bounds.getWidth()/7, 140, 350, 40);
-  felButton->setBounds(bounds.getWidth()/7, 190, 350, 40);
-  backButton->setBounds(bounds.getWidth()-btnHeight, bounds.getY(), btnHeight, bounds.getHeight());
+  backButton->setBounds(b.getWidth()-btnHeight, b.getY(), btnHeight, b.getHeight());
   
-  buildNameLabel->setBounds(bounds.getX(), bounds.getY(), bounds.getWidth(), 30);
-  buildNameLabel->setBoundsToFit(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), Justification::centredBottom, true);
+  buildNameLabel->setBounds(b.getX(), b.getY(), b.getWidth(), pageMargY);
+  buildNameLabel->setBoundsToFit(b.getX(), b.getY(), b.getWidth(), b.getHeight(), Justification::centredBottom, true);
 }
 
 void PowerPageComponent::setSleep() {

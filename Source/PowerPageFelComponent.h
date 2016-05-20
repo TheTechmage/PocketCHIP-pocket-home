@@ -50,14 +50,15 @@ private:
 
 class PowerFelPageComponent : public Component, private Button::Listener {
 public:
-    
+  
     StretchableLayoutManager verticalLayout;
-    
-    ScopedPointer<ImageButton> backButton;
+  
+    ScopedPointer<Component> mainPage;
+    ScopedPointer<Label> flashDescription;;
+    ScopedPointer<Label> flashPrompt;
     ScopedPointer<TextButton> yesButton;
     ScopedPointer<TextButton> noButton;
-
-    ScopedPointer<Component> mainPage;
+    ScopedPointer<Label> flashInstructions;
 
     PowerFelPageComponent();
     ~PowerFelPageComponent();
