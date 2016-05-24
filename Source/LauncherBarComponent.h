@@ -5,7 +5,7 @@
 class LauncherBarButton : public ImageButton {
 public:
   LauncherBarButton(const String &name, const Image &image);
-  float imageScale = 0.8;
+  float imageHeight = 1.f;
 };
 
 class LauncherBarComponent : public Component, public ButtonListener {

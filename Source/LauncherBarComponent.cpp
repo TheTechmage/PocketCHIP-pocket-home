@@ -16,6 +16,8 @@ LauncherBarComponent::LauncherBarComponent() {}
 LauncherBarComponent::~LauncherBarComponent() {}
 
 void LauncherBarComponent::resized() {
+  int buttonSize = getHeight();
+  
   // +1 to add room for spacer
   int nitems = buttons.size() + 1;
   Component *items[nitems];
@@ -24,6 +26,7 @@ void LauncherBarComponent::resized() {
     int i = 0;
     for (auto button : buttons) {
       items[i++] = button;
+      static_cast<LauncherBarButton*>(button)->imageHeight = buttonSize / 3.f;
     }
   }
   
@@ -32,7 +35,6 @@ void LauncherBarComponent::resized() {
   items[nitems-2] = nullptr;
 
   auto bounds = getLocalBounds();
-  int buttonSize = PokeLookAndFeel::getButtonHeight();
 
   if (layoutDirty) {
     for (int i = 0; i < nitems; i++) {

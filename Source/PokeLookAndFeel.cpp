@@ -167,9 +167,9 @@ void PokeLookAndFeel::drawImageButton(Graphics& g, Image* image,
   // (and many other JUCE classes whose public overrideable functions depend on private members)
   auto launcherBtn = dynamic_cast<LauncherBarButton*>(&button);
   if (launcherBtn) {
-    float s = launcherBtn->imageScale;
-    int iW = imageW * s;
-    int iH = imageH * s;
+    float a = (float)imageH / imageW;
+    int iH = launcherBtn->imageHeight;
+    int iW = iH / a;
     int iX = imageX + (imageW - iW) / 2.f;
     int iY = imageY + (imageH - iH) / 2.f;
     t = RectanglePlacement(RectanglePlacement::stretchToFit)
