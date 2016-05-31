@@ -43,13 +43,14 @@ public:
   OwnedArray<DrawableImage> iconDrawableImages;
   ScopedPointer<ImageButton> nextPageBtn;
   ScopedPointer<ImageButton> prevPageBtn;
+  AppIconButton* appLibraryBtn;
 
   void resized() override;
   void checkShowPageNav();
   
   void addAndOwnIcon(const String &name, Component *icon);
-  DrawableButton *createAndOwnIcon(const String &name, const String &iconPath, const String &shell);
-  virtual Array<DrawableButton *> createIconsFromJsonArray(const var &json);
+  AppIconButton* createAndOwnIcon(const String &name, const String &iconPath, const String &shell);
+  virtual Array<AppIconButton*> createIconsFromJsonArray(const var &json);
   
   void buttonStateChanged(Button*) override {};
   void buttonClicked(Button *button) override {};
@@ -63,7 +64,7 @@ public:
   AppsPageComponent(LauncherComponent* launcherComponent);
   ~AppsPageComponent();
   
-  Array<DrawableButton *> createIconsFromJsonArray(const var &json) override;
+  Array<AppIconButton*> createIconsFromJsonArray(const var &json) override;
   
   OwnedArray<ChildProcess> runningApps;
   

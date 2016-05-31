@@ -71,6 +71,7 @@ public:
   
     void showLaunchSpinner();
     void hideLaunchSpinner();
+    void openAppLibrary();
   
 private:
     Colour bgColor;

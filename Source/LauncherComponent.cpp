@@ -1,5 +1,6 @@
 #include "LauncherComponent.h"
 #include "AppsPageComponent.h"
+#include "LibraryPageComponent.h"
 #include "SettingsPageComponent.h"
 #include "PowerPageComponent.h"
 #include "PokeLookAndFeel.h"
@@ -176,6 +177,12 @@ LauncherComponent::LauncherComponent(const var &configJson)
   pages.add(appsPage);
   pagesByName.set("Apps", appsPage);
   
+  // AppGet page
+  auto appLibrary = new LibraryPageComponent();
+  appLibrary->setName("AppLibrary");
+  pages.add(appLibrary);
+  pagesByName.set("AppLibrary", appLibrary);
+  
   // Read config for apps and corner locations
   auto pagesData = configJson["pages"].getArray();
   if (pagesData) {
@@ -266,6 +273,10 @@ void LauncherComponent::hideLaunchSpinner() {
   DBG("Hide launch spinner");
   launchSpinnerTimer.stopTimer();
   launchSpinner->setVisible(false);
+}
+
+void LauncherComponent::openAppLibrary() {
+  getMainStack().pushPage(pagesByName["AppLibrary"], PageStackComponent::kTransitionTranslateHorizontalLeft);
 }
 
 void LauncherComponent::buttonClicked(Button *button) {

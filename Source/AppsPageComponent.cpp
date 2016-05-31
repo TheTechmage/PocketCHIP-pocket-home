@@ -48,7 +48,7 @@ AppListComponent::AppListComponent() :
 }
 AppListComponent::~AppListComponent() {}
 
-DrawableButton *AppListComponent::createAndOwnIcon(const String &name, const String &iconPath, const String &shell) {
+AppIconButton* AppListComponent::createAndOwnIcon(const String &name, const String &iconPath, const String &shell) {
   auto image = createImageFromFile(assetFile(iconPath));
   auto drawable = new DrawableImage();
   drawable->setImage(image);
@@ -99,8 +99,8 @@ void AppListComponent::addAndOwnIcon(const String &name, Component *icon) {
   ((Button*)icon)->addListener(this);
 }
 
-Array<DrawableButton *> AppListComponent::createIconsFromJsonArray(const var &json) {
-  Array<DrawableButton *> buttons;
+Array<AppIconButton*> AppListComponent::createIconsFromJsonArray(const var &json) {
+  Array<AppIconButton*> buttons;
   if (json.isArray()) {
     for (const auto &item : *json.getArray()) {
       auto name = item["name"];
@@ -131,10 +131,14 @@ AppsPageComponent::AppsPageComponent(LauncherComponent* launcherComponent) :
 
 AppsPageComponent::~AppsPageComponent() {}
 
-Array<DrawableButton *> AppsPageComponent::createIconsFromJsonArray(const var &json) {
+Array<AppIconButton*> AppsPageComponent::createIconsFromJsonArray(const var &json) {
   auto buttons = AppListComponent::createIconsFromJsonArray(json);
-
+  
+  // hard coded "virtual" application. Cannot be removed.
+  appLibraryBtn = createAndOwnIcon("App Get", "appIcons/install.png", String::empty);
+  buttons.add(appLibraryBtn);
   checkShowPageNav();
+  
   return buttons;
 }
 
@@ -218,9 +222,16 @@ void AppsPageComponent::checkRunningApps() {
   }
 };
 
+// FIXME: these button handlers not being scopeable to specific button types or instances
+// is pretty annoying. It means we have to check instances and types at runtime to see what
+// button is changing. See also buttonClicked()
 void AppsPageComponent::buttonStateChanged(Button* btn) {
-  auto appBtn = (AppIconButton*)btn;
-  auto appIcon = (DrawableImage*)appBtn->getCurrentImage();
+  if (btn == prevPageBtn || btn == nextPageBtn || btn == appLibraryBtn) {
+    return;
+  }
+  
+  auto appBtn = static_cast<AppIconButton*>(btn);
+  auto appIcon = static_cast<DrawableImage*>(appBtn->getCurrentImage());
   auto buttonPopup = launcherComponent->focusButtonPopup.get();
   constexpr auto scale = 1.3;
 
@@ -263,6 +274,9 @@ void AppsPageComponent::buttonClicked(Button *button) {
   else if (button == nextPageBtn) {
     grid->showNextPage();
     checkShowPageNav();
+  }
+  else if (button == appLibraryBtn) {
+    launcherComponent->openAppLibrary();
   }
   else {
     auto appButton = (AppIconButton*)button;
