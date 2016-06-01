@@ -21,6 +21,7 @@ struct BluetoothStatus {
 PageStackComponent &getMainStack();
 WifiStatus &getWifiStatus();
 BluetoothStatus &getBluetoothStatus();
+ImageComponent &getMainButtonPopup();
 MainContentComponent &getMainContentComponent();
 
 class PokeLaunchApplication : public JUCEApplication {

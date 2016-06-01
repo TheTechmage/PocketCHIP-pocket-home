@@ -41,7 +41,6 @@ public:
     ScopedPointer<LauncherBarComponent> botButtons;
     ScopedPointer<LauncherBarComponent> topButtons;
     ScopedPointer<ImageComponent> launchSpinner;
-    ScopedPointer<ImageComponent> focusButtonPopup;
   
     Array<Image> launchSpinnerImages;
     Array<Image> batteryIconImages;

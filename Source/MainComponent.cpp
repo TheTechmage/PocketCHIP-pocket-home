@@ -14,6 +14,10 @@ MainContentComponent::MainContentComponent(const var &configJson) {
 
   launcher = new LauncherComponent(configJson);
   pageStack->pushPage(launcher, PageStackComponent::kTransitionNone);
+  
+  buttonPopup = new ImageComponent("Focus Button Popup");
+  buttonPopup->setInterceptsMouseClicks(false, false);
+  addChildComponent(buttonPopup);
 
   setSize(480, 272);
 }

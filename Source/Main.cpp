@@ -37,6 +37,10 @@ BluetoothStatus &getBluetoothStatus() {
   return PokeLaunchApplication::get()->bluetoothStatus;
 }
 
+ImageComponent &getMainButtonPopup() {
+  return *getMainContentComponent().buttonPopup;
+}
+
 MainContentComponent &getMainContentComponent() {
   return *static_cast<MainContentComponent*>( PokeLaunchApplication::get()->getMainWindow()->getContentComponent() );
 }

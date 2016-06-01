@@ -155,10 +155,6 @@ LauncherComponent::LauncherComponent(const var &configJson)
   launchSpinner->setInterceptsMouseClicks(false, false);
   addChildComponent(launchSpinner);
   
-  focusButtonPopup = new ImageComponent("Focus Button Popup");
-  focusButtonPopup->setInterceptsMouseClicks(false, false);
-  addChildComponent(focusButtonPopup);
-  
   // Settings page
   auto settingsPage = new SettingsPageComponent();
   settingsPage->setName("Settings");
@@ -190,9 +186,11 @@ LauncherComponent::LauncherComponent(const var &configJson)
       auto name = page["name"].toString();
       if (name == "Apps") {
         
+        // add all items from config to our launch list
         const auto& appButtons = appsPage->createIconsFromJsonArray(page["items"]);
         for (auto button : appButtons) { button->setWantsKeyboardFocus(false); }
         
+        // add all items from config to our install list
         auto appsFile = assetFile("ntc-apps.json");
         if (appsFile.exists()) {
           auto appsJson = JSON::parse(appsFile);
@@ -208,6 +206,7 @@ LauncherComponent::LauncherComponent(const var &configJson)
           std::cerr << "Missing installable applications list: " << appsFile.getFullPathName() << std::endl;
         }
         
+        // add corner buttons
         // FIXME: is there a better way to slice juce Array<var> ?
         auto buttonsData = *(page["cornerButtons"].getArray());
         Array<var> topData{};

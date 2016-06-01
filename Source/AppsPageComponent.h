@@ -43,7 +43,6 @@ public:
   OwnedArray<DrawableImage> iconDrawableImages;
   ScopedPointer<ImageButton> nextPageBtn;
   ScopedPointer<ImageButton> prevPageBtn;
-  AppIconButton* appLibraryBtn;
 
   void resized() override;
   void checkShowPageNav();
@@ -52,8 +51,8 @@ public:
   AppIconButton* createAndOwnIcon(const String &name, const String &iconPath, const String &shell);
   virtual Array<AppIconButton*> createIconsFromJsonArray(const var &json);
   
-  void buttonStateChanged(Button*) override {};
-  void buttonClicked(Button *button) override {};
+  void buttonStateChanged(Button* btn) override;
+  void buttonClicked(Button* btn) override {};
   
 private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AppListComponent)
@@ -68,7 +67,6 @@ public:
   
   OwnedArray<ChildProcess> runningApps;
   
-  virtual void buttonStateChanged(Button*) override;
   void buttonClicked(Button *button) override;
   
   void checkRunningApps();
@@ -79,6 +77,7 @@ private:
   using AppRunningMap = HashMap<AppIconButton*, int>;
 
   LauncherComponent* launcherComponent;
+  AppIconButton* appLibraryBtn;
   
   AppRunningMap runningAppsByButton;
   AppCheckTimer runningCheckTimer;

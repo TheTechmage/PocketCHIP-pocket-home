@@ -93,6 +93,50 @@ void AppListComponent::checkShowPageNav() {
   }
 }
 
+// FIXME: these button handlers not being scopeable to specific button types or instances
+// is pretty annoying. It means we have to check instances and types at runtime to see what
+// button is changing. See also buttonClicked()
+void AppListComponent::buttonStateChanged(Button* btn) {
+  auto appBtn = dynamic_cast<AppIconButton*>(btn);
+  if (!appBtn) { return; }
+  
+  auto appIcon = static_cast<DrawableImage*>(appBtn->getCurrentImage());
+  auto& buttonPopup = getMainButtonPopup();
+  auto& parentComp = getMainContentComponent();
+  
+  constexpr auto scale = 1.3;
+  
+  // show floating button popup if we're holding downstate and not showing the popup
+  if (btn->isMouseButtonDown() &&
+      btn->isMouseOver() &&
+      !buttonPopup.isVisible()) {
+    // copy application icon bounds in screen space
+    auto boundsNext = appIcon->getScreenBounds();
+    auto boundsCentre = boundsNext.getCentre();
+    
+    // scale and recenter
+    boundsNext.setSize(boundsNext.getWidth()*scale, boundsNext.getHeight()*scale);
+    boundsNext.setCentre(boundsCentre);
+    
+    // translate back to space local to popup parent (local bounds)
+    auto parentPos = parentComp.getScreenPosition();
+    boundsNext.setPosition(boundsNext.getPosition() - parentPos);
+    
+    // show popup icon, hide real button beneath
+    buttonPopup.setImage(appIcon->getImage());
+    buttonPopup.setBounds(boundsNext);
+    buttonPopup.setVisible(true);
+    appIcon->setVisible(false);
+    appBtn->setColour(DrawableButton::textColourId, Colours::transparentWhite);
+  }
+  // set UI back to default if we can see the popup, but aren't holding the button down
+  else if (btn->isVisible()) {
+    appIcon->setVisible(true);
+    appBtn->setColour(DrawableButton::textColourId, getLookAndFeel().findColour(DrawableButton::textColourId));
+    buttonPopup.setVisible(false);
+  }
+}
+
 void AppListComponent::addAndOwnIcon(const String &name, Component *icon) {
   gridIcons.add(icon);
   grid->addItem(icon);
@@ -221,50 +265,6 @@ void AppsPageComponent::checkRunningApps() {
     launcherComponent->hideLaunchSpinner();
   }
 };
-
-// FIXME: these button handlers not being scopeable to specific button types or instances
-// is pretty annoying. It means we have to check instances and types at runtime to see what
-// button is changing. See also buttonClicked()
-void AppsPageComponent::buttonStateChanged(Button* btn) {
-  if (btn == prevPageBtn || btn == nextPageBtn || btn == appLibraryBtn) {
-    return;
-  }
-  
-  auto appBtn = static_cast<AppIconButton*>(btn);
-  auto appIcon = static_cast<DrawableImage*>(appBtn->getCurrentImage());
-  auto buttonPopup = launcherComponent->focusButtonPopup.get();
-  constexpr auto scale = 1.3;
-
-  // show floating button popup if we're holding downstate and not showing the popup
-  if (btn->isMouseButtonDown() &&
-      btn->isMouseOver() &&
-      !buttonPopup->isVisible()) {
-    // copy application icon bounds in screen space
-    auto boundsNext = appIcon->getScreenBounds();
-    auto boundsCentre = boundsNext.getCentre();
-    
-    // scale and recenter
-    boundsNext.setSize(boundsNext.getWidth()*scale, boundsNext.getHeight()*scale);
-    boundsNext.setCentre(boundsCentre);
-    
-    // translate back to space local to popup parent (local bounds)
-    auto parentPos = launcherComponent->getScreenPosition();
-    boundsNext.setPosition(boundsNext.getPosition() - parentPos);
-    
-    // show popup icon, hide real button beneath
-    buttonPopup->setImage(appIcon->getImage());
-    buttonPopup->setBounds(boundsNext);
-    buttonPopup->setVisible(true);
-    appIcon->setVisible(false);
-    appBtn->setColour(DrawableButton::textColourId, Colours::transparentWhite);
-  }
-  // set UI back to default if we can see the popup, but aren't holding the button down
-  else if (btn->isVisible()) {
-    appIcon->setVisible(true);
-    appBtn->setColour(DrawableButton::textColourId, getLookAndFeel().findColour(DrawableButton::textColourId));
-    buttonPopup->setVisible(false);
-  }
-}
 
 void AppsPageComponent::buttonClicked(Button *button) {
   if (button == prevPageBtn) {

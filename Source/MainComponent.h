@@ -9,6 +9,7 @@ class MainContentComponent : public Component {
 public:
   ScopedPointer<LauncherComponent> launcher;
   ScopedPointer<LookAndFeel> lookAndFeel;
+  ScopedPointer<ImageComponent> buttonPopup;
 
   ScopedPointer<PageStackComponent> pageStack;
 
