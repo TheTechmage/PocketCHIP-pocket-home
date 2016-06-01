@@ -192,9 +192,24 @@ LauncherComponent::LauncherComponent(const var &configJson)
         
         const auto& appButtons = appsPage->createIconsFromJsonArray(page["items"]);
         for (auto button : appButtons) { button->setWantsKeyboardFocus(false); }
-        auto buttonsData = *(page["cornerButtons"].getArray());
+        
+        auto appsFile = assetFile("ntc-apps.json");
+        if (appsFile.exists()) {
+          auto appsJson = JSON::parse(appsFile);
+          if (appsJson) {
+            const auto& appLibBtns = appLibrary->createIconsFromJsonArray(appsJson);
+            for (auto button : appLibBtns) { button->setWantsKeyboardFocus(false); }
+          }
+          else {
+            std::cerr << "Could not parse installable applications list: " << appsFile.getFullPathName() << std::endl;
+          }
+        }
+        else {
+          std::cerr << "Missing installable applications list: " << appsFile.getFullPathName() << std::endl;
+        }
         
         // FIXME: is there a better way to slice juce Array<var> ?
+        auto buttonsData = *(page["cornerButtons"].getArray());
         Array<var> topData{};
         Array<var> botData{};
         topData.add(buttonsData[0]);

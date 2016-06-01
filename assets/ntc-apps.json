@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Alex4",
+    "icon": "appIcons/alex4.png",
+    "shell": "alex4"
+  },
+  {
+    "name": "VLC",
+    "icon": "appIcons/mediaplayer.png",
+    "shell": "vlc"
+  },
+  {
+    "name": "Mednafen",
+    "icon": "appIcons/virtualboy.png",
+    "shell": "mednafen"
+   },
+   {
+    "name": "IceWeasel",
+    "icon": "appIcons/webbrowser.png",
+    "shell": "iceweasel"
+  },
+  {
+    "name": "SMTube (Youtube)",
+    "icon": "appIcons/youtube.png",
+    "shell": "smtube"
+  },
+  {
+    "name": "Calculator",
+    "icon": "appIcons/calculator.png",
+    "shell": "calculator"
+  }
+]
