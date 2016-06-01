@@ -127,7 +127,9 @@ void AppListComponent::buttonStateChanged(Button* btn) {
     buttonPopup.setBounds(boundsNext);
     buttonPopup.setVisible(true);
     appIcon->setVisible(false);
-    appBtn->setColour(DrawableButton::textColourId, Colours::transparentWhite);
+    // set icon text dim
+    auto dimWhite = Colour(0x99ffffff);
+    appBtn->setColour(DrawableButton::textColourId, dimWhite);
   }
   // set UI back to default if we can see the popup, but aren't holding the button down
   else if (btn->isVisible()) {
